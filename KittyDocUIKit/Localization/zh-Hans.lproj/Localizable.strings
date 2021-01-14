@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  KittyDocUIKit
+
+  Created by 곽명섭 on 2021/01/15.
+  
+*/
+//CFBundleDisplayName = "KittyDoc"
+NSBluetoothAlwaysUsageDescription = "此应用程序使用BLE（蓝牙低能耗）通信。";
