@@ -11,6 +11,8 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //임현우가 수정한 내용 - 브랜IHW브랜티 테스트
 
         // Do any additional setup after loading the view.
     }
