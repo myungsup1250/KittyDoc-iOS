@@ -17,11 +17,14 @@ extension String {
 }
 
 class MainViewController: UIViewController, UITextFieldDelegate {
+    var userInfo: UserInfo! = UserInfo.shared
+    var emailTF: UITextField!
+    var pwTF: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+
         self.navigationItem.prompt = "UITabBarController"
         
         view.addSubview(welcomeLabel())
@@ -29,6 +32,22 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(signInView())
         view.addSubview(signInBtn())
         view.addSubview(signUpView())
+                
+        userInfo.Email = "myungsup1250@gmail.com"
+        userInfo.Pw = "ms5892"
+        
+        // userInfo.wantsRememberEmail = true
+        // userInfo.wantsAutoLogin = true
+
+        if userInfo.loggedInPrev {
+            if userInfo.wantsAutoLogin && !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty { // Automatically Log In
+                emailTF.text = userInfo.Email
+                pwTF.text = userInfo.Pw
+                didTapSignIn()
+            } else if userInfo.wantsRememberEmail && !userInfo.Email.isEmpty { // Just Remember User's Email
+                emailTF.text = userInfo.Email
+            }
+        }
     }
     
     func welcomeLabel() -> UILabel {
@@ -58,23 +77,23 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         let emailLabel = UILabel(frame: CGRect(x: 0, y: 0, width: signInView.frame.size.width, height: 40))
         emailLabel.text = "Email"
         
-        let emailInput = UITextField(frame: CGRect(x: 0, y: 40, width: signInView.frame.size.width, height: 40))
-        emailInput.placeholder = "kittydoc@jmsmart.co.kr"
-        emailInput.delegate = self
-        emailInput.autocapitalizationType = .none
-                
+        emailTF = UITextField(frame: CGRect(x: 0, y: 40, width: signInView.frame.size.width, height: 40))
+        emailTF.placeholder = "kittydoc@jmsmart.co.kr"
+        emailTF.delegate = self
+        emailTF.autocapitalizationType = .none
+        
         let pswLabel = UILabel(frame: CGRect(x: 0, y: 100, width: signInView.frame.size.width, height: 40))
         pswLabel.text = "Password"
         
-        let pswInput = UITextField(frame: CGRect(x: 0, y: 140, width: signInView.frame.size.width, height: 40))
-        pswInput.placeholder = "password"
-        pswInput.isSecureTextEntry = true
-        pswInput.delegate = self
+        pwTF = UITextField(frame: CGRect(x: 0, y: 140, width: signInView.frame.size.width, height: 40))
+        pwTF.placeholder = "password"
+        pwTF.isSecureTextEntry = true
+        pwTF.delegate = self
         
         signInView.addSubview(emailLabel)
         signInView.addSubview(pswLabel)
-        signInView.addSubview(emailInput)
-        signInView.addSubview(pswInput)
+        signInView.addSubview(emailTF)
+        signInView.addSubview(pwTF)
         
         return signInView
     }
@@ -119,8 +138,19 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         present(signUp, animated: true)
     }
     
-    @objc private func didTapSignIn() {
-        self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+    @objc private func didTapSignIn() {// // // // // 로그인 동작 추가 필요 // // // // //
+        var logInSuccess: Bool
+        
+        if !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty {
+            // Attemps Log In
+            
+            logInSuccess = true
+            if logInSuccess {// Succeed
+                self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+            } else {// Failed
+                // Inform user failed to log in!
+            }
+        }
     }
 
     
