@@ -8,3 +8,6 @@
 
 //CFBundleDisplayName = "KittyDoc"
 NSBluetoothAlwaysUsageDescription = "This Application uses BLE(Bluetooth Low Energy) Communication.";
+"Lang" = "en-US";
+"Welcome" = "Welcome";
+"Sign in to Continue" = "Sign in to Continue";

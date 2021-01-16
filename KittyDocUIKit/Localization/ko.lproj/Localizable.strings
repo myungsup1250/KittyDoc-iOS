@@ -5,5 +5,9 @@
   Created by 곽명섭 on 2021/01/15.
   
 */
+
 //CFBundleDisplayName = "KittyDoc"
 NSBluetoothAlwaysUsageDescription = "이 애플리케이션은 BLE(Bluetooth Low Energy) 통신을 사용합니다.";
+"Lang" = "ko-KR";
+"Welcome" = "환영합니다";
+"Sign in to Continue" = "로그인하여 시작";

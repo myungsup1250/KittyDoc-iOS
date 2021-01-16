@@ -5,5 +5,9 @@
   Created by 곽명섭 on 2021/01/15.
   
 */
+
 //CFBundleDisplayName = "KittyDoc"
 NSBluetoothAlwaysUsageDescription = "此应用程序使用BLE（蓝牙低能耗）通信。";
+"Lang" = "zh-CN";
+"Welcome" = "你好"; // 니하오
+"Sign in to Continue" = "Sign in to Continue(Chinese)";
