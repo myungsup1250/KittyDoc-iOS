@@ -36,6 +36,7 @@ extension UserInfo {
     init() {
         let plist = UserDefaults.standard
         let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo") // Dictionary
+//        var temp: UserInfo? = plist.object(forKey: "UserInfo") as? UserInfo // UserInfo 객체를 통채로?
         
         // Support multiple Accounts?
         // Saves One Account Only (Now)
@@ -66,5 +67,9 @@ extension UserInfo {
             address = ""
             gender = ""
         }
+        
+//        if temp != nil {
+//            self.loggedInPrev = temp!.loggedInPrev
+//        }
     }
 }
