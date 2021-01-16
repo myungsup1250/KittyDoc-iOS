@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  KittyDocUIKit
 //
 //  Created by 곽명섭 on 2021/01/15.
@@ -16,14 +16,16 @@ extension String {
     }
 }
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        self.navigationItem.prompt = "UITabBarController"
         // serveriplable.text = "Bluetooth Alert".localized // "Bluetooth Alert".localized()
     }
+    
 
 
 }

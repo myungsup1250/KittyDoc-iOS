@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E425B0ABE200266994 /* AppDelegate.swift */; };
 		E08313E725B0ABE200266994 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E625B0ABE200266994 /* SceneDelegate.swift */; };
-		E08313E925B0ABE200266994 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E825B0ABE200266994 /* ViewController.swift */; };
+		E08313E925B0ABE200266994 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E825B0ABE200266994 /* MainViewController.swift */; };
 		E08313EC25B0ABE200266994 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E08313EA25B0ABE200266994 /* Main.storyboard */; };
 		E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E08313ED25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld */; };
 		E08313F125B0ABE300266994 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E08313F025B0ABE300266994 /* Assets.xcassets */; };
@@ -21,7 +21,7 @@
 		E08313E125B0ABE200266994 /* KittyDocUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KittyDocUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E08313E425B0ABE200266994 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E08313E625B0ABE200266994 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E08313E825B0ABE200266994 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E08313E825B0ABE200266994 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		E08313EB25B0ABE200266994 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E08313EE25B0ABE200266994 /* KittyDocUIKit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KittyDocUIKit.xcdatamodel; sourceTree = "<group>"; };
 		E08313F025B0ABE300266994 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -50,6 +50,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E00AE1C525B2A7F2001484AC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E08313D825B0ABE200266994 = {
 			isa = PBXGroup;
 			children = (
@@ -69,11 +76,12 @@
 		E08313E325B0ABE200266994 /* KittyDocUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				E00AE1C525B2A7F2001484AC /* Models */,
 				E083140F25B0B39C00266994 /* Scenes */,
 				E083140D25B0AD7900266994 /* Localization */,
 				E08313E425B0ABE200266994 /* AppDelegate.swift */,
 				E08313E625B0ABE200266994 /* SceneDelegate.swift */,
-				E08313E825B0ABE200266994 /* ViewController.swift */,
+				E08313E825B0ABE200266994 /* MainViewController.swift */,
 				E08313EA25B0ABE200266994 /* Main.storyboard */,
 				E08313F025B0ABE300266994 /* Assets.xcassets */,
 				E08313F225B0ABE300266994 /* LaunchScreen.storyboard */,
@@ -204,7 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E08313E925B0ABE200266994 /* ViewController.swift in Sources */,
+				E08313E925B0ABE200266994 /* MainViewController.swift in Sources */,
 				E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */,
 				E08313E725B0ABE200266994 /* SceneDelegate.swift in Sources */,
 				E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */,
