@@ -146,7 +146,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
             
             let plist = UserDefaults.standard
             let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo") // Dictionary
-//            userDict[""]
             // ms branch TEST
 
             // 어떻게 텍스트필드 값을 UserInfo와 바인딩시킬 것인가?
