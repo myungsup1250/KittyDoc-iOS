@@ -11,6 +11,8 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Home"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         
         //코드를 수정함.
 

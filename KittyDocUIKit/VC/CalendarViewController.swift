@@ -6,24 +6,38 @@
 //
 
 import UIKit
+import FSCalendar
 
-class CalendarViewController: UIViewController {
+class CalendarViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
 
+    var calendar = FSCalendar()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.title = "Calendar"
+        calendar.delegate = self
+        calendar.dataSource = self
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        calendar.frame = CGRect(x: 0,
+                                y: 100,
+                                width: view.frame.size.width,
+                                height: view.frame.size.width)
+        view.addSubview(calendar)
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    */
-
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        let fommater = DateFormatter()
+        fommater.dateFormat = "EEEE MM-dd-yyyy"
+        let string = fommater.string(from: date)
+        print("\(string)")
+        calendar.scope = .week
+    }
+    
+    func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        calendar.scope = .month
+    }
 }

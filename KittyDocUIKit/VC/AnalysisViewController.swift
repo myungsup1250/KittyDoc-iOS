@@ -6,24 +6,37 @@
 //
 
 import UIKit
+import Charts
 
-class AnalysisViewController: UIViewController {
+class AnalysisViewController: UIViewController, ChartViewDelegate {
 
+    var chart = BarChartView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        chart.delegate = self
+        self.title = "Analysis"
 
-        // Do any additional setup after loading the view.
     }
     
 
-    /*
-    // MARK: - Navigation
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        chart.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.width)
+        chart.center = view.center
+        view.addSubview(chart)
+        
+        var entries = [BarChartDataEntry]()
+            
+        for x in 0..<10 {
+            entries.append(BarChartDataEntry(x: Double(x), y: Double(x)))
+        }
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        let set = BarChartDataSet(entries: entries)
+        set.colors = ChartColorTemplates.joyful()
+        let data  = BarChartData(dataSet: set)
+        chart.data = data
     }
-    */
 
 }

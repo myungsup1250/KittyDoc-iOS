@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iQw-GG-eE3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="j0K-Bj-2jE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Analysis-->
+        <!--Analysis View Controller-->
         <scene sceneID="MyK-Xh-dOp">
             <objects>
                 <viewController storyboardIdentifier="AnalysisVC" id="iQw-GG-eE3" customClass="AnalysisViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,12 +18,31 @@
                         <viewLayoutGuide key="safeArea" id="NwE-yg-0PY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Analysis" image="note" catalog="system" id="hNK-hH-COx"/>
+                    <navigationItem key="navigationItem" id="Y9J-66-U3g"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NoC-Pj-gGs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-339" y="-456"/>
+            <point key="canvasLocation" x="571.01449275362324" y="-456.02678571428567"/>
+        </scene>
+        <!--Analysis-->
+        <scene sceneID="KYK-Jb-5gP">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="j0K-Bj-2jE" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Analysis" image="note" catalog="system" id="hNK-hH-COx"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="R5Y-kv-VWp">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="iQw-GG-eE3" kind="relationship" relationship="rootViewController" id="R5Q-wu-9nb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hjZ-ZS-vtP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-339.13043478260875" y="-456.02678571428567"/>
         </scene>
     </scenes>
     <resources>
