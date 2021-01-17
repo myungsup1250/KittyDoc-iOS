@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift [Main]
+//  LogInViewController.swift [Main]
 //  KittyDocUIKit
 //
 //  Created by 곽명섭 on 2021/01/15.
@@ -7,16 +7,7 @@
 
 import UIKit
 
-extension String {
-//    func localized(bundle: Bundle = .main, tableName: String = "Localizable") -> String {
-//        return NSLocalizedString(self, tableName: tableName, value: "**\(self)**", comment: "")
-//    }
-    var localized: String {
-        return NSLocalizedString(self, tableName: "Localizable", value: self, comment: "")
-    }
-}
-
-class LoginViewController: UIViewController, UITextFieldDelegate {
+class LogInViewController: UIViewController, UITextFieldDelegate {
     var userInfo: UserInfo! = UserInfo.shared
     var emailTF: UITextField!
     var pwTF: UITextField!

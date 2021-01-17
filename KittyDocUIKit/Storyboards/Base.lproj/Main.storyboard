@@ -48,10 +48,10 @@
             </objects>
             <point key="canvasLocation" x="-1305" y="-430"/>
         </scene>
-        <!--Login View Controller-->
+        <!--Log In View Controller-->
         <scene sceneID="hC9-VH-lVc">
             <objects>
-                <viewController storyboardIdentifier="MainVC" id="qxo-uw-GB2" customClass="LoginViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainVC" id="qxo-uw-GB2" customClass="LogInViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="C3p-3y-Ocf">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
