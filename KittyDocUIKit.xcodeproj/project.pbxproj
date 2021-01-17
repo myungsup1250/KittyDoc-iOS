@@ -24,7 +24,7 @@
 		E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE23E25B3140D001484AC /* UserInfo.swift */; };
 		E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E425B0ABE200266994 /* AppDelegate.swift */; };
 		E08313E725B0ABE200266994 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E625B0ABE200266994 /* SceneDelegate.swift */; };
-		E08313E925B0ABE200266994 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E825B0ABE200266994 /* MainViewController.swift */; };
+		E08313E925B0ABE200266994 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08313E825B0ABE200266994 /* LoginViewController.swift */; };
 		E08313EC25B0ABE200266994 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E08313EA25B0ABE200266994 /* Main.storyboard */; };
 		E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E08313ED25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld */; };
 		E08313F125B0ABE300266994 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E08313F025B0ABE300266994 /* Assets.xcassets */; };
@@ -68,7 +68,7 @@
 		E08313E125B0ABE200266994 /* KittyDocUIKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KittyDocUIKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E08313E425B0ABE200266994 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E08313E625B0ABE200266994 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E08313E825B0ABE200266994 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		E08313E825B0ABE200266994 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E08313EB25B0ABE200266994 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E08313EE25B0ABE200266994 /* KittyDocUIKit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = KittyDocUIKit.xcdatamodel; sourceTree = "<group>"; };
 		E08313F025B0ABE300266994 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 		E00AE1ED25B2C559001484AC /* VC */ = {
 			isa = PBXGroup;
 			children = (
-				E08313E825B0ABE200266994 /* MainViewController.swift */,
+				E08313E825B0ABE200266994 /* LoginViewController.swift */,
 				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
 				E00AE1E425B2C538001484AC /* SettingsViewController.swift */,
 				E00AE1E725B2C542001484AC /* AnalysisViewController.swift */,
@@ -366,7 +366,7 @@
 			files = (
 				E00AE1EB25B2C550001484AC /* CalendarViewController.swift in Sources */,
 				E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */,
-				E08313E925B0ABE200266994 /* MainViewController.swift in Sources */,
+				E08313E925B0ABE200266994 /* LoginViewController.swift in Sources */,
 				E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */,
 				E00AE1E825B2C542001484AC /* AnalysisViewController.swift in Sources */,
 				70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */,

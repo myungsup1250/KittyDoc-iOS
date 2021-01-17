@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift [LogInViewController]
+//  LoginViewController.swift [Main]
 //  KittyDocUIKit
 //
 //  Created by 곽명섭 on 2021/01/15.
@@ -16,7 +16,7 @@ extension String {
     }
 }
 
-class MainViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate {
     var userInfo: UserInfo! = UserInfo.shared
     var emailTF: UITextField!
     var pwTF: UITextField!
