@@ -150,7 +150,6 @@
 		E08313D825B0ABE200266994 = {
 			isa = PBXGroup;
 			children = (
-				70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */,
 				E08313E325B0ABE200266994 /* KittyDocUIKit */,
 				E08313E225B0ABE200266994 /* Products */,
 				BA1E6387585B9C17F4062583 /* Pods */,
@@ -183,6 +182,7 @@
 				E00AE1C525B2A7F2001484AC /* Models */,
 				E083140F25B0B39C00266994 /* Scenes */,
 				70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */,
+				70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */,
 			);
 			path = KittyDocUIKit;
 			sourceTree = "<group>";
