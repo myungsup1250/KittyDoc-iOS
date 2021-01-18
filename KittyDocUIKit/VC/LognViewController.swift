@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LogInViewController: UIViewController, UITextFieldDelegate {
+class LognViewController: UIViewController, UITextFieldDelegate {
     var userInfo: UserInfo! = UserInfo.shared
     var emailTF: UITextField!
     var pwTF: UITextField!
