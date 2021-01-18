@@ -16,7 +16,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zy1-p4-RI0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2049" y="-430"/>
+            <point key="canvasLocation" x="-2825" y="282"/>
         </scene>
         <!--CalendarStoryboard-->
         <scene sceneID="MYj-Ty-lSR">
@@ -26,7 +26,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fc8-Ae-tpv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1808" y="-430"/>
+            <point key="canvasLocation" x="-2584" y="282"/>
         </scene>
         <!--AnalysisStoryboard-->
         <scene sceneID="xhS-fR-vNW">
@@ -36,7 +36,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pds-Im-oyJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1555" y="-430"/>
+            <point key="canvasLocation" x="-2331" y="282"/>
         </scene>
         <!--SettingsStoryboard-->
         <scene sceneID="R2G-n7-T5g">
@@ -46,7 +46,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XsK-vZ-9y2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1305" y="-430"/>
+            <point key="canvasLocation" x="-2081" y="282"/>
         </scene>
         <!--Log In View Controller-->
         <scene sceneID="hC9-VH-lVc">
@@ -61,16 +61,17 @@
                     <navigationItem key="navigationItem" id="eRr-Lv-Wgo"/>
                     <connections>
                         <segue destination="V0Y-Ve-SQ8" kind="show" identifier="LogInSegue" id="lNY-hw-gDA"/>
+                        <segue destination="1Ts-mR-W0f" kind="show" id="nrr-75-IOJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mQi-kO-bh6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2448" y="-823"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Main Tab Bar View Controller-->
         <scene sceneID="3Fw-bX-NrG">
             <objects>
-                <tabBarController id="V0Y-Ve-SQ8" sceneMemberID="viewController">
+                <tabBarController id="V0Y-Ve-SQ8" customClass="MainTabBarViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="jgW-Pu-24i"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9yb-p4-zcX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
@@ -86,7 +87,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CX8-oF-meZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1698" y="-823"/>
+            <point key="canvasLocation" x="-2449" y="-139"/>
         </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="xrU-8Z-r9G">
@@ -98,10 +99,11 @@
                         <viewLayoutGuide key="safeArea" id="bK2-bV-vkD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="8KZ-4I-EvS"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fZX-50-JAp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-945" y="-823"/>
+            <point key="canvasLocation" x="-1731" y="-823"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="d65-CZ-331">
