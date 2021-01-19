@@ -45,7 +45,7 @@ class SwitchTableViewCell: UITableViewCell {
         iconContainer.addSubview(iconImageView)
         
         contentView.clipsToBounds = true
-        accessoryType = .disclosureIndicator
+        accessoryType = .none
     }
     
     required init?(coder: NSCoder) {
@@ -54,6 +54,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+
         let size: CGFloat = contentView.frame.size.height - 12
         iconContainer.frame = CGRect(x: 15, y: 6, width: size, height: size)
         

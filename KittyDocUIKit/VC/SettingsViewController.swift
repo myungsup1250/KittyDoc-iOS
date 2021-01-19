@@ -1,6 +1,6 @@
 //
 //  SettingViewController.swift
-//  New
+//  KittyDocUIKit
 //
 //  Created by JEN Lee on 2021/01/06.
 //

@@ -64,23 +64,30 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     func signInView() -> UIView {
         let signInView = UIView()
 
-        signInView.frame = CGRect(x: 60, y: 300, width: view.frame.size.width, height: 300)
-        let emailLabel = UILabel(frame: CGRect(x: 0, y: 0, width: signInView.frame.size.width, height: 40))
+        signInView.frame = CGRect(x: 30, y: 300, width: view.frame.size.width, height: 300)
+        let emailLabel = UILabel(frame: CGRect(x: 10, y: 0, width: signInView.frame.size.width, height: 40))
         emailLabel.text = "Email"
 
-        emailTF = UITextField(frame: CGRect(x: 0, y: 40, width: signInView.frame.size.width, height: 40))
+        emailTF = UITextField(frame: CGRect(x: 0, y: 40, width: 320, height: 40))
         emailTF.placeholder = "kittydoc@jmsmart.co.kr"
         emailTF.delegate = self
         emailTF.autocapitalizationType = .none
-
-        let pswLabel = UILabel(frame: CGRect(x: 0, y: 100, width: signInView.frame.size.width, height: 40))
+        emailTF.borderStyle = .roundedRect
+        emailTF.clearButtonMode = .whileEditing
+        emailTF.keyboardType = .emailAddress
+        emailTF.enablesReturnKeyAutomatically = true
+        
+        let pswLabel = UILabel(frame: CGRect(x: 10, y: 100, width: signInView.frame.size.width, height: 40))
         pswLabel.text = "Password"
-
-        pwTF = UITextField(frame: CGRect(x: 0, y: 140, width: signInView.frame.size.width, height: 40))
+        
+        pwTF = UITextField(frame: CGRect(x: 0, y: 140, width: 320, height: 40))
         pwTF.placeholder = "password"
         pwTF.isSecureTextEntry = true
         pwTF.delegate = self
-
+        pwTF.borderStyle = .roundedRect
+        pwTF.clearButtonMode = .whileEditing
+        pwTF.enablesReturnKeyAutomatically = true
+        
         signInView.addSubview(emailLabel)
         signInView.addSubview(pswLabel)
         signInView.addSubview(emailTF)
