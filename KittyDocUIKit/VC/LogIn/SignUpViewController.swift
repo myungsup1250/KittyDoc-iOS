@@ -8,7 +8,7 @@
 import UIKit
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,7 +72,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 
 
         setUpdatePicker()
-        
     }
     
     
@@ -241,10 +240,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func didTapRegister() {
-        //회원가입 된 경우
-        //: UserInfo 인스턴스를 생성해서 값 저장해주고?
-        //  메인화면 메일이랑 패스워드 채워넣는다.
-    //let userInfo = UserInfo(email: nil, pwd: nil, name: nil, phone: nil, birth: nil)
+        //여기서 UITextField에 대한 접근이 불가능한듯 모두 ViewDidLoad함수 안의 로컬 변수들로 추정!
         
         self.presentingViewController?.dismiss(animated: true, completion: nil)
         

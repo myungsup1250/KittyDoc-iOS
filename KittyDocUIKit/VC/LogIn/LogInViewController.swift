@@ -136,7 +136,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         present(signUp, animated: true)
     }
 
-    @objc private func didTapSignIn() {// // // // // 로그인 동작 추가 필요 // // // // //
+    @objc private func didTapSignIn() {
         if !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty {
             // Attemps Log In
             //let plist = UserDefaults.standard
@@ -149,6 +149,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             print("loginResponse")
             print(loginResponse.getCode())
             
+            //loginResponse: 로그인 성공시 회원 정보를 message에 담아 리턴
+            //로그인 실패 시 '존재하지 않는 계정입니다!' 등, 문자열이 message에 담겨있음.
+            //그 메세지를 이용해도 되고, 상황에 맞게 원하는 문자열을 사용해서 Toast를 띄우면 좋을듯.
+            //가능하다면 실패 시에 잘못 입력한 뷰로 focus를 주는 기능이 들어가는게 좋을듯.
+            //회원가입 화면에 보면, UserInfo를 회원가입 성공시 초기화 한다는 주석이 있는데 아닌것 같음.
+            //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까!
+            //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
             }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
