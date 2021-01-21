@@ -47,53 +47,45 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        title = "Settings"
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.frame = view.bounds
         self.title = "Settings"
         self.navigationController?.navigationBar.prefersLargeTitles = true
-        
-
     }
     
     func configure() {
         models.append(Section(title: "Device Connection", options: [.switchCell(model: SettingsSwitchOption(title: "기기 착용 유무", icon: UIImage(systemName: "house")!, iconBackgroundColor: .systemYellow, handler: {
-            
         }, isOn: true)),
+        .staticCell(model: SettingsOption(title: "기기 설정", icon: UIImage(systemName: "gear")!, iconBackgroundColor: .systemGreen, handler: {
+            self.performSegue(withIdentifier: "BTSettingsSegue", sender: self)
+        }))
+        
         ]))
+        
+        
         
         models.append(Section(title: "My Information", options: [.staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange) {
         })
         ]))
         
-        models.append(Section(title: "Account Settings", options:
-            [.staticCell(model: SettingsOption(title: "기기 상태", icon: UIImage(systemName: "note.text")!, iconBackgroundColor: .systemGreen) {
-            print("first tapped")
-            })
-            ,
-            .staticCell(model: SettingsOption(title: "기기 추가", icon: UIImage(systemName: "plus.circle")!, iconBackgroundColor: .systemBlue) {
-            print("first tapped")
-        }),
-            .staticCell(model: SettingsOption(title: "기기 제거", icon: UIImage(systemName: "minus.circle")!, iconBackgroundColor: .systemPink) {
-            print("first tapped")
-        })
         
-        ]))
         
         models.append(Section(title: "Cat Settings", options: [.staticCell(model: SettingsOption(title: "냥이 등록", icon: UIImage(systemName: "plus.circle")!, iconBackgroundColor: .systemBlue) {
-            print("first tapped")
+            self.performSegue(withIdentifier: "PetSettingsSegue", sender: self)
         })
         
         ]))
         
         models.append(Section(title: "Account", options: [
             .staticCell(model: SettingsOption(title: "로그아웃", icon: UIImage(systemName: "power")!, iconBackgroundColor: .systemRed) {
-            print("first tapped")
+                self.performSegue(withIdentifier: "logoutSegue", sender: self)
         })
         
         ]))
+        
+    
         
     }
     

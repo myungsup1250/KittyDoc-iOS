@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
+		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
+		70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */; };
 		DFEC7E4D9AB70527B5B537F3 /* Pods_KittyDocUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */; };
 		E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E125B2C52F001484AC /* HomeViewController.swift */; };
 		E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E425B2C538001484AC /* SettingsViewController.swift */; };
@@ -24,7 +26,6 @@
 		E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE23E25B3140D001484AC /* UserInfo.swift */; };
 		E00AE25025B44E9F001484AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE24F25B44E9F001484AC /* StringExtension.swift */; };
 		E00AE25625B45101001484AC /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE25525B45101001484AC /* LogInView.swift */; };
-		E05A7C2D25B5843C007680E2 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C2C25B5843C007680E2 /* ActivityIndicatorView.swift */; };
 		E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C2F25B58919007680E2 /* InitStoryboard.swift */; };
 		E05A7C3325B58CBF007680E2 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */; };
 		E05A7C3625B58DED007680E2 /* LogInViewController(abort).swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3525B58DED007680E2 /* LogInViewController(abort).swift */; };
@@ -46,6 +47,8 @@
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSettingsViewController.swift; sourceTree = "<group>"; };
+		70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetSettingsViewController.swift; sourceTree = "<group>"; };
 		A8A77652BAB055C4B7DD662A /* Pods-KittyDocUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.debug.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.debug.xcconfig"; sourceTree = "<group>"; };
 		E00AE1E125B2C52F001484AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E00AE1E425B2C538001484AC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -69,7 +72,6 @@
 		E00AE23E25B3140D001484AC /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		E00AE24F25B44E9F001484AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		E00AE25525B45101001484AC /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
-		E05A7C2C25B5843C007680E2 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		E05A7C2F25B58919007680E2 /* InitStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitStoryboard.swift; sourceTree = "<group>"; };
 		E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
 		E05A7C3525B58DED007680E2 /* LogInViewController(abort).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LogInViewController(abort).swift"; sourceTree = "<group>"; };
@@ -104,6 +106,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		70D80EAE25B926BB00EE2666 /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				E08313E825B0ABE200266994 /* LogInViewController.swift */,
+				E00AE22825B2D754001484AC /* SignUpViewController.swift */,
+			);
+			path = LogIn;
+			sourceTree = "<group>";
+		};
+		70D80EAF25B926E200EE2666 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		70D80EB025B926EF00EE2666 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E00AE1E425B2C538001484AC /* SettingsViewController.swift */,
+				70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */,
+				70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		70D80EB125B926FB00EE2666 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				E00AE1EA25B2C550001484AC /* CalendarViewController.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		70D80EB425B9272900EE2666 /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				E00AE1E725B2C542001484AC /* AnalysisViewController.swift */,
+			);
+			path = Analysis;
+			sourceTree = "<group>";
+		};
 		BA1E6387585B9C17F4062583 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -123,13 +168,12 @@
 		E00AE1ED25B2C559001484AC /* VC */ = {
 			isa = PBXGroup;
 			children = (
-				E08313E825B0ABE200266994 /* LogInViewController.swift */,
-				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
-				E00AE1E425B2C538001484AC /* SettingsViewController.swift */,
-				E00AE1E725B2C542001484AC /* AnalysisViewController.swift */,
-				E00AE1EA25B2C550001484AC /* CalendarViewController.swift */,
-				E00AE22825B2D754001484AC /* SignUpViewController.swift */,
 				E05A7C3F25B5A51A007680E2 /* MainTabBarViewController.swift */,
+				70D80EAE25B926BB00EE2666 /* LogIn */,
+				70D80EAF25B926E200EE2666 /* Home */,
+				70D80EB125B926FB00EE2666 /* Calendar */,
+				70D80EB425B9272900EE2666 /* Analysis */,
+				70D80EB025B926EF00EE2666 /* Settings */,
 			);
 			path = VC;
 			sourceTree = "<group>";
@@ -179,7 +223,6 @@
 		E05A7C2B25B5843C007680E2 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				E05A7C2C25B5843C007680E2 /* ActivityIndicatorView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -409,6 +452,7 @@
 				E05A7C4C25B5AC31007680E2 /* UIColorExtension.swift in Sources */,
 				E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */,
 				E05A7C3325B58CBF007680E2 /* LogInViewModel.swift in Sources */,
+				70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */,
 				E05A7C4625B5AB4F007680E2 /* TextFieldExtention.swift in Sources */,
 				E05A7C4025B5A51A007680E2 /* MainTabBarViewController.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,
@@ -419,8 +463,8 @@
 				E00AE22925B2D754001484AC /* SignUpViewController.swift in Sources */,
 				E00AE25025B44E9F001484AC /* StringExtension.swift in Sources */,
 				70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */,
-				E05A7C2D25B5843C007680E2 /* ActivityIndicatorView.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
+				70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */,
 				E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */,
 				E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */,
 				E05A7C3625B58DED007680E2 /* LogInViewController(abort).swift in Sources */,

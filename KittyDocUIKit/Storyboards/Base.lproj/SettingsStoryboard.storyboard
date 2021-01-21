@@ -21,10 +21,48 @@
                     <tabBarItem key="tabBarItem" title="Settings" image="gearshape" catalog="system" id="3nt-QS-kRv"/>
                     <navigationItem key="navigationItem" id="us5-du-ZMQ"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="3WN-Zc-KfH" kind="show" identifier="BTSettingsSegue" id="K28-FX-LWX"/>
+                        <segue destination="S5t-Om-3Pb" kind="show" identifier="PetSettingsSegue" id="2fn-Cm-ife"/>
+                        <segue destination="UoU-MN-wde" kind="unwind" identifier="logoutSegue" unwindAction="logout:" id="9ub-3G-CnS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AqY-3y-9db" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="UoU-MN-wde" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1039.1304347826087" y="117.85714285714285"/>
+        </scene>
+        <!--Pet Settings View Controller-->
+        <scene sceneID="0ET-2l-bvV">
+            <objects>
+                <viewController id="S5t-Om-3Pb" customClass="PetSettingsViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="giI-yM-sNP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="ZEF-Oc-L8h"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="eva-eP-mc2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u6J-hp-Mqp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1961" y="491"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="G6U-44-mU2">
+            <objects>
+                <viewController id="3WN-Zc-KfH" customClass="BTSettingsViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OA7-eg-dbR">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Q6K-rf-IN9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ZP2-Tg-c9X"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="94g-sN-cOQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1961" y="-189"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Emn-fC-t1f">

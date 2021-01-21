@@ -175,6 +175,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
+    @IBAction func logout(_ sender: UIStoryboardSegue) {
+        
+    }
 
 }
 
