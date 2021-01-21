@@ -137,35 +137,26 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc private func didTapSignIn() {// // // // // 로그인 동작 추가 필요 // // // // //
-        var logInSuccess: Bool
-
         if !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty {
             // Attemps Log In
+            //let plist = UserDefaults.standard
+            //let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo")
 
-            let plist = UserDefaults.standard
-            let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo") // Dictionary
-//            userDict[""]
-            // ms branch test again
-
-            // 어떻게 텍스트필드 값을 UserInfo와 바인딩시킬 것인가?
-            // emailTF.text
-            // pwTF.text
-
-            // userInfo.Email = emailTF.text
-            // userInfo.Pw = pwTF.text
-
-            // UserInfo와 텍스트필드가 바인딩 되어있을 경우
-            // 로그인 실패했을 경우, UserInfo가 실패하는 정보로 바뀌어 있을텐데,
-            // 잘못된 정보로 그냥 넘어가는 것에 대한 걱정?
-            // UserDefaults에 저장되어있는 User 정보를 어떻게 같이 바꿔줄것인가?
-
-            logInSuccess = true
-            if logInSuccess {// Succeed
-
-                //UserInfo 내용 업데이트 필요
+            let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwTF.text!)
+            let server:KittyDocServer = KittyDocServer()
+            var loginResponse:ServerResponse = server.userLogin(data: loginData)
+            
+            print("loginResponse")
+            print(loginResponse.getCode())
+            
+            if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
-            } else {// Failed
-                // Inform user failed to log in!
+            }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
+                print(loginResponse.getMessage())
+            }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_PWD){
+                print(loginResponse.getMessage())
+            }else{
+                print(loginResponse.getMessage())
             }
         }
     }
