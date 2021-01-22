@@ -43,5 +43,17 @@ class KittyDocServer:ServerApi{
         return doRequestTask(url: url, data: data)
     }
     
+    func userSignUp(data:SignUpData) -> ServerResponse {
+        //URL setting
+        let url = URL(string:(baseUrl + port + "/user/join"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
+    func userExist(data:ExistData) -> ServerResponse {
+        //URL setting
+        let url = URL(string:(baseUrl + port + "/user/existEmail"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
     init(){}
 }

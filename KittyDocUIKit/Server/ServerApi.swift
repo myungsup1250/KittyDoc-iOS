@@ -12,4 +12,6 @@ protocol ServerApi{
     var baseUrl: String {get set}
     var port: String {get set}
     func userLogin(data:LoginData) -> ServerResponse;
+    func userSignUp(data:SignUpData) -> ServerResponse;
+    func userExist(data:ExistData) -> ServerResponse;
 }
