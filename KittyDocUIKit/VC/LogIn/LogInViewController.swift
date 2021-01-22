@@ -14,6 +14,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        textFieldSetUp()
         // Do any additional setup after loading the view.
 
         self.navigationItem.prompt = "UITabBarController"
@@ -176,6 +177,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func logout(_ sender: UIStoryboardSegue) {
         
+    }
+    
+    func textFieldSetUp() {
+        emailTF.text = ""
+        pwTF.text = ""
     }
 
 }

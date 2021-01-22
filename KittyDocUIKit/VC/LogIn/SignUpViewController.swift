@@ -9,6 +9,12 @@ import UIKit
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
+    var emailInput: UITextField!
+    var pwdInput: UITextField!
+    var nameInput: UITextField!
+    var phoneNumberInput: UITextField!
+    var birthInput: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -153,7 +159,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         let birthDataField = UITextField()
         birthDataField.frame = CGRect(x: 0, y: 280, width: 300, height: 80)
         birthDataField.placeholder = "여기를 클릭해서 생년월일을 입력해주세요"
-        
+
         return birthDataField
     }()
     
@@ -187,7 +193,12 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         dateFormatter.dateStyle = .medium
         
         self.birthDataField.text = dateFormatter.string(from: picker.date)
-        print(dateFormatter.string(from: picker.date)) //이걸로 생년월일 받으면 됨!
+        print(dateFormatter.string(from: picker.date))
+        
+        let writedateFormatter = DateFormatter()
+        writedateFormatter.dateFormat = "yyyyMMdd"
+        birthInput = writedateFormatter.string(from: picker.date)
+        print(birthInput ?? "00000000")
     }
 
     @objc func tapOnDoneBtn() {
@@ -241,8 +252,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func didTapRegister() {
         //여기서 UITextField에 대한 접근이 불가능한듯 모두 ViewDidLoad함수 안의 로컬 변수들로 추정!
+        print(emailInput.text!) //이메일
+        print(pwdInput.text!)  //비번
+        print(nameInput.text!) //이름
+        print(phoneNumberInput.text!) //뽄넘버
+        print(genderSelect.selectedSegmentIndex) //성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
+        print(birthInput ?? 00000000) //생년월일!
         
+        
+        //만약 회원가입 성공하면 현재창 없어지게 만들기
         self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
         
     }
     
