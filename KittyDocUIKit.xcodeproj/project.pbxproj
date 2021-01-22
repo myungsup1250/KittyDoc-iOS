@@ -12,6 +12,8 @@
 		113CCDD225BA5AA100BF70E5 /* KittyDocServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDCC25BA5AA100BF70E5 /* KittyDocServer.swift */; };
 		113CCDD325BA5AA100BF70E5 /* LoginData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDCE25BA5AA100BF70E5 /* LoginData.swift */; };
 		113CCDD425BA5AA100BF70E5 /* ServerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDCF25BA5AA100BF70E5 /* ServerData.swift */; };
+		113CCDD725BA8C5600BF70E5 /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDD625BA8C5600BF70E5 /* SignUpData.swift */; };
+		113CCDDB25BA9AB900BF70E5 /* ExistData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDDA25BA9AB900BF70E5 /* ExistData.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
@@ -61,6 +63,8 @@
 		113CCDCC25BA5AA100BF70E5 /* KittyDocServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KittyDocServer.swift; sourceTree = "<group>"; };
 		113CCDCE25BA5AA100BF70E5 /* LoginData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginData.swift; sourceTree = "<group>"; };
 		113CCDCF25BA5AA100BF70E5 /* ServerData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerData.swift; sourceTree = "<group>"; };
+		113CCDD625BA8C5600BF70E5 /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
+		113CCDDA25BA9AB900BF70E5 /* ExistData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistData.swift; sourceTree = "<group>"; };
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -152,8 +156,10 @@
 		113CCDCD25BA5AA100BF70E5 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				113CCDCE25BA5AA100BF70E5 /* LoginData.swift */,
 				113CCDCF25BA5AA100BF70E5 /* ServerData.swift */,
+				113CCDCE25BA5AA100BF70E5 /* LoginData.swift */,
+				113CCDD625BA8C5600BF70E5 /* SignUpData.swift */,
+				113CCDDA25BA9AB900BF70E5 /* ExistData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -527,6 +533,7 @@
 				113CCDD225BA5AA100BF70E5 /* KittyDocServer.swift in Sources */,
 				E05A7C4925B5ABFB007680E2 /* UIButtonExtension.swift in Sources */,
 				E00AE25625B45101001484AC /* LogInView.swift in Sources */,
+				113CCDD725BA8C5600BF70E5 /* SignUpData.swift in Sources */,
 				E00AE1EB25B2C550001484AC /* CalendarViewController.swift in Sources */,
 				E05A7C4C25B5AC31007680E2 /* UIColorExtension.swift in Sources */,
 				E05A7CA825B9387B007680E2 /* SyncCmd.swift in Sources */,
@@ -539,6 +546,7 @@
 				E05A7C4625B5AB4F007680E2 /* TextFieldExtention.swift in Sources */,
 				E05A7CAA25B9387B007680E2 /* ControlByte.swift in Sources */,
 				E05A7C4025B5A51A007680E2 /* MainTabBarViewController.swift in Sources */,
+				113CCDDB25BA9AB900BF70E5 /* ExistData.swift in Sources */,
 				113CCDD325BA5AA100BF70E5 /* LoginData.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,
 				E05A7CAB25B9387B007680E2 /* ActivityIndicatorView.swift in Sources */,

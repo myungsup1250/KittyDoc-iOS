@@ -164,11 +164,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             //회원가입 화면에 보면, UserInfo를 회원가입 성공시 초기화 한다는 주석이 있는데 아닌것 같음.
             //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까! OOOK!
             //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯 ---- LATER
-            if emailTF.text == "" {
-                alertWithMessage(message: "이메일을 입력해주세요!")
+            if(!isEmailForm(_email:emailTF.text!)){
+                alertWithMessage(message: "올바른 이메일 형식이 아닙니다!")
+                return
             }
-            if pwTF.text == "" {
+            if(!isPwdForm(_pwd:pwTF.text!)){
                 alertWithMessage(message: "비밀번호를 입력해주세요!")
+                return
             }
             
             
@@ -211,6 +213,23 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .cancel))
         self.present(alert, animated: false)
+    }
+    
+    //이메일 형식인지에 대한 정규표현식. 인터넷에 검색하면 쉽게 나오니 바꾸고 싶은게 있으면 바꾸셈
+    func isEmailForm(_email:String) -> Bool{
+        let emailReg = "[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,50}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailReg)
+        return emailTest.evaluate(with: _email)
+    }
+    
+    //비밀번호 형식에 대한 검사함수. 지금은 길이가 1이상만 되면 되는 것으로 했지만 추후에 특수문자포함여부, 길이제한 추가
+    //하게 될지도?
+    func isPwdForm(_pwd:String) -> Bool{
+        if(_pwd.count > 0){
+            return true
+        }else{
+            return false
+        }
     }
 
 }
