@@ -36,7 +36,7 @@ class ServerResponse{
         return self.code
     }
     
-    func getMessage() -> Any{
+    func getMessage() -> Any {
         return self.message
     }
     

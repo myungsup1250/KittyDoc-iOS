@@ -14,7 +14,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        textFieldSetUp()
+        
         // Do any additional setup after loading the view.
 
         self.navigationItem.prompt = "UITabBarController"
@@ -40,6 +40,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 emailTF.text = userInfo.Email
             }
         }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        textFieldSetUp()
     }
 
     func welcomeLabel() -> UILabel {
@@ -129,6 +134,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
         return signUpView
     }
+    
 
     @objc private func didTapSignUp() {
         let signUp = self.storyboard!.instantiateViewController(identifier: "SignUp")
@@ -136,6 +142,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             //UIModalTransitionStyle.flipHorizontal
         present(signUp, animated: true)
     }
+    
 
     @objc private func didTapSignIn() {
         if !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty {
@@ -145,43 +152,65 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
             let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwTF.text!)
             let server:KittyDocServer = KittyDocServer()
-            var loginResponse:ServerResponse = server.userLogin(data: loginData)
+            let loginResponse:ServerResponse = server.userLogin(data: loginData)
             
             print("loginResponse")
             print(loginResponse.getCode())
             
             //loginResponse: 로그인 성공시 회원 정보를 message에 담아 리턴
             //로그인 실패 시 '존재하지 않는 계정입니다!' 등, 문자열이 message에 담겨있음.
-            //그 메세지를 이용해도 되고, 상황에 맞게 원하는 문자열을 사용해서 Toast를 띄우면 좋을듯.
-            //가능하다면 실패 시에 잘못 입력한 뷰로 focus를 주는 기능이 들어가는게 좋을듯.
+            //그 메세지를 이용해도 되고, 상황에 맞게 원하는 문자열을 사용해서 Toast를 띄우면 좋을듯. --- O
+            //가능하다면 실패 시에 잘못 입력한 뷰로 focus를 주는 기능이 들어가는게 좋을듯. --- O
             //회원가입 화면에 보면, UserInfo를 회원가입 성공시 초기화 한다는 주석이 있는데 아닌것 같음.
-            //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까!
-            //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯
+            //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까! OOOK!
+            //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯 ---- LATER
+            if emailTF.text == "" {
+                alertWithMessage(message: "이메일을 입력해주세요!")
+            }
+            if pwTF.text == "" {
+                alertWithMessage(message: "비밀번호를 입력해주세요!")
+            }
+            
+            
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
             }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
-                print(loginResponse.getMessage())
+                alertWithMessage(message: loginResponse.getMessage())
+                self.emailTF.becomeFirstResponder()
+
             }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_PWD){
                 print(loginResponse.getMessage())
+                self.pwTF.becomeFirstResponder()
+                alertWithMessage(message: loginResponse.getMessage())
+                
             }else{
                 print(loginResponse.getMessage())
             }
         }
     }
 
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    
     @IBAction func logout(_ sender: UIStoryboardSegue) {
         
     }
     
+    
     func textFieldSetUp() {
         emailTF.text = ""
         pwTF.text = ""
+    }
+    
+    
+    func alertWithMessage(message input: Any) {
+        let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+        self.present(alert, animated: false)
     }
 
 }

@@ -18,8 +18,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let emailInput: UITextField = {
-            let emailInput = UITextField()
+        let _: UITextField = {
+            emailInput = UITextField()
             emailInput.frame = CGRect(x: 0, y: 30, width: signUpView.frame.size.width, height: 30)
             emailInput.placeholder = "kittydoc@jmsmart.co.kr"
             emailInput.keyboardType = .emailAddress
@@ -27,8 +27,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return emailInput
         }()
         
-        let pwdInput: UITextField = {
-            let pwdInput = UITextField()
+        let _: UITextField = {
+            pwdInput = UITextField()
             pwdInput.frame = CGRect(x: 0, y: 100, width: signUpView.frame.size.width, height: 30)
             pwdInput.placeholder = "password"
             pwdInput.isSecureTextEntry = true
@@ -36,16 +36,16 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return pwdInput
         }()
         
-        let nameInput: UITextField = {
-            let nameInput = UITextField()
+        let _: UITextField = {
+            nameInput = UITextField()
             nameInput.frame = CGRect(x: 0, y: 170, width: signUpView.frame.size.width, height: 30)
             nameInput.placeholder = "이복덩"
             nameInput.delegate = self
             return nameInput
         }()
         
-        let phoneNumberInput: UITextField = {
-            let phoneNumberInput = UITextField()
+        let _: UITextField = {
+            phoneNumberInput = UITextField()
             phoneNumberInput.frame = CGRect(x: 0, y: 230, width: view.frame.size.width, height: 50)
             phoneNumberInput.placeholder = "01037757666"
             return phoneNumberInput
@@ -77,7 +77,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(signInView)
 
 
-        setUpdatePicker()
+        _ = setUpdatePicker()
     }
     
     
