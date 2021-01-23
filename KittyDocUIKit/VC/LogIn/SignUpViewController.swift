@@ -14,6 +14,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     var nameInput: UITextField!
     var phoneNumberInput: UITextField!
     var birthInput: String?
+    var didDupEx: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             emailInput.keyboardType = .emailAddress
             emailInput.delegate = self
             emailInput.autocapitalizationType = .none
+            emailInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return emailInput
         }()
         
@@ -35,6 +37,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             pwdInput.isSecureTextEntry = true
             pwdInput.delegate = self
             pwdInput.autocapitalizationType = .none
+            pwdInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return pwdInput
         }()
         
@@ -43,6 +46,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             nameInput.frame = CGRect(x: 0, y: 170, width: signUpView.frame.size.width, height: 30)
             nameInput.placeholder = "이복덩"
             nameInput.delegate = self
+            nameInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return nameInput
         }()
         
@@ -50,6 +54,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             phoneNumberInput = UITextField()
             phoneNumberInput.frame = CGRect(x: 0, y: 230, width: view.frame.size.width, height: 50)
             phoneNumberInput.placeholder = "01037757666"
+            phoneNumberInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return phoneNumberInput
         }()
         
@@ -83,6 +88,26 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         _ = setUpdatePicker()
         
         
+    }
+    
+    @objc func textFieldDidEndEditing(_ textField: UITextField) {
+        if emailInput.hasText && pwdInput.hasText && nameInput.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+            doneBtn.alpha = 1.0
+            doneBtn.isEnabled = true
+        }
+        else {
+            doneBtn.alpha = 0.5
+            doneBtn.isEnabled = false
+        }
+    }
+    
+    @objc func segmentDidEndEditing(_ segment: UISegmentedControl) {
+        if emailInput.hasText && pwdInput.hasText && nameInput.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+            doneBtn.alpha = 1.0
+        }
+        else {
+            doneBtn.alpha = 0.5
+        }
     }
     
     
@@ -162,8 +187,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         segment.insertSegment(withTitle: "Male", at: 0, animated: true)
         segment.insertSegment(withTitle: "Female", at: 1, animated: true)
         segment.insertSegment(withTitle: "None", at: 2, animated: true)
+        segment.addTarget(self, action: #selector(segmentDidEndEditing), for: .editingDidEnd)
         return segment
     }()
+
 
 
     let DateOfBirthLabel: UILabel = {
@@ -177,6 +204,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         let birthDataField = UITextField()
         birthDataField.frame = CGRect(x: 0, y: 280, width: 300, height: 80)
         birthDataField.placeholder = "여기를 클릭해서 생년월일을 입력해주세요"
+        birthDataField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
 
         return birthDataField
     }()
@@ -196,7 +224,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         let toolBar: UIToolbar = UIToolbar.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 44))
         
         let space: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tapOnDoneBtn))
+        let done: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.tapOnDoneBtn))
         
         toolBar.setItems([space, done], animated: true)
         
@@ -218,8 +246,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         birthInput = writedateFormatter.string(from: picker.date)
     }
 
-    @objc func tapOnDoneBtn() {
+    @objc func tapOnDoneBtn(_ picker: UIDatePicker) {
         birthDataField.resignFirstResponder()
+        
     }
     
     let doneBtn: UIButton = {
@@ -231,6 +260,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         doneBtn.layer.cornerRadius = 8
         doneBtn.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
         doneBtn.isEnabled = false
+        doneBtn.alpha = 0.5
         return doneBtn
     }()
 
@@ -262,7 +292,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     
     @objc private func didTapSignIn() {
-        //이미 아이디 있는 경우
+        
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
@@ -281,12 +311,18 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         //중복확인 하기 전에는 레지스터 버튼이 회색, 중복확인 버튼은 파란색
         //중복확인 하고난 후에는 레지스터 버튼이 파란색, 중복확인 버튼은 회색 이었으면 좋겠다고 생각!
         //근데 기능은 색에 상관없이 적용되었슴다
+        
+        //RE: 사용자가 칸 다 채워놓고 중복확인 안했을 경우 잉 왜 버튼 투명이야 띠용 이런 경우가 많을 거 같아서
+        //    register 버튼 눌렀을 때 중복확인 하세요! 팝업을 띄우는 걸로 해봤는데 어때?!
         if(existResponse.getCode() as! Int == ServerResponse.EXIST_IS_EXIST){
             alertWithMessage(message: existResponse.getMessage())
+            
         }else if(existResponse.getCode() as! Int == ServerResponse.EXIST_NOT_EXIST){
             alertWithMessage(message: existResponse.getMessage())
+            didDupEx = true
             doneBtn.isEnabled = true
             emailInput.isEnabled = false
+            
         }else{
             alertWithMessage(message: existResponse.getMessage())
         }
@@ -302,10 +338,16 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }else{
             gender="None"
         }
-        var birth:String = birthInput ?? "00000000"
+        
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        
+        var birth:String = birthInput ?? dateFormatter.string(from: date)
         
         if(!isPwdForm(_pwd:pwdInput.text!)){
             alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
+            print(birth)
             return
         }
         if(!isPhoneForm(_phone:phoneNumberInput.text!)){
@@ -316,17 +358,23 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             alertWithMessage(message: "이름을 입력하세요.")
             return
         }
-        //생일에 대해서만 너가 조건문을 작성해주면좋겠어... 아래 작성한 함수 제대로 동작못한당...
-//        if(birthInput!.count < 1){
-//            alertWithMessage(message: "생일을 입력하세요")
-//            return
-//        }
+        //생일에 대해서만 너가 조건문을 작성해주면좋겠어... 아래 작성한 함수 제대로 동작못한당... TEST
+    
+        if(birthInput == nil){
+            alertWithMessage(message: "생일을 입력하세요.")
+            return
+        }
+        
+        if(didDupEx == false){
+            alertWithMessage(message: "이메일 중복확인을 해주세요.")
+            return
+        }
         
         
         let signUpData:SignUpData = SignUpData(_userEmail:emailInput.text!, _userPwd:pwdInput.text!, _userName:nameInput.text!, _userPhone:phoneNumberInput.text!, _userSex:gender, _userBirth:birth)
         let server:KittyDocServer = KittyDocServer()
         let signUpResponse:ServerResponse = server.userSignUp(data: signUpData)
-        
+
         if(signUpResponse.getCode() as! Int == ServerResponse.JOIN_SUCCESS){
             alertWithMessage(message: signUpResponse.getMessage())
             print(signUpResponse.getMessage())
