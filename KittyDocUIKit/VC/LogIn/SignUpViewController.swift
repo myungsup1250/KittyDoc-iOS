@@ -322,7 +322,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             didDupEx = true
             doneBtn.isEnabled = true
             emailInput.isEnabled = false
-            
+            duplicateBtn.isEnabled = false
+            emailInput.textColor = .systemGray
+            duplicateBtn.backgroundColor = .systemGray
         }else{
             alertWithMessage(message: existResponse.getMessage())
         }

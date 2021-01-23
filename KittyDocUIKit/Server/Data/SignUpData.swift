@@ -21,7 +21,7 @@ class SignUpData:ServerData{
         self.userName = _userName
         self.userPhone = _userPhone
         self.userSex = _userSex
-        self.userBirth = _userPhone
+        self.userBirth = _userBirth
     }
     
     func data() -> Data{
