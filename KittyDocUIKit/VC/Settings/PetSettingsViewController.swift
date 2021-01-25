@@ -14,6 +14,8 @@ class PetSettingsViewController: UIViewController {
         self.title = "냥이 설정"
         self.navigationItem.prompt = "냥이를 등록해주세요!"
        
+        
+        
     }
     
 

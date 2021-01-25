@@ -343,7 +343,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         
-        var birth:String = birthInput ?? dateFormatter.string(from: date)
+        let birth:String = birthInput ?? dateFormatter.string(from: date)
         
         if(!isPwdForm(_pwd:pwdInput.text!)){
             alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
