@@ -280,6 +280,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         let signUpResponse_Pet:ServerResponse = server.petSignUp(data: singUpData_Pet)
         
         if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_SUCCESS){
+            /////여기서 perform Segue하면 됩니당.
             alertWithMessage(message: signUpResponse_Pet.getMessage())
         }else if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_FAILURE){
             alertWithMessage(message: signUpResponse_Pet.getMessage())
