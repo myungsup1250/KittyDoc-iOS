@@ -14,4 +14,5 @@ protocol ServerApi{
     func userLogin(data:LoginData) -> ServerResponse;
     func userSignUp(data:SignUpData) -> ServerResponse;
     func userExist(data:ExistData) -> ServerResponse;
+    func petSignUp(data:SignUpData_Pet) -> ServerResponse;
 }

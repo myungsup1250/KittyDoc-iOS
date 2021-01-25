@@ -31,6 +31,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             weightInput = UITextField()
             weightInput.frame = CGRect(x: 0, y: 50, width: 400, height: 30)
             weightInput.placeholder = "몸무게"
+            weightInput.keyboardType = .numberPad
             return weightInput
         }()
         
@@ -121,6 +122,8 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         segment.frame = CGRect(x: 140, y: 50, width: 100, height: 30)
         segment.insertSegment(withTitle: "kg", at: 0, animated: true)
         segment.insertSegment(withTitle: "lb", at: 1, animated: true)
+        //kg단위를 디폴트로 사용
+        segment.selectedSegmentIndex = 0
         return segment
     }()
     
@@ -132,6 +135,8 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         segment.insertSegment(withTitle: "Male", at: 0, animated: true)
         segment.insertSegment(withTitle: "Female", at: 1, animated: true)
         segment.insertSegment(withTitle: "None", at: 2, animated: true)
+        //None을 디폴트로 사용
+        segment.selectedSegmentIndex = 2
         return segment
     }()
     
@@ -191,7 +196,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     @objc func tapOnDoneBtn(_ picker: UIDatePicker) {
         birthDataField.resignFirstResponder()
-        
     }
     
     let deviceLabel: UILabel = {
@@ -235,13 +239,53 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         dateFormatter.dateFormat = "yyyyMMdd"
         let birth:String = birthInput ?? dateFormatter.string(from: date)
         
-        print("등록 버튼 누름")
-        print(nameInput.text!)
         print(weightInput.text!)
-        print(weightSelect.selectedSegmentIndex) //0이면 kg, 1이면 lb, -1이면 선택안됨!
-        print(genderSelect.selectedSegmentIndex) //0이면 수, 1이면 암, 2이면 중성화..?, -1이면 선택안됨!
-        print(birth)
         
+        if(!isNameForm(_name: nameInput.text!)){
+            alertWithMessage(message: "이름을 입력해주세요")
+            return
+        }
+        
+        if(!isWeightForm(_weight:weightInput.text!)){
+            alertWithMessage(message: "몸무게를 올바르게 입력해주세요")
+            return
+        }
+        
+        var weightKG:String
+        var weightLB:String
+        if(weightSelect.selectedSegmentIndex == 0){
+            let kg:Double = floor(Double(weightInput.text!)!*100)/100
+            let lb:Double = floor((kg * 2.20462)*100)/100
+            weightKG = String(kg)
+            weightLB = String(lb)
+        }else{
+            let lb:Double = floor(Double(weightInput.text!)!*100)/100
+            let kg:Double = floor((lb * 0.45359)*100)/100
+            weightKG = String(kg)
+            weightLB = String(lb)
+        }
+        
+        var gender:String = "None"
+        if(genderSelect.selectedSegmentIndex == 0){
+            gender = "Male"
+        }else if(genderSelect.selectedSegmentIndex == 1){
+            gender = "FeMale"
+        }else{
+            gender = "Name"
+        }
+        
+        //디바이스 주소는 추후에 블루투스 기능이 구현되면 이 객체에 정보를 넣어 주어야함.
+        let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: "100", _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: "")
+        let server:KittyDocServer = KittyDocServer()
+        let signUpResponse_Pet:ServerResponse = server.petSignUp(data: singUpData_Pet)
+        
+        if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_SUCCESS){
+            alertWithMessage(message: signUpResponse_Pet.getMessage())
+        }else if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_FAILURE){
+            alertWithMessage(message: signUpResponse_Pet.getMessage())
+        }else{
+            print(signUpResponse_Pet.getMessage())
+        }
     }
     
     
@@ -250,7 +294,37 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         return true
     }
     
+    func alertWithMessage(message input: Any) {
+        let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+        self.present(alert, animated: false)
+    }
     
+    //isWeightForm은 입력받을때 키보드 타입이 number타입 키보드임을 가정
+    func isWeightForm(_weight:String) -> Bool{
+        if(_weight.count > 0){
+            let tok:[String] = _weight.components(separatedBy: ".")
+            if(tok.count > 2){
+                return false
+            }else{
+                return true
+            }
+        }else{
+            return false
+        }
+    }
     
+    func isEmailForm(_email:String) -> Bool{
+        let emailReg = "[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,50}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailReg)
+        return emailTest.evaluate(with: _email)
+    }
     
+    func isNameForm(_name:String) -> Bool{
+        if(_name.count > 0){
+            return true
+        }else{
+            return false
+        }
+    }
 }
