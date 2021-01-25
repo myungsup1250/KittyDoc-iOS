@@ -92,12 +92,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @objc func textFieldDidEndEditing(_ textField: UITextField) {
         if emailInput.hasText && pwdInput.hasText && nameInput.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
-            doneBtn.alpha = 1.0
-            doneBtn.isEnabled = true
+            doneBtn.isOn = .On
         }
+        
         else {
-            doneBtn.alpha = 0.5
-            doneBtn.isEnabled = false
+            doneBtn.isOn = .Off
         }
     }
     
@@ -251,16 +250,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    let doneBtn: UIButton = {
-        let doneBtn = UIButton()
+    let doneBtn: onOffButton = {
+        let doneBtn = onOffButton()
         doneBtn.frame = CGRect(x: 40, y: 610, width: 300, height: 50)
         doneBtn.setTitle("Register", for: .normal)
         doneBtn.setTitleColor(.white, for: .highlighted)
         doneBtn.backgroundColor = .systemBlue
         doneBtn.layer.cornerRadius = 8
         doneBtn.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
-        doneBtn.isEnabled = false
-        doneBtn.alpha = 0.5
+        doneBtn.isOn = .Off
         return doneBtn
     }()
 
@@ -345,7 +343,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         
-        var birth:String = birthInput ?? dateFormatter.string(from: date)
+        let birth:String = birthInput ?? dateFormatter.string(from: date)
         
         if(!isPwdForm(_pwd:pwdInput.text!)){
             alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")

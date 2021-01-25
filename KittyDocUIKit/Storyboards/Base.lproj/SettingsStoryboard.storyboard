@@ -39,6 +39,16 @@
                     <view key="view" contentMode="scaleToFill" id="giI-yM-sNP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l1h-7a-DGD">
+                                <rect key="frame" x="186" y="528" width="43" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="냥 추가"/>
+                                <connections>
+                                    <segue destination="Mm3-aq-mg1" kind="show" id="bIh-ML-gMP"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="ZEF-Oc-L8h"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -47,6 +57,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u6J-hp-Mqp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1961" y="491"/>
+        </scene>
+        <!--Add Pet View Controller-->
+        <scene sceneID="CbS-pM-5ak">
+            <objects>
+                <viewController id="Mm3-aq-mg1" customClass="AddPetViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hIO-kg-sDq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="XyE-Ij-edg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="STI-kS-dyn"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qzS-Zy-JaQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2730" y="491"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="G6U-44-mU2">

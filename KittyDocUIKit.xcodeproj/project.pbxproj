@@ -18,6 +18,8 @@
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
 		70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */; };
+		70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80F3825BE942600EE2666 /* onOffButton.swift */; };
+		70D80F3F25BEBBD700EE2666 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */; };
 		DFEC7E4D9AB70527B5B537F3 /* Pods_KittyDocUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */; };
 		E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E125B2C52F001484AC /* HomeViewController.swift */; };
 		E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E425B2C538001484AC /* SettingsViewController.swift */; };
@@ -70,6 +72,8 @@
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSettingsViewController.swift; sourceTree = "<group>"; };
 		70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetSettingsViewController.swift; sourceTree = "<group>"; };
+		70D80F3825BE942600EE2666 /* onOffButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onOffButton.swift; sourceTree = "<group>"; };
+		70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
 		A8A77652BAB055C4B7DD662A /* Pods-KittyDocUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.debug.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.debug.xcconfig"; sourceTree = "<group>"; };
 		E00AE1E125B2C52F001484AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E00AE1E425B2C538001484AC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				E08313E825B0ABE200266994 /* LogInViewController.swift */,
+				70D80F3825BE942600EE2666 /* onOffButton.swift */,
 				E00AE22825B2D754001484AC /* SignUpViewController.swift */,
 			);
 			path = LogIn;
@@ -187,6 +192,7 @@
 				E00AE1E425B2C538001484AC /* SettingsViewController.swift */,
 				70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */,
 				70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */,
+				70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -548,8 +554,10 @@
 				E05A7C4025B5A51A007680E2 /* MainTabBarViewController.swift in Sources */,
 				113CCDDB25BA9AB900BF70E5 /* ExistData.swift in Sources */,
 				113CCDD325BA5AA100BF70E5 /* LoginData.swift in Sources */,
+				70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,
 				E05A7CAB25B9387B007680E2 /* ActivityIndicatorView.swift in Sources */,
+				70D80F3F25BEBBD700EE2666 /* AddPetViewController.swift in Sources */,
 				E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */,
 				E00AE1E825B2C542001484AC /* AnalysisViewController.swift in Sources */,
 				70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */,
