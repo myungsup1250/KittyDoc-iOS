@@ -195,7 +195,23 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
-                //전역적으로 관리되는 UserInfo의 사용법을 모르겠음. 이곳에서 UserInfo를 초기화 하여야 다음으로 진행가능
+                let jsonString:String = loginResponse.getMessage() as! String
+                if let data = jsonString.data(using: .utf8){
+                    do{
+                        if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]{
+                            print(json["UserID"])
+                            print(json["UserEmail"])
+                            print(json["UserPwd"])
+                            print(json["UserName"])
+                            print(json["UserPhone"])
+                            print(json["UserSex"])
+                            print(json["UserBirth"])
+                        }
+                    }catch{
+                        print("JSON 파싱 에러")
+                    }
+                }
+                
             }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
                 alertWithMessage(message: loginResponse.getMessage())
                 self.emailTF.becomeFirstResponder()
