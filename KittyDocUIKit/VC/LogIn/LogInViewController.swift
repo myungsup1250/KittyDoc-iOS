@@ -11,9 +11,19 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     var userInfo: UserInfo! = UserInfo.shared
     var emailTF: UITextField!
     var pwTF: UITextField!
+    var email: String?
 
+    
+    override func viewWillLayoutSubviews() {
+        //MARK: TEST
+        if emailTF.text != "" && pwTF.text != "" {
+            self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+        } //성공했다 변수만들어서 && 묶어서 검사
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+                
+        
         
         // Do any additional setup after loading the view.
 
@@ -78,6 +88,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         textFieldSetUp()
+        if let email_test = email {
+            emailTF.text = email_test
+        }
     }
 
     let welcomeLabel: UILabel = {
@@ -166,6 +179,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signUp.modalPresentationStyle = .fullScreen
             //UIModalTransitionStyle.flipHorizontal
         present(signUp, animated: true)
+        
+        //MARK: TEMP
+        UserDefaults.standard.set(emailTF.text, forKey: "email_test")
+        UserDefaults.standard.set(pwTF.text, forKey: "pwd_test") //사실 signInBtn 눌러서 성공했다! 부분에 있어야하는데 서버 이따 해보기!
     }
     
 
@@ -195,6 +212,12 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+
+                //MARK:: TEMP ORIGIN HERE
+//                UserDefaults.standard.set(emailTF.text, forKey: "email_test")
+//                UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
+                
+
                 let jsonString:String = loginResponse.getMessage() as! String
                 if let data = jsonString.data(using: .utf8){
                     do{
@@ -211,6 +234,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                         print("JSON 파싱 에러")
                     }
                 }
+
                 
             }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
                 alertWithMessage(message: loginResponse.getMessage())
