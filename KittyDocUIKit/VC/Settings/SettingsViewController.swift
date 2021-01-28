@@ -80,6 +80,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         models.append(Section(title: "Account", options: [
             .staticCell(model: SettingsOption(title: "로그아웃", icon: UIImage(systemName: "power")!, iconBackgroundColor: .systemRed) {
+                UserDefaults.standard.removeObject(forKey: "email_test")
+                UserDefaults.standard.removeObject(forKey: "pwd_test")
                 self.performSegue(withIdentifier: "logoutSegue", sender: self)
         })
         
