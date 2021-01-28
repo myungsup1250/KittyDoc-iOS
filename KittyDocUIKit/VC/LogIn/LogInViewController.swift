@@ -188,24 +188,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
     @objc private func didTapSignIn() {
         if !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty {
-            // Attemps Log In
-            //let plist = UserDefaults.standard
-            //let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo")
-
-            let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwTF.text!)
-            let server:KittyDocServer = KittyDocServer()
-            let loginResponse:ServerResponse = server.userLogin(data: loginData)
-            
-            print("loginResponse")
-            print(loginResponse.getCode())
-            
-            //loginResponse: 로그인 성공시 회원 정보를 message에 담아 리턴
-            //로그인 실패 시 '존재하지 않는 계정입니다!' 등, 문자열이 message에 담겨있음.
-            //그 메세지를 이용해도 되고, 상황에 맞게 원하는 문자열을 사용해서 Toast를 띄우면 좋을듯. --- O
-            //가능하다면 실패 시에 잘못 입력한 뷰로 focus를 주는 기능이 들어가는게 좋을듯. --- O
-            //회원가입 화면에 보면, UserInfo를 회원가입 성공시 초기화 한다는 주석이 있는데 아닌것 같음.
-            //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까! OOOK!
-            //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯 ---- LATER
             if(!isEmailForm(_email:emailTF.text!)){
                 alertWithMessage(message: "올바른 이메일 형식이 아닙니다!")
                 return
@@ -214,24 +196,53 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 alertWithMessage(message: "비밀번호를 입력해주세요!")
                 return
             }
+            // Attemps Log In
+            //let plist = UserDefaults.standard
+            //let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo")
+
+            let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwTF.text!)
+            let server:KittyDocServer = KittyDocServer()
+            let loginResponse:ServerResponse = server.userLogin(data: loginData)
+            
+            //가능하다면 실패 시에 잘못 입력한 뷰로 focus를 주는 기능이 들어가는게 좋을듯. --- O
+            //회원가입 화면에 보면, UserInfo를 회원가입 성공시 초기화 한다는 주석이 있는데 아닌것 같음.
+            //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까! OOOK!
+            //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯 ---- LATER
             
             
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+
                 //MARK:: TEMP ORIGIN HERE
 //                UserDefaults.standard.set(emailTF.text, forKey: "email_test")
 //                UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
                 
+
+                let jsonString:String = loginResponse.getMessage() as! String
+                if let data = jsonString.data(using: .utf8){
+                    do{
+                        if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]{
+                            print(json["UserID"])
+                            print(json["UserEmail"])
+                            print(json["UserPwd"])
+                            print(json["UserName"])
+                            print(json["UserPhone"])
+                            print(json["UserSex"])
+                            print(json["UserBirth"])
+                        }
+                    }catch{
+                        print("JSON 파싱 에러")
+                    }
+                }
+
                 
             }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
                 alertWithMessage(message: loginResponse.getMessage())
                 self.emailTF.becomeFirstResponder()
-
             }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_PWD){
                 print(loginResponse.getMessage())
                 self.pwTF.becomeFirstResponder()
                 alertWithMessage(message: loginResponse.getMessage())
-                
             }else{
                 print(loginResponse.getMessage())
             }

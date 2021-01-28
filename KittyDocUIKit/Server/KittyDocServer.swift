@@ -55,5 +55,11 @@ class KittyDocServer:ServerApi{
         return doRequestTask(url: url, data: data)
     }
     
+    func petSignUp(data: SignUpData_Pet) -> ServerResponse {
+        //URL setting
+        let url = URL(string:(baseUrl + port + "/pet/join"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
     init(){}
 }
