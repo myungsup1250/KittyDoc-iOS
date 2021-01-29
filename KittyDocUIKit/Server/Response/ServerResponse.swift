@@ -18,6 +18,8 @@ class ServerResponse{
     public static let EXIST_NOT_EXIST:Int = 301
     public static let EDIT_SUCCESS:Int = 400
     public static let EDIT_FAILURE:Int = 401
+    public static let FIND_SUCCESS:Int = 500
+    public static let FIND_FAILURE:Int = 501
     
     public var code:Any
     public var message:Any

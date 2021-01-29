@@ -61,5 +61,11 @@ class KittyDocServer:ServerApi{
         return doRequestTask(url: url, data: data)
     }
     
+    func petFind(data: FindData_Pet) -> ServerResponse {
+        //URL setting
+        let url = URL(string:(baseUrl + port + "/pet/find"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
     init(){}
 }

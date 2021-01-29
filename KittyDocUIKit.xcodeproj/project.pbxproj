@@ -15,6 +15,8 @@
 		113CCDD725BA8C5600BF70E5 /* SignUpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDD625BA8C5600BF70E5 /* SignUpData.swift */; };
 		113CCDDB25BA9AB900BF70E5 /* ExistData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDDA25BA9AB900BF70E5 /* ExistData.swift */; };
 		113CCDDF25BEFECB00BF70E5 /* SignUpData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDDE25BEFECB00BF70E5 /* SignUpData_Pet.swift */; };
+		113CCDE825C41DAD00BF70E5 /* FindData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */; };
+		113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDEA25C42F5700BF70E5 /* PetInfo.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
@@ -69,6 +71,8 @@
 		113CCDD625BA8C5600BF70E5 /* SignUpData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData.swift; sourceTree = "<group>"; };
 		113CCDDA25BA9AB900BF70E5 /* ExistData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistData.swift; sourceTree = "<group>"; };
 		113CCDDE25BEFECB00BF70E5 /* SignUpData_Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpData_Pet.swift; sourceTree = "<group>"; };
+		113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindData_Pet.swift; sourceTree = "<group>"; };
+		113CCDEA25C42F5700BF70E5 /* PetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfo.swift; sourceTree = "<group>"; };
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -167,6 +171,7 @@
 				113CCDD625BA8C5600BF70E5 /* SignUpData.swift */,
 				113CCDDA25BA9AB900BF70E5 /* ExistData.swift */,
 				113CCDDE25BEFECB00BF70E5 /* SignUpData_Pet.swift */,
+				113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				E083140F25B0B39C00266994 /* Scenes */,
 				70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */,
 				70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */,
+				113CCDEA25C42F5700BF70E5 /* PetInfo.swift */,
 			);
 			path = KittyDocUIKit;
 			sourceTree = "<group>";
@@ -544,6 +550,7 @@
 				E00AE25625B45101001484AC /* LogInView.swift in Sources */,
 				113CCDD725BA8C5600BF70E5 /* SignUpData.swift in Sources */,
 				E00AE1EB25B2C550001484AC /* CalendarViewController.swift in Sources */,
+				113CCDE825C41DAD00BF70E5 /* FindData_Pet.swift in Sources */,
 				E05A7C4C25B5AC31007680E2 /* UIColorExtension.swift in Sources */,
 				E05A7CA825B9387B007680E2 /* SyncCmd.swift in Sources */,
 				E05A7CA625B9387B007680E2 /* DeviceManager.swift in Sources */,
@@ -573,6 +580,7 @@
 				E05A7CA925B9387B007680E2 /* PeripheralUUID.swift in Sources */,
 				70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
+				113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */,
 				70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */,
 				E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */,
 				E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */,
