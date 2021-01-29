@@ -9,14 +9,14 @@ import Foundation
 
 class SignUpData_Pet:ServerData{
     var petName:String
-    var ownerId:String
+    var ownerId:Int
     var petKG:String
     var petLB:String
     var petSex:String
     var petBirth:String
     var device:String
     
-    init(_petName:String, _ownerId:String, _petKG:String, _petLB:String, _petSex:String,
+    init(_petName:String, _ownerId:Int, _petKG:String, _petLB:String, _petSex:String,
          _petBirth:String, _device:String){
         self.petName = _petName
         self.ownerId = _ownerId
@@ -29,7 +29,7 @@ class SignUpData_Pet:ServerData{
     
     func data() -> Data{
         let data:String = "petName" + "=" + petName
-            + "&" + "ownerId" + "=" + ownerId
+            + "&" + "ownerId" + "=" + String(ownerId)
             + "&" + "petKG" + "=" + petKG
             + "&" + "petLB" + "=" + petLB
             + "&" + "petSex" + "=" + petSex

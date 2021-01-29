@@ -154,9 +154,13 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         let birthDataField = UITextField()
         birthDataField.frame = CGRect(x: 0, y: 190, width: 300, height: 80)
         birthDataField.placeholder = "여기를 클릭해서 생년월일을 입력해주세요"
-        // birthDataField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        birthDataField.addTarget(self, action: #selector(initBirth), for: .editingDidBegin)
         return birthDataField
     }()
+    
+    @objc func initBirth() {
+       //text 오늘 날짜로 바꿔주기
+    }
     
     
     func setUpdatePicker() -> UIDatePicker {
@@ -274,14 +278,25 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             gender = "Name"
         }
         
+        
+        //MARK: TEST
+        print("!!!!!!")
+        print(UserInfo.shared.UserID)
+        
+        
+        
         //디바이스 주소는 추후에 블루투스 기능이 구현되면 이 객체에 정보를 넣어 주어야함.
-        let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: "100", _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: "")
+        let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: UserInfo.shared.UserID, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: "")
         let server:KittyDocServer = KittyDocServer()
         let signUpResponse_Pet:ServerResponse = server.petSignUp(data: singUpData_Pet)
         
         if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_SUCCESS){
-            /////여기서 perform Segue하면 됩니당.
+            /////여기서 perform Segue하면 됩니당. OK
+            self.navigationController?.popViewController(animated: true)
+            
+            
             alertWithMessage(message: signUpResponse_Pet.getMessage())
+            
         }else if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_FAILURE){
             alertWithMessage(message: signUpResponse_Pet.getMessage())
         }else{

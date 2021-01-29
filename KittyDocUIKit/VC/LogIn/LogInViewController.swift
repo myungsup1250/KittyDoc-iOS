@@ -8,22 +8,22 @@
 import UIKit
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
-    var userInfo: UserInfo! = UserInfo.shared
+    var userInfo: UserInfo = UserInfo.shared
     var emailTF: UITextField!
     var pwTF: UITextField!
     var email: String?
+    var pw: String?
 
     
     override func viewWillLayoutSubviews() {
-        //MARK: TEST
-        if emailTF.text != "" && pwTF.text != "" {
-            self.performSegue(withIdentifier: "LogInSegue", sender: nil)
-        } //성공했다 변수만들어서 && 묶어서 검사
+        
+        
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        
+    
         
         // Do any additional setup after loading the view.
 
@@ -84,13 +84,31 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        textFieldSetUp()
+        
+        email = UserDefaults.standard.string(forKey: "email_test")
+        pw = UserDefaults.standard.string(forKey: "pwd_test")
+        
         if let email_test = email {
             emailTF.text = email_test
         }
+        
+        if let pw_test = pw {
+            pwTF.text = pw_test
+        }
+        
+        if emailTF.text != "" && pwTF.text != "" {
+            self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+        }
+        
+        didTapSignIn()
+        
+        textFieldSetUp()
+        
     }
 
     let welcomeLabel: UILabel = {
@@ -180,9 +198,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             //UIModalTransitionStyle.flipHorizontal
         present(signUp, animated: true)
         
-        //MARK: TEMP
-        UserDefaults.standard.set(emailTF.text, forKey: "email_test")
-        UserDefaults.standard.set(pwTF.text, forKey: "pwd_test") //사실 signInBtn 눌러서 성공했다! 부분에 있어야하는데 서버 이따 해보기!
+
     }
     
 
@@ -197,9 +213,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 return
             }
             // Attemps Log In
-            //let plist = UserDefaults.standard
+//            let plist = UserDefaults.standard
             //let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo")
-
+            
+            
             let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwTF.text!)
             let server:KittyDocServer = KittyDocServer()
             let loginResponse:ServerResponse = server.userLogin(data: loginData)
@@ -213,24 +230,25 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
 
-                //MARK:: TEMP ORIGIN HERE
-//                UserDefaults.standard.set(emailTF.text, forKey: "email_test")
-//                UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
+                //MARK: TEMP ORIGIN HERE
+                UserDefaults.standard.set(emailTF.text, forKey: "email_test")
+                UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
                 
 
                 let jsonString:String = loginResponse.getMessage() as! String
                 if let data = jsonString.data(using: .utf8){
                     do{
                         if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]{
-                            print(json["UserID"])
-                            print(json["UserEmail"])
-                            print(json["UserPwd"])
-                            print(json["UserName"])
-                            print(json["UserPhone"])
-                            print(json["UserSex"])
-                            print(json["UserBirth"])
+                            userInfo.Email = json["UserEmail"]! as! String
+                            userInfo.Pw = json["UserPwd"]! as! String
+                            userInfo.gender = json["UserSex"] as! String
+                            userInfo.Name = json["UserName"] as! String
+                            userInfo.UserID = json["UserID"] as! Int
+                            userInfo.UserPhone = json["UserPhone"] as! String
+                            userInfo.UserBirth = json["UserBirth"] as! String
+                            print(userInfo)
                         }
-                    }catch{
+                    } catch{
                         print("JSON 파싱 에러")
                     }
                 }
@@ -290,5 +308,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    
 }
 
