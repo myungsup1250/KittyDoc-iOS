@@ -222,9 +222,9 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         scanBtn.setTitle("스캔", for: .normal)
         scanBtn.backgroundColor = .orange
         scanBtn.layer.cornerRadius = 8
+        scanBtn.addTarget(self, action: #selector(didTapScanBtn), for: .touchUpInside)
         return scanBtn
     }()
-    
     
     let doneBtn: UIButton = {
         let doneBtn = UIButton()
@@ -236,6 +236,10 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         return doneBtn
     }()
     
+    @objc func didTapScanBtn() {
+        self.performSegue(withIdentifier: "BTListViewSegue", sender: self)// 필요 시 새로운 ListViewController 생성 필요
+        // 기기 연결 이후 싱크 데이터 받아오거나, 기존 화면에 특화된 기능 수정 필요
+    }
     
     @objc func didTapDoneBtn() {
         let date = Date()

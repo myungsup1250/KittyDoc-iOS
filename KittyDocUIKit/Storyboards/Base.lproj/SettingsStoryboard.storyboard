@@ -65,6 +65,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="STI-kS-dyn"/>
+                    <connections>
+                        <segue destination="3WN-Zc-KfH" kind="show" identifier="BTListViewSegue" id="K6i-Ry-I69"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qzS-Zy-JaQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -84,7 +87,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="94g-sN-cOQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1961" y="-189"/>
+            <point key="canvasLocation" x="2729" y="-169"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Emn-fC-t1f">
@@ -105,6 +108,9 @@
             <point key="canvasLocation" x="128.98550724637681" y="117.85714285714285"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="K6i-Ry-I69"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">

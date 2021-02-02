@@ -71,17 +71,6 @@ func unixtimeToString(unixtime: time_t) -> String { // SleepDoc_Ext_Interface_Da
     return current_date_string // dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(unixtime)))
 }
 
-//- (NSString*)unixtimeToString:(time_t)unixtime
-//{
-//    NSTimeInterval _interval=unixtime;
-//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:_interval];
-//    NSDateFormatter *formatter= [[NSDateFormatter alloc] init];
-//    [formatter setLocale:[NSLocale currentLocale]];
-//    [formatter setDateFormat:@"yyyy.MM.dd HH:mm:ss"];
-//    NSString *dateString = [formatter stringFromDate:date];
-//    return dateString;
-//}
-
 // Delete if not necessary
 //    private func writeToCharacteristic(withCharacteristic characteristic: CBCharacteristic, withValue value: Data) {
 //        // Check if is has the write property
