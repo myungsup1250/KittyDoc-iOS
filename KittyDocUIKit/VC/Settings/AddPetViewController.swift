@@ -8,8 +8,7 @@
 import UIKit
 
 class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    
+    let deviceManager = DeviceManager.shared
     var nameInput: UITextField!
     var weightInput: UITextField!
     var birthInput: String?
@@ -17,7 +16,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("AddPetViewController.viewDidLoad()")
         
         let _: UITextField = {
             nameInput = UITextField()
@@ -25,7 +24,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             nameInput.placeholder = "이름"
             return nameInput
         }()
-        
         
         let _: UITextField = {
             weightInput = UITextField()
@@ -59,7 +57,19 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         view.addSubview(doneBtn)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if deviceManager.isConnected {
+            deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+        } else {
+            deviceInput.text = "디바이스가 없습니다."
+        }// ms addded. Sets 'deviceInput.text' as peripheral's uuid 21.02.03
+    }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+        // 화면 터치 시 키보드 내려가는 코드! -ms
+    }
+
     let image: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(systemName: "person.circle")
@@ -81,7 +91,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         
         return btn
     }()
-    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: false) { () in
@@ -114,9 +123,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         return petView
     }()
     
-    
-    
-    
     let weightSelect: UISegmentedControl = {
         let segment = UISegmentedControl()
         segment.frame = CGRect(x: 140, y: 50, width: 100, height: 30)
@@ -126,8 +132,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         segment.selectedSegmentIndex = 0
         return segment
     }()
-    
-    
     
     let genderSelect: UISegmentedControl = {
         let segment = UISegmentedControl()
@@ -139,8 +143,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         segment.selectedSegmentIndex = 2
         return segment
     }()
-    
-    
     
     let DateOfBirthLabel: UILabel = {
         let label = UILabel()
@@ -160,8 +162,12 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     @objc func initBirth() {
        //text 오늘 날짜로 바꿔주기
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        birthDataField.text = dateFormatter.string(from: date)
+        // 그냥 Date()로 생성자 호출 시 현재 시간으로 생성하는 것으로 기억... ms
     }
-    
     
     func setUpdatePicker() -> UIDatePicker {
         let picker: UIDatePicker = UIDatePicker.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200))
@@ -184,7 +190,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         self.birthDataField.inputAccessoryView = toolBar
         return picker
     }
-    
     
     @objc func dataChanged(_ picker: UIDatePicker) {
         
@@ -210,6 +215,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }()
     
     let deviceInput: UILabel = {
+        //var device = UILabel()
         let device = UILabel()
         device.frame = CGRect(x: 0, y: 290, width: 200, height: 50)
         device.text = "디바이스가 없습니다."
@@ -238,7 +244,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     @objc func didTapScanBtn() {
         self.performSegue(withIdentifier: "BTListViewSegue", sender: self)// 필요 시 새로운 ListViewController 생성 필요
-        // 기기 연결 이후 싱크 데이터 받아오거나, 기존 화면에 특화된 기능 수정 필요
+        // 기기 연결 이후 싱크 데이터 받아오거나, 기존 화면에 특화된 기능 수정 필요 -ms
     }
     
     @objc func didTapDoneBtn() {

@@ -20,24 +20,24 @@
 //
 //    lazy var welcomeLabel: UILabel = {
 //        let welcomeLabel = UILabel()
-//        
+//
 ////        welcomeLabel.frame = CGRect(x: 50, y: 150, width: self.frame.size.width, height: 80)
 //        welcomeLabel.text = "Welcome".localized
 //        welcomeLabel.font = welcomeLabel.font.withSize(40)
-//        
+//
 //        return welcomeLabel
 //    }()
-//    
+//
 //    lazy var guideLabel: UILabel = {
 //        let guideLabel = UILabel()
-//        
+//
 ////        guideLabel.frame = CGRect(x: 50, y: 200, width: self.frame.size.width, height: 40)
 //        guideLabel.text = "Sign in to Continue".localized
 //        guideLabel.textColor = .systemGray
-//        
+//
 //        return guideLabel
 //    }()
-//    
+//
 //    lazy var emailLabel: UILabel = {
 //        let emailLabel = UILabel()//(frame: CGRect(x: 0, y: 0, width: signInView.frame.size.width, height: 40))
 ////        emailLabel.frame = CGRect(x: 0, y: 0, width: signInView.frame.size.width, height: 40)
@@ -45,7 +45,7 @@
 //
 //        return emailLabel
 //    }()
-//    
+//
 //    lazy var emailTF: UITextField = {
 //        let emailTF = UITextField()//(frame: CGRect(x: 0, y: 40, width: signInView.frame.size.width, height: 40))
 ////        emailTF.frame = CGRect(x: 0, y: 40, width: signInView.frame.size.width, height: 40)
@@ -54,15 +54,15 @@
 //        emailTF.autocapitalizationType = .none
 //        return emailTF
 //    }()
-//    
+//
 //    lazy var pwLabel: UILabel = {
 //        let pwLabel = UILabel()//(frame: CGRect(x: 0, y: 100, width: signInView.frame.size.width, height: 40))
 ////        pswLabel.frame = CGRect(x: 0, y: 100, width: signInView.frame.size.width, height: 40)
 //        pwLabel.text = "Password"
-//        
+//
 //        return pwLabel
 //    }()
-//    
+//
 //    lazy var pwTF: UITextField = {
 //        let pwTF = UITextField()//(frame: CGRect(x: 0, y: 140, width: signInView.frame.size.width, height: 40))
 ////        pwTF.frame = CGRect(x: 0, y: 140, width: signInView.frame.size.width, height: 40)
@@ -74,7 +74,7 @@
 //
 //    lazy var logInBtn: UIButton = {
 //        let logInBtn = UIButton()//(frame: CGRect(x: self.frame.midX - 150,y: 570, width: 300, height: 50))
-//        
+//
 ////        logInBtn.frame = CGRect(x: self.frame.midX - 150,y: 570, width: 300, height: 50)
 //        logInBtn.setTitle("Sign in",for: .normal)//UIControl.State.normal
 //        logInBtn.setTitleColor(.white, for: .highlighted)
@@ -91,7 +91,7 @@
 //        askLabel.text = "Don't have an account?"
 //        return askLabel
 //    }()
-//    
+//
 //    lazy var signUpBtn: UIButton = {
 //        let signUpBtn = UIButton()//(frame: CGRect(x: 90, y: 0, width: 100, height: 50))
 //        signUpBtn.frame = CGRect(x: 90, y: 0, width: 100, height: 50)
@@ -100,26 +100,26 @@
 //
 //        return signUpBtn
 //    }()
-//    
+//
 //    var isLoading: Bool = false {
 //        didSet {
 //            isLoading ? startLoading() : finishLoading()
 //        }
 //    }
-//    
+//
 //    lazy var activityIndicator = ActivityIndicatorView(style: .medium)
 //
 //    init() {
 //        super.init(frame: .zero)
-//        
+//
 //        addSubviews()
 //        setUpConstraints()
 //    }
-//    
+//
 //    required init?(coder: NSCoder) {
 //        fatalError("init(coder:) has not been implemented")
 //    }
-//    
+//
 //    private func addSubviews() {
 //         [welcomeLabel, guideLabel, emailLabel, emailTF, pwLabel, pwTF, logInBtn, askLabel, signUpBtn]
 //            .forEach {
@@ -136,7 +136,7 @@
 //            welcomeLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -100.0),
 //            welcomeLabel.heightAnchor.constraint(equalToConstant: 100.0)
 //        ]
-//        
+//
 //        let guideLabelConstraints = [
 //            guideLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
 //            guideLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -80.0),
@@ -168,7 +168,7 @@
 //            pwLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -50.0),
 //            pwLabel.heightAnchor.constraint(equalToConstant: 30.0)
 //        ]
-//        
+//
 //        let logInBtnConstraints = [
 //            logInBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor),
 //            logInBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -30.0),
@@ -176,7 +176,7 @@
 //            logInBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -50.0),
 //            logInBtn.heightAnchor.constraint(equalToConstant: 30.0)
 //        ]
-//        
+//
 //        let askLabelConstraints = [
 //            askLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
 //            askLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -30.0),
@@ -184,7 +184,7 @@
 //            askLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -50.0),
 //            askLabel.heightAnchor.constraint(equalToConstant: 30.0)
 //        ]
-//        
+//
 //        let signUpBtnConstraints = [
 //            signUpBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor),
 //            signUpBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -30.0),
@@ -192,7 +192,7 @@
 //            signUpBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -50.0),
 //            signUpBtn.heightAnchor.constraint(equalToConstant: 30.0)
 //        ]
-//        
+//
 //        let loginConstraints = [
 //            emailTF.centerXAnchor.constraint(equalTo: self.centerXAnchor),
 //            emailTF.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -30.0),
@@ -200,7 +200,7 @@
 //            emailTF.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -50.0),
 //            emailTF.heightAnchor.constraint(equalToConstant: 30.0)
 //        ]
-//        
+//
 //        let passwordConstraints = [
 //            pwTF.topAnchor.constraint(equalTo: emailTF.bottomAnchor, constant: 10.0),
 //            pwTF.centerXAnchor.constraint(equalTo: emailTF.centerXAnchor),
@@ -232,7 +232,7 @@
 //        activityIndicator.isHidden = false
 //        activityIndicator.startAnimating()
 //    }
-//    
+//
 //    func finishLoading() {
 //        isUserInteractionEnabled = true
 //        activityIndicator.stopAnimating()

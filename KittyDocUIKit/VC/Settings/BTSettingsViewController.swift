@@ -198,7 +198,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
             let confirm = UIAlertAction(title: "OK", style: .default) { _ in
                 self.navigationController?.popViewController(animated: true)
                 self.deviceManager.getBattery()
-                self.deviceManager.startSync()
+                //self.deviceManager.startSync()
             }
 //            let confirm = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(confirm)

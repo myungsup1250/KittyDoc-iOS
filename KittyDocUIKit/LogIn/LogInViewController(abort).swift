@@ -13,12 +13,12 @@
 //    private lazy var contentView = LogInView()
 //    private let viewModel: LoginViewModel
 //    private var bindings = Set<AnyCancellable>()
-//    
+//
 //    init(viewModel: LoginViewModel = LoginViewModel()) {
 //        self.viewModel = viewModel
 //        super.init(nibName: nil, bundle: nil)
 //    }
-//    
+//
 //    required init?(coder aDecoder: NSCoder) {
 //        self.viewModel = LoginViewModel()
 //        super.init(coder: aDecoder)
@@ -26,48 +26,48 @@
 ////    required init?(coder: NSCoder) {
 ////        fatalError("init(coder:) has not been implemented")
 ////    }
-//    
+//
 //    override func loadView() {
 //        view = contentView
 //    }
-//    
+//
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
-//        
+//
 //        view.backgroundColor = .white//.darkGray // backgroundColor?
-//        
+//
 //        setUpTargets()
 //        setUpBindings()
 //    }
-//    
+//
 //    private func setUpTargets() {
 //        contentView.logInBtn.addTarget(self, action: #selector(didTapSignIn), for: UIControl.Event.touchUpInside)
 //        contentView.signUpBtn.addTarget(self, action: #selector(didTapSignUp), for: UIControl.Event.touchUpInside)
 //    }
-//    
+//
 //    private func setUpBindings() {
 //        func bindViewToViewModel() {
 //            contentView.emailTF.textPublisher
 //                .receive(on: DispatchQueue.main)
 //                .assign(to: \.email, on: viewModel)
 //                .store(in: &bindings)
-//            
+//
 //            contentView.pwTF.textPublisher
 //                .receive(on: RunLoop.main)
 //                .assign(to: \.password, on: viewModel)
 //                .store(in: &bindings)
 //        }
-//        
+//
 //        func bindViewModelToView() {
 //            viewModel.isInputValid
 //                .receive(on: RunLoop.main)
 //                .assign(to: \.isValid, on: contentView.logInBtn)
 //                .store(in: &bindings)
-//            
+//
 //            viewModel.$isLoading
 //                .assign(to: \.isLoading, on: contentView)
 //                .store(in: &bindings)
-//            
+//
 //            viewModel.validationResult
 //                .sink { completion in
 //                    switch completion {
@@ -81,22 +81,22 @@
 //                    self?.navigateToHome()
 //                }
 //                .store(in: &bindings)
-//            
+//
 //        }
-//        
+//
 //        bindViewToViewModel()
 //        bindViewModelToView()
 //    }
-//    
+//
 //    @objc private func onClick() {
 //        viewModel.validateCredentials()
 //    }
-//    
+//
 //    private func navigateToHome() {
 //        let mainTabBarViewController = MainTabBarViewController()
 //        navigationController?.pushViewController(mainTabBarViewController, animated: true)
 //    }
-//    
+//
 //    @objc private func didTapSignUp() {
 //        let vc = VC()
 ////        let storyboardName = vc.mainStoryboardName // "Main"
