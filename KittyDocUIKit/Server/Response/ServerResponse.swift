@@ -20,6 +20,8 @@ class ServerResponse{
     public static let EDIT_FAILURE:Int = 401
     public static let FIND_SUCCESS:Int = 500
     public static let FIND_FAILURE:Int = 501
+    public static let SENSOR_SUCCESS:Int = 600
+    public static let SENSOR_FAILURE:Int = 601
     
     public var code:Any
     public var message:Any

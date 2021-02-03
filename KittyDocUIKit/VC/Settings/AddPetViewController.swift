@@ -61,7 +61,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         if deviceManager.isConnected {
             deviceInput.text = deviceManager.peripheral!.identifier.uuidString
         } else {
-            deviceInput.text = "디바이스가 없습니다."
+            deviceInput.text = ""
         }// ms addded. Sets 'deviceInput.text' as peripheral's uuid 21.02.03
     }
     
@@ -218,7 +218,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         //var device = UILabel()
         let device = UILabel()
         device.frame = CGRect(x: 0, y: 290, width: 200, height: 50)
-        device.text = "디바이스가 없습니다."
+        device.text = ""
         return device
     }()
     
@@ -288,15 +288,8 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             gender = "Name"
         }
         
-        
-        //MARK: TEST
-        print("!!!!!!")
-        print(UserInfo.shared.UserID)
-        
-        
-        
         //디바이스 주소는 추후에 블루투스 기능이 구현되면 이 객체에 정보를 넣어 주어야함.
-        let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: UserInfo.shared.UserID, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: "")
+        let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: UserInfo.shared.UserID, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: deviceInput.text!)
         let server:KittyDocServer = KittyDocServer()
         let signUpResponse_Pet:ServerResponse = server.petSignUp(data: singUpData_Pet)
         

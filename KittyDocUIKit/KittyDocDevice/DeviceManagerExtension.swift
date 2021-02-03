@@ -504,6 +504,15 @@ extension DeviceManager: CBPeripheralDelegate {
                     print("┌-------------------------------------------------------------------------------------------------------------------------------------------┐")
                     print("|   s_tick   |       s_time        |   e_tick   |       s_time        |  steps  |  t_lux  | avg_lux |  avg_k  |  vct_x  |  vct_y  |  vct_z  |")
                     for i in 0...5 {
+                        let sensorData:SensorData = SensorData(_object: kittydoc_data.d[i], _petID: UserInfo.shared.UserID, _petLB: 0)
+                        let server:KittyDocServer = KittyDocServer()
+                        let sensorResponse:ServerResponse = server.sensorSend(data: sensorData)
+                        if(sensorResponse.getCode() as! Int == ServerResponse.SENSOR_SUCCESS){
+                            print(sensorResponse.getMessage())
+                        }else{
+                            print(sensorResponse.getMessage())
+                        }
+
                         //print("kittydoc_data.d[\(i)]")
                         let s_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].s_tick))
                         let e_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].e_tick))

@@ -16,4 +16,5 @@ protocol ServerApi{
     func userExist(data:ExistData) -> ServerResponse;
     func petSignUp(data:SignUpData_Pet) -> ServerResponse;
     func petFind(data:FindData_Pet) -> ServerResponse;
+    func sensorSend(data:SensorData) -> ServerResponse;
 }
