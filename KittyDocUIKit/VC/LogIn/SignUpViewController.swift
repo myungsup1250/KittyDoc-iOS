@@ -90,6 +90,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
+    }
+    
     @objc func textFieldDidEndEditing(_ textField: UITextField) {
         if emailInput.hasText && pwdInput.hasText && nameInput.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
             doneBtn.isOn = .On

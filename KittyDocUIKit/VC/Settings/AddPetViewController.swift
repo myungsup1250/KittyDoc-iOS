@@ -22,7 +22,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     var editBirth = ""
     var editDevice = ""
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("AddPetViewController.viewDidLoad()")
@@ -72,16 +71,23 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if deviceManager.isConnected {
-            deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+        let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
+        
+        if petInfo != nil {
+            if petInfo!.Device.isEmpty {
+                if deviceManager.isConnected {
+                    deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+                }
+            } else {
+                deviceInput.text = petInfo!.Device
+            }
         } else {
-            deviceInput.text = ""
-        }// ms addded. Sets 'deviceInput.text' as peripheral's uuid 21.02.03
+            
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-        // 화면 터치 시 키보드 내려가는 코드! -ms
+        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
     }
 
     let image: UIImageView = {
