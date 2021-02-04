@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum GenderType: String, CaseIterable {//, Codable {
-    case male
-    case female
-    case none
-}
+//enum GenderType: String, CaseIterable {//, Codable {
+//    case male
+//    case female
+//    case none
+//}
 
 class UserInfo {
     static let shared: UserInfo = UserInfo()

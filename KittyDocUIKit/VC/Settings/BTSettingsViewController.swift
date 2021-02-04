@@ -31,6 +31,10 @@ class BTSettingsViewController: UIViewController {
         deviceManager.delegate = self
         deviceManager.scanPeripheral()
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

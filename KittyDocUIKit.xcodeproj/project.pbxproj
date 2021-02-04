@@ -383,7 +383,6 @@
 				E05A7CA325B9387B007680E2 /* Shared */,
 				E00AE25325B44FB0001484AC /* LogIn */,
 				E00AE24E25B44E89001484AC /* Extensions */,
-				E00AE23E25B3140D001484AC /* UserInfo.swift */,
 				E00AE23925B3101A001484AC /* View Models */,
 				E00AE1ED25B2C559001484AC /* VC */,
 				E083140D25B0AD7900266994 /* Localization */,
@@ -398,6 +397,7 @@
 				E083140F25B0B39C00266994 /* Scenes */,
 				70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */,
 				70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */,
+				E00AE23E25B3140D001484AC /* UserInfo.swift */,
 				113CCDEA25C42F5700BF70E5 /* PetInfo.swift */,
 			);
 			path = KittyDocUIKit;
