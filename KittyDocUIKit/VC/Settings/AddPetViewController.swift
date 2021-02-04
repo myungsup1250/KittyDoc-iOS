@@ -88,6 +88,10 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        guard let tempID = editingPetID else {
+            return
+        }
+        
         let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
         
         if petInfo != nil {
