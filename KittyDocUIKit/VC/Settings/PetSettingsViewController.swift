@@ -114,14 +114,6 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
-            self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
-            //self.tableView.reloadData()
-            //self.tableView.reloadInputViews()
-            // reload 관련 코드 이 중 하나로 대체? -ms 21.02.04
-            completion(true)
-            
-            //여기서 서버에서 지우는 작업 해주면 될듯!
             let deleteData:DeleteData_Pet = DeleteData_Pet(_petID: PetInfo.shared.petArray[indexPath.row].PetID, _ownerID: PetInfo.shared.petArray[indexPath.row].OwnerID)
             let server:KittyDocServer = KittyDocServer()
             let deleteResponse:ServerResponse = server.petDelete(data: deleteData)
@@ -134,9 +126,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             }else{
                 print(deleteResponse.getMessage())
             }
-            
         }
-        
         action.image = UIImage(systemName: "trash")
         action.backgroundColor = .systemRed
         return action
