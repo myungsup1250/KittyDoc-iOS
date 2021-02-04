@@ -17,9 +17,11 @@
 		113CCDDF25BEFECB00BF70E5 /* SignUpData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDDE25BEFECB00BF70E5 /* SignUpData_Pet.swift */; };
 		113CCDE825C41DAD00BF70E5 /* FindData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */; };
 		113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDEA25C42F5700BF70E5 /* PetInfo.swift */; };
+		1189A0A125CAC0A0008C842F /* SensorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1189A0A025CAC0A0008C842F /* SensorData.swift */; };
+		1189A0A825CC24C2008C842F /* DeleteData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1189A0A725CC24C2008C842F /* DeleteData_Pet.swift */; };
+		1189A0AB25CC291E008C842F /* ModifyData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1189A0AA25CC291E008C842F /* ModifyData_Pet.swift */; };
 		70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */; };
 		70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70904F2525C7F473004B8C92 /* PetTableViewCell.swift */; };
-		1189A0A125CAC0A0008C842F /* SensorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1189A0A025CAC0A0008C842F /* SensorData.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
@@ -84,6 +86,8 @@
 		113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindData_Pet.swift; sourceTree = "<group>"; };
 		113CCDEA25C42F5700BF70E5 /* PetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfo.swift; sourceTree = "<group>"; };
 		1189A0A025CAC0A0008C842F /* SensorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorData.swift; sourceTree = "<group>"; };
+		1189A0A725CC24C2008C842F /* DeleteData_Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteData_Pet.swift; sourceTree = "<group>"; };
+		1189A0AA25CC291E008C842F /* ModifyData_Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData_Pet.swift; sourceTree = "<group>"; };
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingViewController.swift; sourceTree = "<group>"; };
 		70904F2525C7F473004B8C92 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
@@ -193,6 +197,8 @@
 				113CCDDE25BEFECB00BF70E5 /* SignUpData_Pet.swift */,
 				113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */,
 				1189A0A025CAC0A0008C842F /* SensorData.swift */,
+				1189A0A725CC24C2008C842F /* DeleteData_Pet.swift */,
+				1189A0AA25CC291E008C842F /* ModifyData_Pet.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -574,6 +580,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1189A0A825CC24C2008C842F /* DeleteData_Pet.swift in Sources */,
 				E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */,
 				E0BDC30A25C8717200D2524B /* PeripheralData.swift in Sources */,
 				113CCDD225BA5AA100BF70E5 /* KittyDocServer.swift in Sources */,
@@ -622,6 +629,7 @@
 				113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */,
 				70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */,
 				E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */,
+				1189A0AB25CC291E008C842F /* ModifyData_Pet.swift in Sources */,
 				E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */,
 				113CCDD125BA5AA100BF70E5 /* ServerApi.swift in Sources */,
 				E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */,

@@ -60,7 +60,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         }else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE){
             alertWithMessage(message: findResponse.getMessage())
         }
-        
+        self.tableView.reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -113,13 +113,22 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
-            self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
-            completion(true)
-            
             //여기서 서버에서 지우는 작업 해주면 될듯!
-            //indexPath.row 가 펫 번호
+            let deleteData:DeleteData_Pet = DeleteData_Pet(_petID: PetInfo.shared.petArray[indexPath.row].PetID, _ownerID: PetInfo.shared.petArray[indexPath.row].OwnerID)
+            let server:KittyDocServer = KittyDocServer()
+            let deleteResponse:ServerResponse = server.petDelete(data: deleteData)
+            
+            if(deleteResponse.getCode() as! Int == ServerResponse.PET_DELETE_SUCCESS){
+                print(deleteResponse.getMessage())
+                PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
+                self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
+                completion(true)
+            }else{
+                print(deleteResponse.getMessage())
+            }
+            
         }
+        
         action.image = UIImage(systemName: "trash")
         action.backgroundColor = .systemRed
         return action

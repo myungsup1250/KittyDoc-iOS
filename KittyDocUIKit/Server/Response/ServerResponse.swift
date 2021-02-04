@@ -22,6 +22,10 @@ class ServerResponse{
     public static let FIND_FAILURE: Int = 501
     public static let SENSOR_SUCCESS: Int = 600
     public static let SENSOR_FAILURE: Int = 601
+    public static let PET_DELETE_SUCCESS: Int = 800
+    public static let PET_DELETE_FAILURE: Int = 801
+    public static let PET_MODIFY_SUCCESS: Int = 900
+    public static let PET_MODIFY_FAILURE: Int = 901
     
     public var code: Any
     public var message: Any
