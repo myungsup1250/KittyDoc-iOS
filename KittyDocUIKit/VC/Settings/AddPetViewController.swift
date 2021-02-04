@@ -39,8 +39,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         view.addSubview(image)
         view.addSubview(imageAddBtn)
         
-        
-        
         view.addSubview(petView)
         
         
@@ -300,9 +298,9 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             
             alertWithMessage(message: signUpResponse_Pet.getMessage())
             
-        }else if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_FAILURE){
+        } else if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_FAILURE){
             alertWithMessage(message: signUpResponse_Pet.getMessage())
-        }else{
+        } else {
             print(signUpResponse_Pet.getMessage())
         }
     }
@@ -325,10 +323,10 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             let tok:[String] = _weight.components(separatedBy: ".")
             if(tok.count > 2){
                 return false
-            }else{
+            } else {
                 return true
             }
-        }else{
+        } else {
             return false
         }
     }
@@ -340,9 +338,9 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     func isNameForm(_name:String) -> Bool{
-        if(_name.count > 0){
+        if(_name.count > 0) {
             return true
-        }else{
+        } else {
             return false
         }
     }

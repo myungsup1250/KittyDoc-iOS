@@ -509,7 +509,7 @@ extension DeviceManager: CBPeripheralDelegate {
                         let sensorResponse:ServerResponse = server.sensorSend(data: sensorData)
                         if(sensorResponse.getCode() as! Int == ServerResponse.SENSOR_SUCCESS){
                             print(sensorResponse.getMessage())
-                        }else{
+                        } else {
                             print(sensorResponse.getMessage())
                         }
 
@@ -525,12 +525,6 @@ extension DeviceManager: CBPeripheralDelegate {
                         print(" \(String(format: "%07d", kittydoc_data.d[i].vector_x)) |", terminator: "")
                         print(" \(String(format: "%07d", kittydoc_data.d[i].vector_y)) |", terminator: "")
                         print(" \(String(format: "%07d", kittydoc_data.d[i].vector_z)) |")
-//                        print("    \(kittydoc_data.d[i].t_lux)    |", terminator: "")
-//                        print("     \(kittydoc_data.d[i].avg_lux)    |", terminator: "")
-//                        print("  \(kittydoc_data.d[i].avg_k)   |", terminator: "")
-//                        print("    \(kittydoc_data.d[i].vector_x)    |", terminator: "")
-//                        print("    \(kittydoc_data.d[i].vector_y)    |", terminator: "")
-//                        print("    \(kittydoc_data.d[i].vector_z)    |")
                     }
                     print("├-------------------------------------------------------------------------------------------------------------------------------------------┤")
 

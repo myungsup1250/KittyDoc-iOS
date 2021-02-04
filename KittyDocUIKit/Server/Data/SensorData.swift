@@ -12,15 +12,15 @@ class SensorData:ServerData{
     var petLB:Double
     var s_tick:Int
     var e_tick:Int
-    var steps:CShort
+    var steps:UInt16
     var t_lux:Int
-    var avg_lux:CShort
-    var avg_k:CShort
-    var vector_x:CShort
-    var vector_y:CShort
-    var vector_z:CShort
+    var avg_lux:UInt16
+    var avg_k:UInt16
+    var vector_x:UInt16
+    var vector_y:UInt16
+    var vector_z:UInt16
     
-    init(_petID:Int, _petLB:Double, _s_tick:Int, _e_tick:Int, _steps:CShort, _t_lux:Int, _avg_lux:CShort, _avg_k:CShort, _vector_x:CShort, _vector_y:CShort, _vector_z:CShort){
+    init(_petID: Int, _petLB: Double, _s_tick: Int, _e_tick: Int, _steps: UInt16, _t_lux: Int, _avg_lux: UInt16, _avg_k: UInt16, _vector_x: UInt16, _vector_y: UInt16, _vector_z: UInt16){
         self.petID = _petID
         self.petLB = _petLB
         self.s_tick = _s_tick
@@ -39,13 +39,13 @@ class SensorData:ServerData{
         self.petLB = _petLB
         self.s_tick = Int(_object.s_tick)
         self.e_tick = Int(_object.e_tick)
-        self.steps = CShort(_object.steps)
+        self.steps = UInt16(_object.steps)
         self.t_lux = Int(_object.t_lux)
-        self.avg_lux = CShort(_object.avg_lux)
-        self.avg_k = CShort(_object.avg_k)
-        self.vector_x = CShort(_object.vector_x)
-        self.vector_y = CShort(_object.vector_y)
-        self.vector_z = CShort(_object.vector_z)
+        self.avg_lux = UInt16(_object.avg_lux)
+        self.avg_k = UInt16(_object.avg_k)
+        self.vector_x = UInt16(_object.vector_x)
+        self.vector_y = UInt16(_object.vector_y)
+        self.vector_z = UInt16(_object.vector_z)
     }
     
     
