@@ -68,6 +68,23 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             weightInput.text = String(editWeight)
             birthDataField.text = editBirth
             deviceInput.text = editDevice
+            print(editGender)
+            print(editIsKg)
+            
+            if editIsKg == true {
+                weightSelect.selectedSegmentIndex = 0
+            } else {
+                weightSelect.selectedSegmentIndex = 1
+            }
+            
+            switch editGender {
+            case "Male":
+                genderSelect.selectedSegmentIndex = 0
+            case "FeMale":
+                genderSelect.selectedSegmentIndex = 1
+            default:
+                genderSelect.selectedSegmentIndex = 2
+            }
         }
     }
     
@@ -262,6 +279,11 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     @objc func didTapDoneBtn() {
+        //MARK: 펫 정보 수정
+        if isEditMode == true {
+            
+        }
+        
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
@@ -310,7 +332,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         let signUpResponse_Pet:ServerResponse = server.petSignUp(data: singUpData_Pet)
         
         if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_SUCCESS){
-            /////여기서 perform Segue하면 됩니당. OK
             self.navigationController?.popViewController(animated: true)
             
             
@@ -321,8 +342,13 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         } else {
             print(signUpResponse_Pet.getMessage())
         }
+        
+        
+        
     }
     
+    //MARK: 말했던 대로 여기다 수정하는 코드 함수만들어서 안에다 넣어주면 됨!
+    //func
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

@@ -19,7 +19,11 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         
-        ////////
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //viewWillAppear에다가 해놓으면 이 뷰가 나타나려고 할 때마다 호출됨!
         let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
         let server:KittyDocServer = KittyDocServer()
         let findResponse:ServerResponse = server.petFind(data: findData)
@@ -56,6 +60,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         }else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE){
             alertWithMessage(message: findResponse.getMessage())
         }
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -113,7 +118,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             completion(true)
             
             //여기서 서버에서 지우는 작업 해주면 될듯!
-            
+            //indexPath.row 가 펫 번호
         }
         action.image = UIImage(systemName: "trash")
         action.backgroundColor = .systemRed
@@ -123,7 +128,6 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     func editAction(at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Edit") { (action, view, completion) in
             print("수정클릭됨")
-            //MARK: 펫 정보 수정
             guard let vc = self.storyboard?.instantiateViewController(identifier: "PetSetting") as? AddPetViewController else {
                 return
             }
@@ -136,9 +140,9 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             vc.editIsKg = PetInfo.shared.petArray[indexPath.row].IsKG
             vc.editGender = PetInfo.shared.petArray[indexPath.row].PetSex
             //if문으로?
-            vc.editingPetID = indexPath.row
+            vc.editingPetID = indexPath.row //이게 편집하는 펫 번호
             vc.isEditMode = true
-            
+            vc.doneBtn.setTitle("수정", for: .normal)
             self.present(vc, animated: true)
         }
         
