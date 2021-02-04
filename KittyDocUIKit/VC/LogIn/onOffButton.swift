@@ -32,7 +32,6 @@ class onOffButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func setting() {
         switch isOn {
         case .On:

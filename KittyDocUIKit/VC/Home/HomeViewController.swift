@@ -8,8 +8,6 @@
 import UIKit
 
 class HomeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-    
-
     //var PetArray: [PetInfo] = []
     
     override func viewDidLoad() {
@@ -24,7 +22,10 @@ class HomeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         view.addSubview(WaterBtn)
     }
     
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
+    }
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         1
     }

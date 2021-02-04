@@ -9,7 +9,6 @@ import UIKit
 
 class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "냥이 설정"
@@ -18,8 +17,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        
+                
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +55,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                     print("JSON 파싱 에러")
                 }
             }
-        }else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE){
+        } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
             alertWithMessage(message: findResponse.getMessage())
         }
         
@@ -68,7 +66,10 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.frame = view.bounds
     }
     
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
+    }
+
     private let tableView: UITableView = {
         let table = UITableView()
         table.register(PetTableViewCell.self, forCellReuseIdentifier: PetTableViewCell.identifier)
@@ -115,6 +116,9 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
             PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
             self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
+            //self.tableView.reloadData()
+            //self.tableView.reloadInputViews()
+            // reload 관련 코드 이 중 하나로 대체? -ms 21.02.04
             completion(true)
             
             //여기서 서버에서 지우는 작업 해주면 될듯!
