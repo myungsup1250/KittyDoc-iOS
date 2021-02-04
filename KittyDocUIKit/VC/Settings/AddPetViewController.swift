@@ -12,6 +12,15 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     var nameInput: UITextField!
     var weightInput: UITextField!
     var birthInput: String?
+    var isEditMode: Bool?
+    var editingPetID: Int? //맘대로 바꿔도 됨
+    
+    var editName = ""
+    var editWeight = 0.0
+    var editIsKg = true
+    var editGender = ""
+    var editBirth = ""
+    var editDevice = ""
     
     
     override func viewDidLoad() {
@@ -53,6 +62,13 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         petView.addSubview(scanBtn)
         
         view.addSubview(doneBtn)
+
+        if isEditMode == true {
+            nameInput.text = editName
+            weightInput.text = String(editWeight)
+            birthDataField.text = editBirth
+            deviceInput.text = editDevice
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -283,8 +299,10 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         }else if(genderSelect.selectedSegmentIndex == 1){
             gender = "FeMale"
         }else{
-            gender = "Name"
+            gender = "None"
         }
+        
+        
         
         //디바이스 주소는 추후에 블루투스 기능이 구현되면 이 객체에 정보를 넣어 주어야함.
         let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: UserInfo.shared.UserID, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: deviceInput.text!)

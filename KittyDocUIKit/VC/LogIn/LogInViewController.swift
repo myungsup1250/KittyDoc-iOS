@@ -103,9 +103,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         
         if emailTF.text != "" && pwTF.text != "" {
             self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+            didTapSignIn()
         }
         
-        didTapSignIn()
+        
         
         textFieldSetUp()
         

@@ -14,7 +14,7 @@ enum GenderType: String, CaseIterable {//, Codable {
 }
 
 class UserInfo {
-    static let shared: UserInfo = UserInfo() // let Email = UserInfo.shared.Email
+    static let shared: UserInfo = UserInfo()
     
     var loggedInPrev: Bool// = false // 여기서 관리?
     var wantsRememberEmail: Bool// = false

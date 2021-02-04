@@ -25,6 +25,7 @@
                         <segue destination="3WN-Zc-KfH" kind="show" identifier="BTSettingsSegue" id="K28-FX-LWX"/>
                         <segue destination="S5t-Om-3Pb" kind="show" identifier="PetSettingsSegue" id="2fn-Cm-ife"/>
                         <segue destination="UoU-MN-wde" kind="unwind" identifier="logoutSegue" unwindAction="logout:" id="9ub-3G-CnS"/>
+                        <segue destination="DwX-f7-NFa" kind="show" identifier="UserInfoSegue" id="pmn-c1-daC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AqY-3y-9db" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -54,10 +55,26 @@
             </objects>
             <point key="canvasLocation" x="1961" y="491"/>
         </scene>
+        <!--User Info Setting View Controller-->
+        <scene sceneID="Hbi-eT-KLR">
+            <objects>
+                <viewController id="DwX-f7-NFa" customClass="UserInfoSettingViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tQ5-KW-OYs">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="RYH-qz-pAp"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Ihs-CF-HhT"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="exd-zT-Ibg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1961" y="1169"/>
+        </scene>
         <!--Add Pet View Controller-->
         <scene sceneID="CbS-pM-5ak">
             <objects>
-                <viewController id="Mm3-aq-mg1" customClass="AddPetViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PetSetting" id="Mm3-aq-mg1" customClass="AddPetViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hIO-kg-sDq">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
