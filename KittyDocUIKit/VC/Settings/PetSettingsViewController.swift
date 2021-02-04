@@ -9,14 +9,13 @@ import UIKit
 
 class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var PetArray:[PetInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "냥이 설정"
         self.navigationItem.prompt = "냥이를 등록해주세요!"
         view.addSubview(tableView)
-        tableView.frame = view.bounds
+        
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -28,7 +27,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS){
             let jsonString:String = findResponse.getMessage() as! String
             if let arrData = jsonString.data(using: .utf8){
-                do{
+                do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject]{
                         for i in 0..<jsonArray.count{
                             let petInfo:PetInfo = PetInfo()
@@ -37,14 +36,17 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                             petInfo.OwnerID = jsonArray[i]["OwnerID"] as! Int
                             //petkg과 petlb를 서버에서 string으로 다루고 있는 오류가 있어서, 추후에 그부분이 수정되면
                             //이곳도 수정필요!
-                            //petInfo.PetKG = jsonArray[i]["PetKG"] as! Double
-                            //petInfo.PetLB = jsonArray[i]["PetLB"] as! Double
-                            petInfo.PetKG = 0
-                            petInfo.PetLB = 0
+                            petInfo.PetKG = jsonArray[i]["PetKG"] as! Double
+                            petInfo.PetLB = jsonArray[i]["PetLB"] as! Double
                             petInfo.PetSex = jsonArray[i]["PetSex"] as! String
                             petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
                             petInfo.Device = jsonArray[i]["Device"] as! String
-                            PetArray.append(petInfo)
+                            
+                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
+                                return original.PetName == petInfo.PetName
+                            }) {
+                                PetInfo.shared.petArray.append(petInfo)
+                            }
                         }
                     }
                 } catch{
@@ -56,17 +58,95 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.frame = view.bounds
+    }
+    
     
     private let tableView: UITableView = {
         let table = UITableView()
+        table.register(PetTableViewCell.self, forCellReuseIdentifier: PetTableViewCell.identifier)
         return table
     }()
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //MARK: count
-        return 10
+        return PetInfo.shared.petArray.count
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //MARK: 배열 넘기고가~!!~
+        //RE: 펫 등록 화면 실행될때 이 함수는 되게 여러번 호출이 되어서 한번 호출되는 viewDidLoad에서 진행할게!
+        let row = PetInfo.shared.petArray[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: PetTableViewCell.identifier, for: indexPath) as! PetTableViewCell
+        
+        cell.petNameLabel.text = row.PetName
+        cell.petDetailLabel.text = "\(row.PetSex)   \(row.PetKG)kg    \(row.PetBirth) 생일"
+        
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        NSLog("선택된 행은 \(indexPath.row)번째 행 입니다.")
+    }
+    
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let delete = deleteAction(at: indexPath)
+        let edit = editAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete, edit])
+    }
+    
+    
+    func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
+            self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
+            completion(true)
+            
+            //여기서 서버에서 지우는 작업 해주면 될듯!
+            
+        }
+        action.image = UIImage(systemName: "trash")
+        action.backgroundColor = .systemRed
+        return action
+    }
+    
+    func editAction(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Edit") { (action, view, completion) in
+            print("수정클릭됨")
+            //MARK: 펫 정보 수정
+            guard let vc = self.storyboard?.instantiateViewController(identifier: "PetSetting") as? AddPetViewController else {
+                return
+            }
+        
+            //뷰컨 인스턴스화해서 값 넘겨주고 확인누르면 그 객체에 정보가 들어가야 하는디 isEditMode 를 false true로 조절
+            //이 펫 번호는 indexPath.row 이다
+            vc.editName = PetInfo.shared.petArray[indexPath.row].PetName
+            vc.editWeight = PetInfo.shared.petArray[indexPath.row].PetKG
+            vc.editBirth = PetInfo.shared.petArray[indexPath.row].PetBirth
+            vc.editIsKg = PetInfo.shared.petArray[indexPath.row].IsKG
+            vc.editGender = PetInfo.shared.petArray[indexPath.row].PetSex
+            //if문으로?
+            vc.editingPetID = indexPath.row
+            vc.isEditMode = true
+            
+            self.present(vc, animated: true)
+        }
+        
+        action.image = UIImage(systemName: "square.and.pencil")
+        action.backgroundColor = .systemBlue
+        return action
+    }
+    
     
     func alertWithMessage(message input: Any) {
         let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
@@ -74,11 +154,5 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         self.present(alert, animated: false)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //MARK: 배열 넘기고가~!!~
-        //RE: 펫 등록 화면 실행될때 이 함수는 되게 여러번 호출이 되어서 한번 호출되는 viewDidLoad에서 진행할게!
-        let cell = UITableViewCell()
-        return cell
-    }
-    
+   
 }

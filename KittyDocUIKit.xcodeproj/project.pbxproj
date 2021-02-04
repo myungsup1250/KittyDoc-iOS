@@ -17,6 +17,8 @@
 		113CCDDF25BEFECB00BF70E5 /* SignUpData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDDE25BEFECB00BF70E5 /* SignUpData_Pet.swift */; };
 		113CCDE825C41DAD00BF70E5 /* FindData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */; };
 		113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDEA25C42F5700BF70E5 /* PetInfo.swift */; };
+		70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */; };
+		70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70904F2525C7F473004B8C92 /* PetTableViewCell.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
@@ -74,6 +76,8 @@
 		113CCDE725C41DAD00BF70E5 /* FindData_Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindData_Pet.swift; sourceTree = "<group>"; };
 		113CCDEA25C42F5700BF70E5 /* PetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfo.swift; sourceTree = "<group>"; };
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingViewController.swift; sourceTree = "<group>"; };
+		70904F2525C7F473004B8C92 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSettingsViewController.swift; sourceTree = "<group>"; };
@@ -200,7 +204,9 @@
 				E00AE1E425B2C538001484AC /* SettingsViewController.swift */,
 				70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */,
 				70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */,
+				70904F2525C7F473004B8C92 /* PetTableViewCell.swift */,
 				70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */,
+				70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -560,7 +566,9 @@
 				E05A7CA725B9387B007680E2 /* KittyDoc_Ext_Interface_Data_Type.swift in Sources */,
 				E05A7CA525B9387B007680E2 /* KittyDoc_10_Min_Data_Type.swift in Sources */,
 				E05A7C4625B5AB4F007680E2 /* TextFieldExtention.swift in Sources */,
+				70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */,
 				E05A7CAA25B9387B007680E2 /* ControlByte.swift in Sources */,
+				70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */,
 				E05A7C4025B5A51A007680E2 /* MainTabBarViewController.swift in Sources */,
 				113CCDDB25BA9AB900BF70E5 /* ExistData.swift in Sources */,
 				113CCDD325BA5AA100BF70E5 /* LoginData.swift in Sources */,

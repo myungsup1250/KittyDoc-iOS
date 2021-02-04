@@ -13,6 +13,15 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     var nameInput: UITextField!
     var weightInput: UITextField!
     var birthInput: String?
+    var isEditMode: Bool?
+    var editingPetID: Int? //맘대로 바꿔도 됨
+    
+    var editName = ""
+    var editWeight = 0.0
+    var editIsKg = true
+    var editGender = ""
+    var editBirth = ""
+    var editDevice = ""
     
     
     override func viewDidLoad() {
@@ -57,6 +66,13 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         petView.addSubview(scanBtn)
         
         view.addSubview(doneBtn)
+
+        if isEditMode == true {
+            nameInput.text = editName
+            weightInput.text = String(editWeight)
+            birthDataField.text = editBirth
+            deviceInput.text = editDevice
+        }
     }
     
     
@@ -275,9 +291,8 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         }else if(genderSelect.selectedSegmentIndex == 1){
             gender = "FeMale"
         }else{
-            gender = "Name"
+            gender = "None"
         }
-        
         
         //MARK: TEST
         print("!!!!!!")

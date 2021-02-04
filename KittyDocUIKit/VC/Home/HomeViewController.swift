@@ -7,19 +7,58 @@
 
 import UIKit
 
-class HomeViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class HomeViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+    
 
+    //var PetArray: [PetInfo] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Home"
         self.navigationController?.navigationBar.prefersLargeTitles = true
        
+        view.addSubview(petNameSelectTF)
         view.addSubview(image)
-        view.addSubview(imageAddBtn)
         view.addSubview(speechBubble)
         view.addSubview(talkTemp)
-        
+        view.addSubview(WaterBtn)
     }
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return PetInfo.shared.petArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return PetInfo.shared.petArray[row].PetName
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        print("value: \(PetInfo.shared.petArray[row].PetName)")
+        petNameSelectTF.text = PetInfo.shared.petArray[row].PetName
+    }
+    
+    
+    lazy var pickerView: UIPickerView = {
+       let picker = UIPickerView()
+        picker.frame = CGRect(x: 0, y: 250, width: self.view.bounds.width, height: 180)
+        picker.backgroundColor = .white
+        picker.delegate = self
+        picker.dataSource = self
+        return picker
+    }()
+    
+    
+    let petNameSelectTF: UITextField = {
+        let petNameSelectTF = UITextField()
+        petNameSelectTF.frame = CGRect(x: 150, y: 160, width: 100, height: 50)
+        petNameSelectTF.text = "왕왕이"
+        return petNameSelectTF
+    }()
     
     let image: UIImageView = {
         let image = UIImageView()
@@ -52,45 +91,22 @@ class HomeViewController: UIViewController, UIImagePickerControllerDelegate, UIN
     }()
     
     
-    let imageAddBtn: UIButton = {
-        let btn = UIButton()
-        btn.frame = CGRect(x: 200, y: 330, width: 40, height: 40)
-        btn.setBackgroundImage(UIImage(systemName: "pencil"), for: .normal)
-        btn.setTitleColor(.black, for: .normal)
-        //btn.backgroundColor =
-        btn.layer.cornerRadius = 8
-        btn.addTarget(self, action: #selector((didTapImageAddBtn)), for: .touchUpInside)
-
-        return btn
+    
+    
+    private let WaterBtn: UIButton = {
+       let WaterBtn = UIButton()
+        WaterBtn.setBackgroundImage(UIImage(systemName: "drop"), for: .normal)
+        
+        WaterBtn.frame = CGRect(x: 40, y: 600, width: 50, height: 50)
+        WaterBtn.addTarget(self, action: #selector(test), for: .touchUpInside)
+        return WaterBtn
     }()
-    
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        picker.dismiss(animated: false) { () in
-            let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-            self.image.image = img
-        }
-    }
-    
-    
-    @objc func didTapImageAddBtn() {
-        let picker = UIImagePickerController()
-        picker.allowsEditing = true
-        picker.delegate = self
-        self.present(picker, animated: false)
-    }
-       
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: false) { () in
-            
-            let alert = UIAlertController(title: "", message: "이미지 선택이 취소되었습니다.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .cancel))
-            self.present(alert, animated: false)
-            
-        }
-    }
    
+    
+    @objc func test() {
+        print(PetInfo.shared.petArray.count)
+        print(PetInfo.shared.PetName)
+    }
 
 }
 

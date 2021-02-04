@@ -66,8 +66,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         
-        models.append(Section(title: "My Information", options: [.staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange) {
-        })
+        models.append(Section(title: "My Information", options: [.staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange, handler: {
+            self.performSegue(withIdentifier: "UserInfoSegue", sender: self)
+        
+        }))
         ]))
         
         
