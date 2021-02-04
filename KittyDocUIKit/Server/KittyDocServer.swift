@@ -13,19 +13,20 @@ class KittyDocServer:ServerApi{
     var port: String =  ":3000"
     let semaphore = DispatchSemaphore(value: 0)
     
-    func doRequestTask(url:URL, data:ServerData) -> ServerResponse{
-        var request = URLRequest(url:url)
-        request.httpMethod="POST"
-        request.httpBody=data.data()
+    func doRequestTask(url: URL, data: ServerData) -> ServerResponse{
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = data.data()
         
-        var serverResponse:ServerResponse = ServerResponse()
+        let serverResponse:ServerResponse = ServerResponse()
         
-        let task = URLSession.shared.dataTask(with: request){data, response, error in guard let data = data, error == nil else{
-                    print(error?.localizedDescription ?? "No data")
-                    return
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data")
+                return
             }
             let responseJSON = try? JSONSerialization.jsonObject(with:data, options:[])
-            if let responseJSON = responseJSON as? [String: Any]{
+            if let responseJSON = responseJSON as? [String: Any] {
                 serverResponse.setCode(_code: responseJSON["code"] as! Int)
                 serverResponse.setMessage(_message: responseJSON["message"] as! String)
                 self.semaphore.signal()

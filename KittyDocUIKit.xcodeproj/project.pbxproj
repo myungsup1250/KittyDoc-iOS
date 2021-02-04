@@ -167,10 +167,10 @@
 		113CCDC825BA5AA100BF70E5 /* Server */ = {
 			isa = PBXGroup;
 			children = (
+				113CCDCD25BA5AA100BF70E5 /* Data */,
 				113CCDC925BA5AA100BF70E5 /* Response */,
 				113CCDCB25BA5AA100BF70E5 /* ServerApi.swift */,
 				113CCDCC25BA5AA100BF70E5 /* KittyDocServer.swift */,
-				113CCDCD25BA5AA100BF70E5 /* Data */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -835,6 +835,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.JMSmart.KittyDocUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -855,6 +856,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.JMSmart.KittyDocUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

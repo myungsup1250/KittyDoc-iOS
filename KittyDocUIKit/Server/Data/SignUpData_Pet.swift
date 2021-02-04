@@ -8,16 +8,16 @@
 import Foundation
 
 class SignUpData_Pet:ServerData{
-    var petName:String
-    var ownerId:Int
-    var petKG:String
-    var petLB:String
-    var petSex:String
-    var petBirth:String
-    var device:String
+    var petName: String
+    var ownerId: Int
+    var petKG: String
+    var petLB: String
+    var petSex: String
+    var petBirth: String
+    var device: String
     
-    init(_petName:String, _ownerId:Int, _petKG:String, _petLB:String, _petSex:String,
-         _petBirth:String, _device:String){
+    init(_petName: String, _ownerId: Int, _petKG: String, _petLB: String, _petSex: String,
+         _petBirth: String, _device: String){
         self.petName = _petName
         self.ownerId = _ownerId
         self.petKG = _petKG
@@ -27,8 +27,9 @@ class SignUpData_Pet:ServerData{
         self.device = _device
     }
     
+    // // // // // // // // // // // // // // // // // // // //
     func data() -> Data{
-        let data:String = "petName" + "=" + petName
+        let data: String = "petName" + "=" + petName
             + "&" + "ownerId" + "=" + String(ownerId)
             + "&" + "petKG" + "=" + petKG
             + "&" + "petLB" + "=" + petLB
@@ -37,4 +38,6 @@ class SignUpData_Pet:ServerData{
             + "&" + "device" + "=" + device
         return data.data(using: String.Encoding.utf8, allowLossyConversion: false)!
     }
+    //Mappable, Codable 적용 가능 여부 확인 필요... 21.02.04
+    // // // // // // // // // // // // // // // // // // // //
 }

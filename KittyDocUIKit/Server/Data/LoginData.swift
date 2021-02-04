@@ -8,9 +8,9 @@
 
 import Foundation
 
-class LoginData:ServerData{
-    var userEmail:String
-    var userPwd:String
+class LoginData: ServerData{
+    var userEmail: String
+    var userPwd: String
     
     init(_userEmail:String, _userPwd:String){
         self.userEmail = _userEmail
@@ -18,7 +18,7 @@ class LoginData:ServerData{
     }
     
     func data() -> Data{
-        let data:String = "userEmail" + "=" + userEmail + "&" + "userPwd" + "=" + userPwd
+        let data: String = "userEmail" + "=" + userEmail + "&" + "userPwd" + "=" + userPwd
         return data.data(using: String.Encoding.utf8, allowLossyConversion: false)!
     }
 }

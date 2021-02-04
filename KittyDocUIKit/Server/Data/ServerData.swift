@@ -8,6 +8,6 @@
 
 import Foundation
 
-protocol ServerData{
+protocol ServerData {
     func data() -> Data
 }

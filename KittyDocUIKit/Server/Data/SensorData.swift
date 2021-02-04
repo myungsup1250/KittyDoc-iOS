@@ -34,7 +34,7 @@ class SensorData:ServerData{
         self.vector_z = _vector_z
     }
     
-    init(_object:KittyDoc_10_Min_Data_Type, _petID:Int, _petLB:Double){
+    init(_object: KittyDoc_10_Min_Data_Type, _petID: Int, _petLB: Double){
         self.petID = _petID
         self.petLB = _petLB
         self.s_tick = Int(_object.s_tick)
@@ -48,8 +48,7 @@ class SensorData:ServerData{
         self.vector_z = UInt16(_object.vector_z)
     }
     
-    
-    
+    // // // // // // // // // // // // // // // // // // // //
     func data() -> Data{
         let data:String = "petID" + "=" + String(petID)
             + "&" + "petLB" + "=" + String(petLB)
@@ -64,4 +63,6 @@ class SensorData:ServerData{
             + "&" + "vector_z" + "=" + String(vector_z)
         return data.data(using: String.Encoding.utf8, allowLossyConversion: false)!
     }
+    //Mappable, Codable 적용 가능 여부 확인 필요... 21.02.04
+    // // // // // // // // // // // // // // // // // // // //
 }

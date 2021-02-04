@@ -540,7 +540,7 @@ extension DeviceManager: CBPeripheralDelegate {
                     } else if progress > 100 {
                         progress = 100
                     }
-                    print("| remainings : \(kittydoc_data.remainings), reset_num : \(kittydoc_data.reset_num), time_zone : \(kittydoc_data.time_zone), progress : \(String(format: "%03d", progress)) (\(String(format: "%06d", self.syncDataCount * 154)) / \(String(format: "%06d", totalSyncBytes)))                                                      |")
+                    print("| remainings : \(kittydoc_data.remainings), reset_num : \(kittydoc_data.reset_num), time_zone : \(kittydoc_data.time_zone), progress : \(String(format: "%03d", progress)) (\(String(format: "%06d", self.syncDataCount * 154)) / \(String(format: "%06d", totalSyncBytes)))                                                     |")
                     print("└-------------------------------------------------------------------------------------------------------------------------------------------┘")
                     guard totalSyncBytes >= 0 && (self.delegate?.onSyncProgress(progress: progress) != nil) else {
                         print("self.delegate?.onSyncProgress(:) == nil || totalSyncBytes < 0!(didUpdateValueForCharacteristic)")

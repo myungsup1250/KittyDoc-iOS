@@ -7,13 +7,13 @@
 
 import Foundation
 
-class SignUpData:ServerData{
-    var userEmail:String
-    var userPwd:String
-    var userName:String
-    var userPhone:String
-    var userSex:String
-    var userBirth:String
+class SignUpData: ServerData {
+    var userEmail: String
+    var userPwd: String
+    var userName: String
+    var userPhone: String
+    var userSex: String
+    var userBirth: String
     
     init(_userEmail:String, _userPwd:String, _userName:String, _userPhone:String, _userSex:String, _userBirth:String){
         self.userEmail = _userEmail
@@ -24,8 +24,9 @@ class SignUpData:ServerData{
         self.userBirth = _userBirth
     }
     
-    func data() -> Data{
-        let data:String = "userEmail" + "=" + userEmail
+    // // // // // // // // // // // // // // // // // // // //
+    func data() -> Data {
+        let data: String = "userEmail" + "=" + userEmail
             + "&" + "userPwd" + "=" + userPwd
             + "&" + "userName" + "=" + userName
             + "&" + "userPhone" + "=" + userPhone
@@ -33,4 +34,6 @@ class SignUpData:ServerData{
             + "&" + "userBirth" + "=" + userBirth
         return data.data(using: String.Encoding.utf8, allowLossyConversion: false)!
     }
+    //Mappable, Codable 적용 가능 여부 확인 필요... 21.02.04
+    // // // // // // // // // // // // // // // // // // // //
 }
