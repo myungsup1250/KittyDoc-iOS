@@ -108,17 +108,17 @@ public class KittyDoc_10_Min_Data_Type {
         setVector_z(vector_z_in_byte: [UInt8](data.subdata(in: Range(offset...offset+1))))
         offset += MemoryLayout<UInt16>.size // 2
         
-        print("s_tick : \(self.s_tick)")
-        print("s_tick_date : " + unixtimeToString(unixtime: time_t(self.s_tick)))
-        print("e_tick : \(self.e_tick)")
-        print("e_tick_date : " + unixtimeToString(unixtime: time_t(self.e_tick)))
-        print("steps : \(self.steps)")
-        print("t_lux : \(self.t_lux)")
-        print("avg_lux : \(self.avg_lux)")
-        print("avg_k : \(self.avg_k)")
-        print("vector_x : \(self.vector_x)")
-        print("vector_y : \(self.vector_y)")
-        print("vector_z : \(self.vector_z)")
+//        print("s_tick : \(self.s_tick)")
+//        print("s_tick_date : " + unixtimeToString(unixtime: time_t(self.s_tick)))
+//        print("e_tick : \(self.e_tick)")
+//        print("e_tick_date : " + unixtimeToString(unixtime: time_t(self.e_tick)))
+//        print("steps : \(self.steps)")
+//        print("t_lux : \(self.t_lux)")
+//        print("avg_lux : \(self.avg_lux)")
+//        print("avg_k : \(self.avg_k)")
+//        print("vector_x : \(self.vector_x)")
+//        print("vector_y : \(self.vector_y)")
+//        print("vector_z : \(self.vector_z)")
     }
     
     public func setS_tick(s_tick_in_byte: [UInt8]) {

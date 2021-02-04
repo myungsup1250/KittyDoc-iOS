@@ -30,7 +30,7 @@ class UserInfo {
     var Name: String// = "Myungsup"
     var gender: String// = GenderType.male //"male" // male / female / none
 
-    init() {
+    private init() {
 //        let plist = UserDefaults.standard
 //        let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo") // Dictionary
 //        var temp: UserInfo? = plist.object(forKey: "UserInfo") as? UserInfo // UserInfo 객체를 통채로?

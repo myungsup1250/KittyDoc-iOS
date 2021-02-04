@@ -67,5 +67,11 @@ class KittyDocServer:ServerApi{
         return doRequestTask(url: url, data: data)
     }
     
+    func sensorSend(data: SensorData) -> ServerResponse {
+        //URL setting
+        let url = URL(string:(baseUrl + port + "/sensor/send"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
     init(){}
 }

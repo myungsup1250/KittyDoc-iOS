@@ -12,22 +12,22 @@
 //    @Published var email: String = ""
 //    @Published var password: String = ""
 //    @Published var isLoading = false
-//    
+//
 //    let validationResult = PassthroughSubject<Void, Error>()
-//    
+//
 //    private(set) lazy var isInputValid = Publishers.CombineLatest($email, $password)
 //        .map { $0.count > 2 && $1.count > 2 }
 //        .eraseToAnyPublisher()
-//    
+//
 //    private let credentialsValidator: CredentialsValidatorProtocol
-//    
+//
 //    init(credentialsValidator: CredentialsValidatorProtocol = CredentialsValidator()) {
 //        self.credentialsValidator = credentialsValidator
 //    }
-//    
+//
 //    func validateCredentials() {
 //        isLoading = true
-//        
+//
 //        credentialsValidator.validateCredentials(login: email, password: password) { [weak self] result in
 //            self?.isLoading = false
 //            switch result {
