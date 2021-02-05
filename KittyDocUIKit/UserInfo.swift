@@ -25,10 +25,10 @@ class UserInfo {
     var UserID: Int
     var UserPhone: String
     var UserBirth: String
-    var Email: String// = "myungsup1250@gmail.com"
-    var Pw: String// = "ms5892"
-    var Name: String// = "Myungsup"
-    var gender: String// = GenderType.male //"male" // male / female / none
+    var Email: String
+    var Pw: String
+    var Name: String
+    var gender: String
 
     private init() {
 //        let plist = UserDefaults.standard
@@ -58,7 +58,7 @@ class UserInfo {
             wantsRememberEmail = false
             wantsAutoLogin = false
             wantsDarkTheme = false
-            massUnit = ""//"Kg"
+            massUnit = ""
             Email = ""
             Pw = ""
             Name = ""

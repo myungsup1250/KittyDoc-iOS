@@ -68,8 +68,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signInView.addSubview(pwTF)
 
         
-        userInfo.Email = "myungsup1250@gmail.com"
-        userInfo.Pw = "ms5892"
+        //userInfo.Email = "myungsup1250@gmail.com"
+        //userInfo.Pw = "ms5892"
 
         // userInfo.wantsRememberEmail = true
         // userInfo.wantsAutoLogin = true
@@ -83,9 +83,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 emailTF.text = userInfo.Email
             }
         }
-        
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,10 +103,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             didTapSignIn()
         }
         
-        
-        
         textFieldSetUp()
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -171,7 +165,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signInBtn.backgroundColor = .systemBlue
         signInBtn.layer.cornerRadius = 8
         signInBtn.addTarget(self, action: #selector((didTapSignIn)), for: .touchUpInside)
-
+        
         return signInBtn
     }()
     
@@ -192,7 +186,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signUpBtn.setTitleColor(.systemIndigo, for: .normal)
         signUpBtn.addTarget(self, action: #selector((didTapSignUp)), for: .touchUpInside)
         
-        
         return signUpBtn
     }()
         
@@ -202,13 +195,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signUp.modalPresentationStyle = .fullScreen
             //UIModalTransitionStyle.flipHorizontal
         present(signUp, animated: true)
-        
-
     }
     
 
     @objc private func didTapSignIn() {
-        if !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty {
+        if emailTF.text!.isEmpty {
+            alertWithMessage(message: "아이디를 입력해주세요!")
+        } else if pwTF.text!.isEmpty {
+            alertWithMessage(message: "비밀번호를 입력해주세요!")
+        }
+        else {
             if(!isEmailForm(_email:emailTF.text!)){
                 alertWithMessage(message: "올바른 이메일 형식이 아닙니다!")
                 return
@@ -220,7 +216,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             // Attemps Log In
 //            let plist = UserDefaults.standard
             //let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo")
-            
             
             let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwTF.text!)
             let server:KittyDocServer = KittyDocServer()
@@ -234,7 +229,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
-
                 //MARK: TEMP ORIGIN HERE
                 UserDefaults.standard.set(emailTF.text, forKey: "email_test")
                 UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
