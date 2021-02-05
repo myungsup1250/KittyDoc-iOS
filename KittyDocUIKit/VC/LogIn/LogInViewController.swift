@@ -98,12 +98,13 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             pwTF.text = pw_test
         }
         
-        if emailTF.text != "" && pwTF.text != "" {
+        if email != nil && pw != nil {
             self.performSegue(withIdentifier: "LogInSegue", sender: nil)
             didTapSignIn()
         }
         
         textFieldSetUp()
+        emailTF.becomeFirstResponder()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
