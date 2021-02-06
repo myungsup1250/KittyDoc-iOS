@@ -29,8 +29,6 @@ protocol DeviceManagerDelegate {//: NSObject {
 class DeviceManager: NSObject {
     // Declare class instance property
     public static let shared = DeviceManager()
-     // Declare an initializer
-     // Because this class is singleton only one instance of this class can be created
 
     public static let KEY_DEVICE = String("device") // NSString* KEY_DEVICE = @"device";
     public static let KEY_NAME = String("name")     // NSString* KEY_NAME = @"name";
@@ -41,22 +39,18 @@ class DeviceManager: NSObject {
     public static let COMMAND_BATTERY = String("battery")
 
     var delegate: DeviceManagerDelegate?
-//    var delegate: id // @property (strong, nonatomic) id delegate;
     var commandQueue: [String] = [String]()// 연결 후 실행할 명령 큐 // @property (strong, nonatomic) NSMutableArray *commandQueue;
-//    var foundDevices: NSMutableArray? // @property (strong, nonatomic) NSMutableArray *foundDevices;
-//    var foundDevices: Array<Any>
     var foundDevices: [PeripheralData] = [PeripheralData]()
-// ////////foundDevices: Array or NSMutableArray??????????????????????????
-
-    var peripheral: CBPeripheral?                    // @property (strong, nonatomic) CBPeripheral * _Nullable peripheral;
-    var manager: CBCentralManager?                   // @property (strong, nonatomic) CBCentralManager *manager;
-    var syncControlCharacteristic: CBCharacteristic? // @property (strong, nonatomic) CBCharacteristic *syncControlCharacteristic;
-    var syncDataCharacteristic: CBCharacteristic?    // @property (strong, nonatomic) CBCharacteristic *syncDataCharacteristic;
-    var sysCmdCharacteristic: CBCharacteristic?      // @property (strong, nonatomic) CBCharacteristic *sysCmdCharacteristic;
-    var batteryCharacteristic: CBCharacteristic?     // @property (strong, nonatomic) CBCharacteristic *batteryCharacteristic;
-    var firmwareVersion: String = ""                 // @property (strong, nonatomic) NSString *firmwareVersion;
-    private var _batteryLevel: Int = -1              // @property (nonatomic) int batteryLevel; // in percent (0~100)
-    public var batteryLevel: Int {                   // batteryLevel : { [0, 100] : normal state } + {-1 : initial state(not set)}
+    
+    var peripheral: CBPeripheral?
+    var manager: CBCentralManager?
+    var syncControlCharacteristic: CBCharacteristic?
+    var syncDataCharacteristic: CBCharacteristic?
+    var sysCmdCharacteristic: CBCharacteristic?
+    var batteryCharacteristic: CBCharacteristic?
+    var firmwareVersion: String = ""
+    private var _batteryLevel: Int = -1
+    public var batteryLevel: Int { // batteryLevel : { [0, 100] : normal state } + {-1 : initial state(not set)}
         get {
             return self._batteryLevel
         }
@@ -72,8 +66,17 @@ class DeviceManager: NSObject {
         }
     }
 
+//    @implementation DeviceManager
+//    {
+//        long maxRSSI;
+//        BOOL isConnected;
+//        BOOL isSyncServiceFound;
+//        BOOL isRequiredServicesFound; // 필요 서비스들 모두 찾아서 준비가 다 됐는지
+//        NSMutableData *syncData;
+//        UInt32 totalSyncBytes;  // 동기화할 전체 바이트수
+//        BOOL isScanningDfuTarg;
+//    }
     var maxRSSI : Int32 = 0
-    
     private var _isConnected : Bool = false
     private var _isSyncServiceFound : Bool = false
     private var _isRequiredServicesFound : Bool  = false// 필요 서비스들 모두 찾았는가?
@@ -122,20 +125,6 @@ class DeviceManager: NSObject {
 //    public var totalSyncBytesLeft: Int = 0// 앞으로 동기화할 남은 바이트수
     // 21.01.31 totalSyncBytes => totalSyncBytesLeft 용도 변경?
 
-//    @implementation DeviceManager
-//    {
-//        long maxRSSI;
-//        BOOL isConnected;
-//        BOOL isSyncServiceFound;
-//        BOOL isRequiredServicesFound; // 필요 서비스들 모두 찾아서 준비가 다 됐는지
-//        NSMutableData *syncData;
-//        UInt32 totalSyncBytes;  // 동기화할 전체 바이트수
-//        BOOL isScanningDfuTarg;
-//    }
-
-//    static DeviceManager *_sharedInstance = nil;
-//    static dispatch_once_t pred; // delegate method 중복호출 방지
-    
     private override init() {
 //        super.init()
         print("DeviceManager.init()")
@@ -273,9 +262,9 @@ class DeviceManager: NSObject {
         
         //pred = 0// static dispatch_once_t pred; // delegate method 중복호출 방지
         self.resetCharacteristics()
-//        let centralQueue: DispatchQueue = DispatchQueue(label: "devicemanager")
-//        self.manager = CBCentralManager(delegate: self, queue: centralQueue)
-        self.manager = CBCentralManager(delegate: self, queue: nil)//DispatchQueue.main
+        let centralQueue: DispatchQueue = DispatchQueue(label: "devicemanager")
+        self.manager = CBCentralManager(delegate: self, queue: centralQueue)
+//        self.manager = CBCentralManager(delegate: self, queue: nil)//DispatchQueue.main
     }
 
     func scanPeripheral() { // KittyDoc 서비스를 가진 장비를 스캔
@@ -313,12 +302,10 @@ class DeviceManager: NSObject {
                     self.foundDevices.removeAll()
                     self.foundDevices.append(contentsOf: kittydocDevices) // [self.foundDevices addObjectsFromArray:puppydocDevices];
                     self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
-//                        return obj1.rssi < obj2.rssi // 신호 약한 것이 앞으로...
+                        //return obj1.rssi < obj2.rssi // 신호 약한 것이 앞으로...
                         return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
                     }
-                    // Sort 결과 확인
-                    //print("kittydocDevices : \(kittydocDevices)")
-                    print("foundDevices : \(self.foundDevices)")
+                    //print("foundDevices : \(self.foundDevices)")
                     guard self.delegate?.onDevicesFound(peripherals: self.foundDevices) != nil else {
                         print("self.delegate?.onDevicesFound(:) == nil!(scanPeripheral)")
                         return

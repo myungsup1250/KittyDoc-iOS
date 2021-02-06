@@ -109,9 +109,12 @@ extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
-        
+        print("You've selected \(indexPath.row)th Row!")
+        print("uuid : \(peripheralData.peripheral!.identifier.uuidString)")
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    
 }
 
 extension BTSettingsViewController: DeviceManagerDelegate {

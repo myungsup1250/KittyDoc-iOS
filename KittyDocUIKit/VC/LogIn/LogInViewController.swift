@@ -24,10 +24,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         print("LogInViewController.viewDidLoad()")
 
-    
-        
-        // Do any additional setup after loading the view.
-
         let _: UITextField = {
             emailTF = UITextField(frame: CGRect(x: 0, y: 40, width: 320, height: 40))
             emailTF.placeholder = "kittydoc@jmsmart.co.kr"

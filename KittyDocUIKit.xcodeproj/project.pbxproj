@@ -224,12 +224,9 @@
 		70D80EB025B926EF00EE2666 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				E091CEF825CED72700A3DE73 /* PetSettings */,
+				E091CEF725CED71000A3DE73 /* BTSettings */,
 				E00AE1E425B2C538001484AC /* SettingsViewController.swift */,
-				70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */,
-				E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */,
-				70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */,
-				70904F2525C7F473004B8C92 /* PetTableViewCell.swift */,
-				70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */,
 				70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */,
 			);
 			path = Settings;
@@ -378,6 +375,7 @@
 		E08313E325B0ABE200266994 /* KittyDocUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				E091CEF925CED73B00A3DE73 /* Global */,
 				113CCDC825BA5AA100BF70E5 /* Server */,
 				E05A7C9B25B9387B007680E2 /* KittyDocDevice */,
 				E05A7CA325B9387B007680E2 /* Shared */,
@@ -397,8 +395,6 @@
 				E083140F25B0B39C00266994 /* Scenes */,
 				70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */,
 				70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */,
-				E00AE23E25B3140D001484AC /* UserInfo.swift */,
-				113CCDEA25C42F5700BF70E5 /* PetInfo.swift */,
 			);
 			path = KittyDocUIKit;
 			sourceTree = "<group>";
@@ -448,6 +444,34 @@
 			children = (
 			);
 			path = SettingScene;
+			sourceTree = "<group>";
+		};
+		E091CEF725CED71000A3DE73 /* BTSettings */ = {
+			isa = PBXGroup;
+			children = (
+				70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */,
+				E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */,
+			);
+			path = BTSettings;
+			sourceTree = "<group>";
+		};
+		E091CEF825CED72700A3DE73 /* PetSettings */ = {
+			isa = PBXGroup;
+			children = (
+				70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */,
+				70904F2525C7F473004B8C92 /* PetTableViewCell.swift */,
+				70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */,
+			);
+			path = PetSettings;
+			sourceTree = "<group>";
+		};
+		E091CEF925CED73B00A3DE73 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				E00AE23E25B3140D001484AC /* UserInfo.swift */,
+				113CCDEA25C42F5700BF70E5 /* PetInfo.swift */,
+			);
+			path = Global;
 			sourceTree = "<group>";
 		};
 		EBBB8371894849EE37AE282E /* Frameworks */ = {

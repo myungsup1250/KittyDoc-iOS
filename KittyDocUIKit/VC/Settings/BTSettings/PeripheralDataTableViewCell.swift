@@ -115,7 +115,7 @@ class PeripheralDataTableViewCell: UITableViewCell {
             .isActive = true
         deviceName.heightAnchor.constraint(equalToConstant: 20)
             .isActive = true
-//        deviceImg.widthAnchor.constraint(equalToConstant: 20)
+//        deviceName.widthAnchor.constraint(equalToConstant: 20)
 //            .isActive = true
 
         rssiLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -5)
@@ -131,7 +131,7 @@ class PeripheralDataTableViewCell: UITableViewCell {
 
         deviceUUID.topAnchor.constraint(equalTo: deviceName.bottomAnchor, constant: 5)
             .isActive = true
-//        macAddress.leadingAnchor.constraint(equalTo: deviceImg.trailingAnchor, constant: 50)
+//        deviceUUID.leadingAnchor.constraint(equalTo: deviceImg.trailingAnchor, constant: 50)
 //            .isActive = true
         deviceUUID.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
             .isActive = true
@@ -139,7 +139,7 @@ class PeripheralDataTableViewCell: UITableViewCell {
             .isActive = true
         deviceUUID.heightAnchor.constraint(equalToConstant: 20)
             .isActive = true
-//        macAddress.widthAnchor.constraint(equalToConstant: 200)
+//        deviceUUID.widthAnchor.constraint(equalToConstant: 200)
 //            .isActive = true
     }
     
@@ -151,7 +151,6 @@ class PeripheralDataTableViewCell: UITableViewCell {
         self.deviceImg.image = UIImage(imageLiteralResourceName: "PuppyDocImage")
         self.deviceName.text = peripheralData.peripheral!.name
         self.deviceUUID.text = peripheralData.peripheral!.identifier.uuidString // uuid?
-        //print("peripheral.description : \(peripheralData.peripheral!.description)")
         self.rssiLabel.text = String(peripheralData.rssi) + "dbm"
     }
 }
