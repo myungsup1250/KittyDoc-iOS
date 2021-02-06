@@ -22,7 +22,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        print("LogInViewController.viewDidLoad()")
+
     
         
         // Do any additional setup after loading the view.
@@ -67,15 +68,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signInView.addSubview(emailTF)
         signInView.addSubview(pwTF)
 
+        userInfo.Email = "example@naver.com"
+        userInfo.Pw = "123456"
         
-        userInfo.Email = "myungsup1250@gmail.com"
-        userInfo.Pw = "ms5892"
-
         // userInfo.wantsRememberEmail = true
         // userInfo.wantsAutoLogin = true
 
         if userInfo.loggedInPrev {
             if userInfo.wantsAutoLogin && !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty { // Automatically Log In
+                print("will AutoLogin")
                 emailTF.text = userInfo.Email
                 pwTF.text = userInfo.Pw
                 didTapSignIn()
@@ -83,8 +84,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 emailTF.text = userInfo.Email
             }
         }
-        
-        
         
     }
     
@@ -112,10 +111,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
-    }
-
     let welcomeLabel: UILabel = {
         let welcomeLabel = UILabel()
 
@@ -273,8 +268,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-        // 화면 터치 시 키보드 내려가는 코드 -ms
+        self.view.endEditing(true)// 화면 터치 시 키보드 내려가는 코드 -ms
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

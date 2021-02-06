@@ -16,8 +16,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     var birthInput: String?
     var didDupEx: Bool = false
     
+    var isEditMode: Bool = false
+    var editEmail: String = ""
+    var editPw: String = ""
+    var editName = ""
+    var editGender = ""
+    var editPhone = ""
+    var editBirth = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("SignUpViewController.viewDidLoad(editMode: \(isEditMode))")
         
         let _: UITextField = {
             emailInput = UITextField()
@@ -26,6 +35,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             emailInput.keyboardType = .emailAddress
             emailInput.delegate = self
             emailInput.autocapitalizationType = .none
+            emailInput.borderStyle = .roundedRect
             emailInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return emailInput
         }()
@@ -37,6 +47,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             pwdInput.isSecureTextEntry = true
             pwdInput.delegate = self
             pwdInput.autocapitalizationType = .none
+            pwdInput.borderStyle = .roundedRect
             pwdInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return pwdInput
         }()
@@ -46,6 +57,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             nameInput.frame = CGRect(x: 0, y: 170, width: signUpView.frame.size.width, height: 30)
             nameInput.placeholder = "이복덩"
             nameInput.delegate = self
+            nameInput.borderStyle = .roundedRect
             nameInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return nameInput
         }()
@@ -54,14 +66,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             phoneNumberInput = UITextField()
             phoneNumberInput.frame = CGRect(x: 0, y: 230, width: view.frame.size.width, height: 50)
             phoneNumberInput.placeholder = "01037757666"
+            phoneNumberInput.borderStyle = .roundedRect
             phoneNumberInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
             return phoneNumberInput
         }()
         
            
         view.addSubview(welcomeLabel)
-        view.addSubview(plz)
-        
+        view.addSubview(guideLabel)
         view.addSubview(signUpView)
         signUpView.addSubview(emailLabel)
         signUpView.addSubview(emailInput)
@@ -79,15 +91,33 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(signInView)
         signInView.addSubview(signInBtn)
         signInView.addSubview(askLabel)
-
         
         view.addSubview(doneBtn)
         view.addSubview(signInView)
 
-
         _ = setUpdatePicker()
         
-        
+        if isEditMode {
+            welcomeLabel.text = "Edit Info"
+            guideLabel.text = "Edit your information"
+            emailInput.text = editEmail
+            pwdInput.text = editPw
+            nameInput.text = editName
+            switch editGender {
+            case "Male", "male":
+                genderSelect.selectedSegmentIndex = 0
+            case "FeMale", "female":
+                genderSelect.selectedSegmentIndex = 1
+            default:
+                genderSelect.selectedSegmentIndex = 2
+            }
+            birthDataField.text = editBirth
+            phoneNumberInput.text = editPhone
+            birthDataField.text = editBirth
+            askLabel.text = ""
+            signInBtn.setTitle("", for: .normal)
+
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -113,7 +143,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
     let welcomeLabel: UILabel = {
         let welcomeLabel = UILabel()
         welcomeLabel.frame = CGRect(x: 40, y: 80, width: 350, height: 80)
@@ -122,12 +151,12 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         return welcomeLabel
     }()
     
-    let plz: UILabel = {
-        let plz = UILabel()
-        plz.frame = CGRect(x: 40, y: 130, width: 200, height: 40)
-        plz.text = "Sign up to get Started!"
-        plz.textColor = .systemGray
-        return plz
+    let guideLabel: UILabel = {
+        let guideLabel = UILabel()
+        guideLabel.frame = CGRect(x: 40, y: 130, width: 200, height: 40)
+        guideLabel.text = "Sign up to get Started!"
+        guideLabel.textColor = .systemGray
+        return guideLabel
     }()
     
     let signUpView: UIView = {
@@ -194,24 +223,23 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         return segment
     }()
 
-
-
     let DateOfBirthLabel: UILabel = {
         let label = UILabel()
-        label.frame = CGRect(x: 0, y: 270, width: 200, height: 50)
+        label.frame = CGRect(x: 0, y: 270, width: 200, height: 40)
         label.text = "Date of Birth"
         return label
     }()
 
     let birthDataField: UITextField = {
         let birthDataField = UITextField()
-        birthDataField.frame = CGRect(x: 0, y: 280, width: 300, height: 80)
+        birthDataField.frame = CGRect(x: 0, y: 290, width: 300, height: 40)
         birthDataField.placeholder = "여기를 클릭해서 생년월일을 입력해주세요"
+//        birthDataField.text = ""
+        birthDataField.borderStyle = .roundedRect
         birthDataField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
 
         return birthDataField
     }()
-    
     
     func setUpdatePicker() -> UIDatePicker {
         let picker: UIDatePicker = UIDatePicker.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200))
@@ -234,7 +262,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         self.birthDataField.inputAccessoryView = toolBar
         return picker
     }
-
     
     @objc func dataChanged(_ picker: UIDatePicker) {
         
@@ -316,10 +343,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         //RE: 사용자가 칸 다 채워놓고 중복확인 안했을 경우 잉 왜 버튼 투명이야 띠용 이런 경우가 많을 거 같아서
         //    register 버튼 눌렀을 때 중복확인 하세요! 팝업을 띄우는 걸로 해봤는데 어때?!
-        if(existResponse.getCode() as! Int == ServerResponse.EXIST_IS_EXIST){
+        if (existResponse.getCode() as! Int == ServerResponse.EXIST_IS_EXIST) {
             alertWithMessage(message: existResponse.getMessage())
             
-        }else if(existResponse.getCode() as! Int == ServerResponse.EXIST_NOT_EXIST){
+        } else if(existResponse.getCode() as! Int == ServerResponse.EXIST_NOT_EXIST) {
             alertWithMessage(message: existResponse.getMessage())
             didDupEx = true
             doneBtn.isEnabled = true
@@ -327,7 +354,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             duplicateBtn.isEnabled = false
             emailInput.textColor = .systemGray
             duplicateBtn.backgroundColor = .systemGray
-        }else{
+        } else {
             alertWithMessage(message: existResponse.getMessage())
         }
     }
@@ -374,7 +401,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        
         let signUpData:SignUpData = SignUpData(_userEmail:emailInput.text!, _userPwd:pwdInput.text!, _userName:nameInput.text!, _userPhone:phoneNumberInput.text!, _userSex:gender, _userBirth:birth)
         let server:KittyDocServer = KittyDocServer()
         let signUpResponse:ServerResponse = server.userSignUp(data: signUpData)
@@ -392,7 +418,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             ///
             
             self.presentingViewController?.dismiss(animated: true, completion: nil)
-        }else{
+        } else {
             alertWithMessage(message: signUpResponse.getMessage())
         }
     }

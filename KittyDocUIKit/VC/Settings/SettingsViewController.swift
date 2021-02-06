@@ -34,13 +34,13 @@ struct SettingsOption {
 
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    private let tableView: UITableView = {
     
+    private let tableView: UITableView = {
+        
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
         table.register(SwitchTableViewCell.self, forCellReuseIdentifier:  SwitchTableViewCell.identifier)
-       
+        
         return table
     }()
     
@@ -58,7 +58,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
     }
-
+    
     func configure() {
         models.append(Section(title: "Device Connection", options: [.switchCell(model: SettingsSwitchOption(title: "기기 착용 유무", icon: UIImage(systemName: "house")!, iconBackgroundColor: .systemYellow, handler: {
         }, isOn: true)),
@@ -71,8 +71,33 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         
         models.append(Section(title: "My Information", options: [.staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange, handler: {
-            self.performSegue(withIdentifier: "UserInfoSegue", sender: self)
-        
+            //self.performSegue(withIdentifier: "UserInfoSegue", sender: self)
+            print("수정클릭됨")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil) // type storyboard name instead of Main
+            guard let vc = storyboard.instantiateViewController(identifier: "SignUp") as? SignUpViewController else {
+                print("guard let vc = self.storyboard?.instantiateViewController(identifier: SignUp) Error")
+                return
+            }
+            
+            //뷰컨 인스턴스화해서 값 넘겨주고 확인누르면 그 객체에 정보가 들어가야 하는디 isEditMode 를 false true로 조절
+            // test
+            UserInfo.shared.Email = "myungsup1250@gmail.com"
+            UserInfo.shared.Pw = "123456"
+            UserInfo.shared.Name = "곽명섭"
+            UserInfo.shared.gender = "male"
+            UserInfo.shared.UserPhone = "01012345678"
+            UserInfo.shared.UserBirth = "19960330"
+            // test
+            vc.editEmail = UserInfo.shared.Email
+            vc.editPw = UserInfo.shared.Pw//비밀번호 등 정보는 서버에서 받아와서 처리하나?
+            vc.editName = UserInfo.shared.Name
+            vc.editGender = UserInfo.shared.gender
+            vc.editPhone = UserInfo.shared.UserPhone
+            vc.editBirth = UserInfo.shared.UserBirth
+
+            vc.isEditMode = true
+            vc.doneBtn.setTitle("수정", for: .normal)
+            self.present(vc, animated: true)
         }))
         ]))
         
@@ -89,11 +114,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 UserDefaults.standard.removeObject(forKey: "email_test")
                 UserDefaults.standard.removeObject(forKey: "pwd_test")
                 self.performSegue(withIdentifier: "logoutSegue", sender: self)
-        })
-        
+            })
+            
         ]))
         
-    
+        
         
     }
     
@@ -148,9 +173,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             model.handler()
         case .switchCell(let model):
             model.handler()
+        }
+        
+        
+        
     }
-    
-    
-
-}
 }

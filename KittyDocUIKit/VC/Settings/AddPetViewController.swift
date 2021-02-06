@@ -88,18 +88,25 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
-        
-        if petInfo != nil {
-            if petInfo!.Device.isEmpty {
-                if deviceManager.isConnected {
-                    deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+        if editingPetID != nil {
+            let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
+            
+            print("AddPetViewController.viewWillAppear()")
+            if petInfo != nil {
+                if petInfo!.Device.isEmpty {
+                    if deviceManager.isConnected {
+                        print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == true")
+                        deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+                    } else {
+                        print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == false")
+                    }
+                } else {
+                    print("\tpetInfo!.Device.isEmpty == false")
+                    deviceInput.text = petInfo!.Device
                 }
             } else {
-                deviceInput.text = petInfo!.Device
+                print("\tpetInfo == nil")
             }
-        } else {
-            
         }
     }
     
