@@ -70,6 +70,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
         userInfo.Email = "example@naver.com"
         userInfo.Pw = "123456"
+        //ms test 21.02.06
         
         // userInfo.wantsRememberEmail = true
         // userInfo.wantsAutoLogin = true
