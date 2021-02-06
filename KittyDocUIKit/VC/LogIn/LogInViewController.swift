@@ -22,7 +22,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        print("LogInViewController.viewDidLoad()")
+
     
         
         // Do any additional setup after loading the view.
@@ -67,15 +68,12 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         signInView.addSubview(emailTF)
         signInView.addSubview(pwTF)
 
-        
-        //userInfo.Email = "myungsup1250@gmail.com"
-        //userInfo.Pw = "ms5892"
-
         // userInfo.wantsRememberEmail = true
         // userInfo.wantsAutoLogin = true
 
         if userInfo.loggedInPrev {
             if userInfo.wantsAutoLogin && !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty { // Automatically Log In
+                print("will AutoLogin")
                 emailTF.text = userInfo.Email
                 pwTF.text = userInfo.Pw
                 didTapSignIn()
@@ -107,10 +105,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         emailTF.becomeFirstResponder()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
-    }
-
     let welcomeLabel: UILabel = {
         let welcomeLabel = UILabel()
 
@@ -267,6 +261,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)// 화면 터치 시 키보드 내려가는 코드 -ms
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -300,9 +298,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     //비밀번호 형식에 대한 검사함수. 지금은 길이가 1이상만 되면 되는 것으로 했지만 추후에 특수문자포함여부, 길이제한 추가
     //하게 될지도?
     func isPwdForm(_pwd:String) -> Bool{
-        if(_pwd.count > 0){
+        if _pwd.count > 0 {
             return true
-        }else{
+        } else {
             return false
         }
     }

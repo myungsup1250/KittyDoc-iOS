@@ -28,7 +28,7 @@ class UserInfo {
     var Email: String
     var Pw: String
     var Name: String
-    var gender: String
+    var gender: String// male / female / none
 
     private init() {
 //        let plist = UserDefaults.standard

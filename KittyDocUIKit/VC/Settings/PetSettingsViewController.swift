@@ -26,7 +26,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         let server:KittyDocServer = KittyDocServer()
         let findResponse:ServerResponse = server.petFind(data: findData)
         
-        if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS){
+        if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS) {
             let jsonString:String = findResponse.getMessage() as! String
             if let arrData = jsonString.data(using: .utf8){
                 do {
@@ -51,7 +51,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                             }
                         }
                     }
-                } catch{
+                } catch {
                     print("JSON 파싱 에러")
                 }
             }
