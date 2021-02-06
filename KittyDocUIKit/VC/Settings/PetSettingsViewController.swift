@@ -59,6 +59,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             alertWithMessage(message: findResponse.getMessage())
         }
         self.tableView.reloadData()
+        print(PetInfo.shared.petArray)
     }
     
     override func viewDidLayoutSubviews() {
@@ -138,19 +139,16 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             guard let vc = self.storyboard?.instantiateViewController(identifier: "PetSetting") as? AddPetViewController else {
                 return
             }
-        
-            //뷰컨 인스턴스화해서 값 넘겨주고 확인누르면 그 객체에 정보가 들어가야 하는디 isEditMode 를 false true로 조절
-            //이 펫 번호는 indexPath.row 이다
+
             vc.editName = PetInfo.shared.petArray[indexPath.row].PetName
             vc.editWeight = PetInfo.shared.petArray[indexPath.row].PetKG
             vc.editBirth = PetInfo.shared.petArray[indexPath.row].PetBirth
             vc.editIsKg = PetInfo.shared.petArray[indexPath.row].IsKG
             vc.editGender = PetInfo.shared.petArray[indexPath.row].PetSex
-            //if문으로?
-            vc.editingPetID = indexPath.row //이게 편집하는 펫 번호
+            vc.editingPetID = indexPath.row
             vc.isEditMode = true
             vc.doneBtn.setTitle("수정", for: .normal)
-            self.present(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
         
         action.image = UIImage(systemName: "square.and.pencil")
