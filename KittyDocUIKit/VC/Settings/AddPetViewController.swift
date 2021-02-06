@@ -88,7 +88,7 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        guard let tempID = editingPetID else {
+        guard editingPetID != nil else {
             return
         }
         
@@ -330,18 +330,35 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         }
         
         if isEditMode == true {
-            let modifyData:ModifyData_Pet = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: deviceInput.text!)
+            let modifyData:ModifyData_Pet = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
             let server:KittyDocServer = KittyDocServer()
             let modifyResponse:ServerResponse = server.petModify(data: modifyData)
             if(modifyResponse.getCode() as! Int == ServerResponse.PET_MODIFY_SUCCESS){
-                alertWithMessage(message: modifyResponse.getMessage())
                 //////////////
                 //이곳이 펫 수정을 성공적으로 마쳤을때의 상황!! 아래 주석은 이런식으로 창을 닫으면 되는걸까 싶어서 써봤지만 completion이 뭔지 몰라서 실패...!
                 //펫 수정을 성공적으로 마쳤을 때 수행할 것
-                //1. 수정 창 닫아주기
-                //2. 냥이 설정 화면에서 드래그된 채 굳어있는 녀석 원래대로 해주기
-                //3. 냥이 설정 리스트뷰가 최신정보로 업데이트 되기
-                //self.dismiss(animated: true, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+                //1. 수정 창 닫아주기 O
+                //2. 냥이 설정 화면에서 드래그된 채 굳어있는 녀석 원래대로 해주기 O
+                //3. 냥이 설정 리스트뷰가 최신정보로 업데이트 되기 ...... O
+                
+                PetInfo.shared.petArray[editingPetID!].PetName = nameInput.text!
+                PetInfo.shared.petArray[editingPetID!].PetKG = Double(weightKG) ?? 0
+                PetInfo.shared.petArray[editingPetID!].PetSex = gender
+                PetInfo.shared.petArray[editingPetID!].PetBirth = birthDataField.text!
+                
+                if weightSelect.selectedSegmentIndex == 0 {
+                    PetInfo.shared.petArray[editingPetID!].IsKG = true
+                } else {
+                    PetInfo.shared.petArray[editingPetID!].IsKG = false
+                }
+                
+                alertWithMessage(message: modifyResponse.getMessage())
+                
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.navigationController?.popViewController(animated: true)
+                }
+                
                 ///////////////
             }else{
                 alertWithMessage(message: modifyResponse.getMessage())
