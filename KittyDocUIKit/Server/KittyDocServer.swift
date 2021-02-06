@@ -68,6 +68,18 @@ class KittyDocServer:ServerApi{
         return doRequestTask(url: url, data: data)
     }
     
+    func petDelete(data: DeleteData_Pet) -> ServerResponse {
+        //URL setting
+        let url = URL(string:(baseUrl + port + "/pet/delete"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
+    func petModify(data: ModifyData_Pet) -> ServerResponse {
+        //URL setting
+        let url = URL(string:(baseUrl + port + "/pet/modify"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
     func sensorSend(data: SensorData) -> ServerResponse {
         //URL setting
         let url = URL(string:(baseUrl + port + "/sensor/send"))!

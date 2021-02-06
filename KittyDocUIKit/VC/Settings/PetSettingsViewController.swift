@@ -58,7 +58,8 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
             alertWithMessage(message: findResponse.getMessage())
         }
-        
+        self.tableView.reloadData()
+        print(PetInfo.shared.petArray)
     }
     
     override func viewDidLayoutSubviews() {
@@ -114,15 +115,18 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
-            self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
-            //self.tableView.reloadData()
-            //self.tableView.reloadInputViews()
-            // reload 관련 코드 이 중 하나로 대체? -ms 21.02.04
-            completion(true)
+            let deleteData:DeleteData_Pet = DeleteData_Pet(_petID: PetInfo.shared.petArray[indexPath.row].PetID, _ownerID: PetInfo.shared.petArray[indexPath.row].OwnerID)
+            let server:KittyDocServer = KittyDocServer()
+            let deleteResponse:ServerResponse = server.petDelete(data: deleteData)
             
-            //여기서 서버에서 지우는 작업 해주면 될듯!
-            //indexPath.row 가 펫 번호
+            if(deleteResponse.getCode() as! Int == ServerResponse.PET_DELETE_SUCCESS){
+                print(deleteResponse.getMessage())
+                PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
+                self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
+                completion(true)
+            }else{
+                print(deleteResponse.getMessage())
+            }
         }
         action.image = UIImage(systemName: "trash")
         action.backgroundColor = .systemRed
@@ -135,19 +139,16 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             guard let vc = self.storyboard?.instantiateViewController(identifier: "PetSetting") as? AddPetViewController else {
                 return
             }
-        
-            //뷰컨 인스턴스화해서 값 넘겨주고 확인누르면 그 객체에 정보가 들어가야 하는디 isEditMode 를 false true로 조절
-            //이 펫 번호는 indexPath.row 이다
+
             vc.editName = PetInfo.shared.petArray[indexPath.row].PetName
             vc.editWeight = PetInfo.shared.petArray[indexPath.row].PetKG
             vc.editBirth = PetInfo.shared.petArray[indexPath.row].PetBirth
             vc.editIsKg = PetInfo.shared.petArray[indexPath.row].IsKG
             vc.editGender = PetInfo.shared.petArray[indexPath.row].PetSex
-            //if문으로?
-            vc.editingPetID = indexPath.row //이게 편집하는 펫 번호
+            vc.editingPetID = indexPath.row
             vc.isEditMode = true
             vc.doneBtn.setTitle("수정", for: .normal)
-            self.present(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
         
         action.image = UIImage(systemName: "square.and.pencil")

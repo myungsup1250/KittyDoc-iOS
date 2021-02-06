@@ -292,11 +292,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     }
     
     @objc func didTapDoneBtn() {
-        //MARK: 펫 정보 수정
-        if isEditMode == true {
-            
-        }
-        
         let date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
@@ -337,31 +332,56 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             gender = "None"
         }
         
-        
-        
-        //디바이스 주소는 추후에 블루투스 기능이 구현되면 이 객체에 정보를 넣어 주어야함.
-        let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: UserInfo.shared.UserID, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: deviceInput.text!)
-        let server:KittyDocServer = KittyDocServer()
-        let signUpResponse_Pet:ServerResponse = server.petSignUp(data: singUpData_Pet)
-        
-        if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_SUCCESS){
-            self.navigationController?.popViewController(animated: true)
+        if isEditMode == true {
+            let modifyData:ModifyData_Pet = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
+            let server:KittyDocServer = KittyDocServer()
+            let modifyResponse:ServerResponse = server.petModify(data: modifyData)
+            if(modifyResponse.getCode() as! Int == ServerResponse.PET_MODIFY_SUCCESS){
+                //////////////
+                //이곳이 펫 수정을 성공적으로 마쳤을때의 상황!! 아래 주석은 이런식으로 창을 닫으면 되는걸까 싶어서 써봤지만 completion이 뭔지 몰라서 실패...!
+                //펫 수정을 성공적으로 마쳤을 때 수행할 것
+                //1. 수정 창 닫아주기 O
+                //2. 냥이 설정 화면에서 드래그된 채 굳어있는 녀석 원래대로 해주기 O
+                //3. 냥이 설정 리스트뷰가 최신정보로 업데이트 되기 ...... O
+                
+                PetInfo.shared.petArray[editingPetID!].PetName = nameInput.text!
+                PetInfo.shared.petArray[editingPetID!].PetKG = Double(weightKG) ?? 0
+                PetInfo.shared.petArray[editingPetID!].PetSex = gender
+                PetInfo.shared.petArray[editingPetID!].PetBirth = birthDataField.text!
+                
+                if weightSelect.selectedSegmentIndex == 0 {
+                    PetInfo.shared.petArray[editingPetID!].IsKG = true
+                } else {
+                    PetInfo.shared.petArray[editingPetID!].IsKG = false
+                }
+                
+                alertWithMessage(message: modifyResponse.getMessage())
+                
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.navigationController?.popViewController(animated: true)
+                }
+                
+                ///////////////
+            }else{
+                alertWithMessage(message: modifyResponse.getMessage())
+            }
             
-            
-            alertWithMessage(message: signUpResponse_Pet.getMessage())
-            
-        } else if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_FAILURE){
-            alertWithMessage(message: signUpResponse_Pet.getMessage())
         } else {
-            print(signUpResponse_Pet.getMessage())
+            let singUpData_Pet:SignUpData_Pet = SignUpData_Pet(_petName: nameInput.text!, _ownerId: UserInfo.shared.UserID, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birth, _device: deviceInput.text!)
+            let server:KittyDocServer = KittyDocServer()
+            let signUpResponse_Pet:ServerResponse = server.petSignUp(data: singUpData_Pet)
+            
+            if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_SUCCESS){
+                self.navigationController?.popViewController(animated: true)
+                alertWithMessage(message: signUpResponse_Pet.getMessage())
+            } else if(signUpResponse_Pet.getCode() as! Int == ServerResponse.JOIN_FAILURE){
+                alertWithMessage(message: signUpResponse_Pet.getMessage())
+            } else {
+                print(signUpResponse_Pet.getMessage())
+            }
         }
-        
-        
-        
     }
-    
-    //MARK: 말했던 대로 여기다 수정하는 코드 함수만들어서 안에다 넣어주면 됨!
-    //func
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

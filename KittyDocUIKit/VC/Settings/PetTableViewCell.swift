@@ -55,7 +55,7 @@ class PetTableViewCell: UITableViewCell {
                                     width: contentView.frame.size.height - 5,
                                     height: contentView.frame.size.height - 5)
         
-        petNameLabel.frame = CGRect(x: 120, y: 0, width: 100, height: 50)
+        petNameLabel.frame = CGRect(x: 120, y: 0, width: contentView.frame.size.width, height: 50)
         petDetailLabel.frame = CGRect(x: 120, y: 40, width: contentView.frame.size.width, height: 50)
     }
 }
