@@ -58,7 +58,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         view.addSubview(petNameSelectTF)
         petNameSelectTF.inputView = pickerView
-        petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+        if !PetInfo.shared.petArray.isEmpty {
+            petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+        }
         
         view.addSubview(petSunEx)
         view.addSubview(petVitaD)
