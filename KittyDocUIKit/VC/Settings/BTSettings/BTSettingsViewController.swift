@@ -24,7 +24,7 @@ class BTSettingsViewController: UIViewController {
         //self.navigationItem.prompt = "기기 등록을 진행해주세요"
         
         print("DeviceListViewController.viewDidLoad()")
-        view.backgroundColor = .white
+//        view.backgroundColor = .white
         safeArea = view.layoutMarginsGuide
 
         setTableView()

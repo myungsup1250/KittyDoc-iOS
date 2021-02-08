@@ -9,60 +9,36 @@ import UIKit
 
 class LogInViewController: UIViewController, UITextFieldDelegate {
     var userInfo: UserInfo = UserInfo.shared
+
+    var welcomeLabel: UILabel!
+    var guideLabel: UILabel!
+    var signInView: UIView!
+    var emailLabel: UILabel!
+    var pswLabel: UILabel!
+    var signInBtn: UIButton!
+    var askLabel: UILabel!
+    var signUpBtn: UIButton!
+    
     var emailTF: UITextField!
     var pwTF: UITextField!
+
     var email: String?
     var pw: String?
 
-    
     override func viewWillLayoutSubviews() {
-        
-        
+        print("LogInViewController.viewWillLayoutSubviews()")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print("LogInViewController.viewDidLoad()")
-
-        let _: UITextField = {
-            emailTF = UITextField(frame: CGRect(x: 0, y: 40, width: 320, height: 40))
-            emailTF.placeholder = "kittydoc@jmsmart.co.kr"
-            emailTF.delegate = self
-            emailTF.autocapitalizationType = .none
-            emailTF.borderStyle = .roundedRect
-            emailTF.clearButtonMode = .whileEditing
-            emailTF.keyboardType = .emailAddress
-            emailTF.enablesReturnKeyAutomatically = true
-            return emailTF
-        }()
-        
-        
-        let _: UITextField = {
-            pwTF = UITextField(frame: CGRect(x: 0, y: 140, width: 320, height: 40))
-            pwTF.placeholder = "password"
-            pwTF.isSecureTextEntry = true
-            pwTF.delegate = self
-            pwTF.borderStyle = .roundedRect
-            pwTF.clearButtonMode = .whileEditing
-            pwTF.enablesReturnKeyAutomatically = true
-            return pwTF
-        }()
-        
-        
         self.navigationItem.prompt = "UITabBarController"
 
-        view.addSubview(welcomeLabel)
-        view.addSubview(guideLabel)
-        view.addSubview(signInView)
-        view.addSubview(signInBtn)
-        view.addSubview(askLabel)
-        view.addSubview(signUpBtn)
-
-        
-        signInView.addSubview(emailLabel)
-        signInView.addSubview(pswLabel)
-        signInView.addSubview(emailTF)
-        signInView.addSubview(pwTF)
+        // Will convert LogInVC's layout into AutoLayout! 21.02.06 ms
+        initUIViews()
+        addSubviews()
+        prepareForAutoLayout()
+        setConstraints()
 
         // userInfo.wantsRememberEmail = true
         // userInfo.wantsAutoLogin = true
@@ -101,86 +77,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         emailTF.becomeFirstResponder()
     }
     
-    let welcomeLabel: UILabel = {
-        let welcomeLabel = UILabel()
-
-        welcomeLabel.frame = CGRect(x: 50, y: 150, width: 400, height: 80)
-        welcomeLabel.text = "Welcome".localized
-        welcomeLabel.font = welcomeLabel.font.withSize(40)
-
-        return welcomeLabel
-    }()
-
-    let guideLabel : UILabel = {
-        let guideLabel = UILabel()
-
-        guideLabel.frame = CGRect(x: 50, y: 200, width: 400, height: 40)
-        guideLabel.text = "Sign in to Continue".localized
-        guideLabel.textColor = .systemGray
-
-        return guideLabel
-    }()
-    
-    
-    let signInView : UIView = {
-        let signInView = UIView()
-        signInView.frame = CGRect(x: 30, y: 300, width: 500, height: 300)
-        
-        return signInView
-    }()
-    
-    
-    let emailLabel : UILabel = {
-        let emailLabel = UILabel(frame: CGRect(x: 10, y: 0, width: 500, height: 40))
-        emailLabel.text = "Email"
-        
-        return emailLabel
-    }()
-    
-    
-    let pswLabel : UILabel = {
-        let pswLabel = UILabel(frame: CGRect(x: 10, y: 100, width: 500, height: 40))
-        pswLabel.text = "Password"
-        
-        return pswLabel
-    }()
-    
-
-    
-    let signInBtn : UIButton = {
-        let signInBtn = UIButton()
-
-        signInBtn.frame = CGRect(x: 40, y: 570, width: 300, height: 50)
-        signInBtn.setTitle("Sign in", for: .normal)
-        signInBtn.setTitleColor(.white, for: .highlighted)
-        signInBtn.backgroundColor = .systemBlue
-        signInBtn.layer.cornerRadius = 8
-        signInBtn.addTarget(self, action: #selector((didTapSignIn)), for: .touchUpInside)
-        
-        return signInBtn
-    }()
-    
-
-    let askLabel : UILabel = {
-        let askLabel = UILabel()
-        askLabel.frame = CGRect(x: 100, y: 640, width: 100, height: 50)
-        askLabel.text = "New User?"//"Don't have an account?"
-        
-        return askLabel
-    }()
-    
-
-    let signUpBtn : UIButton = {
-        let signUpBtn = UIButton()
-        signUpBtn.frame = CGRect(x: 190, y: 640, width: 100, height: 50)
-        signUpBtn.setTitle("Sign Up", for: .normal)
-        signUpBtn.setTitleColor(.systemIndigo, for: .normal)
-        signUpBtn.addTarget(self, action: #selector((didTapSignUp)), for: .touchUpInside)
-        
-        return signUpBtn
-    }()
-        
-    
     @objc private func didTapSignUp() {
         let signUp = self.storyboard!.instantiateViewController(identifier: "SignUp")
         signUp.modalPresentationStyle = .fullScreen
@@ -188,7 +84,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         present(signUp, animated: true)
     }
     
-
     @objc private func didTapSignIn() {
         if emailTF.text!.isEmpty {
             alertWithMessage(message: "아이디를 입력해주세요!")
@@ -226,9 +121,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 
 
                 let jsonString:String = loginResponse.getMessage() as! String
-                if let data = jsonString.data(using: .utf8){
-                    do{
-                        if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject]{
+                if let data = jsonString.data(using: .utf8) {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject] {
                             userInfo.Email = json["UserEmail"]! as! String
                             userInfo.Pw = json["UserPwd"]! as! String
                             userInfo.gender = json["UserSex"] as! String
@@ -238,20 +133,20 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                             userInfo.UserBirth = json["UserBirth"] as! String
                             print(userInfo)
                         }
-                    } catch{
+                    } catch {
                         print("JSON 파싱 에러")
                     }
                 }
 
                 
-            }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
+            } else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL) {
                 alertWithMessage(message: loginResponse.getMessage())
                 self.emailTF.becomeFirstResponder()
-            }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_PWD){
+            } else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_PWD) {
                 print(loginResponse.getMessage())
                 self.pwTF.becomeFirstResponder()
                 alertWithMessage(message: loginResponse.getMessage())
-            }else{
+            } else {
                 print(loginResponse.getMessage())
             }
         }
@@ -291,8 +186,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return emailTest.evaluate(with: _email)
     }
     
-    //비밀번호 형식에 대한 검사함수. 지금은 길이가 1이상만 되면 되는 것으로 했지만 추후에 특수문자포함여부, 길이제한 추가
-    //하게 될지도?
+    //비밀번호 형식에 대한 검사함수. 지금은 길이가 1이상만 되면 되는 것으로 했지만 추후에 특수문자포함여부, 길이제한 추가하게 될지도?
     func isPwdForm(_pwd:String) -> Bool{
         if _pwd.count > 0 {
             return true
@@ -300,7 +194,170 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             return false
         }
     }
-
-    
 }
 
+extension LogInViewController { // AutoLayout
+    func initUIViews() {
+        initEmailTF()
+        initPwTF()
+        initLabels()
+        initButtons()
+        initSignInView()
+    }
+    
+    func addSubviews() {
+        view.addSubview(welcomeLabel)
+        view.addSubview(guideLabel)
+        view.addSubview(signInView)
+        view.addSubview(signInBtn)
+        view.addSubview(askLabel)
+        view.addSubview(signUpBtn)
+        
+        signInView.addSubview(emailLabel)
+        signInView.addSubview(pswLabel)
+        signInView.addSubview(emailTF)
+        signInView.addSubview(pwTF)
+    }
+
+    func initEmailTF() {
+        emailTF = UITextField()
+        emailTF.delegate = self
+        emailTF.placeholder = "kittydoc@jmsmart.co.kr"
+        emailTF.autocapitalizationType = .none
+        emailTF.borderStyle = .roundedRect
+        emailTF.clearButtonMode = .whileEditing
+        emailTF.keyboardType = .emailAddress
+        emailTF.enablesReturnKeyAutomatically = true
+    }
+    
+    func initPwTF() {
+        pwTF = UITextField()
+        pwTF.delegate = self
+        pwTF.placeholder = "password"
+        pwTF.isSecureTextEntry = true
+        pwTF.borderStyle = .roundedRect
+        pwTF.clearButtonMode = .whileEditing
+        pwTF.enablesReturnKeyAutomatically = true
+    }
+    
+    func initLabels() {
+        welcomeLabel = UILabel()
+        welcomeLabel.text = "Welcome".localized
+        welcomeLabel.font = welcomeLabel.font.withSize(40)
+        
+        guideLabel = UILabel()
+        guideLabel.text = "Sign in to Continue".localized
+        guideLabel.textColor = .systemGray
+
+        emailLabel = UILabel()
+        emailLabel.text = "Email"
+
+        pswLabel = UILabel()
+        pswLabel.text = "Password"
+
+        askLabel = UILabel()
+        askLabel.text = "Don't have an account?"
+
+    }
+    
+    func initSignInView() {
+        signInView = UIView()
+
+    }
+    
+    func initButtons() {
+        signInBtn = UIButton()
+        signInBtn.setTitle("Sign in", for: .normal)
+        signInBtn.setTitleColor(.white, for: .highlighted)
+        signInBtn.backgroundColor = .systemBlue
+        signInBtn.layer.cornerRadius = 8
+        signInBtn.addTarget(self, action: #selector((didTapSignIn)), for: .touchUpInside)
+        
+        signUpBtn = UIButton()
+        signUpBtn.setTitle("Sign Up", for: .normal)
+        signUpBtn.setTitleColor(.systemIndigo, for: .normal)
+        //signUpBtn.titleLabel?.adjustsFontSizeToFitWidth = true
+        signUpBtn.addTarget(self, action: #selector((didTapSignUp)), for: .touchUpInside)
+    }
+    
+    func prepareForAutoLayout() {
+        welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        guideLabel.translatesAutoresizingMaskIntoConstraints = false
+        signInView.translatesAutoresizingMaskIntoConstraints = false
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        pswLabel.translatesAutoresizingMaskIntoConstraints = false
+        signInBtn.translatesAutoresizingMaskIntoConstraints = false
+        askLabel.translatesAutoresizingMaskIntoConstraints = false
+        signUpBtn.translatesAutoresizingMaskIntoConstraints = false
+        emailTF.translatesAutoresizingMaskIntoConstraints = false
+        pwTF.translatesAutoresizingMaskIntoConstraints = false
+
+    }
+
+    func setConstraints() {
+        let signInViewConstraints = [
+            signInView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            signInView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            signInView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
+            signInView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15),
+            signInView.heightAnchor.constraint(equalToConstant: 300)
+        ]
+
+        let emailLabelConstraints = [
+            emailLabel.bottomAnchor.constraint(equalTo: signInView.centerYAnchor, constant: -15),
+            emailLabel.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 10),
+            emailLabel.widthAnchor.constraint(equalToConstant: 80)
+        ]
+
+        let pswLabelConstraints = [
+            pswLabel.topAnchor.constraint(equalTo: signInView.centerYAnchor, constant: 15),
+            pswLabel.leftAnchor.constraint(equalTo: emailLabel.leftAnchor),
+            pswLabel.widthAnchor.constraint(equalToConstant: 80)
+        ]
+
+        let emailTFConstraints = [
+            //emailTF.topAnchor.constraint(equalTo: signInView.topAnchor, constant: 10),
+            emailTF.leftAnchor.constraint(equalTo: emailLabel.rightAnchor, constant: 10),
+            emailTF.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -10),
+            emailTF.centerYAnchor.constraint(equalTo: emailLabel.centerYAnchor)
+        ]
+
+        let pwTFConstraints = [
+            //pwTF.topAnchor.constraint(equalTo: emailTF.bottomAnchor, constant: 10),
+            pwTF.leftAnchor.constraint(equalTo: pswLabel.rightAnchor, constant: 10),
+            pwTF.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -10),
+            pwTF.centerYAnchor.constraint(equalTo: pswLabel.centerYAnchor)
+        ]
+        
+        let guideLabelConstraints = [
+            guideLabel.bottomAnchor.constraint(equalTo: signInView.topAnchor, constant: -10),
+            guideLabel.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 10)
+        ]
+        
+        let welcomeLabelConstraints = [
+            welcomeLabel.bottomAnchor.constraint(equalTo: guideLabel.topAnchor, constant: -10),
+            welcomeLabel.leftAnchor.constraint(equalTo: guideLabel.leftAnchor, constant: -5)
+        ]
+
+        let signInBtnConstraints = [
+            signInBtn.topAnchor.constraint(equalTo: signInView.bottomAnchor, constant: 15),
+            signInBtn.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 25),
+            signInBtn.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -25),
+            signInBtn.heightAnchor.constraint(equalToConstant: 50)
+        ]
+
+        let askLabelConstraints = [
+            askLabel.topAnchor.constraint(equalTo: signInBtn.bottomAnchor, constant: 15),
+            askLabel.leftAnchor.constraint(equalTo: signInBtn.leftAnchor, constant: 15)
+        ]
+        
+        let signUpBtnConstraints = [
+            //signUpBtn.topAnchor.constraint(equalTo: askLabel.topAnchor),
+            signUpBtn.centerYAnchor.constraint(equalTo: askLabel.centerYAnchor),
+            signUpBtn.rightAnchor.constraint(equalTo: signInBtn.rightAnchor, constant: -15)
+        ]
+        
+        [signInViewConstraints, emailLabelConstraints, pswLabelConstraints, emailTFConstraints, pwTFConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
+            .forEach(NSLayoutConstraint.activate(_:))
+    }
+}
