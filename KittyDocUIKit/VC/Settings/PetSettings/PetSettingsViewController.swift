@@ -59,7 +59,6 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             alertWithMessage(message: findResponse.getMessage())
         }
         self.tableView.reloadData()
-        print(PetInfo.shared.petArray)
     }
     
     override func viewDidLayoutSubviews() {
