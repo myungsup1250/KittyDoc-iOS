@@ -412,11 +412,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             print(signUpResponse.getMessage())
             
             //MARK: TEST
-            let preVC = self.presentingViewController
-            guard let vc = preVC as? LogInViewController else {
-                return
-            }
-            vc.email = self.emailInput.text
+//            let preVC = self.presentingViewController
+//            guard let vc = preVC as? LogInViewController else {
+//                return
+//            }
+//            vc.email = self.emailInput.text
             ///
             
             self.presentingViewController?.dismiss(animated: true, completion: nil)

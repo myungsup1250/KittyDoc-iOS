@@ -16,7 +16,7 @@
 //    let validationResult = PassthroughSubject<Void, Error>()
 //
 //    private(set) lazy var isInputValid = Publishers.CombineLatest($email, $password)
-//        .map { $0.count > 2 && $1.count > 2 }
+//        .map { $0.count > 5 && $1.count > 5 }
 //        .eraseToAnyPublisher()
 //
 //    private let credentialsValidator: CredentialsValidatorProtocol
@@ -56,9 +56,10 @@
 //        login: String,
 //        password: String,
 //        completion: @escaping (Result<(), Error>) -> Void) {
-//        let time: DispatchTime = .now() + .milliseconds(Int.random(in: 200 ... 1_000))
+//        let time: DispatchTime = .now() + .milliseconds(Int.random(in: 10 ... 20))
 //        DispatchQueue.main.asyncAfter(deadline: time) {
 //            // hardcoded success
+//            print("CredentialsValidator's DispatchQueue.main")
 //            completion(.success(()))
 //        }
 //    }

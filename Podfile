@@ -8,5 +8,7 @@ target 'KittyDocUIKit' do
   # Pods for KittyDocUIKit
 pod 'Charts'
 pod 'FSCalendar'
+pod 'CircularSlider'
+pod 'YMCalendar'
 
 end
