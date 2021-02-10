@@ -97,7 +97,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
 
             vc.isEditMode = true
             vc.doneBtn.setTitle("수정", for: .normal)
-            self.present(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
+//            self.present(vc, animated: true)
         }))
         ]))
         
@@ -106,7 +107,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         models.append(Section(title: "Cat Settings", options: [.staticCell(model: SettingsOption(title: "냥이 등록", icon: UIImage(systemName: "plus.circle")!, iconBackgroundColor: .systemBlue) {
             self.performSegue(withIdentifier: "PetSettingsSegue", sender: self)
         })
-        
         ]))
         
         models.append(Section(title: "Account", options: [

@@ -382,7 +382,6 @@ extension DeviceManager: CBPeripheralDelegate {
             self.firmwareVersion = String(data: data, encoding: String.Encoding.ascii)!
             print("FirmwareVersion : \(self.firmwareVersion)")
         } else if characteristic.uuid.isEqual(PeripheralUUID.BATTERY_CHAR_UUID) {
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
             var battery: UInt8 = 0
             if self.batteryCharacteristic != nil {
                 //print("self.batteryCharacteristic!.value!.count : \(self.batteryCharacteristic!.value!.count)")
@@ -399,7 +398,6 @@ extension DeviceManager: CBPeripheralDelegate {
                 print("self.delegate?.onReadBattery(:) == nil!(didUpdateValueForCharacteristic)")
                 return
             }
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
         } else if characteristic.uuid.isEqual(PeripheralUUID.SYNC_CONTROL_CHAR_UUID) {
             //print("[+] Sync Control Characteristic value : \(characteristic.value!)")
             

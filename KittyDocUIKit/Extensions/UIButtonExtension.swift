@@ -10,10 +10,10 @@ import UIKit
 extension UIButton {
     var isValid: Bool {
         get {
-            return isEnabled && backgroundColor == .valid
+            return isEnabled && alpha == 1.0
         }
         set {
-            backgroundColor = newValue ? .valid : .nonValid
+            alpha = newValue ? 1.0 : 0.5
             isEnabled = newValue
         }
     }

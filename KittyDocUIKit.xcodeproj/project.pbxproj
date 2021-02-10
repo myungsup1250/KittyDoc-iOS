@@ -46,7 +46,7 @@
 		E00AE25625B45101001484AC /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE25525B45101001484AC /* LogInView.swift */; };
 		E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C2F25B58919007680E2 /* InitStoryboard.swift */; };
 		E05A7C3325B58CBF007680E2 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */; };
-		E05A7C3625B58DED007680E2 /* LogInViewController(abort).swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3525B58DED007680E2 /* LogInViewController(abort).swift */; };
+		E05A7C3625B58DED007680E2 /* LogInViewController(MVVM).swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3525B58DED007680E2 /* LogInViewController(MVVM).swift */; };
 		E05A7C4025B5A51A007680E2 /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3F25B5A51A007680E2 /* MainTabBarViewController.swift */; };
 		E05A7C4625B5AB4F007680E2 /* TextFieldExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C4525B5AB4F007680E2 /* TextFieldExtention.swift */; };
 		E05A7C4925B5ABFB007680E2 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C4825B5ABFB007680E2 /* UIButtonExtension.swift */; };
@@ -124,7 +124,7 @@
 		E00AE25525B45101001484AC /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		E05A7C2F25B58919007680E2 /* InitStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitStoryboard.swift; sourceTree = "<group>"; };
 		E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
-		E05A7C3525B58DED007680E2 /* LogInViewController(abort).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LogInViewController(abort).swift"; sourceTree = "<group>"; };
+		E05A7C3525B58DED007680E2 /* LogInViewController(MVVM).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LogInViewController(MVVM).swift"; sourceTree = "<group>"; };
 		E05A7C3F25B5A51A007680E2 /* MainTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
 		E05A7C4525B5AB4F007680E2 /* TextFieldExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldExtention.swift; sourceTree = "<group>"; };
 		E05A7C4825B5ABFB007680E2 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
@@ -318,7 +318,7 @@
 			children = (
 				E00AE25525B45101001484AC /* LogInView.swift */,
 				E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */,
-				E05A7C3525B58DED007680E2 /* LogInViewController(abort).swift */,
+				E05A7C3525B58DED007680E2 /* LogInViewController(MVVM).swift */,
 			);
 			path = LogIn;
 			sourceTree = "<group>";
@@ -660,7 +660,7 @@
 				E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */,
 				113CCDD125BA5AA100BF70E5 /* ServerApi.swift in Sources */,
 				E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */,
-				E05A7C3625B58DED007680E2 /* LogInViewController(abort).swift in Sources */,
+				E05A7C3625B58DED007680E2 /* LogInViewController(MVVM).swift in Sources */,
 				707940AC25D2E5AA0073315D /* WaterViewController.swift in Sources */,
 				E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */,
 			);
@@ -872,7 +872,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.co.JMSmart.KittyDocUIKit;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.JMSmart.KittyDoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -893,7 +893,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kr.co.JMSmart.KittyDocUIKit;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.co.JMSmart.KittyDoc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -9,5 +9,6 @@ target 'KittyDocUIKit' do
 pod 'Charts'
 pod 'FSCalendar'
 pod 'CircularSlider'
+pod 'YMCalendar'
 
 end
