@@ -513,7 +513,6 @@
 		FD862512FDDB187586277BEE0D82936A /* Platform+Color.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Platform+Color.swift"; path = "Source/Charts/Utils/Platform+Color.swift"; sourceTree = "<group>"; };
 		FE73FF775D5A5E7CA7D5F301C9B9AC70 /* Transformer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Transformer.swift; path = Source/Charts/Utils/Transformer.swift; sourceTree = "<group>"; };
 		FE7F0225CD683274C81C7572CCF23E1F /* FSCalendarConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FSCalendarConstants.h; path = FSCalendar/FSCalendarConstants.h; sourceTree = "<group>"; };
-
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -629,7 +628,6 @@
 				D593D91265AACB38EA63E1BADECC5F53 /* YMCalendar-umbrella.h */,
 				024E03A29BF0C867C8B0E4F4F20BDB69 /* YMCalendar.debug.xcconfig */,
 				AB2B35565096C6EE18CEE3E99C6FE0EF /* YMCalendar.release.xcconfig */,
-
 			);
 			name = "Support Files";
 			path = "../Target Support Files/YMCalendar";
@@ -686,47 +684,16 @@
 				D0EEF29FFC7D1172EBD3E235415CE663 /* FSCalendar.debug.xcconfig */,
 				113CD97207772FA2B100265464E85D27 /* FSCalendar.release.xcconfig */,
 			);
-			name = Core;
+			name = "Support Files";
+			path = "../Target Support Files/FSCalendar";
 			sourceTree = "<group>";
 		};
-		8614032A3286CE559A2422D5622FC3FE /* FSCalendar */ = {
+		8D7E28C4182B0777475074C6332FF4EB /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				7894B1DAA41D0EF5A475DA08DD5FF896 /* FSCalendar.h */,
-				48955B09309256E8A5A99E75F78AF8B6 /* FSCalendar.m */,
-				A9E6CB649C524A6F894D776E122D1598 /* FSCalendarAppearance.h */,
-				8368AABC679533539C1440A6F65DABC7 /* FSCalendarAppearance.m */,
-				85B1DC703EBABFC8D624A0C98F193199 /* FSCalendarCalculator.h */,
-				92C46D7984C51314A90C93522E09C7A2 /* FSCalendarCalculator.m */,
-				AF52E1FA15BC22D3E06FF919F352CA9E /* FSCalendarCell.h */,
-				53EFE1FBC3C89FD207369C9B78133050 /* FSCalendarCell.m */,
-				8B55069402B02EFB0A85661C9042F9F5 /* FSCalendarCollectionView.h */,
-				A5DE673CE4F61C4608B384B5026CE34E /* FSCalendarCollectionView.m */,
-				F79C95CB154922C99CC722A0AFF19DF1 /* FSCalendarCollectionViewLayout.h */,
-				33865FA530EB0868CDC35448CC67D835 /* FSCalendarCollectionViewLayout.m */,
-				1D2FAAC9FD36AF8A3ACEC80B315665DF /* FSCalendarConstants.h */,
-				7F4372A33FC45922B55D552CE7B4193B /* FSCalendarConstants.m */,
-				F106C127A4FA8AF46A11160EAD96759B /* FSCalendarDelegationFactory.h */,
-				19FCC611D95982D6B49FF12002DD3401 /* FSCalendarDelegationFactory.m */,
-				8153E2805359CADF31F9DD266B514C8B /* FSCalendarDelegationProxy.h */,
-				AD9A92905C0FE3E0144B04292D0496BD /* FSCalendarDelegationProxy.m */,
-				62FF067BA01416C1666456B0B4D923E1 /* FSCalendarDynamicHeader.h */,
-				AC02EEE37094BD1B1422AF9DD8B79D6D /* FSCalendarExtensions.h */,
-				5A214F7371BBAF3287F0759A76865B45 /* FSCalendarExtensions.m */,
-				F3D1D6233E12C68577C8F9107D6DFD41 /* FSCalendarHeaderView.h */,
-				AC231A7C58A6A559AEFB5CCD598E27ED /* FSCalendarHeaderView.m */,
-				2C8F9A763B424F2A9EEEEF178F0B47C3 /* FSCalendarSeparatorDecorationView.h */,
-				A373F759BDD16F571253760635D6D1CD /* FSCalendarSeparatorDecorationView.m */,
-				25642518709DA2292E0F58C220038A54 /* FSCalendarStickyHeader.h */,
-				4B8E2A1915C7A98DFFFB0E2F1A73C97B /* FSCalendarStickyHeader.m */,
-				B99977B6057E2467749DF6FF5501197C /* FSCalendarTransitionCoordinator.h */,
-				AA421C677DD8898A1A63D6F918018E5C /* FSCalendarTransitionCoordinator.m */,
-				A87ECF4796EDD76A0D9611F501E98C7C /* FSCalendarWeekdayView.h */,
-				688AFA88618C7C20F9EE8F1E350A37AE /* FSCalendarWeekdayView.m */,
-				DBD192908CB1479418D8A68138D8EB9B /* Support Files */,
+				DE72D7CB7DEB8333943B952B88B07D08 /* Pods-KittyDocUIKit */,
 			);
-			name = FSCalendar;
-			path = FSCalendar;
+			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
 		9878E90BDFEC21C0FB89C922915DD9A7 /* Core */ = {
@@ -1706,8 +1673,10 @@
 		};
 		58730BE179690964D616181484866DD7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CE59C3560AD05DEEB8A6D7A79B948BA1 /* Charts.debug.xcconfig */;
+			baseConfigurationReference = C45CECAD511E5E6DAB14E45B1BCCB92C /* Pods-KittyDocUIKit.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
@@ -1716,56 +1685,23 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/Charts/Charts-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Charts/Charts-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MODULEMAP_FILE = "Target Support Files/Charts/Charts.modulemap";
-				PRODUCT_MODULE_NAME = Charts;
-				PRODUCT_NAME = Charts;
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.3;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		76B47D718D4FD6DC4F3F7BA3162BDA34 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A550CE1B604BBE5AE70BB05D1D710C92 /* CircularSlider.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/CircularSlider/CircularSlider-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/CircularSlider/CircularSlider-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/CircularSlider/CircularSlider.modulemap";
-				PRODUCT_MODULE_NAME = CircularSlider;
-				PRODUCT_NAME = CircularSlider;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1775,7 +1711,7 @@
 		};
 		76B47D718D4FD6DC4F3F7BA3162BDA34 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E448533E699C53BC8FFB2B9CC1F33B7 /* CircularSlider.release.xcconfig */;
+			baseConfigurationReference = A550CE1B604BBE5AE70BB05D1D710C92 /* CircularSlider.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
