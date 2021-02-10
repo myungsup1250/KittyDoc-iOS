@@ -11,8 +11,6 @@ class PetTableViewCell: UITableViewCell {
 
    static let identifier = "PetTableViewCell"
     
-    
-    
     let petImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "person")

@@ -134,7 +134,6 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func editAction(at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Edit") { (action, view, completion) in
-            print("수정클릭됨")
             guard let vc = self.storyboard?.instantiateViewController(identifier: "PetSetting") as? AddPetViewController else {
                 return
             }

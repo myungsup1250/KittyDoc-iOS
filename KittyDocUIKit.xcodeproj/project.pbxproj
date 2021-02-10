@@ -21,6 +21,7 @@
 		1189A0A825CC24C2008C842F /* DeleteData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1189A0A725CC24C2008C842F /* DeleteData_Pet.swift */; };
 		1189A0AB25CC291E008C842F /* ModifyData_Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1189A0AA25CC291E008C842F /* ModifyData_Pet.swift */; };
 		70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */; };
+		707940AC25D2E5AA0073315D /* WaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707940AB25D2E5AA0073315D /* WaterViewController.swift */; };
 		70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70904F2525C7F473004B8C92 /* PetTableViewCell.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
@@ -90,6 +91,7 @@
 		1189A0AA25CC291E008C842F /* ModifyData_Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData_Pet.swift; sourceTree = "<group>"; };
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingViewController.swift; sourceTree = "<group>"; };
+		707940AB25D2E5AA0073315D /* WaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterViewController.swift; sourceTree = "<group>"; };
 		70904F2525C7F473004B8C92 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
+				707940AB25D2E5AA0073315D /* WaterViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -658,6 +661,7 @@
 				113CCDD125BA5AA100BF70E5 /* ServerApi.swift in Sources */,
 				E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */,
 				E05A7C3625B58DED007680E2 /* LogInViewController(abort).swift in Sources */,
+				707940AC25D2E5AA0073315D /* WaterViewController.swift in Sources */,
 				E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

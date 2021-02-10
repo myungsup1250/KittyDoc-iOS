@@ -2,21 +2,25 @@ PODS:
   - Charts (3.6.0):
     - Charts/Core (= 3.6.0)
   - Charts/Core (3.6.0)
+  - CircularSlider (1.1.2)
   - FSCalendar (2.8.2)
 
 DEPENDENCIES:
   - Charts
+  - CircularSlider
   - FSCalendar
 
 SPEC REPOS:
   trunk:
     - Charts
+    - CircularSlider
     - FSCalendar
 
 SPEC CHECKSUMS:
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  CircularSlider: 448f9f7723b845ccd470dac41981feb192e20c50
   FSCalendar: e6a2eb9c571bf0719ed797ef807e08426753c241
 
-PODFILE CHECKSUM: 632c1c0933a5fbef9d90778ecc2433888ec7323f
+PODFILE CHECKSUM: e313a7b1d1489d96d2cd21aba8200028fb142234
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.0

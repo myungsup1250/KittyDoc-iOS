@@ -68,6 +68,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         view.addSubview(petWalk)
         view.addSubview(petLight)
         view.addSubview(petWater)
+        view.addSubview(WaterBtn)
         
         PetChange(index: 0)
     }
@@ -216,7 +217,20 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return water
     }()
     
+    let WaterBtn: UIButton = {
+       let waterBtn = UIButton()
+        waterBtn.frame = CGRect(x: 100, y: 600, width: 100, height: 50)
+        waterBtn.setTitle("물", for: .normal)
+        waterBtn.backgroundColor = .systemBlue
+        waterBtn.addTarget(self, action: #selector(didTapWaterBtn), for: .touchUpInside)
+        
+        return waterBtn
+    }()
     
+    @objc func didTapWaterBtn() {
+        let addWaterVC = self.storyboard!.instantiateViewController(identifier: "AddWater")
+        present(addWaterVC, animated: true)
+    }
     
     
     

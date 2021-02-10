@@ -7,7 +7,8 @@
 
 import UIKit
 
-class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddPetViewController: UIViewController {
+    
     let deviceManager = DeviceManager.shared
     var nameInput: UITextField!
     var weightInput: UITextField!
@@ -136,31 +137,13 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         return btn
     }()
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        picker.dismiss(animated: false) { () in
-            let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-            self.image.image = img
-        }
-    }
-    
     @objc func didTapImageAddBtn() {
         let picker = UIImagePickerController()
         picker.allowsEditing = true
         picker.delegate = self
         self.present(picker, animated: false)
     }
-    
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: false) { () in
-            
-            let alert = UIAlertController(title: "", message: "이미지 선택이 취소되었습니다.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .cancel))
-            self.present(alert, animated: false)
-            
-        }
-    }
-    
+
     let petView: UIView = {
         let petView = UIView()
         petView.frame = CGRect(x: 60, y: 300, width: 500, height: 500)
@@ -337,12 +320,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             let server:KittyDocServer = KittyDocServer()
             let modifyResponse:ServerResponse = server.petModify(data: modifyData)
             if(modifyResponse.getCode() as! Int == ServerResponse.PET_MODIFY_SUCCESS){
-                //////////////
-                //이곳이 펫 수정을 성공적으로 마쳤을때의 상황!! 아래 주석은 이런식으로 창을 닫으면 되는걸까 싶어서 써봤지만 completion이 뭔지 몰라서 실패...!
-                //펫 수정을 성공적으로 마쳤을 때 수행할 것
-                //1. 수정 창 닫아주기 O
-                //2. 냥이 설정 화면에서 드래그된 채 굳어있는 녀석 원래대로 해주기 O
-                //3. 냥이 설정 리스트뷰가 최신정보로 업데이트 되기 ...... O
                 
                 PetInfo.shared.petArray[editingPetID!].PetName = nameInput.text!
                 PetInfo.shared.petArray[editingPetID!].PetKG = Double(weightKG) ?? 0
@@ -357,12 +334,10 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                 
                 alertWithMessage(message: modifyResponse.getMessage())
                 
-                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.navigationController?.popViewController(animated: true)
                 }
                 
-                ///////////////
             }else{
                 alertWithMessage(message: modifyResponse.getMessage())
             }
@@ -381,11 +356,6 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
                 print(signUpResponse_Pet.getMessage())
             }
         }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
     
     func alertWithMessage(message input: Any) {
@@ -421,4 +391,32 @@ class AddPetViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             return false
         }
     }
+}
+
+extension AddPetViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+
+extension AddPetViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: false) { () in
+            let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+            self.image.image = img
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: false) { () in
+            
+            let alert = UIAlertController(title: "", message: "이미지 선택이 취소되었습니다.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+            self.present(alert, animated: false)
+            
+        }
+    }
+    
 }
