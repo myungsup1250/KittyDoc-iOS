@@ -188,15 +188,6 @@ extension CalendarViewController: YMCalendarDelegate {
 
 // MARK: - YMCalendarDataSource
 extension CalendarViewController: YMCalendarDataSource {
-    func calendarView(_ view: YMCalendarView, numberOfEventsAtDate date: Date) -> Int {
-        if calendar.isDateInToday(date)
-            || calendar.isDate(date, inSameDayAs: calendar.endOfMonthForDate(date))
-            || calendar.isDate(date, inSameDayAs: calendar.startOfMonthForDate(date)) {
-            return 1
-        }
-        return 0
-    }
-
     func calendarView(_ view: YMCalendarView, dateRangeForEventAtIndex index: Int, date: Date) -> DateRange? {
         if calendar.isDateInToday(date)
             || calendar.isDate(date, inSameDayAs: calendar.endOfMonthForDate(date))
@@ -204,6 +195,16 @@ extension CalendarViewController: YMCalendarDataSource {
             return DateRange(start: date, end: calendar.endOfDayForDate(date))
         }
         return nil
+
+    }
+    
+    func calendarView(_ view: YMCalendarView, numberOfEventsAtDate date: Date) -> Int {
+        if calendar.isDateInToday(date)
+            || calendar.isDate(date, inSameDayAs: calendar.endOfMonthForDate(date))
+            || calendar.isDate(date, inSameDayAs: calendar.startOfMonthForDate(date)) {
+            return 1
+        }
+        return 0
     }
 
     func calendarView(_ view: YMCalendarView, eventViewForEventAtIndex index: Int, date: Date) -> YMEventView {

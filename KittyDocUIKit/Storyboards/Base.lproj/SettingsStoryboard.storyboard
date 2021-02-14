@@ -58,7 +58,7 @@
         <!--User Info Setting View Controller-->
         <scene sceneID="Hbi-eT-KLR">
             <objects>
-                <viewController id="DwX-f7-NFa" customClass="UserInfoSettingViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditUserInfo" id="DwX-f7-NFa" customClass="UserInfoSettingViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tQ5-KW-OYs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

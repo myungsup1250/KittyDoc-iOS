@@ -18,7 +18,7 @@
 ////    var pwTF: UITextField!
 ////    var signUpBtn: UIButton!
 //
-//    var welcomeLabel: UILabel = {
+//    lazy var welcomeLabel: UILabel = {
 //        let welcomeLabel = UILabel()
 //
 //        welcomeLabel.text = "Welcome".localized
@@ -27,7 +27,7 @@
 //        return welcomeLabel
 //    }()
 //
-//    var guideLabel: UILabel = {
+//    lazy var guideLabel: UILabel = {
 //        let guideLabel = UILabel()
 //
 //        guideLabel.text = "Sign in to Continue".localized
@@ -36,14 +36,14 @@
 //        return guideLabel
 //    }()
 //
-//    var emailLabel: UILabel = {
+//    lazy var emailLabel: UILabel = {
 //        let emailLabel = UILabel()//(frame: CGRect(x: 0, y: 0, width: signInView.frame.size.width, height: 40))
 //        emailLabel.text = "Email"
 //
 //        return emailLabel
 //    }()
 //
-//    var emailTF: UITextField = {
+//    lazy var emailTF: UITextField = {
 //        let emailTF = UITextField()//(frame: CGRect(x: 0, y: 40, width: signInView.frame.size.width, height: 40))
 //        emailTF.placeholder = "kittydoc@jmsmart.co.kr"
 ////        emailTF.delegate = self
@@ -51,14 +51,14 @@
 //        return emailTF
 //    }()
 //
-//    var pwLabel: UILabel = {
+//    lazy var pwLabel: UILabel = {
 //        let pwLabel = UILabel()//(frame: CGRect(x: 0, y: 100, width: signInView.frame.size.width, height: 40))
 //        pwLabel.text = "Password"
 //
 //        return pwLabel
 //    }()
 //
-//    var pwTF: UITextField = {
+//    lazy var pwTF: UITextField = {
 //        let pwTF = UITextField()//(frame: CGRect(x: 0, y: 140, width: signInView.frame.size.width, height: 40))
 //        pwTF.placeholder = "password"
 //        pwTF.isSecureTextEntry = true
@@ -66,7 +66,7 @@
 //        return pwTF
 //    }()
 //
-//    var logInBtn: UIButton = {
+//    lazy var logInBtn: UIButton = {
 //        let logInBtn = UIButton()//(frame: CGRect(x: self.frame.midX - 150,y: 570, width: 300, height: 50))
 //
 //        logInBtn.setTitle("Sign In",for: .normal)//UIControl.State.normal
@@ -78,13 +78,13 @@
 //        return logInBtn
 //    }()
 //
-//    var askLabel: UILabel = {
+//    lazy var askLabel: UILabel = {
 //        let askLabel = UILabel()//(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
 //        askLabel.text = "Don't have an account?"
 //        return askLabel
 //    }()
 //
-//    var signUpBtn: UIButton = {
+//    lazy var signUpBtn: UIButton = {
 //        let signUpBtn = UIButton()//(frame: CGRect(x: 90, y: 0, width: 100, height: 50))
 //        signUpBtn.setTitle("Sign Up", for: .normal)
 //        signUpBtn.setTitleColor(.systemIndigo, for: .normal)
@@ -92,13 +92,13 @@
 //        return signUpBtn
 //    }()
 //
-//    var signInView: UIView = {
+//    lazy var signInView: UIView = {
 //        let signInView = UIView()
 //
 //        return signInView
 //    }()
 //
-//    var isLoading: Bool = false {
+//    lazy var isLoading: Bool = false {
 //        didSet {
 //            isLoading ? startLoading() : finishLoading()
 //        }
