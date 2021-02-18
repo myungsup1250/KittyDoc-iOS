@@ -7,9 +7,17 @@
 
 import UIKit
 import CoreBluetooth
+import UICircularProgressRing
 
 class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     let deviceManager = DeviceManager.shared
+    
+    var waterValue: Int = 0 {
+        didSet {
+            petWater.text = "수분량: \(waterValue)"
+            waterRing.value = CGFloat(waterValue)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +81,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         view.addSubview(petLight)
         view.addSubview(petWater)
         view.addSubview(WaterBtn)
+        view.addSubview(waterRing)
         
         if !PetInfo.shared.petArray.isEmpty {
             petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
@@ -99,7 +108,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 //        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
 //        print("HomeViewController.viewDidDisappear()")
 //    }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        waterValue = UserDefaults.standard.integer(forKey: "waterValue")
+    }
+        
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
     }
@@ -242,10 +254,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return light
     }()
     
-    let petWater: UILabel = {
+    lazy var petWater: UILabel = {
         let water = UILabel()
         water.frame = CGRect(x: 100, y: 550, width: 300, height: 50)
-        water.text = "수분량 : "
+        water.text = "수분량 : \(waterValue)"
         
         return water
     }()
@@ -259,11 +271,33 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         return waterBtn
     }()
+
     
     @objc func didTapWaterBtn() {
-        let addWaterVC = self.storyboard!.instantiateViewController(identifier: "AddWater")
-        present(addWaterVC, animated: true)
+        performSegue(withIdentifier: "AddWater", sender: self)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddWater" {
+            let destinationVC = segue.destination as! WaterViewController
+            destinationVC.water.setValue(Float(waterValue), animated: true)
+            
+        }
+        
+    }
+    
+    lazy var waterRing: UICircularProgressRing = {
+       let waterRing = UICircularProgressRing()
+        waterRing.frame = CGRect(x: 200, y: 500, width: 100, height: 100)
+        waterRing.style = .ontop
+        waterRing.outerRingColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        waterRing.innerRingColor = .systemBlue
+        waterRing.value = CGFloat(waterValue)
+        waterRing.minValue = 0
+        waterRing.maxValue = 300
+        return waterRing
+    }()
+    
     
     
     

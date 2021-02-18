@@ -20,6 +20,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="71C-0Q-xmI"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="14l-pv-vWW" kind="show" identifier="AddWater" id="lL4-ex-lXh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AfZ-X0-KfI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -35,10 +38,11 @@
                         <viewLayoutGuide key="safeArea" id="vs0-gL-gwy"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="jlt-RX-6P1"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cyj-4x-5EZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1512" y="-721"/>
+            <point key="canvasLocation" x="1599" y="-726"/>
         </scene>
         <!--Home-->
         <scene sceneID="Bym-FJ-oZI">

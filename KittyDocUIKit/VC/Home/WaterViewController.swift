@@ -14,12 +14,10 @@ class WaterViewController: UIViewController {
     static let identifier = "AddWater"
     
     override func viewDidLoad() {
-        
         //view.addSubview(waterSlide)
-        view.addSubview(waterLabel)
         view.addSubview(water)
+        view.addSubview(submitBtn)
         water.frame = view.frame
-        
     }
     
 //    let waterSlide: UISlider = {
@@ -31,12 +29,6 @@ class WaterViewController: UIViewController {
 //        return slider
 //    }()
     
-    lazy var waterLabel: UILabel = {
-       let label = UILabel()
-        label.frame = CGRect(x: 50, y: 450, width: 100, height: 50)
-        //label.text = String(format: "%.0f", waterSlide.maximumValue / 2)
-        return label
-    }()
     
     let water: CircularSlider = {
        let slider = CircularSlider()
@@ -53,8 +45,21 @@ class WaterViewController: UIViewController {
         return slider
     }()
     
-    @objc func waterChanged() {
-        //waterLabel.text = String(format: "%.0f", waterSlide.value)
+    let submitBtn: UIButton = {
+       let button = UIButton()
+        button.setTitle("확인", for: .normal)
+        button.frame = CGRect(x: 250, y: 600, width: 100, height: 50)
+        button.backgroundColor = .systemBlue
+        button.addTarget(self, action: #selector(closeModal), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func closeModal() {
+        UserDefaults.standard.setValue(Int(water.value), forKey: "waterValue")
+        
+        self.navigationController?.popViewController(animated: true)
     }
+    
+    
     
 }
