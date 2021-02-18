@@ -18,6 +18,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Analysis"
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
 
         if self.traitCollection.userInterfaceStyle == .light {
             userInterfaceStyle = .light
@@ -35,6 +36,16 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         setConstraints()
 
         chart.delegate = self
+    }
+    
+//    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
+//        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
+//        print("AnalysisViewController.viewDidDisappear()")
+//    }
+    
+    // receiveSyncDataDone() will be called when Receiving SyncData Done!
+    @objc func receiveSyncDataDone() {
+        print("\n<<< AnalysisViewController.receiveSyncDataDone() >>>")        
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

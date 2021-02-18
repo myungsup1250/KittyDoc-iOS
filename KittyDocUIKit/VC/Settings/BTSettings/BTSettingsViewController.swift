@@ -113,8 +113,6 @@ extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
         print("uuid : \(peripheralData.peripheral!.identifier.uuidString)")
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
 }
 
 extension BTSettingsViewController: DeviceManagerDelegate {
@@ -169,7 +167,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
         }
         print("[-]onBluetoothNotAccessible()")
     }
-    
+
     func onDevicesFound(peripherals: [PeripheralData]) {// peripherals 사용?
         print("[+]onDevicesFound()")
         // 찾은 장치는 이미 테이블뷰에 잘 보이니, viewReloadTimer만 작동 중지시킨다?
@@ -177,16 +175,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
         tableView.reloadData()// 검색된 기기 모두 보여주다가 foundDevices 정렬 후에 reloadData()하거나, 모든 기기 다 찾은 후에 보여줄 것인가?
         print("[-]onDevicesFound()")
     }
-    
-    func onSyncCompleted() {
-        DispatchQueue.main.async {
-            let alert: UIAlertController = UIAlertController(title: "Sync Completed!", message: "Synchronization Completed!", preferredStyle: .alert)
-            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alert.addAction(cancel)
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
+
     func onConnectionFailed() {
         DispatchQueue.main.async {
             let alert: UIAlertController = UIAlertController(title: "Failed to Connect!", message: "Failed to Connect to KittyDoc Device!", preferredStyle: .alert)
@@ -215,11 +204,21 @@ extension BTSettingsViewController: DeviceManagerDelegate {
 
     }
     
+    func onDfuTargFound(peripheral: CBPeripheral) {
+        DispatchQueue.main.async {
+            let alert: UIAlertController = UIAlertController(title: "Found DFU Device!", message: "There is a DFU Device!", preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    // // // // // // // // // // // // // // // // // // // //
+    // Delegate 분리? 21.02.14
+    
     func onSysCmdResponse(data: Data) {
         print("[+]onSysCmdResponse")
-        print("Process Percent : \(data)")
+        print("Data : \(data)")
         print("[-]onSysCmdResponse")
-
     }
     
     func onSyncProgress(progress: Int) {
@@ -234,12 +233,13 @@ extension BTSettingsViewController: DeviceManagerDelegate {
         print("[-]onReadBattery")
     }
     
-    func onDfuTargFound(peripheral: CBPeripheral) {
+    func onSyncCompleted() {
         DispatchQueue.main.async {
-            let alert: UIAlertController = UIAlertController(title: "Found DFU Device!", message: "There is a DFU Device!", preferredStyle: .alert)
+            let alert: UIAlertController = UIAlertController(title: "Sync Completed!", message: "Synchronization Completed!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
             self.present(alert, animated: true, completion: nil)
         }
     }
+    // // // // // // // // // // // // // // // // // // // //
 }

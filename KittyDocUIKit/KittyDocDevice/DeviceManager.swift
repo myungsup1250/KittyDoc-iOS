@@ -9,7 +9,7 @@
 import Foundation
 import CoreBluetooth
 
-protocol DeviceManagerDelegate {//: NSObject {
+protocol DeviceManagerDelegate {
     func onDeviceNotFound()
     func onDeviceConnected(peripheral: CBPeripheral) // 기기 연결됨
     func onDeviceDisconnected()
@@ -17,13 +17,15 @@ protocol DeviceManagerDelegate {//: NSObject {
 //    @optional
     func onBluetoothNotAccessible() // BLE Off or No Permission... etc.
     func onDevicesFound(peripherals: [PeripheralData])
-    func onSyncCompleted()
     func onConnectionFailed()
     func onServiceFound()// 장비에 필요한 서비스/캐랙터리스틱을 모두 찾음. 그냥 연결만하면 서비스 접근시 크래시
+    func onDfuTargFound(peripheral: CBPeripheral)
+}
+protocol DeviceManagerSecondDelegate {
     func onSysCmdResponse(data: Data)
     func onSyncProgress(progress: Int)
     func onReadBattery(percent: Int)
-    func onDfuTargFound(peripheral: CBPeripheral)
+    func onSyncCompleted()
 }
 
 class DeviceManager: NSObject {
@@ -39,6 +41,7 @@ class DeviceManager: NSObject {
     public static let COMMAND_BATTERY = String("battery")
 
     var delegate: DeviceManagerDelegate?
+    var secondDelegate: DeviceManagerSecondDelegate?
     var commandQueue: [String] = [String]()// 연결 후 실행할 명령 큐 // @property (strong, nonatomic) NSMutableArray *commandQueue;
     var foundDevices: [PeripheralData] = [PeripheralData]()
     
@@ -77,10 +80,10 @@ class DeviceManager: NSObject {
 //        BOOL isScanningDfuTarg;
 //    }
     var maxRSSI : Int32 = 0
-    private var _isConnected : Bool = false
-    private var _isSyncServiceFound : Bool = false
-    private var _isRequiredServicesFound : Bool  = false// 필요 서비스들 모두 찾았는가?
-    private var _isScanningDfuTarg : Bool = false
+    private var _isConnected: Bool = false
+    private var _isSyncServiceFound: Bool = false
+    private var _isRequiredServicesFound: Bool  = false// 필요 서비스들 모두 찾았는가?
+    private var _isScanningDfuTarg: Bool = false
     // https://medium.com/ios-development-with-swift/%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0-get-set-didset-willset-in-ios-a8f2d4da5514 참고: Getter & Setter
     public var isConnected: Bool {
         get {
@@ -126,7 +129,6 @@ class DeviceManager: NSObject {
     // 21.01.31 totalSyncBytes => totalSyncBytesLeft 용도 변경?
 
     private override init() {
-//        super.init()
         print("DeviceManager.init()")
         
         self.delegate = nil
@@ -158,7 +160,9 @@ class DeviceManager: NSObject {
         self.firmwareVersion = String("") // 빈 문자열로 정의?
         self._batteryLevel = -1
     }
-    
+}
+
+extension DeviceManager {
     func resetCharacteristics() {
         self.syncControlCharacteristic = nil
         self.syncDataCharacteristic = nil
@@ -179,7 +183,6 @@ class DeviceManager: NSObject {
         
         if (self.peripheral != nil && self.manager != nil) {
             self.manager!.cancelPeripheralConnection(self.peripheral!)
-            // Value of optional type 'CBPeripheral?' must be unwrapped to a value of type 'CBPeripheral'
 
             // 연결 끊으면 해당 기기 자동연결하지 않도록
             self.removePeripheral()
@@ -216,14 +219,12 @@ class DeviceManager: NSObject {
 
     func removePeripheral() {
         self.isRequiredServicesFound = false
-        
         self.peripheral = nil
         self.resetCharacteristics()
-        self.foundDevices.removeAll() // self.foundDevices?.removeAllObjects()
+        self.foundDevices.removeAll()
         
         UserDefaults.standard.removeObject(forKey: DeviceManager.KEY_DICTIONARY)
         UserDefaults.standard.synchronize()
-
     }
 
     func savedDeviceUUIDString() -> String? {

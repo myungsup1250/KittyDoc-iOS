@@ -120,9 +120,6 @@ extension DeviceManager: CBCentralManagerDelegate {
         }
         //print("didDiscovorPeripheral : \(advertisementData["kCBAdvDataLocalName"] ?? "-"), RSSI : \(RSSI.intValue)")
         //Keys : "kCBAdvDataRxSecondaryPHY", "kCBAdvDataServiceUUIDs", "kCBAdvDataLocalName", "kCBAdvDataRxPrimaryPHY", "kCBAdvDataIsConnectable", "kCBAdvDataTimestamp"
-//        ["kCBAdvDataServiceUUIDs": <__NSArrayM 0x283319530>(Battery, Device Information, FFFA, FFFE),
-//         "kCBAdvDataIsConnectable": 1, "kCBAdvDataRxPrimaryPHY": 1, "kCBAdvDataRxSecondaryPHY": 0,
-//         "kCBAdvDataLocalName": PuppyDoc, "kCBAdvDataTimestamp": 633509251.352404]
 
         if isScanningDfuTarg {
             central.stopScan()
@@ -223,8 +220,10 @@ extension DeviceManager: CBCentralManagerDelegate {
         isRequiredServicesFound = false
 //        pred = 0;
         // 기존 장비 지우고 -> 장비에서 연결 끊은 경우 지워지면 안됨. 앱에서 끊는 경우에만 지우자.
-//        [self removePeripheral];
-        
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+//        self.removePeripheral()
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
         guard self.delegate?.onDeviceDisconnected() != nil else {
             print("self.delegate?.onDeviceDisconnected() == nil!(didDisconnectPeripheral)")
             return
@@ -245,15 +244,11 @@ extension DeviceManager: CBPeripheralDelegate {
         }
         //print(peripheral.state) // 1 service exist
         //print("Discovered Services : \(services.count)") // 1 service exist
-        //print("Service Info :", terminator: " ")//\(services)\n")
-        //peripheral.canSendWriteWithoutResponse == true
-        //for service in services {
-        //    print("<\(service.uuid)>,", terminator: " ")
-        //}
         guard peripheral == self.peripheral else {
             print("peripheral != self.peripheral!(didDiscoverServices)")
             return
         }
+        
         for service: CBService in services {
             print("Discovered service : \(service.uuid)")//\(service.uuid.uuidString)")
             if service.uuid.isEqual(PeripheralUUID.SYNC_SERVICE_UUID) {
@@ -264,7 +259,6 @@ extension DeviceManager: CBPeripheralDelegate {
             self.peripheral!.discoverCharacteristics(nil, for: service)
         }
         if isSyncServiceFound {
-            //@@@
             // Found KittyDoc
             guard self.delegate?.onDeviceConnected(peripheral: peripheral) != nil else {
                 print("self.delegate?.onDeviceConnected(:) == nil!(didDiscoverServices)")
@@ -316,7 +310,7 @@ extension DeviceManager: CBPeripheralDelegate {
     }
     
     func searchSyncRequiredCharacteristics(_ service: CBService) {
-        print("[+] searchSyncRequiredCharacteristics()")
+        print("[+]searchSyncRequiredCharacteristics()")
 
         self.syncControlCharacteristic = nil
         self.syncDataCharacteristic = nil
@@ -334,20 +328,16 @@ extension DeviceManager: CBPeripheralDelegate {
                 }
             }
         }
-        print("[-] searchSyncRequiredCharacteristics() DONE")
+        print("[-]searchSyncRequiredCharacteristics()")
     }
     
     func startSync() {
-        guard (self.syncControlCharacteristic != nil && self.syncDataCharacteristic != nil) else {
-            print("Required sync service not found!(startSync)")
-            return
-        }
-        guard self.peripheral != nil else {
-            print("self.peripheral == nil!(startSync)")
+        guard (self.syncControlCharacteristic != nil && self.syncDataCharacteristic != nil && self.peripheral != nil) else {
+            print("Required sync service not found! or self.peripheral == nil!(startSync)")
             return
         }
         print("\n<<< Start sync... >>>")
-        
+
         // 기기가 여러대인 경우 대비하여 DB를 싹 지우자
 //        CoreDataManager *cdm = [CoreDataManager sharedManager];
 //        [cdm resetDB];
@@ -385,16 +375,15 @@ extension DeviceManager: CBPeripheralDelegate {
             var battery: UInt8 = 0
             if self.batteryCharacteristic != nil {
                 //print("self.batteryCharacteristic!.value!.count : \(self.batteryCharacteristic!.value!.count)")
-                battery = UInt8(self.batteryCharacteristic!.value![0]) //[self.batteryCharacteristic.value getBytes:&battery length:1];
+                battery = UInt8(self.batteryCharacteristic!.value![0])
                 //print("battery : \(battery)")
                 if bytes.count == 1 {
-                    // [self.batteryCharacteristic.value getBytes:&battery length:1];
                     battery = bytes[0]
                     self.batteryLevel = Int(battery)
                     //print("self.batteryLevel is set to \(self.batteryLevel)")
                 }
             }
-            guard self.delegate?.onReadBattery(percent: Int(battery)) != nil else {
+            guard self.secondDelegate?.onReadBattery(percent: Int(battery)) != nil else {
                 print("self.delegate?.onReadBattery(:) == nil!(didUpdateValueForCharacteristic)")
                 return
             }
@@ -441,9 +430,8 @@ extension DeviceManager: CBPeripheralDelegate {
                         print("syncData.count is less than 154")
                         return
                     }
-                    //print("syncData.count : \(syncData.count)")
+
                     let temp = syncData.subdata(in: 0..<154)
-                    //temp.append(contentsOf: syncData.subdata(in: Range(0...154-1)))
                     kittydoc_data = KittyDoc_Ext_Interface_Data_Type(data: temp)
                     self.syncDataCount += 1
                     if syncData.count == 154 {
@@ -451,20 +439,9 @@ extension DeviceManager: CBPeripheralDelegate {
                     } else {
                         syncData = syncData.advanced(by: 154) // syncData.dropFirst(154)
                     }
-                    // 중요!!! // 21.01.02 발견
-                    // advanced(by: Int)는 Sliced Array가 0부터 인덱스 시작 (0 ~ n) => (0 ~ n-k) <n-k개>
-                    // dropFirst(k: Int)는 Sliced Array가 k부터 인덱스 시작 (0 ~ n) => (k ~ n) <n-k개>
 
                     //totalSyncBytesLeft -= 154
                     //print("syncData : \(syncData.count), totalSyncBytesLeft : \(totalSyncBytesLeft)")
-                    //for i in 0..<temp.count {
-                    //    let string = String(format:"%.2X", temp[i])
-                    //    print("\(string)", terminator: " ")
-                    //    if((i%19)==18) {
-                    //        print("")
-                    //    }
-                    //}
-                    //print("")
 
 //                    if (self.totalSyncBytesLeft == 0) {
 //                        print("\tif (totalSyncBytesLeft == 0)")
@@ -492,8 +469,8 @@ extension DeviceManager: CBPeripheralDelegate {
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
                         // notify to delegate
-                        guard self.delegate?.onSyncCompleted() != nil else {
-                            print("self.delegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic1)")
+                        guard self.secondDelegate?.onSyncCompleted() != nil else {
+                            print("self.secondDelegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic1)")
                             return
                         }
                         return
@@ -540,8 +517,20 @@ extension DeviceManager: CBPeripheralDelegate {
                     }
                     print("| remainings : \(kittydoc_data.remainings), reset_num : \(kittydoc_data.reset_num), time_zone : \(kittydoc_data.time_zone), progress : \(String(format: "%03d", progress)) (\(String(format: "%06d", self.syncDataCount * 154)) / \(String(format: "%06d", totalSyncBytes)))                                                     |")
                     print("└-------------------------------------------------------------------------------------------------------------------------------------------┘")
-                    guard totalSyncBytes >= 0 && (self.delegate?.onSyncProgress(progress: progress) != nil) else {
-                        print("self.delegate?.onSyncProgress(:) == nil || totalSyncBytes < 0!(didUpdateValueForCharacteristic)")
+                    
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+                    //NotificationCenter
+                    //var name: Notification.Name = .receiveSyncDataDone
+                    //var object: Any?
+                    //var userInfo: [AnyHashable : Any]?
+                    NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
+                    //현재 HomeViewController, AnalysisViewController에 등록되어있음.
+
+                    
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+                    guard self.totalSyncBytes >= 0 && (self.secondDelegate?.onSyncProgress(progress: progress) != nil) else {
+                        print("self.secondDelegate?.onSyncProgress(:) == nil || totalSyncBytes < 0!(didUpdateValueForCharacteristic)")
                         return
                     }
                 }
@@ -564,16 +553,16 @@ extension DeviceManager: CBPeripheralDelegate {
                 helper.parseData(data: syncData)
                 
                 // notify to delegate
-                guard self.delegate?.onSyncCompleted() != nil else {
-                    print("self.delegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic2)")
+                guard self.secondDelegate?.onSyncCompleted() != nil else {
+                    print("self.secondDelegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic2)")
                     return
                 }
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
             }
         } else if characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {
             // system command 응답 처리
-            guard self.delegate?.onSysCmdResponse(data: data) != nil else {
-                print("self.delegate?.onSysCmdResponse(:) == nil!(didUpdateValueForCharacteristic)")
+            guard self.secondDelegate?.onSysCmdResponse(data: data) != nil else {
+                print("self.secondDelegate?.onSysCmdResponse(:) == nil!(didUpdateValueForCharacteristic)")
                 return
             }
         }

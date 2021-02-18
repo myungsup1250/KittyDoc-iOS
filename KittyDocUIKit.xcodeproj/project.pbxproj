@@ -65,6 +65,7 @@
 		E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E08313ED25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld */; };
 		E08313F125B0ABE300266994 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E08313F025B0ABE300266994 /* Assets.xcassets */; };
 		E08313F425B0ABE300266994 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E08313F225B0ABE300266994 /* LaunchScreen.storyboard */; };
+		E087BC0525DCF46500C12173 /* NotificationNameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E087BC0425DCF46500C12173 /* NotificationNameExtension.swift */; };
 		E0BDC30A25C8717200D2524B /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC30925C8717200D2524B /* PeripheralData.swift */; };
 		E0BDC30D25C871A500D2524B /* DeviceManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC30C25C871A500D2524B /* DeviceManagerExtension.swift */; };
 		E0BDC31225C871D400D2524B /* KittyDocUtillity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */; };
@@ -149,6 +150,7 @@
 		E083140325B0AD4600266994 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		E083140425B0AD4600266994 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E083140525B0AD4600266994 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E087BC0425DCF46500C12173 /* NotificationNameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameExtension.swift; sourceTree = "<group>"; };
 		E0BDC30925C8717200D2524B /* PeripheralData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
 		E0BDC30C25C871A500D2524B /* DeviceManagerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManagerExtension.swift; sourceTree = "<group>"; };
 		E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KittyDocUtillity.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */,
 				E0BDC31025C871D400D2524B /* SyncHelper.swift */,
 				E05A7CA125B9387B007680E2 /* MSLibrary */,
+				E087BC0425DCF46500C12173 /* NotificationNameExtension.swift */,
 			);
 			path = KittyDocDevice;
 			sourceTree = "<group>";
@@ -637,6 +640,7 @@
 				E0BDC31225C871D400D2524B /* KittyDocUtillity.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,
 				E05A7CAB25B9387B007680E2 /* ActivityIndicatorView.swift in Sources */,
+				E087BC0525DCF46500C12173 /* NotificationNameExtension.swift in Sources */,
 				E0BDC31725C8723D00D2524B /* DispatchQueueExtension.swift in Sources */,
 				70D80F3F25BEBBD700EE2666 /* AddPetViewController.swift in Sources */,
 				E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */,
