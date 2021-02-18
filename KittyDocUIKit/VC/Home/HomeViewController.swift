@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import CoreBluetooth
 import UICircularProgressRing
 
 class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    let deviceManager = DeviceManager.shared
     
     var waterValue: Int = 0 {
         didSet {
@@ -18,6 +20,13 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = "Home"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        deviceManager.secondDelegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
+        print("HomeViewController.viewDidLoad()")
+
         
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
         let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
@@ -60,15 +69,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         ////json parsing
         
     
-        super.viewDidLoad()
-        self.title = "Home"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        
         view.addSubview(petNameSelectTF)
         petNameSelectTF.inputView = pickerView
-        if !PetInfo.shared.petArray.isEmpty {
-            petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
-        }
         
         view.addSubview(petSunEx)
         view.addSubview(petVitaD)
@@ -81,14 +83,35 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         view.addSubview(WaterBtn)
         view.addSubview(waterRing)
         
+        if !PetInfo.shared.petArray.isEmpty {
+            petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+        }
+
         PetChange(index: 0)
+        
+        // // // // // // // // // // // // // // // // // // // // //
+        // 기존에 연결했었던 기기가 있으면 다시 연결하는 기능 - UserDefaults 사용?
+//        let userDefaults = UserDefaults.standard
+//        if let uuidString = userDefaults.string(forKey: "KEY") {
+//            // Will Connect Automatically
+//            DeviceManager.shared.connectPeripheral(uuid: uuidString, name: "KittyDoc")
+//
+//        } else {// userDefaults.string(forKey: "KEY") == nil
+//            // Will Not Connect Automatically
+//
+//        }
+        // // // // // // // // // // // // // // // // // // // // //
+        
     }
     
+//    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
+//        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
+//        print("HomeViewController.viewDidDisappear()")
+//    }
     override func viewWillAppear(_ animated: Bool) {
         waterValue = UserDefaults.standard.integer(forKey: "waterValue")
     }
-    
-    
+        
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
     }
@@ -154,6 +177,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         return picker
     }()
+    
+    // receiveSyncDataDone() will be called when Receiving SyncData Done!
+    @objc func receiveSyncDataDone() {
+        print("\n<<< HomeViewController.receiveSyncDataDone() >>>")
+        
+    }
     
     @objc func doneBtnPressed() {
         self.view.endEditing(true)
@@ -278,3 +307,32 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
 }
 
+extension HomeViewController: DeviceManagerSecondDelegate {
+    func onSysCmdResponse(data: Data) {
+        print("[+]onSysCmdResponse")
+        print("Data : \(data)")
+        print("[-]onSysCmdResponse")
+
+    }
+    
+    func onSyncProgress(progress: Int) {
+        print("[+]onSyncProgress")
+        print("Progress Percent : \(progress)")
+        print("[-]onSyncProgress")
+    }
+    
+    func onReadBattery(percent: Int) {
+        print("[+]onReadBattery")
+        print("batteryLevel : \(percent)")
+        print("[-]onReadBattery")
+    }
+    
+    func onSyncCompleted() {
+        DispatchQueue.main.async {
+            let alert: UIAlertController = UIAlertController(title: "Sync Completed!", message: "Synchronization Completed!", preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+}

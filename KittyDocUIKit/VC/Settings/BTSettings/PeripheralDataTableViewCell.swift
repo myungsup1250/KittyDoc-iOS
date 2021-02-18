@@ -13,10 +13,6 @@ class PeripheralDataTableViewCell: UITableViewCell {
     var rssiLabel: UILabel!
     var deviceUUID: UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
