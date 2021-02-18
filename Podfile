@@ -10,5 +10,6 @@ pod 'Charts'
 pod 'FSCalendar'
 pod 'CircularSlider'
 pod 'YMCalendar'
+pod 'UICircularProgressRing'
 
 end
