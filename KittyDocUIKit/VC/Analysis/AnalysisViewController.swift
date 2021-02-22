@@ -56,7 +56,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         super.viewDidLayoutSubviews()
         
         var entries = [BarChartDataEntry]()
-            
+
         for x in 0..<10 {
             entries.append(BarChartDataEntry(x: Double(x), y: Double(x)))
         }
@@ -149,7 +149,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         
         if deviceManager.isConnected {
             print("didTapStartSync() will start sync")
-            deviceManager.startSync()
+            //deviceManager.startSync()
+            deviceManager.getUUID()
+            //deviceManager.setRTC()
         } else {
             print("didTapStartSync() Not Connected to KittyDoc Device!")
         }

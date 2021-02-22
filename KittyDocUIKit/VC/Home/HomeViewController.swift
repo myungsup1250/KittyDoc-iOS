@@ -11,6 +11,7 @@ import UICircularProgressRing
 
 class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     let deviceManager = DeviceManager.shared
+    var count = 0
     
     var waterValue: Int = 0 {
         didSet {
@@ -23,9 +24,18 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         super.viewDidLoad()
         self.title = "Home"
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        deviceManager.delegate = self
         deviceManager.secondDelegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
         print("HomeViewController.viewDidLoad()")
+//        if deviceManager.savedDeviceUUIDString() != nil { // 저장된 기기가 있을 경우 연결 시도
+//            deviceManager.reestablishConnection()
+//        }
+        if let uuid = deviceManager.savedDeviceUUIDString() {
+            deviceManager.connectPeripheral(uuid: uuid, name: "kittydoc")
+            //deviceManager.reestablishConnection()
+        }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
 
         
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
@@ -307,12 +317,94 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
 }
 
+extension HomeViewController: DeviceManagerDelegate {
+    func onDeviceNotFound() {
+        DispatchQueue.main.async {
+            print("Couldn't find any KittyDoc Devices!")
+        }
+    }
+
+    func onDeviceConnected(peripheral: CBPeripheral) {
+        DispatchQueue.main.async {
+            print("Successfully Connected to KittyDoc Device!")
+        }
+    }
+
+    func onDeviceDisconnected() {
+        DispatchQueue.main.async {
+            let alert: UIAlertController = UIAlertController(title: "Disconnected!", message: "Disonnected from KittyDoc Device!", preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    func onBluetoothNotAccessible() {
+        print("[+]onBluetoothNotAccessible()")
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Error on Bluetooth!", message: "Please check your settings!", preferredStyle: .alert)
+            let confirm = UIAlertAction(title: "Settings", style: .default) { (alert: UIAlertAction!) in
+                if let appSettings = URL(string: UIApplication.openSettingsURLString) {//"App-Prefs:root=Bluetooth" //Banned from Apple App Store
+                    UIApplication.shared.open(appSettings, options: [:], completionHandler: { (success) in
+                        print("Settings opened: \(success)") // Prints true
+                    })
+                }
+            }
+            let cancel = UIAlertAction(title: "Dismiss", style: .destructive) { (alert: UIAlertAction!) in
+                print("Dismiss Alert")
+            }
+            alert.addAction(confirm)
+            alert.addAction(cancel)
+
+            self.present(alert, animated: true, completion: nil)
+        }
+        print("[-]onBluetoothNotAccessible()")
+    }
+
+    func onDevicesFound(peripherals: [PeripheralData]) {// peripherals 사용?
+        print("[+]onDevicesFound()")
+        DispatchQueue.main.async {
+            print("\n<<< Found some KittyDoc Devices! >>>\n")
+        }
+        print("[-]onDevicesFound()")
+    }
+
+    func onConnectionFailed() {
+        print("[+]onConnectionFailed()")
+        DispatchQueue.main.async {
+            print("\n<<< Failed to Connect to KittyDoc Device! >>>\n")
+        }
+        print("[-]onConnectionFailed()")
+    }
+    
+    func onServiceFound() {
+        //print("[+]HomeViewController.onServiceFound")
+        DispatchQueue.main.async {
+            print("\n<<< Found all required Service! >>>\n")
+        }
+        //print("[-]HomeViewController.onServiceFound")
+
+    }
+    
+    func onDfuTargFound(peripheral: CBPeripheral) {
+        DispatchQueue.main.async {
+            let alert: UIAlertController = UIAlertController(title: "Found DFU Device!", message: "There is a DFU Device!", preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+}
+
 extension HomeViewController: DeviceManagerSecondDelegate {
     func onSysCmdResponse(data: Data) {
         print("[+]onSysCmdResponse")
         print("Data : \(data)")
+        if count == 0 {
+            count += 1
+            deviceManager.setUUID(uuid: CBUUID(data: data.advanced(by: 1)))
+        }
         print("[-]onSysCmdResponse")
-
     }
     
     func onSyncProgress(progress: Int) {
