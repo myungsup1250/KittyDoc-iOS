@@ -149,8 +149,8 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         
         if deviceManager.isConnected {
             print("didTapStartSync() will start sync")
-            //deviceManager.startSync()
-            deviceManager.getUUID()
+            deviceManager.startSync()
+            //deviceManager.getUUID()
             //deviceManager.setRTC()
         } else {
             print("didTapStartSync() Not Connected to KittyDoc Device!")

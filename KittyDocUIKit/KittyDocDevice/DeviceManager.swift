@@ -286,7 +286,7 @@ extension DeviceManager {
                     var kittydocDevices: Array = Array<PeripheralData>()
                     for p in self.foundDevices {
                         if p.peripheral != nil {
-//                            if(p.peripheral!.name?.lowercased() != String("sleepdoc")) {
+//                            if(p.peripheral!.name?.lowercased() != String("sleepdoc")) {// whosecat?
                                 kittydocDevices.append(p)
 //                            }
                         }
@@ -340,7 +340,7 @@ extension DeviceManager {
             return
         }
         print("bytes : \(bytes)")
-        //self.peripheral!.writeValue(Data(bytes), for: self.sysCmdCharacteristic!, type: .withResponse)
+        self.peripheral!.writeValue(Data(bytes), for: self.sysCmdCharacteristic!, type: .withResponse)
         
         print("[-]setRTC")
     }

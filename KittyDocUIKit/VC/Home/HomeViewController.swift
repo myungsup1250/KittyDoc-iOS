@@ -399,7 +399,12 @@ extension HomeViewController: DeviceManagerDelegate {
 extension HomeViewController: DeviceManagerSecondDelegate {
     func onSysCmdResponse(data: Data) {
         print("[+]onSysCmdResponse")
-        print("Data : \(data)")
+//        print("Data : \(data)")
+//        print("data(count : \(data.count)) => ", terminator: "")
+//        for i in 0..<data.count {
+//            print("\(data[i]) ", terminator: "")
+//        }
+//        print("")
         if count == 0 {
             count += 1
             deviceManager.setUUID(uuid: CBUUID(data: data.advanced(by: 1)))

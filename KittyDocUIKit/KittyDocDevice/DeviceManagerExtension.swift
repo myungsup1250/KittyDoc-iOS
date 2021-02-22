@@ -466,6 +466,9 @@ extension DeviceManager: CBPeripheralDelegate {
                         helper.parseData(data: syncData)
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
+                        NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
+                        //현재 HomeViewController, AnalysisViewController에 등록되어있음.
+                        
                         // notify to delegate
                         guard self.secondDelegate?.onSyncCompleted() != nil else {
                             print("self.secondDelegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic1)")
@@ -515,9 +518,6 @@ extension DeviceManager: CBPeripheralDelegate {
                     print("| remainings : \(String(format: "%8d", kittydoc_data.remainings)), reset_num : \(String(format: "%8d", kittydoc_data.reset_num)), time_zone : \(String(format: "%6d", kittydoc_data.time_zone)), progress : \(String(format: "%3d", progress)) (\(String(format: "%8d", self.syncDataCount * 154)) / \(String(format: "%8d", totalSyncBytes)))                                     |")
                     print("└-------------------------------------------------------------------------------------------------------------------------------------------┘")
                     
-                    NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
-                    //현재 HomeViewController, AnalysisViewController에 등록되어있음.
-                    
                     guard self.totalSyncBytes >= 0 && (self.secondDelegate?.onSyncProgress(progress: progress) != nil) else {
                         print("self.secondDelegate?.onSyncProgress(:) == nil || totalSyncBytes < 0!(didUpdateValueForCharacteristic)")
                         return
@@ -531,22 +531,27 @@ extension DeviceManager: CBPeripheralDelegate {
             } else { // bytes[0] == 0
                 // end of sync.
                 print(">>> SYNC DONE")
-
-                if self.syncControlCharacteristic != nil {
-                    peripheral.writeValue(Data([SyncCmd.SYNC_CONTROL_DONE]), for: self.syncControlCharacteristic!, type: .withResponse)
-                    //print("writeValue(0x03) done <SYNC_CONTROL_DONE>")
+                
+                guard self.syncControlCharacteristic != nil else {
+                    print("self.syncControlCharacteristic == nil!")
+                    return
                 }
+
+                peripheral.writeValue(Data([SyncCmd.SYNC_CONTROL_DONE]), for: self.syncControlCharacteristic!, type: .withResponse)
                 
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
                 let helper: SyncHelper = SyncHelper()
                 helper.parseData(data: syncData)
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+                NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
+                //현재 HomeViewController, AnalysisViewController에 등록되어있음.
                 
                 // notify to delegate
                 guard self.secondDelegate?.onSyncCompleted() != nil else {
                     print("self.secondDelegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic2)")
                     return
                 }
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
             }
         } else if characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {
             // 17 bytes on respond.
