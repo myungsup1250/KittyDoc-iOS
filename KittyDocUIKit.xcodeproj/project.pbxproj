@@ -13,6 +13,9 @@
 		113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDEA25C42F5700BF70E5 /* PetInfo.swift */; };
 		70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */; };
 		707940AC25D2E5AA0073315D /* WaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707940AB25D2E5AA0073315D /* WaterViewController.swift */; };
+		708A280725E642DD004DCBC2 /* daySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280625E642DD004DCBC2 /* daySchedule.swift */; };
+		708A280B25E6431E004DCBC2 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280A25E6431E004DCBC2 /* CalendarCollectionViewCell.swift */; };
+		708A280E25E6437C004DCBC2 /* AddScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */; };
 		70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70904F2525C7F473004B8C92 /* PetTableViewCell.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
@@ -86,6 +89,9 @@
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingViewController.swift; sourceTree = "<group>"; };
 		707940AB25D2E5AA0073315D /* WaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterViewController.swift; sourceTree = "<group>"; };
+		708A280625E642DD004DCBC2 /* daySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = daySchedule.swift; sourceTree = "<group>"; };
+		708A280A25E6431E004DCBC2 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleViewController.swift; sourceTree = "<group>"; };
 		70904F2525C7F473004B8C92 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
@@ -247,6 +253,9 @@
 			isa = PBXGroup;
 			children = (
 				E00AE1EA25B2C550001484AC /* CalendarViewController.swift */,
+				708A280625E642DD004DCBC2 /* daySchedule.swift */,
+				708A280A25E6431E004DCBC2 /* CalendarCollectionViewCell.swift */,
+				708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -637,10 +646,12 @@
 				E0BDC31425C871D400D2524B /* CBUUIDExtension.swift in Sources */,
 				E05A7CA825B9387B007680E2 /* SyncCmd.swift in Sources */,
 				E05A7CA625B9387B007680E2 /* DeviceManager.swift in Sources */,
+				708A280E25E6437C004DCBC2 /* AddScheduleViewController.swift in Sources */,
 				E06CEAFC25E40C0000D966BB /* LoginData.swift in Sources */,
 				E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */,
 				E05A7C3325B58CBF007680E2 /* LogInViewModel.swift in Sources */,
 				70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */,
+				708A280B25E6431E004DCBC2 /* CalendarCollectionViewCell.swift in Sources */,
 				E05A7CA725B9387B007680E2 /* KittyDoc_Ext_Interface_Data_Type.swift in Sources */,
 				E05A7CA525B9387B007680E2 /* KittyDoc_10_Min_Data_Type.swift in Sources */,
 				E05A7C4625B5AB4F007680E2 /* TextFieldExtention.swift in Sources */,
@@ -668,6 +679,7 @@
 				E05A7CA925B9387B007680E2 /* PeripheralUUID.swift in Sources */,
 				E0BDC31325C871D400D2524B /* SyncHelper.swift in Sources */,
 				70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */,
+				708A280725E642DD004DCBC2 /* daySchedule.swift in Sources */,
 				E0BDC30D25C871A500D2524B /* DeviceManagerExtension.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
 				E06CEAF825E40C0000D966BB /* ServerData.swift in Sources */,
