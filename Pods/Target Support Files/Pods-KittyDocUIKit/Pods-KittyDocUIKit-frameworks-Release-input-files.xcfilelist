@@ -1,6 +1,4 @@
 ${PODS_ROOT}/Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Charts/Charts.framework
 ${BUILT_PRODUCTS_DIR}/CircularSlider/CircularSlider.framework
-${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework
 ${BUILT_PRODUCTS_DIR}/UICircularProgressRing/UICircularProgressRing.framework
-${BUILT_PRODUCTS_DIR}/YMCalendar/YMCalendar.framework

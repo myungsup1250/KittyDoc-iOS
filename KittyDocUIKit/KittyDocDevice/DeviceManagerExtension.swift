@@ -10,7 +10,7 @@ import CoreBluetooth
 
 extension DeviceManager: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        print("[+] centralManagerDidUpdateState()")
+        //print("[+] centralManagerDidUpdateState()")
         switch central.state {
         case .unknown:
             print("central.state is .unknown")
@@ -32,32 +32,36 @@ extension DeviceManager: CBCentralManagerDelegate {
                 return
             }
         case .poweredOn:
-            print("central.state is .poweredOn")
-            //print("DeviceManager will scan IoT Device")
+            print("central.state is .poweredOn, DeviceManager will scan IoT Device")
             // User Defaults에 저장된게 있으면 다시 연결
-            if self.savedDeviceUUIDString() != nil {
+            if let savedDeviceUUID = self.savedDeviceUUIDString() {
                 print("deviceManager.savedDeviceUUIDString() != nil")
-                let uuid: CBUUID? = CBUUID(string: self.savedDeviceUUIDString() ?? "")
-                // 안드 mac 형식이면 nil 이 된다?
-                let uuidTest: UUID? = UUID(uuidString: self.savedDeviceUUIDString() ?? "")
-
                 var peripherals = [CBPeripheral]()
-                var peripheralsTest = [CBPeripheral]()
-
+                let uuid: CBUUID? = CBUUID(string: savedDeviceUUID)//let uuidTest: UUID? = UUID(uuidString: self.savedDeviceUUIDString() ?? "")
+                // 안드 mac 형식이면 nil 이 된다?
+                
+                var temp = Data()
+                print("uuid : ", terminator: "")
+                for i in 0..<uuid!.data.count {//for i in 0..<uuid!.UUIDValue!.bytes.count {
+                    print("\(uuid!.data[i]) ", terminator: "")
+                }
+                print("")
+                temp.append(uuid!.data)//temp.append(contentsOf: uuid!.UUIDValue!.bytes)
+                print("Regenerated UUID : \(CBUUID(data: temp))")
+                
                 if uuid != nil {
                     peripherals = central.retrievePeripherals(withIdentifiers: [uuid!.UUIDValue!])
-                    print("peripherals attempt 1 : \(peripherals)")
-                    peripheralsTest = central.retrievePeripherals(withIdentifiers: [uuidTest!])
-                    print("peripherals attempt 2 : \(peripheralsTest)")
+                    //peripherals = central.retrievePeripherals(withIdentifiers: [uuidTest!])
+                    //print("peripherals : \(peripherals)")
                 }
                 if peripherals.count > 0 {
                     self.peripheral = peripherals[0]
                     self.peripheral!.delegate = self
                     central.connect(self.peripheral!, options: nil)
 
-                    // 장비연결 안되는 경우 대비. 20초 내로 필요 서비스를 다 찾으면 아무것도 안하고 못찾은 상태라면 타임아웃 처리.
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                        print("DispatchQueue.main.asyncAfter(deadline: .now() + 10)")
+                    // 장비연결 안되는 경우 대비. 10초 내로 필요 서비스를 다 찾으면 아무것도 안하고 못찾은 상태라면 타임아웃 처리.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        print("DispatchQueue.main.asyncAfter(deadline: .now() + 5)")
                         if (!self.isConnected || !self.isRequiredServicesFound) {
                             print("Timeout. Cancel connection.")
                             if self.peripheral != nil {
@@ -108,7 +112,7 @@ extension DeviceManager: CBCentralManagerDelegate {
         @unknown default:
             fatalError("Fatal Error in KittyDoc Device!")
         }
-        print("[-] centralManagerDidUpdateState()")
+        //print("[-] centralManagerDidUpdateState()")
     }
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
@@ -133,23 +137,16 @@ extension DeviceManager: CBCentralManagerDelegate {
         var found: Bool = false
         let rssi: Int = RSSI.intValue
         for i in 0..<self.foundDevices.count {
-            //print("\tfor loop in self.foundDevices")
             if (self.foundDevices[i].peripheral!.isEqual(peripheral) && rssi < 0) {
-                //print("\tif (self.foundDevices[i].peripheral!.isEqual(peripheral) && rssi < 0)")
                 found = true
                 // rssi 업데이트. 가끔 127이라는 엉뚱한 값이 나와서 음수인 경우만 처리? => overflow
                 self.foundDevices[i].rssi = self.foundDevices[i].rssi < rssi ? rssi : self.foundDevices[i].rssi
-//                if self.foundDevices[i].rssi < rssi {
-//                    print("\(self.foundDevices[i].rssi) < \(rssi)")
-//                    self.foundDevices[i].rssi = rssi
-//                }
+                
                 break
             }
         }
 
         if (!found && rssi < 0) {// not found and rssi < 0
-            //print("\tif (!found && rssi < 0)")
-
             // add
             var peripheralData = PeripheralData()
             peripheralData.peripheral = peripheral
@@ -158,7 +155,6 @@ extension DeviceManager: CBCentralManagerDelegate {
             print("Adding \(peripheralData.peripheral?.name ?? "Unknown") to foundDevices")
         }
         self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
-            //return obj1.rssi < obj2.rssi // 신호 약한 것이 앞으로...
             return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
         }
         //print("[-] centralManager(didDiscover)")
@@ -177,7 +173,7 @@ extension DeviceManager: CBCentralManagerDelegate {
         dict[DeviceManager.KEY_NAME] = peripheral.name
         UserDefaults.standard.setValue(dict, forKey: DeviceManager.KEY_DICTIONARY)
         UserDefaults.standard.synchronize()
-        isConnected = true
+        self.isConnected = true
         
         print("Saved device \(dict[DeviceManager.KEY_DEVICE] ?? "-") to UserDefaults!")
         
@@ -195,7 +191,7 @@ extension DeviceManager: CBCentralManagerDelegate {
         print("[+] centralManager(didFailToConnect)")
         
         print("Failed to Connect to KittyDoc Device!\n\tError: \(error?.localizedDescription ?? "-")")
-        isConnected = false
+        self.isConnected = false
 //        pred = 0;
         guard self.delegate?.onConnectionFailed() != nil else {
             print("self.delegate?.onConnectionFailed() == nil!(didFailToConnect)")
@@ -216,8 +212,8 @@ extension DeviceManager: CBCentralManagerDelegate {
         print("[+] centralManager(didDisconnectPeripheral)")
         
         print("didDisconnectPeripheral error : \(error?.localizedDescription ?? "-")")
-        isConnected = false
-        isRequiredServicesFound = false
+        self.isConnected = false
+        self.isRequiredServicesFound = false
 //        pred = 0;
         // 기존 장비 지우고 -> 장비에서 연결 끊은 경우 지워지면 안됨. 앱에서 끊는 경우에만 지우자.
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
@@ -231,7 +227,6 @@ extension DeviceManager: CBCentralManagerDelegate {
 
         print("[-] centralManager(didDisconnectPeripheral)")
     }
-
 }
 
 extension DeviceManager: CBPeripheralDelegate {
@@ -242,13 +237,13 @@ extension DeviceManager: CBPeripheralDelegate {
             print("There is no Service at all!(didDiscoverServices)")
             return
         }
-        //print(peripheral.state) // 1 service exist
-        //print("Discovered Services : \(services.count)") // 1 service exist
         guard peripheral == self.peripheral else {
             print("peripheral != self.peripheral!(didDiscoverServices)")
             return
         }
         
+        //print(peripheral.state) // 1 service exist
+        //print("Discovered Services : \(services.count)") // 1 service exist
         for service: CBService in services {
             print("Discovered service : \(service.uuid)")//\(service.uuid.uuidString)")
             if service.uuid.isEqual(PeripheralUUID.SYNC_SERVICE_UUID) {
@@ -307,6 +302,12 @@ extension DeviceManager: CBPeripheralDelegate {
             //peripheral.discoverDescriptors(for: characteristic)
         }
         //print("[-] didDiscoverCharacteristicsForService")
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: Error?) {
+        print("[+]didReadRSSI()")
+        self.curRSSI = Int(truncating: RSSI)
+        print("[-]didReadRSSI()")
     }
     
     func searchSyncRequiredCharacteristics(_ service: CBService) {
@@ -374,13 +375,13 @@ extension DeviceManager: CBPeripheralDelegate {
         } else if characteristic.uuid.isEqual(PeripheralUUID.BATTERY_CHAR_UUID) {
             var battery: UInt8 = 0
             if self.batteryCharacteristic != nil {
-                //print("self.batteryCharacteristic!.value!.count : \(self.batteryCharacteristic!.value!.count)")
+                print("self.batteryCharacteristic!.value!.count : \(self.batteryCharacteristic!.value!.count)")
                 battery = UInt8(self.batteryCharacteristic!.value![0])
-                //print("battery : \(battery)")
+                print("battery : \(battery)")
                 if bytes.count == 1 {
                     battery = bytes[0]
                     self.batteryLevel = Int(battery)
-                    //print("self.batteryLevel is set to \(self.batteryLevel)")
+                    print("self.batteryLevel is set to \(self.batteryLevel)")
                 }
             }
             guard self.secondDelegate?.onReadBattery(percent: Int(battery)) != nil else {
@@ -390,10 +391,8 @@ extension DeviceManager: CBPeripheralDelegate {
         } else if characteristic.uuid.isEqual(PeripheralUUID.SYNC_CONTROL_CHAR_UUID) {
             //print("[+] Sync Control Characteristic value : \(characteristic.value!)")
             
-            //print("bytes[0] : \(bytes[0])", terminator: "")//", 0x11 : \(0x11), 0x12 : \(0x12), 0x13 : \(0x13)")
             if bytes[0] == SyncCmd.SYNC_NOTI_READY || bytes[0] == SyncCmd.SYNC_NOTI_NEXT_READY {
-                // 첫 20bytes를 읽어들인다
-                //print(", Reading sync data...")// <totalSyncBytesLeft : \(totalSyncBytesLeft)>", terminator: "")
+                //print("Reading sync data...")// <totalSyncBytesLeft : \(totalSyncBytesLeft)>", terminator: "")
                 //self.totalSyncBytesLeft = 0
                 //print("After : totalSyncBytesLeft : \(totalSyncBytesLeft)")
                 guard (self.peripheral != nil && self.syncDataCharacteristic != nil) else {
@@ -401,12 +400,11 @@ extension DeviceManager: CBPeripheralDelegate {
                     return
                 }
                 self.peripheral!.readValue(for: self.syncDataCharacteristic!)
+            } else if data[0] == SyncCmd.SYNC_NOTI_DONE {
+                print(">>> SYNC DONE CHECKED! <<<")
+            } else if data[0] == SyncCmd.SYNC_NOTI_ERROR {
+                print(">>> ERROR IN SYNC PROCESS! <<<")
             }
-//            else if data[0] == SyncCmd.SYNC_NOTI_DONE {
-//                print(">>> SYNC DONE CHECKED! <<<")
-//            } else if data[0] == SyncCmd.SYNC_NOTI_ERROR {
-//                print(">>> ERROR IN SYNC PROCESS! <<<")
-//            }
         } else if characteristic.uuid.isEqual(PeripheralUUID.SYNC_DATA_CHAR_UUID) {
             //print("[+] Sync Data Characteristic value=\(characteristic.value!)")
 
@@ -468,6 +466,9 @@ extension DeviceManager: CBPeripheralDelegate {
                         helper.parseData(data: syncData)
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
+                        NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
+                        //현재 HomeViewController, AnalysisViewController에 등록되어있음.
+                        
                         // notify to delegate
                         guard self.secondDelegate?.onSyncCompleted() != nil else {
                             print("self.secondDelegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic1)")
@@ -479,7 +480,7 @@ extension DeviceManager: CBPeripheralDelegate {
                     print("┌-------------------------------------------------------------------------------------------------------------------------------------------┐")
                     print("|   s_tick   |       s_time        |   e_tick   |       s_time        |  steps  |  t_lux  | avg_lux |  avg_k  |  vct_x  |  vct_y  |  vct_z  |")
                     for i in 0...5 {
-                        let sensorData:SensorData = SensorData(_object: kittydoc_data.d[i], _petID: UserInfo.shared.UserID, _petLB: 0)
+                        let sensorData:SensorData = SensorData(_object: kittydoc_data.d[i], _petID: UserInfo.shared.UserID, _petLB: PetInfo.shared.petArray.first!.PetLB)
                         let server:KittyDocServer = KittyDocServer()
                         let sensorResponse:ServerResponse = server.sensorSend(data: sensorData)
                         if(sensorResponse.getCode() as! Int == ServerResponse.SENSOR_SUCCESS){
@@ -488,18 +489,17 @@ extension DeviceManager: CBPeripheralDelegate {
                             print(sensorResponse.getMessage())
                         }
 
-                        //print("kittydoc_data.d[\(i)]")
                         let s_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].s_tick))
                         let e_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].e_tick))
                         print("| \(String(format: "%10d", kittydoc_data.d[i].s_tick)) | \(s_time) |", terminator: "")
-                        print("| \(String(format: "%10d", kittydoc_data.d[i].e_tick)) | \(e_time) |", terminator: "")
-                        print(" \(String(format: "%07d", kittydoc_data.d[i].steps)) |", terminator: "")
-                        print(" \(String(format: "%07d", kittydoc_data.d[i].t_lux)) |", terminator: "")
-                        print(" \(String(format: "%07d", kittydoc_data.d[i].avg_lux)) |", terminator: "")
-                        print(" \(String(format: "%07d", kittydoc_data.d[i].avg_k)) |", terminator: "")
-                        print(" \(String(format: "%07d", kittydoc_data.d[i].vector_x)) |", terminator: "")
-                        print(" \(String(format: "%07d", kittydoc_data.d[i].vector_y)) |", terminator: "")
-                        print(" \(String(format: "%07d", kittydoc_data.d[i].vector_z)) |")
+                        print(" \(String(format: "%10d", kittydoc_data.d[i].e_tick)) | \(e_time) |", terminator: "")
+                        print(" \(String(format: "%7d", kittydoc_data.d[i].steps)) |", terminator: "")
+                        print(" \(String(format: "%7d", kittydoc_data.d[i].t_lux)) |", terminator: "")
+                        print(" \(String(format: "%7d", kittydoc_data.d[i].avg_lux)) |", terminator: "")
+                        print(" \(String(format: "%7d", kittydoc_data.d[i].avg_k)) |", terminator: "")
+                        print(" \(String(format: "%7d", kittydoc_data.d[i].vector_x)) |", terminator: "")
+                        print(" \(String(format: "%7d", kittydoc_data.d[i].vector_y)) |", terminator: "")
+                        print(" \(String(format: "%7d", kittydoc_data.d[i].vector_z)) |")
                     }
                     print("├-------------------------------------------------------------------------------------------------------------------------------------------┤")
 
@@ -515,20 +515,9 @@ extension DeviceManager: CBPeripheralDelegate {
                     } else if progress > 100 {
                         progress = 100
                     }
-                    print("| remainings : \(kittydoc_data.remainings), reset_num : \(kittydoc_data.reset_num), time_zone : \(kittydoc_data.time_zone), progress : \(String(format: "%03d", progress)) (\(String(format: "%06d", self.syncDataCount * 154)) / \(String(format: "%06d", totalSyncBytes)))                                                     |")
+                    print("| remainings : \(String(format: "%8d", kittydoc_data.remainings)), reset_num : \(String(format: "%8d", kittydoc_data.reset_num)), time_zone : \(String(format: "%6d", kittydoc_data.time_zone)), progress : \(String(format: "%3d", progress)) (\(String(format: "%8d", self.syncDataCount * 154)) / \(String(format: "%8d", totalSyncBytes)))                                     |")
                     print("└-------------------------------------------------------------------------------------------------------------------------------------------┘")
                     
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-                    //NotificationCenter
-                    //var name: Notification.Name = .receiveSyncDataDone
-                    //var object: Any?
-                    //var userInfo: [AnyHashable : Any]?
-                    NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
-                    //현재 HomeViewController, AnalysisViewController에 등록되어있음.
-
-                    
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-
                     guard self.totalSyncBytes >= 0 && (self.secondDelegate?.onSyncProgress(progress: progress) != nil) else {
                         print("self.secondDelegate?.onSyncProgress(:) == nil || totalSyncBytes < 0!(didUpdateValueForCharacteristic)")
                         return
@@ -542,29 +531,46 @@ extension DeviceManager: CBPeripheralDelegate {
             } else { // bytes[0] == 0
                 // end of sync.
                 print(">>> SYNC DONE")
-
-                if self.syncControlCharacteristic != nil {
-                    peripheral.writeValue(Data([SyncCmd.SYNC_CONTROL_DONE]), for: self.syncControlCharacteristic!, type: .withResponse)
-                    //print("writeValue(0x03) done <SYNC_CONTROL_DONE>")
+                
+                guard self.syncControlCharacteristic != nil else {
+                    print("self.syncControlCharacteristic == nil!")
+                    return
                 }
+
+                peripheral.writeValue(Data([SyncCmd.SYNC_CONTROL_DONE]), for: self.syncControlCharacteristic!, type: .withResponse)
                 
 // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
                 let helper: SyncHelper = SyncHelper()
                 helper.parseData(data: syncData)
+// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
+
+                NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
+                //현재 HomeViewController, AnalysisViewController에 등록되어있음.
                 
                 // notify to delegate
                 guard self.secondDelegate?.onSyncCompleted() != nil else {
                     print("self.secondDelegate?.onSyncCompleted() == nil!(didUpdateValueForCharacteristic2)")
                     return
                 }
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
             }
-        } else if characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {
+        } else if characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {// 17 bytes on respond.
+            // getUUID 호출 응답 (17Bytes) 11 218 36 68 179 86 114 75 88 164 51 166 109 100 235 140 4
+            // setUUID 호출 응답 (17Bytes) 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+            print("\n[+]characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID)\n")
             // system command 응답 처리
+            print("data(count : \(bytes.count)) => ", terminator: "")
+            for i in 0..<bytes.count {
+                print("\(bytes[i]) ", terminator: "")
+                //print("\(String(format: "%c", bytes[i])) ", terminator: "")
+            }
+            print("")
+            
+            print("uuid : \(CBUUID(data: data.advanced(by: 1)))")
             guard self.secondDelegate?.onSysCmdResponse(data: data) != nil else {
                 print("self.secondDelegate?.onSysCmdResponse(:) == nil!(didUpdateValueForCharacteristic)")
                 return
             }
+            print("\n[-]characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID)\n")
         }
         
         if (self.syncControlCharacteristic != nil && self.syncDataCharacteristic != nil && self.sysCmdCharacteristic != nil && !self.firmwareVersion.isEmpty && !self.isRequiredServicesFound) {

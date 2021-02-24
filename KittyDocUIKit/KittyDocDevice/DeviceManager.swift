@@ -42,8 +42,8 @@ class DeviceManager: NSObject {
 
     var delegate: DeviceManagerDelegate?
     var secondDelegate: DeviceManagerSecondDelegate?
-    var commandQueue: [String] = [String]()// 연결 후 실행할 명령 큐 // @property (strong, nonatomic) NSMutableArray *commandQueue;
-    var foundDevices: [PeripheralData] = [PeripheralData]()
+    var commandQueue: [String]// 연결 후 실행할 명령 큐 // @property (strong, nonatomic) NSMutableArray *commandQueue;
+    var foundDevices: [PeripheralData]
     
     var peripheral: CBPeripheral?
     var manager: CBCentralManager?
@@ -51,8 +51,8 @@ class DeviceManager: NSObject {
     var syncDataCharacteristic: CBCharacteristic?
     var sysCmdCharacteristic: CBCharacteristic?
     var batteryCharacteristic: CBCharacteristic?
-    var firmwareVersion: String = ""
-    private var _batteryLevel: Int = -1
+    var firmwareVersion: String
+    private var _batteryLevel: Int
     public var batteryLevel: Int { // batteryLevel : { [0, 100] : normal state } + {-1 : initial state(not set)}
         get {
             return self._batteryLevel
@@ -68,22 +68,12 @@ class DeviceManager: NSObject {
             self._batteryLevel = newLevel
         }
     }
-
-//    @implementation DeviceManager
-//    {
-//        long maxRSSI;
-//        BOOL isConnected;
-//        BOOL isSyncServiceFound;
-//        BOOL isRequiredServicesFound; // 필요 서비스들 모두 찾아서 준비가 다 됐는지
-//        NSMutableData *syncData;
-//        UInt32 totalSyncBytes;  // 동기화할 전체 바이트수
-//        BOOL isScanningDfuTarg;
-//    }
-    var maxRSSI : Int32 = 0
-    private var _isConnected: Bool = false
-    private var _isSyncServiceFound: Bool = false
-    private var _isRequiredServicesFound: Bool  = false// 필요 서비스들 모두 찾았는가?
-    private var _isScanningDfuTarg: Bool = false
+    var curRSSI: Int
+    var maxRSSI: Int32
+    private var _isConnected: Bool
+    private var _isSyncServiceFound: Bool
+    private var _isRequiredServicesFound: Bool// 필요 서비스들 모두 찾았는가?
+    private var _isScanningDfuTarg: Bool
     // https://medium.com/ios-development-with-swift/%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0-get-set-didset-willset-in-ios-a8f2d4da5514 참고: Getter & Setter
     public var isConnected: Bool {
         get {
@@ -122,64 +112,63 @@ class DeviceManager: NSObject {
     public var syncDataCount: Int// KittyDoc 기기로부터 받은 KittyDoc_Ext_Interface_Data_Type 데이터 수
     public var totalSyncBytes: Int// 동기화할 전체 바이트수
     public var totalSyncBytesLeft: Int// 앞으로 동기화할 남은 바이트수
-//    public var syncData: Data = Data()
-//    public var syncDataCount: Int = 0// KittyDoc 기기로부터 받은 KittyDoc_Ext_Interface_Data_Type 데이터 수
-//    public var totalSyncBytes: Int = 0// 동기화할 전체 바이트수
-//    public var totalSyncBytesLeft: Int = 0// 앞으로 동기화할 남은 바이트수
     // 21.01.31 totalSyncBytes => totalSyncBytesLeft 용도 변경?
 
     private override init() {
         print("DeviceManager.init()")
         
-        self.delegate = nil
-
-        self.maxRSSI = 0
-
-        self._isConnected = false
-        self._isSyncServiceFound = false
-        self._isRequiredServicesFound = false
-        self._isScanningDfuTarg = false
-
-        self.syncData = Data()
-        self.syncDataCount = 0
-        self.totalSyncBytes = 0
-        self.totalSyncBytesLeft = 0
-
-        self.syncControlCharacteristic = nil
-        self.syncDataCharacteristic = nil
+        delegate = nil
+        secondDelegate = nil
+        commandQueue = [String]()// 연결 후 실행할 명령 큐
+        foundDevices = [PeripheralData]()
+            
+        peripheral = nil
+        manager = nil
+        syncControlCharacteristic = nil
+        syncDataCharacteristic = nil
+        sysCmdCharacteristic = nil
+        batteryCharacteristic = nil
+        firmwareVersion = ""
         
-        self.commandQueue.removeAll()
-        self.foundDevices.removeAll()
-
-        self.peripheral = nil
-        self.manager = nil
-        self.syncControlCharacteristic = nil
-        self.syncDataCharacteristic = nil
-        self.sysCmdCharacteristic = nil
-        self.batteryCharacteristic = nil
-        self.firmwareVersion = String("") // 빈 문자열로 정의?
-        self._batteryLevel = -1
+        _batteryLevel = -1
+        //batteryLevel = 100
+        curRSSI = 0
+        maxRSSI = 0
+        
+        _isConnected = false
+        _isSyncServiceFound = false
+        _isRequiredServicesFound = false// 필요 서비스들 모두 찾았는가?
+        _isScanningDfuTarg = false
+        //isConnected
+        //isSyncServiceFound
+        //isRequiredServicesFound
+        //isScanningDfuTarg
+        
+        syncData = Data()
+        syncDataCount = 0
+        totalSyncBytes = 0
+        totalSyncBytesLeft = 0
     }
 }
 
 extension DeviceManager {
     func resetCharacteristics() {
-        self.syncControlCharacteristic = nil
-        self.syncDataCharacteristic = nil
-        self.sysCmdCharacteristic = nil
-        self.batteryCharacteristic = nil
+        syncControlCharacteristic = nil
+        syncDataCharacteristic = nil
+        sysCmdCharacteristic = nil
+        batteryCharacteristic = nil
     }
     
     func removeDevices() { // 앱에서 장비를 지움
-        self.disconnect()
-        self.removePeripheral()
-        self.resetCharacteristics()
-        self.foundDevices.removeAll() // self.foundDevices?.removeAllObjects()
+        disconnect()
+        removePeripheral()
+        resetCharacteristics()
+        foundDevices.removeAll() // self.foundDevices?.removeAllObjects()
     }
     
     func disconnect() { // 연결만 끊음
-        self.isRequiredServicesFound = false
-        self.isConnected = false
+        isRequiredServicesFound = false
+        isConnected = false
         
         if (self.peripheral != nil && self.manager != nil) {
             self.manager!.cancelPeripheralConnection(self.peripheral!)
@@ -218,6 +207,7 @@ extension DeviceManager {
     }
 
     func removePeripheral() {
+        print("removePeripheral()")
         self.isRequiredServicesFound = false
         self.peripheral = nil
         self.resetCharacteristics()
@@ -228,14 +218,15 @@ extension DeviceManager {
     }
 
     func savedDeviceUUIDString() -> String? {
-//        return nil// bingo에서는 안쓴다 => 요건 서버에서 수정하기 전까지 막아둠 ??
-        let dict: Dictionary? = UserDefaults.standard.dictionary(forKey: DeviceManager.KEY_DICTIONARY)
-        guard (dict != nil) else {
+        print("savedDeviceUUIDString()", terminator: " ")
+        let dict = UserDefaults.standard.dictionary(forKey: DeviceManager.KEY_DICTIONARY)
+        guard dict != nil else {
             print("\(DeviceManager.KEY_DICTIONARY) does not exist!")
             return nil
         }
         
         let uuid: String? = dict![DeviceManager.KEY_DEVICE] as? String
+        print("will return uuid(\(uuid!)")
         return uuid
     }
 
@@ -259,6 +250,7 @@ extension DeviceManager {
     }
     
     func reestablishConnection() { // 저장된 장비에 다시 연결
+        print("reestablishConnection()")
         self.isRequiredServicesFound = false
         
         //pred = 0// static dispatch_once_t pred; // delegate method 중복호출 방지
@@ -269,7 +261,7 @@ extension DeviceManager {
     }
 
     func scanPeripheral() { // KittyDoc 서비스를 가진 장비를 스캔
-        print("[+]scanPeripheral()")
+        //print("[+]scanPeripheral()")
         // 기존 장비 지우기
         self.removePeripheral()
         self.resetCharacteristics()
@@ -293,8 +285,7 @@ extension DeviceManager {
                     var kittydocDevices: Array = Array<PeripheralData>()
                     for p in self.foundDevices {
                         if p.peripheral != nil {
-//                            if(p.peripheral!.name?.lowercased() != String("sleepdoc")) {
-                                print("kittydocDevices.append(p)")
+//                            if(p.peripheral!.name?.lowercased() != String("sleepdoc")) {// whosecat?
                                 kittydocDevices.append(p)
 //                            }
                         }
@@ -303,7 +294,6 @@ extension DeviceManager {
                     self.foundDevices.removeAll()
                     self.foundDevices.append(contentsOf: kittydocDevices) // [self.foundDevices addObjectsFromArray:puppydocDevices];
                     self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
-                        //return obj1.rssi < obj2.rssi // 신호 약한 것이 앞으로...
                         return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
                     }
                     //print("foundDevices : \(self.foundDevices)")
@@ -314,7 +304,7 @@ extension DeviceManager {
                 }
             }
         }
-        print("[-]scanPeripheral()")
+        //print("[-]scanPeripheral()")
     }
 
     func setRTC() { // set RTC
@@ -328,97 +318,89 @@ extension DeviceManager {
         let now: Date = Date()
         let unixTime: UInt32 = UInt32(now.timeIntervalSince1970)
         let GMTOffset: Int32 = Int32(TimeZone.current.secondsFromGMT())
-        print("unixTime : \(unixTime)")
-        print("GMTOffset : \(GMTOffset), secondsFromGMT : \(TimeZone.current.secondsFromGMT())")
+        print("unixTime : \(unixTime), GMTOffset : \(GMTOffset)")//, secondsFromGMT : \(TimeZone.current.secondsFromGMT())")
 
         var bytes: [UInt8] = [SyncCmd.SYSCMD_SET_RTC, ]
         let unixTimeInBytes = withUnsafeBytes(of: unixTime.littleEndian) {
             Array($0)
         }
-        print("unixTime : \(unixTime)")
         print("unixTimeInBytes : \(unixTimeInBytes)")
         bytes.append(contentsOf: unixTimeInBytes)
         let gmtOffsetInBytes = withUnsafeBytes(of: GMTOffset.littleEndian) {
             Array($0)
         }
-        print("GMTOffset : \(GMTOffset)")
         print("gmtOffsetInBytes : \(gmtOffsetInBytes)")
         bytes.append(contentsOf: gmtOffsetInBytes)
         
-        print("bytes.count : \(bytes.count)")
+        print("bytes.count : \(bytes.count), ", terminator: "")
         guard bytes.count == 9 else {
-            print("bytes.count != 9!")
+            print("bytes.count ins't 9!")
             return
         }
+        print("bytes : \(bytes)")
         self.peripheral!.writeValue(Data(bytes), for: self.sysCmdCharacteristic!, type: .withResponse)
         
         print("[-]setRTC")
     }
     
     func getUUID() { // get UUID
-        guard (self.peripheral != nil) else {
-            print("self.peripheral is nil!")
-            return
-        }
-        guard (self.sysCmdCharacteristic != nil) else {
-            print("self.sysCmdCharacteristic is nil!")
+        print("[+]getUUID()")
+        guard (self.peripheral != nil && self.sysCmdCharacteristic != nil) else {
+            print("self.peripheral is nil || self.sysCmdCharacteristic is nil!")
             return
         }
 
         print("Getting UUID...")
         self.peripheral!.setNotifyValue(true, for: self.sysCmdCharacteristic!)
         self.peripheral!.writeValue(Data([SyncCmd.SYSCMD_GET_UUID]), for: self.sysCmdCharacteristic!, type: .withResponse)
+        print("[-]getUUID()")
+    }
+    
+    func setUUID(uuid: CBUUID) {
+        print("[+]setUUID()")
+        guard (self.peripheral != nil && self.sysCmdCharacteristic != nil) else {
+            print("self.peripheral is nil || self.sysCmdCharacteristic is nil!")
+            return
+        }
+
+        print("Writing UUID... [\(uuid)]")
+        
+        var bytes: [UInt8] = [SyncCmd.SYSCMD_SET_UUID, ] // 총 길이 17이어야 함!
+        
+        print("uuid : ", terminator: "")
+        for i in 0..<uuid.UUIDValue!.bytes.count {//uuid.data.count
+            print("\(uuid.UUIDValue!.bytes[i]) ", terminator: "")//uuid.data[i]
+        }
+        print("")
+        
+        var temp = Data()
+        temp.append(uuid.data)//temp.append(contentsOf: uuid!.UUIDValue!.bytes)
+        print("Regenerated UUID : \(CBUUID(data: temp))")
+
+        bytes.append(contentsOf: uuid.data) // 16 Bytes 인지 확인!
+        print("bytes.count : \(bytes.count)")
+        self.peripheral!.writeValue(Data(bytes), for: self.sysCmdCharacteristic!, type: .withResponse)
+        print("[-]setUUID()")
     }
     
     func getBattery() {
-        guard (self.peripheral != nil) else {
-            print("self.peripheral is nil!")
-            return
-        }
-        guard (self.batteryCharacteristic != nil) else {
-            print("self.batteryCharacteristic is nil!")
+        guard (self.peripheral != nil && self.batteryCharacteristic != nil) else {
+            print("self.peripheral is nil || self.batteryCharacteristic is nil!")
             return
         }
         
         //print("Getting Battery Level...")
         self.peripheral!.readValue(for: self.batteryCharacteristic!)
     }
-    
-    func setUUID(uuid: CBUUID) {
-        guard (self.peripheral != nil) else {
-            print("self.peripheral is nil!")
-            return
-        }
-        guard (self.sysCmdCharacteristic != nil) else {
-            print("self.sysCmdCharacteristic is nil!")
-            return
-        }
-
-        print("Writing UUID \(uuid.uuidString), count : \(uuid.uuidString.count)")
-        let uuidString = UUID(uuidString: uuid.uuidString)
-        print("Converted uuidString : \(String(describing: uuidString))")
-        let uuidData = uuid.data
-        print("uuidData : \(uuidData)")
-
-        var bytes: [UInt8] = [SyncCmd.SYSCMD_SET_UUID, ] // 총 길이 17이어야 함!
-//        uuid.getUUIDBytes
-        let uuidInBytes = withUnsafeBytes(of: uuid) {
-            Array($0)
-        }
-        
-        print(uuidInBytes, "uuidInBytes.count : \(uuidInBytes.count)")
-        bytes.append(contentsOf: uuidInBytes) // 16 Bytes 인지 확인!
-        self.peripheral!.writeValue(Data(uuidInBytes), for: self.sysCmdCharacteristic!, type: .withResponse)
-    }
 
     func searchSyncRequiredCharacteristics(service: CBService) {
-        print("[+] searchSyncRequiredCharacteristics()")
-
+        print("[+]searchSyncRequiredCharacteristics()")
         self.syncControlCharacteristic = nil
         self.syncDataCharacteristic = nil
         if let characteristics = service.characteristics {
             for characteristic in characteristics {
                 print("Found characteristic \(characteristic.uuid)")
+                print("")
                 if characteristic.uuid.isEqual(PeripheralUUID.SYNC_CONTROL_CHAR_UUID) {
                     print("Sync control characteristic found")
                     self.syncControlCharacteristic = characteristic
@@ -429,6 +411,7 @@ extension DeviceManager {
                 }
             }
         }
+        print("[-]searchSyncRequiredCharacteristics()")
     }
     
     func scanDfuTarget() {

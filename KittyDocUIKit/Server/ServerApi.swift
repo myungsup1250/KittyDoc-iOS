@@ -19,4 +19,7 @@ protocol ServerApi{
     func petDelete(data: DeleteData_Pet) -> ServerResponse
     func petModify(data:ModifyData_Pet) -> ServerResponse
     func sensorSend(data: SensorData) -> ServerResponse
+    func waterSend(data: WaterData) -> ServerResponse
+    func sensorRequestDay(data: AnalysisData) -> ServerResponse
+    func sensorRequestHour(data: AnalysisData) -> ServerResponse
 }

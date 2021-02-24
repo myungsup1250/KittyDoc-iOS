@@ -3,32 +3,24 @@ PODS:
     - Charts/Core (= 3.6.0)
   - Charts/Core (3.6.0)
   - CircularSlider (1.1.2)
-  - FSCalendar (2.8.2)
   - UICircularProgressRing (8.0.0)
-  - YMCalendar (1.0)
 
 DEPENDENCIES:
   - Charts
   - CircularSlider
-  - FSCalendar
   - UICircularProgressRing
-  - YMCalendar
 
 SPEC REPOS:
   trunk:
     - Charts
     - CircularSlider
-    - FSCalendar
     - UICircularProgressRing
-    - YMCalendar
 
 SPEC CHECKSUMS:
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
   CircularSlider: 448f9f7723b845ccd470dac41981feb192e20c50
-  FSCalendar: e6a2eb9c571bf0719ed797ef807e08426753c241
   UICircularProgressRing: 19927375b2b21b5fa5fd9582f15ccdef9659da16
-  YMCalendar: 8be58de9b1363443db25a3e39bd3d38b91447e04
 
-PODFILE CHECKSUM: 0fb00a6dbf5dd69fc248cdfbac91ed09590cfe98
+PODFILE CHECKSUM: bcd0425bcb87317d507eacc615ba4cc0b1cc16ec
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

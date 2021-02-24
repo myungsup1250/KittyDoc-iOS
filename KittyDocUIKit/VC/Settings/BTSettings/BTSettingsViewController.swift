@@ -29,7 +29,20 @@ class BTSettingsViewController: UIViewController {
 
         setTableView()
         deviceManager.delegate = self
-        deviceManager.scanPeripheral()
+        if deviceManager.isConnected {
+            print("\ndeviceManager.isConnected == true")
+            //이미 연결된 기기가 있을 경우 어떻게?
+            var prevPeripheralData = PeripheralData()
+            prevPeripheralData.peripheral = deviceManager.peripheral
+            deviceManager.peripheral?.readRSSI()
+            prevPeripheralData.rssi = 0//deviceManager.curRSSI
+            peripherals.append(prevPeripheralData)
+            deviceManager.scanPeripheral()
+
+        } else {
+            print("\ndeviceManager.isConnected != true")
+            deviceManager.scanPeripheral()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -169,11 +182,11 @@ extension BTSettingsViewController: DeviceManagerDelegate {
     }
 
     func onDevicesFound(peripherals: [PeripheralData]) {// peripherals 사용?
-        print("[+]onDevicesFound()")
+        //print("[+]onDevicesFound()")
         // 찾은 장치는 이미 테이블뷰에 잘 보이니, viewReloadTimer만 작동 중지시킨다?
         viewReloadTimer?.invalidate()
         tableView.reloadData()// 검색된 기기 모두 보여주다가 foundDevices 정렬 후에 reloadData()하거나, 모든 기기 다 찾은 후에 보여줄 것인가?
-        print("[-]onDevicesFound()")
+        //print("[-]onDevicesFound()")
     }
 
     func onConnectionFailed() {
