@@ -42,8 +42,6 @@ public func convertUInt32(bytes: [UInt8], isLittleEndian: Bool) -> UInt32 {
 func unixtimeToString(unixtime: time_t) -> String { // SleepDoc_Ext_Interface_Data_Type.time_zone 고려 추가?
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = String("yyyy-MM-dd HH:mm:ss") //String("yyyy-MM-dd HH:mm:ss.SSS")
-//    dateFormatter.setLocalizedDateFormatFromTemplate(Locale.current.languageCode!)
-//    dateFormatter.locale = Locale.current
 //    dateFormatter.timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT())
     let current_date_string = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(unixtime)))
     //print("unixtime : \(unixtime), result : \(current_date_string)")

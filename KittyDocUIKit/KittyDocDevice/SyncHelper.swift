@@ -15,6 +15,7 @@ class SyncHelper: NSObject {
 //
 //    }
     func parseData(data: Data) {
+        print("parseData(data: \(data)")
 //        var cdm: CoreDataManager = CoreDataManager.sharedManager()
         
         var e: Dictionary<String, Any> = Dictionary<String, Any>()

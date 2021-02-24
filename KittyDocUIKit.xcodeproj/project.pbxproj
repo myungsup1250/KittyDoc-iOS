@@ -341,6 +341,7 @@
 				E05A7C9D25B9387B007680E2 /* DeviceManager.swift */,
 				E0BDC30C25C871A500D2524B /* DeviceManagerExtension.swift */,
 				E0BDC31025C871D400D2524B /* SyncHelper.swift */,
+				E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */,
 			);
 			path = KittyDocDevice;
 			sourceTree = "<group>";
@@ -484,10 +485,9 @@
 		E0C0A8C825E63433009E59C4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */,
-				E0BDC30925C8717200D2524B /* PeripheralData.swift */,
-				E05A7C9C25B9387B007680E2 /* KittyDoc_10_Min_Data_Type.swift */,
 				E05A7C9E25B9387B007680E2 /* KittyDoc_Ext_Interface_Data_Type.swift */,
+				E05A7C9C25B9387B007680E2 /* KittyDoc_10_Min_Data_Type.swift */,
+				E0BDC30925C8717200D2524B /* PeripheralData.swift */,
 				E05A7C9F25B9387B007680E2 /* SyncCmd.swift */,
 				E05A7CA025B9387B007680E2 /* PeripheralUUID.swift */,
 			);
