@@ -25,6 +25,21 @@
             </objects>
             <point key="canvasLocation" x="-623.1884057971015" y="-38.169642857142854"/>
         </scene>
+        <!--Add Schedule View Controller-->
+        <scene sceneID="Ei4-Vb-2L2">
+            <objects>
+                <viewController storyboardIdentifier="AddSchedule" id="tGX-mh-GwF" customClass="AddScheduleViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="R8P-S1-MZw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="BXw-tR-nYE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x4k-ye-KJc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="120" y="-38"/>
+        </scene>
         <!--Calendar-->
         <scene sceneID="2eR-s9-eG7">
             <objects>
