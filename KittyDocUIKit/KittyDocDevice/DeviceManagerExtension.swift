@@ -40,15 +40,6 @@ extension DeviceManager: CBCentralManagerDelegate {
                 let uuid: CBUUID? = CBUUID(string: savedDeviceUUID)//let uuidTest: UUID? = UUID(uuidString: self.savedDeviceUUIDString() ?? "")
                 // 안드 mac 형식이면 nil 이 된다?
                 
-                var temp = Data()
-                print("uuid : ", terminator: "")
-                for i in 0..<uuid!.data.count {//for i in 0..<uuid!.UUIDValue!.bytes.count {
-                    print("\(uuid!.data[i]) ", terminator: "")
-                }
-                print("")
-                temp.append(uuid!.data)//temp.append(contentsOf: uuid!.UUIDValue!.bytes)
-                print("Regenerated UUID : \(CBUUID(data: temp))")
-                
                 if uuid != nil {
                     peripherals = central.retrievePeripherals(withIdentifiers: [uuid!.UUIDValue!])
                     //peripherals = central.retrievePeripherals(withIdentifiers: [uuidTest!])
@@ -375,13 +366,12 @@ extension DeviceManager: CBPeripheralDelegate {
         } else if characteristic.uuid.isEqual(PeripheralUUID.BATTERY_CHAR_UUID) {
             var battery: UInt8 = 0
             if self.batteryCharacteristic != nil {
-                print("self.batteryCharacteristic!.value!.count : \(self.batteryCharacteristic!.value!.count)")
                 battery = UInt8(self.batteryCharacteristic!.value![0])
-                print("battery : \(battery)")
+                //print("battery : \(battery)")
                 if bytes.count == 1 {
                     battery = bytes[0]
                     self.batteryLevel = Int(battery)
-                    print("self.batteryLevel is set to \(self.batteryLevel)")
+                    //print("self.batteryLevel is set to \(self.batteryLevel)")
                 }
             }
             guard self.secondDelegate?.onReadBattery(percent: Int(battery)) != nil else {

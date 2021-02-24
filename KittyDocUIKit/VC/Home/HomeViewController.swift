@@ -75,7 +75,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             }
         } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
             //alertWithMessage(message: findResponse.getMessage())
-            print("Error")
+            print("Error (findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE)")
         }
         ////json parsing
         

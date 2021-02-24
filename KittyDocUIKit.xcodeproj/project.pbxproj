@@ -392,11 +392,11 @@
 		E08313E325B0ABE200266994 /* KittyDocUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				E08E168625E6437900A474DA /* MVVM-Test */,
 				E091CEF925CED73B00A3DE73 /* Global */,
 				113CCDC825BA5AA100BF70E5 /* Server */,
 				E05A7C9B25B9387B007680E2 /* KittyDocDevice */,
 				E05A7CA325B9387B007680E2 /* Shared */,
-				E00AE25325B44FB0001484AC /* LogIn */,
 				E00AE24E25B44E89001484AC /* Extensions */,
 				E00AE23925B3101A001484AC /* View Models */,
 				E00AE1ED25B2C559001484AC /* VC */,
@@ -461,6 +461,14 @@
 			children = (
 			);
 			path = SettingScene;
+			sourceTree = "<group>";
+		};
+		E08E168625E6437900A474DA /* MVVM-Test */ = {
+			isa = PBXGroup;
+			children = (
+				E00AE25325B44FB0001484AC /* LogIn */,
+			);
+			path = "MVVM-Test";
 			sourceTree = "<group>";
 		};
 		E091CEF725CED71000A3DE73 /* BTSettings */ = {
