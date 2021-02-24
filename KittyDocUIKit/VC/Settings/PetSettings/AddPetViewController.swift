@@ -89,24 +89,46 @@ class AddPetViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        print("AddPetViewController.viewWillAppear()")
+        
+        // KittyDoc 기기 등록 여부, 기기 연결 여부 등에 따른 처리가 잘 되는지 확인 필요! 21.02.24 -ms
+        // 기존 등록된 펫에 기기 등록되지 않은 상태 && 수정할 때 기기를 새로 연결해도 반영이 안된다..
         if editingPetID != nil {
+            print("editingPetID != nil")
             let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
             
-            print("AddPetViewController.viewWillAppear()")
             if petInfo != nil {
+                print("petInfo != nil")
                 if petInfo!.Device.isEmpty {
-                    if deviceManager.isConnected {
-                        print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == true")
-                        deviceInput.text = deviceManager.peripheral!.identifier.uuidString
-                    } else {
-                        print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == false")
-                    }
+                    print("petInfo!.Device.isEmpty == true")
+                    deviceInput.text = "Plz Connect to Device!"
                 } else {
-                    print("\tpetInfo!.Device.isEmpty == false")
-                    deviceInput.text = petInfo!.Device
+                    print("petInfo!.Device.isEmpty == false")
+                    if deviceInput.text == "Plz Connect to Device!" {
+                        print("deviceInput.text == Plz Connect to Device!")
+                        if deviceManager.isConnected {
+                            print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == true")
+                            deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+                        } else {
+                            print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == false")
+                        }
+                    } else {
+                        print("\tpetInfo!.Device.isEmpty == false (\(petInfo!.Device)")
+                        deviceInput.text = petInfo!.Device
+                    }
                 }
             } else {
                 print("\tpetInfo == nil")
+            }
+        } else {
+            print("editingPetID == nil(Adding New Pet)")
+            
+            if deviceInput.text!.isEmpty {
+                deviceInput.text = "Plz Connect to Device!"
+            } else {
+                if deviceManager.isConnected {
+                    deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+                }
             }
         }
     }
@@ -314,7 +336,13 @@ class AddPetViewController: UIViewController {
         }else{
             gender = "None"
         }
-        
+
+        // KittyDoc Device 연결하지 않고 펫 등록 및 수정할 경우 처리 21.02.24 -ms
+        if deviceInput.text == "Plz Connect to Device!" {
+            deviceInput.text = ""
+        }
+        // // // // // // // // // // // // // // // // // // // //
+
         if isEditMode == true {
             let modifyData:ModifyData_Pet = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
             let server:KittyDocServer = KittyDocServer()
@@ -338,7 +366,7 @@ class AddPetViewController: UIViewController {
                     self.navigationController?.popViewController(animated: true)
                 }
                 
-            }else{
+            } else {
                 alertWithMessage(message: modifyResponse.getMessage())
             }
             
@@ -411,7 +439,6 @@ extension AddPetViewController: UIImagePickerControllerDelegate, UINavigationCon
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: false) { () in
-            
             let alert = UIAlertController(title: "", message: "이미지 선택이 취소되었습니다.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "확인", style: .cancel))
             self.present(alert, animated: false)

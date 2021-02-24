@@ -23,7 +23,7 @@ class BTSettingsViewController: UIViewController {
         self.title = "Manage Device"
         //self.navigationItem.prompt = "기기 등록을 진행해주세요"
         
-        print("DeviceListViewController.viewDidLoad()")
+        print("BTSettingsViewController.viewDidLoad()")
 //        view.backgroundColor = .white
         safeArea = view.layoutMarginsGuide
 
@@ -51,13 +51,13 @@ class BTSettingsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("DeviceListViewController.viewWillAppear()")
+        print("BTSettingsViewController.viewWillAppear()")
         viewReloadTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(refreshTableView), userInfo: nil, repeats: true)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("DeviceListViewController.viewWillDisappear()")
+        print("BTSettingsViewController.viewWillDisappear()")
         viewReloadTimer?.invalidate()
     }
     

@@ -375,7 +375,7 @@ extension DeviceManager {
         
         var temp = Data()
         temp.append(uuid.data)//temp.append(contentsOf: uuid!.UUIDValue!.bytes)
-        print("Regenerated UUID : \(CBUUID(data: temp))")
+        print("Regenerated UUID(setUUID) : \(CBUUID(data: temp))")
 
         bytes.append(contentsOf: uuid.data) // 16 Bytes 인지 확인!
         print("bytes.count : \(bytes.count)")
