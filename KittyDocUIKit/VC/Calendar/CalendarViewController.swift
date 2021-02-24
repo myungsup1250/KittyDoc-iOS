@@ -184,8 +184,6 @@ class CalendarViewController: UIViewController {
                 let selectedDay = formatterDateFunc() +  formatterDayFunc(input: intDay)//yyyyMMdd
                 controller.tempDaySchedule?.day = selectedDay
                 
-                //controller.modalPresentationStyle = .fullScreen
-                //self.present(controller, animated: true)
                 self.navigationController?.pushViewController(controller
                                                               , animated: true)
             }
@@ -257,6 +255,7 @@ class CalendarViewController: UIViewController {
         }
     }
     
+    
     //보여주는 함수
     func showSchedule(type: careType, index: Int, cell: UICollectionViewCell, color: UIColor) {
         for dayData in daysArr {
@@ -282,8 +281,30 @@ class CalendarViewController: UIViewController {
             
         }
     }
+    
+    func showTitleSchedule(index: Int, cell: CalendarCollectionViewCell) {
+        for dayData in daysArr {
+            let date = dayData.day
+            let endIdx: String.Index = date.index(date.startIndex, offsetBy: 5)
+            let startIdx: String.Index = date.index(date.startIndex, offsetBy: 6)
+
+            let ym = String(date[...endIdx]) //202102
+            let d = String(date[startIdx...]) //12
+
+            if formatterDateFunc() == ym {
+                if Int(d) == Int(days[index]) {
+                    cell.scheduleLabel.text = dayData.title
+
+                }
+
+            }
+
+        }
+    }
 
 }
+
+
 
 
 extension CalendarViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -318,10 +339,19 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
         } else {
             cell.dayLabel.textColor = .black
         }
+        
         cell.backgroundColor = .systemBackground
+        cell.scheduleLabel.text = ""
         
     
-        showTypeSchedule(type: typeSegment.selectedSegmentIndex, index: indexPath.row, cell: cell)
+        switch indexPath.section {
+        case 0:
+            break
+        default:
+            showTypeSchedule(type: typeSegment.selectedSegmentIndex, index: indexPath.row, cell: cell)
+            showTitleSchedule(index: indexPath.row, cell: cell)
+        }
+        
         
         return cell
     }

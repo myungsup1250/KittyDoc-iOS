@@ -119,9 +119,7 @@ class AddScheduleViewController: UIViewController {
         default:
             tempDaySchedule?.type = .none
         }
-        
-        print("ㅇㅇㅇ")
-        
+    
         guard let preVC = self.navigationController?.viewControllers[0] as? CalendarViewController else {
             return
         }

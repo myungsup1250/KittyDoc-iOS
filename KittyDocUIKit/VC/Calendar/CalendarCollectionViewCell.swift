@@ -21,7 +21,6 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     let scheduleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "이"
         label.font = .systemFont(ofSize: 10)
         return label
     }()
