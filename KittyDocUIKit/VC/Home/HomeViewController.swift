@@ -12,6 +12,7 @@ import UICircularProgressRing
 class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     let deviceManager = DeviceManager.shared
     var count = 0
+    var selectedRow = 0
     
     var waterValue: Int = 0 {
         didSet {
@@ -146,6 +147,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         petNameSelectTF.text = PetInfo.shared.petArray[row].PetName //텍스트 필드 이름 변경
+        selectedRow = row
         PetChange(index: row) //표시되는 데이터들 변경
     } //펫이 선택되었을 때 호출되는 함수!!!
     
@@ -296,12 +298,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
     
     @objc func didTapWaterBtn() {
-        performSegue(withIdentifier: "AddWater", sender: self)
+        if PetInfo.shared.petArray.count != 0 {
+            performSegue(withIdentifier: "AddWater", sender: self)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddWater" {
             let destinationVC = segue.destination as! WaterViewController
+            destinationVC.petNum = selectedRow
             destinationVC.water.setValue(Float(waterValue), animated: true)
             
         }

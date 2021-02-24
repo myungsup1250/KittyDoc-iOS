@@ -12,6 +12,7 @@ import CircularSlider
 class WaterViewController: UIViewController {
     
     static let identifier = "AddWater"
+    var petNum = 0
     
     override func viewDidLoad() {
         //view.addSubview(waterSlide)

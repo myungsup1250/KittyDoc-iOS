@@ -9,13 +9,6 @@
 import Foundation
 import CoreBluetooth
 
-extension UUID {
-    internal var bytes : [UInt8] {
-        let (u1,u2,u3,u4,u5,u6,u7,u8,u9,u10,u11,u12,u13,u14,u15,u16) = self.uuid
-        return [u1,u2,u3,u4,u5,u6,u7,u8,u9,u10,u11,u12,u13,u14,u15,u16]     }
-    internal var data : Data { Data(bytes) }
-}
-
 class PeripheralUUID: NSObject {
     //  "0xFFFA" == "0000FFFA-0000-1000-8000-00805F9B34FB"
     // public static let SYNC_SERVICE_UUID_TEST = UUID(uuidString: "0000FFFA-0000-1000-8000-00805F9B34FB") //Sync Service UUID

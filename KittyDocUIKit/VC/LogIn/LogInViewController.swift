@@ -43,16 +43,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         // userInfo.wantsRememberEmail = true
         // userInfo.wantsAutoLogin = true
 
-        if userInfo.loggedInPrev {
-            if userInfo.wantsAutoLogin && !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty { // Automatically Log In
-                print("will AutoLogin")
-                emailTF.text = userInfo.Email
-                pwTF.text = userInfo.Pw
-                didTapSignIn()
-            } else if userInfo.wantsRememberEmail && !userInfo.Email.isEmpty { // Just Remember User's Email
-                emailTF.text = userInfo.Email
-            }
-        }
+//        if userInfo.loggedInPrev {
+//            if userInfo.wantsAutoLogin && !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty { // Automatically Log In
+//                print("will AutoLogin")
+//                emailTF.text = userInfo.Email
+//                pwTF.text = userInfo.Pw
+//                didTapSignIn()
+//            } else if userInfo.wantsRememberEmail && !userInfo.Email.isEmpty { // Just Remember User's Email
+//                emailTF.text = userInfo.Email
+//            }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,12 +85,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func didTapSignIn() {
+//        if emailTF.text == "jmsmart" && pwTF.text == "test" {
+//            self.performSegue(withIdentifier: "LogInSegue", sender: nil)
+//            print("TestMode")
+//            return
+//        }
         if emailTF.text!.isEmpty {
             alertWithMessage(message: "아이디를 입력해주세요!")
         } else if pwTF.text!.isEmpty {
             alertWithMessage(message: "비밀번호를 입력해주세요!")
-        }
-        else {
+        } else {
             if(!isEmailForm(_email:emailTF.text!)){
                 alertWithMessage(message: "올바른 이메일 형식이 아닙니다!")
                 return
@@ -120,7 +124,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
                 
 
-                let jsonString:String = loginResponse.getMessage() as! String
+                let jsonString: String = loginResponse.getMessage() as! String
                 if let data = jsonString.data(using: .utf8) {
                     do {
                         if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:AnyObject] {
@@ -161,11 +165,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    
     @IBAction func logout(_ sender: UIStoryboardSegue) {
         
     }
-    
     
     func textFieldSetUp() {
         emailTF.text = ""

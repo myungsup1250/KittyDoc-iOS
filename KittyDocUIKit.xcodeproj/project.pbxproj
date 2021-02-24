@@ -311,6 +311,8 @@
 		E00AE24E25B44E89001484AC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E0BDC31125C871D400D2524B /* CBUUIDExtension.swift */,
+				E087BC0425DCF46500C12173 /* NotificationNameExtension.swift */,
 				E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */,
 				E00AE24F25B44E9F001484AC /* StringExtension.swift */,
 				E05A7C2F25B58919007680E2 /* InitStoryboard.swift */,
@@ -334,18 +336,12 @@
 		E05A7C9B25B9387B007680E2 /* KittyDocDevice */ = {
 			isa = PBXGroup;
 			children = (
-				E05A7C9C25B9387B007680E2 /* KittyDoc_10_Min_Data_Type.swift */,
-				E05A7C9E25B9387B007680E2 /* KittyDoc_Ext_Interface_Data_Type.swift */,
-				E05A7C9F25B9387B007680E2 /* SyncCmd.swift */,
-				E0BDC30925C8717200D2524B /* PeripheralData.swift */,
-				E05A7CA025B9387B007680E2 /* PeripheralUUID.swift */,
+				E05A7CA125B9387B007680E2 /* MSLibrary */,
+				E0C0A8C825E63433009E59C4 /* Model */,
 				E05A7C9D25B9387B007680E2 /* DeviceManager.swift */,
 				E0BDC30C25C871A500D2524B /* DeviceManagerExtension.swift */,
-				E0BDC31125C871D400D2524B /* CBUUIDExtension.swift */,
-				E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */,
 				E0BDC31025C871D400D2524B /* SyncHelper.swift */,
-				E05A7CA125B9387B007680E2 /* MSLibrary */,
-				E087BC0425DCF46500C12173 /* NotificationNameExtension.swift */,
+				E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */,
 			);
 			path = KittyDocDevice;
 			sourceTree = "<group>";
@@ -484,6 +480,18 @@
 				113CCDEA25C42F5700BF70E5 /* PetInfo.swift */,
 			);
 			path = Global;
+			sourceTree = "<group>";
+		};
+		E0C0A8C825E63433009E59C4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E05A7C9E25B9387B007680E2 /* KittyDoc_Ext_Interface_Data_Type.swift */,
+				E05A7C9C25B9387B007680E2 /* KittyDoc_10_Min_Data_Type.swift */,
+				E0BDC30925C8717200D2524B /* PeripheralData.swift */,
+				E05A7C9F25B9387B007680E2 /* SyncCmd.swift */,
+				E05A7CA025B9387B007680E2 /* PeripheralUUID.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		EBBB8371894849EE37AE282E /* Frameworks */ = {
