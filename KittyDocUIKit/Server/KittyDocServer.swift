@@ -39,52 +39,58 @@ class KittyDocServer:ServerApi{
     }
     
     func userLogin(data:LoginData) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/user/login"))!
         return doRequestTask(url: url, data: data)
     }
     
     func userSignUp(data:SignUpData) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/user/join"))!
         return doRequestTask(url: url, data: data)
     }
     
     func userExist(data:ExistData) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/user/existEmail"))!
         return doRequestTask(url: url, data: data)
     }
     
     func petSignUp(data: SignUpData_Pet) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/pet/join"))!
         return doRequestTask(url: url, data: data)
     }
     
     func petFind(data: FindData_Pet) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/pet/find"))!
         return doRequestTask(url: url, data: data)
     }
     
     func petDelete(data: DeleteData_Pet) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/pet/delete"))!
         return doRequestTask(url: url, data: data)
     }
     
     func petModify(data: ModifyData_Pet) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/pet/modify"))!
         return doRequestTask(url: url, data: data)
     }
     
     func sensorSend(data: SensorData) -> ServerResponse {
-        //URL setting
         let url = URL(string:(baseUrl + port + "/sensor/send"))!
         return doRequestTask(url: url, data: data)
     }
     
+    func waterSend(data: WaterData) -> ServerResponse {
+        let url = URL(string:(baseUrl + port + "/water/send"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
+    func sensorRequestDay(data: AnalysisData) -> ServerResponse {
+        let url = URL(string:(baseUrl + port + "/pet/analysis/day"))!
+        return doRequestTask(url: url, data: data)
+    }
+    
+    func sensorRequestHour(data: AnalysisData) -> ServerResponse {
+        let url = URL(string:(baseUrl + port + "/pet/analysis/hour"))!
+        return doRequestTask(url: url, data: data)
+    }
     init(){}
 }

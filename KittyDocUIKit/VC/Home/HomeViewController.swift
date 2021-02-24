@@ -191,9 +191,21 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     // receiveSyncDataDone() will be called when Receiving SyncData Done!
     @objc func receiveSyncDataDone() {
         print("\n<<< HomeViewController.receiveSyncDataDone() >>>")
+        let frontTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000)
+        let rearTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000 * 2)
+        print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
+        print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
+        let analysisData:AnalysisData = AnalysisData(_petID: 32, _frontTime: frontTime, _rearTime: rearTime)
+        let server:KittyDocServer = KittyDocServer()
+        let analysisResponse:ServerResponse = server.sensorRequestHour(data: analysisData)
         
+        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS){
+            print(analysisResponse.getMessage() as! String)
+        } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
+            print(analysisResponse.getMessage() as! String)
+        }
     }
-    
+
     @objc func doneBtnPressed() {
         self.view.endEditing(true)
     }

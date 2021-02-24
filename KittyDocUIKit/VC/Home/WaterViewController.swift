@@ -57,9 +57,15 @@ class WaterViewController: UIViewController {
     @objc func closeModal() {
         UserDefaults.standard.setValue(Int(water.value), forKey: "waterValue")
         
+        let waterData:WaterData = WaterData(_petID: PetInfo.shared.petArray.first!.PetID, _tick:Int(NSDate().timeIntervalSince1970 * 1000), _waterVal: Int(water.value))
+        let server:KittyDocServer = KittyDocServer()
+        let waterResponse:ServerResponse = server.waterSend(data: waterData)
+        
+        if(waterResponse.getCode() as! Int == ServerResponse.WATER_SUCCESS){
+            print(waterResponse.getMessage() as! String)
+        } else if(waterResponse.getCode() as! Int == ServerResponse.WATER_FAILURE){
+            print(waterResponse.getMessage() as! String)
+        }
         self.navigationController?.popViewController(animated: true)
     }
-    
-    
-    
 }

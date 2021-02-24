@@ -42,8 +42,8 @@ class DeviceManager: NSObject {
 
     var delegate: DeviceManagerDelegate?
     var secondDelegate: DeviceManagerSecondDelegate?
-    var commandQueue: [String] = [String]()// 연결 후 실행할 명령 큐 // @property (strong, nonatomic) NSMutableArray *commandQueue;
-    var foundDevices: [PeripheralData] = [PeripheralData]()
+    var commandQueue: [String]// 연결 후 실행할 명령 큐 // @property (strong, nonatomic) NSMutableArray *commandQueue;
+    var foundDevices: [PeripheralData]
     
     var peripheral: CBPeripheral?
     var manager: CBCentralManager?
@@ -51,8 +51,8 @@ class DeviceManager: NSObject {
     var syncDataCharacteristic: CBCharacteristic?
     var sysCmdCharacteristic: CBCharacteristic?
     var batteryCharacteristic: CBCharacteristic?
-    var firmwareVersion: String = ""
-    private var _batteryLevel: Int = -1
+    var firmwareVersion: String
+    private var _batteryLevel: Int
     public var batteryLevel: Int { // batteryLevel : { [0, 100] : normal state } + {-1 : initial state(not set)}
         get {
             return self._batteryLevel
@@ -68,12 +68,12 @@ class DeviceManager: NSObject {
             self._batteryLevel = newLevel
         }
     }
-    var curRSSI: Int = 0
-    var maxRSSI : Int32 = 0
-    private var _isConnected: Bool = false
-    private var _isSyncServiceFound: Bool = false
-    private var _isRequiredServicesFound: Bool  = false// 필요 서비스들 모두 찾았는가?
-    private var _isScanningDfuTarg: Bool = false
+    var curRSSI: Int
+    var maxRSSI: Int32
+    private var _isConnected: Bool
+    private var _isSyncServiceFound: Bool
+    private var _isRequiredServicesFound: Bool// 필요 서비스들 모두 찾았는가?
+    private var _isScanningDfuTarg: Bool
     // https://medium.com/ios-development-with-swift/%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0-get-set-didset-willset-in-ios-a8f2d4da5514 참고: Getter & Setter
     public var isConnected: Bool {
         get {
@@ -112,64 +112,63 @@ class DeviceManager: NSObject {
     public var syncDataCount: Int// KittyDoc 기기로부터 받은 KittyDoc_Ext_Interface_Data_Type 데이터 수
     public var totalSyncBytes: Int// 동기화할 전체 바이트수
     public var totalSyncBytesLeft: Int// 앞으로 동기화할 남은 바이트수
-//    public var syncData: Data = Data()
-//    public var syncDataCount: Int = 0// KittyDoc 기기로부터 받은 KittyDoc_Ext_Interface_Data_Type 데이터 수
-//    public var totalSyncBytes: Int = 0// 동기화할 전체 바이트수
-//    public var totalSyncBytesLeft: Int = 0// 앞으로 동기화할 남은 바이트수
     // 21.01.31 totalSyncBytes => totalSyncBytesLeft 용도 변경?
 
     private override init() {
         print("DeviceManager.init()")
         
-        self.delegate = nil
-
-        self.maxRSSI = 0
-
-        self._isConnected = false
-        self._isSyncServiceFound = false
-        self._isRequiredServicesFound = false
-        self._isScanningDfuTarg = false
-
-        self.syncData = Data()
-        self.syncDataCount = 0
-        self.totalSyncBytes = 0
-        self.totalSyncBytesLeft = 0
-
-        self.syncControlCharacteristic = nil
-        self.syncDataCharacteristic = nil
+        delegate = nil
+        secondDelegate = nil
+        commandQueue = [String]()// 연결 후 실행할 명령 큐
+        foundDevices = [PeripheralData]()
+            
+        peripheral = nil
+        manager = nil
+        syncControlCharacteristic = nil
+        syncDataCharacteristic = nil
+        sysCmdCharacteristic = nil
+        batteryCharacteristic = nil
+        firmwareVersion = ""
         
-        self.commandQueue.removeAll()
-        self.foundDevices.removeAll()
-
-        self.peripheral = nil
-        self.manager = nil
-        self.syncControlCharacteristic = nil
-        self.syncDataCharacteristic = nil
-        self.sysCmdCharacteristic = nil
-        self.batteryCharacteristic = nil
-        self.firmwareVersion = String("") // 빈 문자열로 정의?
-        self._batteryLevel = -1
+        _batteryLevel = -1
+        //batteryLevel = 100
+        curRSSI = 0
+        maxRSSI = 0
+        
+        _isConnected = false
+        _isSyncServiceFound = false
+        _isRequiredServicesFound = false// 필요 서비스들 모두 찾았는가?
+        _isScanningDfuTarg = false
+        //isConnected
+        //isSyncServiceFound
+        //isRequiredServicesFound
+        //isScanningDfuTarg
+        
+        syncData = Data()
+        syncDataCount = 0
+        totalSyncBytes = 0
+        totalSyncBytesLeft = 0
     }
 }
 
 extension DeviceManager {
     func resetCharacteristics() {
-        self.syncControlCharacteristic = nil
-        self.syncDataCharacteristic = nil
-        self.sysCmdCharacteristic = nil
-        self.batteryCharacteristic = nil
+        syncControlCharacteristic = nil
+        syncDataCharacteristic = nil
+        sysCmdCharacteristic = nil
+        batteryCharacteristic = nil
     }
     
     func removeDevices() { // 앱에서 장비를 지움
-        self.disconnect()
-        self.removePeripheral()
-        self.resetCharacteristics()
-        self.foundDevices.removeAll() // self.foundDevices?.removeAllObjects()
+        disconnect()
+        removePeripheral()
+        resetCharacteristics()
+        foundDevices.removeAll() // self.foundDevices?.removeAllObjects()
     }
     
     func disconnect() { // 연결만 끊음
-        self.isRequiredServicesFound = false
-        self.isConnected = false
+        isRequiredServicesFound = false
+        isConnected = false
         
         if (self.peripheral != nil && self.manager != nil) {
             self.manager!.cancelPeripheralConnection(self.peripheral!)
@@ -295,7 +294,6 @@ extension DeviceManager {
                     self.foundDevices.removeAll()
                     self.foundDevices.append(contentsOf: kittydocDevices) // [self.foundDevices addObjectsFromArray:puppydocDevices];
                     self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
-                        //return obj1.rssi < obj2.rssi // 신호 약한 것이 앞으로...
                         return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
                     }
                     //print("foundDevices : \(self.foundDevices)")
@@ -396,13 +394,13 @@ extension DeviceManager {
     }
 
     func searchSyncRequiredCharacteristics(service: CBService) {
-        print("[+] searchSyncRequiredCharacteristics()")
-
+        print("[+]searchSyncRequiredCharacteristics()")
         self.syncControlCharacteristic = nil
         self.syncDataCharacteristic = nil
         if let characteristics = service.characteristics {
             for characteristic in characteristics {
                 print("Found characteristic \(characteristic.uuid)")
+                print("")
                 if characteristic.uuid.isEqual(PeripheralUUID.SYNC_CONTROL_CHAR_UUID) {
                     print("Sync control characteristic found")
                     self.syncControlCharacteristic = characteristic
@@ -413,6 +411,7 @@ extension DeviceManager {
                 }
             }
         }
+        print("[-]searchSyncRequiredCharacteristics()")
     }
     
     func scanDfuTarget() {

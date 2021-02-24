@@ -480,7 +480,7 @@ extension DeviceManager: CBPeripheralDelegate {
                     print("┌-------------------------------------------------------------------------------------------------------------------------------------------┐")
                     print("|   s_tick   |       s_time        |   e_tick   |       s_time        |  steps  |  t_lux  | avg_lux |  avg_k  |  vct_x  |  vct_y  |  vct_z  |")
                     for i in 0...5 {
-                        let sensorData:SensorData = SensorData(_object: kittydoc_data.d[i], _petID: UserInfo.shared.UserID, _petLB: 0)
+                        let sensorData:SensorData = SensorData(_object: kittydoc_data.d[i], _petID: UserInfo.shared.UserID, _petLB: PetInfo.shared.petArray.first!.PetLB)
                         let server:KittyDocServer = KittyDocServer()
                         let sensorResponse:ServerResponse = server.sensorSend(data: sensorData)
                         if(sensorResponse.getCode() as! Int == ServerResponse.SENSOR_SUCCESS){
@@ -553,8 +553,7 @@ extension DeviceManager: CBPeripheralDelegate {
                     return
                 }
             }
-        } else if characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {
-            // 17 bytes on respond.
+        } else if characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {// 17 bytes on respond.
             // getUUID 호출 응답 (17Bytes) 11 218 36 68 179 86 114 75 88 164 51 166 109 100 235 140 4
             // setUUID 호출 응답 (17Bytes) 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
             print("\n[+]characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID)\n")
