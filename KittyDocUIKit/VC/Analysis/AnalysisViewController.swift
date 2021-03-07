@@ -374,37 +374,44 @@ extension AnalysisViewController {
         let monthDate = dateFormatter.date(from: dateTextField.text!)
         let month = Calendar.current.component(.month,  from: monthDate!)
 
-        let dayDate = dateFormatter.date(from: dateTextField.text!)
-        let day = Calendar.current.component(.day,  from: dayDate!)
+//        let dayDate = dateFormatter.date(from: dateTextField.text!)
+//        let day = Calendar.current.component(.day,  from: dayDate!)
         
         print("dateTextField.text: \(dateTextField.text!)")
-        print("year: \(year), month: \(month), day: \(day)")
-
         let selected = SegSelect(rawValue: segment.selectedSegmentIndex)!
         switch selected {
         case SegSelect.Year:
             print("You Selected Year!")
-            setChart(dataPoints: months, values: [Double(10), Double(20), Double(30), Double(40), Double(50), Double(60), Double(70), Double(80), Double(90), Double(100), Double(110), Double(120)])
+            var monthValues = [Double]()
+            for i in 1...12 {
+                monthValues.append(Double(i * 10))
+            }
+            setChart(dataPoints: months, values: monthValues)
         case SegSelect.Month:
             print("You Selected Month!")
             guard let numberOfDays = getDaysInMonth(month: month, year: year) else {
                 print("Error in getDaysInMonth(month: , year:)!!")
                 return
             }
-            print("Year : \(year), Month : \(month) => Days : ", numberOfDays)
-
-            //특정 달의 일 수 계산하기 Test Code
             var dayValues = [Double]()
             for i in 1...numberOfDays {
-                dayValues.append(Double(i * 5))
+                dayValues.append(Double(i * 3))
             }
             setChart(dataPoints: days.dropLast(31-numberOfDays), values: dayValues)
         case SegSelect.Week:
             print("You Selected Week!")
-            setChart(dataPoints: daysofweek, values: [Double(15), Double(30), Double(45), Double(60), Double(75), Double(90), Double(105)])
+            var weekValues = [Double]()
+            for i in 1...7 {
+                weekValues.append(Double(i * 15))
+            }
+            setChart(dataPoints: daysofweek, values: weekValues)
         case SegSelect.Day:
             print("You Selected Day!")
-            setChart(dataPoints: times, values: [Double(5), Double(10), Double(15), Double(20), Double(25), Double(30), Double(35), Double(40), Double(45), Double(50), Double(55), Double(60), Double(65), Double(70), Double(75), Double(80), Double(85), Double(90), Double(95), Double(100), Double(105), Double(110), Double(115), Double(120)])
+            var dayValues = [Double]()
+            for i in 1...24 {
+                dayValues.append(Double(i * 5))
+            }
+            setChart(dataPoints: times, values: dayValues)
         }
     }
     
