@@ -11,6 +11,8 @@
 		113CCDD125BA5AA100BF70E5 /* ServerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDCB25BA5AA100BF70E5 /* ServerApi.swift */; };
 		113CCDD225BA5AA100BF70E5 /* KittyDocServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDCC25BA5AA100BF70E5 /* KittyDocServer.swift */; };
 		113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113CCDEA25C42F5700BF70E5 /* PetInfo.swift */; };
+		7043EBD425F529BD008A67A4 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7043EBD325F529BD008A67A4 /* DetailViewController.swift */; };
+		7043EBD725F52A0F008A67A4 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7043EBD625F52A0F008A67A4 /* DetailTableViewCell.swift */; };
 		70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */; };
 		707940AC25D2E5AA0073315D /* WaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707940AB25D2E5AA0073315D /* WaterViewController.swift */; };
 		708A280725E642DD004DCBC2 /* daySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280625E642DD004DCBC2 /* daySchedule.swift */; };
@@ -87,6 +89,8 @@
 		113CCDCC25BA5AA100BF70E5 /* KittyDocServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KittyDocServer.swift; sourceTree = "<group>"; };
 		113CCDEA25C42F5700BF70E5 /* PetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfo.swift; sourceTree = "<group>"; };
 		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7043EBD325F529BD008A67A4 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		7043EBD625F52A0F008A67A4 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingViewController.swift; sourceTree = "<group>"; };
 		707940AB25D2E5AA0073315D /* WaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterViewController.swift; sourceTree = "<group>"; };
 		708A280625E642DD004DCBC2 /* daySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = daySchedule.swift; sourceTree = "<group>"; };
@@ -256,6 +260,8 @@
 				708A280625E642DD004DCBC2 /* daySchedule.swift */,
 				708A280A25E6431E004DCBC2 /* CalendarCollectionViewCell.swift */,
 				708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */,
+				7043EBD325F529BD008A67A4 /* DetailViewController.swift */,
+				7043EBD625F52A0F008A67A4 /* DetailTableViewCell.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -651,6 +657,7 @@
 				E00AE1EB25B2C550001484AC /* CalendarViewController.swift in Sources */,
 				E05A7C4C25B5AC31007680E2 /* UIColorExtension.swift in Sources */,
 				E06CEB0125E40C0000D966BB /* DeleteData_Pet.swift in Sources */,
+				7043EBD725F52A0F008A67A4 /* DetailTableViewCell.swift in Sources */,
 				E0BDC31425C871D400D2524B /* CBUUIDExtension.swift in Sources */,
 				E05A7CA825B9387B007680E2 /* SyncCmd.swift in Sources */,
 				E05A7CA625B9387B007680E2 /* DeviceManager.swift in Sources */,
@@ -668,6 +675,7 @@
 				E06CEAF925E40C0000D966BB /* ModifyData_Pet.swift in Sources */,
 				70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */,
 				E05A7C4025B5A51A007680E2 /* MainTabBarViewController.swift in Sources */,
+				7043EBD425F529BD008A67A4 /* DetailViewController.swift in Sources */,
 				70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */,
 				E0BDC31225C871D400D2524B /* KittyDocUtillity.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,

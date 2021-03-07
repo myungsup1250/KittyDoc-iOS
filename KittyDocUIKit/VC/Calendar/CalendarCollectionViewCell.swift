@@ -13,8 +13,8 @@ class CalendarCollectionViewCell: UICollectionViewCell {
     
     let dayLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -24,6 +24,21 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 10)
         return label
     }()
+    
+    let secondScheduleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 10)
+        return label
+    }()
+    
+    let thirdScheduleLabel: UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 10)
+        return label
+    }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,8 +54,11 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         
         contentView.addSubview(dayLabel)
         contentView.addSubview(scheduleLabel)
+        contentView.addSubview(secondScheduleLabel)
+        contentView.addSubview(thirdScheduleLabel)
         
         addContraints()
+
     }
     
     private func addContraints() {
@@ -50,10 +68,23 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         ])
         
         NSLayoutConstraint.activate([
-            scheduleLabel.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 20),
-            scheduleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            scheduleLabel.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 10),
+            scheduleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            scheduleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            secondScheduleLabel.topAnchor.constraint(equalTo: scheduleLabel.bottomAnchor, constant: 3),
+            secondScheduleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            secondScheduleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor)
+        
+        ])
+        
+        NSLayoutConstraint.activate([
+            thirdScheduleLabel.topAnchor.constraint(equalTo: secondScheduleLabel.bottomAnchor, constant: 3),
+            thirdScheduleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            thirdScheduleLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor)
         
         ])
     }
-    
 }

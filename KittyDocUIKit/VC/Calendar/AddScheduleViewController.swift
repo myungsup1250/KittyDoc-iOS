@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AddScheduleViewController: UIViewController {
 
+    let realm = try! Realm()
     var tempDaySchedule: daySchedule?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +89,6 @@ class AddScheduleViewController: UIViewController {
     }()
     
     
-    
     func titleTextSetting() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
@@ -99,6 +101,31 @@ class AddScheduleViewController: UIViewController {
         titleLabel.text = printDateFormatter.string(from: date!)
     }
     
+    func getDocumentsDirectory() -> URL {
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let documentsDirectory = paths[0]
+            return documentsDirectory
+    }
+    
+    func addScheduleRealm() {
+        let tempType = tempDaySchedule?.caretype
+        let tempTitle = textInput.text
+        let tempDay = tempDaySchedule!.day
+        
+        let tempRealmSchedule = daySchedule()
+        tempRealmSchedule.day = tempDay
+        tempRealmSchedule.title = tempTitle!
+        tempRealmSchedule.caretype = tempType!
+        
+        do{
+            try realm.write{
+                realm.add(tempRealmSchedule)
+                print("스케줄 Realm에 넣기 성공")
+            }
+        } catch {
+                print("Error Add \(error)")
+        }
+    }
 
     @objc func didTapDoneBtn() {
         if let inputText = textInput.text {
@@ -109,25 +136,27 @@ class AddScheduleViewController: UIViewController {
         
         switch typeSegment.selectedSegmentIndex {
         case 0:
-            tempDaySchedule?.type = .hospital
+            tempDaySchedule?.caretype = .hospital
         case 1:
-            tempDaySchedule?.type = .bob
+            tempDaySchedule?.caretype = .bob
         case 2:
-            tempDaySchedule?.type = .med
+            tempDaySchedule?.caretype = .med
         case 3:
-            tempDaySchedule?.type = .snack
+            tempDaySchedule?.caretype = .pill
         default:
-            tempDaySchedule?.type = .none
+            tempDaySchedule?.caretype = .none
         }
-    
+        
+        addScheduleRealm()
+        
         guard let preVC = self.navigationController?.viewControllers[0] as? CalendarViewController else {
-            return
-        }
-
+                return
+            }
         preVC.daysArr.append(tempDaySchedule!)
         self.navigationController?.popViewController(animated: true)
         
     }
     
+
 
 }

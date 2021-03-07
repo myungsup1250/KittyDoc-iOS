@@ -9,5 +9,6 @@ target 'KittyDocUIKit' do
 pod 'Charts'
 pod 'CircularSlider'
 pod 'UICircularProgressRing'
+pod 'RealmSwift'
 
 end

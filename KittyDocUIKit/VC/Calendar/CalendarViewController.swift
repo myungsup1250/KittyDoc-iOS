@@ -1,13 +1,16 @@
 //
-//  CalendarViewController.swift
-//  KittyDocUIKit
+//  ViewController.swift
+//  calendar2
 //
-//  Created by 곽명섭 on 2021/01/16.
+//  Created by JEN Lee on 2021/02/23.
 //
 
 import UIKit
+import RealmSwift
 
 class CalendarViewController: UIViewController {
+    
+    let realm = try! Realm()
     let now = Date()
     var cal = Calendar.current
     let dateFormatter = DateFormatter()
@@ -18,17 +21,17 @@ class CalendarViewController: UIViewController {
     var weekdayAdding = 0 // 시작일
     var daysArr: [daySchedule] = []
     
-    
 
     private let headerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = #colorLiteral(red: 0.8274509804, green: 0.8784313725, blue: 0.9176470588, alpha: 1)
         return view
     }()
     
     private let TitleLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -50,7 +53,8 @@ class CalendarViewController: UIViewController {
     private let preMonthBtn: UIButton = {
        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("이전 달", for: .normal)
+        button.setImage(UIImage(systemName: "arrowtriangle.left.fill"), for: .normal)
+        button.tintColor = #colorLiteral(red: 0.0862745098, green: 0.5294117647, blue: 0.6549019608, alpha: 1)
         button.addTarget(self, action: #selector(didTapPreMonthButton), for: .touchUpInside)
         return button
     }()
@@ -59,7 +63,8 @@ class CalendarViewController: UIViewController {
     private let nextMonthBtn: UIButton = {
        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("다음 달", for: .normal)
+        button.setImage(UIImage(systemName: "arrowtriangle.right.fill"), for: .normal)
+        button.tintColor = #colorLiteral(red: 0.0862745098, green: 0.5294117647, blue: 0.6549019608, alpha: 1)
         button.addTarget(self, action: #selector(didTapNextMonthButton), for: .touchUpInside)
         return button
     }()
@@ -79,10 +84,13 @@ class CalendarViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
         addSubViews()
         addConstraints()
         initCollection()
         initgesture()
+        readRealm()
+        view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -183,9 +191,9 @@ class CalendarViewController: UIViewController {
                 
                 let selectedDay = formatterDateFunc() +  formatterDayFunc(input: intDay)//yyyyMMdd
                 controller.tempDaySchedule?.day = selectedDay
-                
-                self.navigationController?.pushViewController(controller
-                                                              , animated: true)
+                    
+                controller.modalPresentationStyle = .fullScreen
+                self.navigationController?.pushViewController(controller, animated: true)
             }
         }
     }
@@ -240,7 +248,15 @@ class CalendarViewController: UIViewController {
         return String(input)
     }
     
-    func showTypeSchedule(type: Int, index: Int, cell: UICollectionViewCell) {
+    func readRealm() {
+        var temp: Results<daySchedule>
+        temp = realm.objects(daySchedule.self)
+        for i in temp {
+            daysArr.append(i)
+        }
+    }
+    
+    func showTypeSchedule(type: Int, index: Int, cell: CalendarCollectionViewCell) {
         switch type {
         case 0:
             showSchedule(type: .none, index: index, cell: cell, color: .systemYellow)
@@ -251,13 +267,12 @@ class CalendarViewController: UIViewController {
         case 3:
             showSchedule(type: .med, index: index, cell: cell, color: .systemPink)
         default:
-            showSchedule(type: .snack, index: index, cell: cell, color: .green)
+            showSchedule(type: .pill, index: index, cell: cell, color: .green)
         }
     }
     
-    
     //보여주는 함수
-    func showSchedule(type: careType, index: Int, cell: UICollectionViewCell, color: UIColor) {
+    func showSchedule(type: careType, index: Int, cell: CalendarCollectionViewCell, color: UIColor) {
         for dayData in daysArr {
             let date = dayData.day
             let endIdx: String.Index = date.index(date.startIndex, offsetBy: 5)
@@ -269,16 +284,45 @@ class CalendarViewController: UIViewController {
             if formatterDateFunc() == ym {
                 if Int(d) == Int(days[index]) {
                     if type == .none {
-                        cell.backgroundColor = color
+                        
+//                        if cell.scheduleLabel.text != "" {
+//                            cell.scheduleLabel.backgroundColor = color
+//                        } else if cell.secondScheduleLabel.text != "" {
+//                            cell.secondScheduleLabel.backgroundColor = color
+//                        } else {
+//                            cell.thirdScheduleLabel.backgroundColor = color
+//                        }
+                        
+                        if cell.scheduleLabel.text != "" {
+                            cell.scheduleLabel.backgroundColor = color
+                        }
+                        if cell.secondScheduleLabel.text != "" {
+                            cell.secondScheduleLabel.backgroundColor = color
+                        }
+                        if cell.thirdScheduleLabel.text != "" {
+                            cell.thirdScheduleLabel.backgroundColor = color
+                        }
+                        
                     }
-                    else if type == dayData.type {
-                        cell.backgroundColor = color
+                    else if type == dayData.caretype {
+                        
+                        if cell.scheduleLabel.text != "" {
+                            cell.scheduleLabel.backgroundColor = color
+                        }
+                        if cell.secondScheduleLabel.text != "" {
+                            cell.secondScheduleLabel.backgroundColor = color
+                        }
+                        if cell.thirdScheduleLabel.text != "" {
+                            cell.thirdScheduleLabel.backgroundColor = color
+                        }
+                        //dayData 현재가 몇번째인지 고민해보고 다시짜기
+                    }
+                        
+                       
                     }
                     
                 }
-                
-            }
-            
+    
         }
     }
     
@@ -293,7 +337,14 @@ class CalendarViewController: UIViewController {
 
             if formatterDateFunc() == ym {
                 if Int(d) == Int(days[index]) {
-                    cell.scheduleLabel.text = dayData.title
+                    
+                    if cell.scheduleLabel.text == "" {
+                        cell.scheduleLabel.text = dayData.title
+                    } else if cell.secondScheduleLabel.text == "" {
+                        cell.secondScheduleLabel.text = dayData.title
+                    } else {
+                        cell.thirdScheduleLabel.text = dayData.title
+                    }
 
                 }
 
@@ -303,8 +354,6 @@ class CalendarViewController: UIViewController {
     }
 
 }
-
-
 
 
 extension CalendarViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -340,20 +389,49 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
             cell.dayLabel.textColor = .black
         }
         
-        cell.backgroundColor = .systemBackground
-        cell.scheduleLabel.text = ""
+        cell.scheduleLabel.backgroundColor = view.backgroundColor
+        cell.secondScheduleLabel.backgroundColor = view.backgroundColor
+        cell.thirdScheduleLabel.backgroundColor = view.backgroundColor
         
-    
+        cell.scheduleLabel.text = ""
+        cell.secondScheduleLabel.text = ""
+        cell.thirdScheduleLabel.text = ""
+        
+        
         switch indexPath.section {
         case 0:
             break
         default:
-            showTypeSchedule(type: typeSegment.selectedSegmentIndex, index: indexPath.row, cell: cell)
             showTitleSchedule(index: indexPath.row, cell: cell)
+            showTypeSchedule(type: typeSegment.selectedSegmentIndex, index: indexPath.row, cell: cell)
+            
         }
         
-        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "DetailSegue", sender: indexPath.row)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "DetailSegue" {
+            let now = formatterDateFunc() + formatterDayFunc(input: sender as! Int)
+            let destVC = segue.destination as! DetailViewController
+            destVC.modalPresentationStyle = .overCurrentContext
+            destVC.today = now
+            destVC.year = String(components.year!)
+            destVC.month = String(components.month!)
+            destVC.day = formatterDayFunc(input: sender as! Int)
+            
+            for i in daysArr {
+                if i.day == now {
+                    destVC.scheduleArr.append(i)
+                }
+            }
+            
+        }
+        
     }
     
     
@@ -373,6 +451,6 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
         }
     }
     
-
+    
 }
 
