@@ -42,12 +42,35 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var daysofweek = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
     var times = [ "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00" ]
     
+    func getDaysInMonth(month: Int, year: Int) -> Int? {
+        let calendar = Calendar.current
+        
+        var startComps = DateComponents()
+        startComps.day = 1
+        startComps.month = month
+        startComps.year = year
+        
+        var endComps = DateComponents()
+        endComps.day = 1
+        endComps.month = month == 12 ? 1 : month + 1
+        endComps.year = month == 12 ? year + 1 : year
+        
+        
+        let startDate = calendar.date(from: startComps)!
+        let endDate = calendar.date(from:endComps)!
+        
+        
+        let diff = calendar.dateComponents([Calendar.Component.day], from: startDate, to: endDate)
+        
+        return diff.day
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.title = "Analysis"
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
         print("AnalysisViewController.viewDidLoad()")
-
+        
         safeArea = view.safeAreaLayoutGuide//view.layoutMarginsGuide
         userInterfaceStyle = self.traitCollection.userInterfaceStyle
         initUIViews()
@@ -55,7 +78,15 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         prepareForAutoLayout()
         setConstraints()
         manageUserInterfaceStyle()
+        
+        let date = Date()
+        let month = Calendar.current.component(.month,  from: date)
+        let year = Calendar.current.component(.year,  from: date)
 
+        if let numberOfDays = getDaysInMonth(month: 2, year: 2020) {
+            print("Year : \(year), Month : \(month) => Days : ", numberOfDays)
+        }
+        
         barChartView.delegate = self
         setChart(dataPoints: times, values: [Double(5), Double(10), Double(15), Double(20), Double(25), Double(30), Double(35), Double(40), Double(45), Double(50), Double(55), Double(60), Double(65), Double(70), Double(75), Double(80), Double(85), Double(90), Double(95), Double(100), Double(105), Double(110), Double(115), Double(120)])
     }

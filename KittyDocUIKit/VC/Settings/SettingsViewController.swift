@@ -64,14 +64,7 @@ class SettingsViewController: UIViewController {
     }
     
     func configureSections() {
-        Sections.append(Section(title: "Device Connection", options: [.switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: .systemYellow, handler: {
-        }, isOn: true)),
-        .staticCell(model: SettingsOption(title: "기기 설정(TEST)", icon: UIImage(systemName: "gear")!, iconBackgroundColor: .systemGreen, handler: {
-            self.performSegue(withIdentifier: "BTSettingsSegue", sender: self)
-        }))
-        
-        ]))
-        
+
         Sections.append(Section(title: "My Information", options: [.staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange, handler: {
             //            let storyboard = UIStoryboard(name: "Main", bundle: nil) // type storyboard name instead of Main
             guard let vc = self.storyboard?.instantiateViewController(identifier: "EditUserInfo") as? UserInfoSettingViewController else {
@@ -87,6 +80,20 @@ class SettingsViewController: UIViewController {
         Sections.append(Section(title: "Cat Settings", options: [.staticCell(model: SettingsOption(title: "냥이 등록", icon: UIImage(systemName: "plus.circle")!, iconBackgroundColor: .systemBlue) {
             self.performSegue(withIdentifier: "PetSettingsSegue", sender: self)
         })
+        ]))
+
+        Sections.append(Section(title: "Device Connection",
+                                options: [
+                                    .switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: .systemYellow, handler: {
+                                    }, isOn: true)),
+                                    .staticCell(model: SettingsOption(title: "기기 설정(TEST)", icon: UIImage(systemName: "gear")!, iconBackgroundColor: .systemGreen, handler: {
+                                        self.performSegue(withIdentifier: "BTSettingsSegue", sender: self)
+                                    })),
+                                    .staticCell(model: SettingsOption(title: "Start Sync(TEST)", icon: UIImage(systemName: "tray.and.arrow.down") ?? .strokedCheckmark, iconBackgroundColor: .darkGray, handler: {
+                                        print("Start Sync!")
+                                        DeviceManager.shared.startSync()
+                                    }))
+        
         ]))
         
         Sections.append(Section(title: "Account", options: [
