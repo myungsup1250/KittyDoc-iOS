@@ -394,10 +394,11 @@ extension AnalysisViewController {
             print("Year : \(year), Month : \(month) => Days : ", numberOfDays)
 
             //특정 달의 일 수 계산하기 Test Code
+            var dayValues = [Double]()
             for i in 1...numberOfDays {
-                
+                dayValues.append(Double(i * 5))
             }
-            setChart(dataPoints: days, values: [Double(10), Double(20), Double(30), Double(40), Double(50), Double(60), Double(70), Double(80), Double(90), Double(100), Double(110), Double(120)])
+            setChart(dataPoints: days.dropLast(31-numberOfDays), values: dayValues)
         case SegSelect.Week:
             print("You Selected Week!")
             setChart(dataPoints: daysofweek, values: [Double(15), Double(30), Double(45), Double(60), Double(75), Double(90), Double(105)])
