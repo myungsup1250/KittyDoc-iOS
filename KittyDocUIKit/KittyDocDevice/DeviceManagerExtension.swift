@@ -9,24 +9,26 @@ import Foundation
 import CoreBluetooth
 
 extension DeviceManager: CBCentralManagerDelegate {
+    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         //print("[+] centralManagerDidUpdateState()")
         switch central.state {
         case .unknown:
-            print("central.state is .unknown")
-            //fallthrough
+            //print("central.state is .unknown")
+            fallthrough
         case .resetting:
-            print("central.state is .resetting")
-            //fallthrough
+            //print("central.state is .resetting")
+            fallthrough
         case .unsupported:
-            print("central.state is .unsupported")
-            //fallthrough
+            //print("central.state is .unsupported")
+            fallthrough
         case .unauthorized:
-            print("central.state is .unauthorised")
-            //fallthrough
+            //print("central.state is .unauthorised")
+            fallthrough
         case .poweredOff:
-            print("central.state is .poweredOff")
+            //print("central.state is .poweredOff")
             // 연결할 수 없음
+            print("central.state is .poweredOn, DeviceManager will scan IoT Device")
             guard self.delegate?.onBluetoothNotAccessible() != nil else {
                 print("self.delegate?.onBluetoothNotAccessible() == nil!(centralManagerDidUpdateState)")
                 return
@@ -37,7 +39,8 @@ extension DeviceManager: CBCentralManagerDelegate {
             if let savedDeviceUUID = self.savedDeviceUUIDString() {
                 print("deviceManager.savedDeviceUUIDString() != nil")
                 var peripherals = [CBPeripheral]()
-                let uuid: CBUUID? = CBUUID(string: savedDeviceUUID)//let uuidTest: UUID? = UUID(uuidString: self.savedDeviceUUIDString() ?? "")
+                let uuid: CBUUID? = CBUUID(string: savedDeviceUUID)
+                //let uuidTest: UUID? = UUID(uuidString: self.savedDeviceUUIDString() ?? "")
                 // 안드 mac 형식이면 nil 이 된다?
                 
                 if uuid != nil {
@@ -45,6 +48,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                     //peripherals = central.retrievePeripherals(withIdentifiers: [uuidTest!])
                     //print("peripherals : \(peripherals)")
                 }
+                
                 if peripherals.count > 0 {
                     self.peripheral = peripherals[0]
                     self.peripheral!.delegate = self
@@ -154,10 +158,6 @@ extension DeviceManager: CBCentralManagerDelegate {
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("[+] centralManager(didConnect)")
         
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-        // 장비에 다시 연결하면 배터리 경고 초기화
-        //KittyDocUtility.clearBatteryWarning() //[Util clearBatteryWarning];
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
         // User defaults에 저장
         var dict: Dictionary = Dictionary<String, Any>()
         dict[DeviceManager.KEY_DEVICE] = peripheral.identifier.uuidString
@@ -655,7 +655,7 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
         
         let centralQueue: DispatchQueue = DispatchQueue(label: "devicemanager")
         self.manager = CBCentralManager(delegate: self, queue: centralQueue)
-//        self.manager = CBCentralManager(delegate: self, queue: nil)
+        //self.manager = CBCentralManager(delegate: self, queue: nil)
         
         DispatchQueue.background(delay: 11.0, background: nil) {// Stop scanning after deadine
             print("DispatchQueue.main.asyncAfter(deadline: .now() + 11)")
@@ -667,18 +667,18 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
                         return
                     }
                 } else {
-                   // bingo : sleepdoc 장비는 검색되지 않게
+                   // sleepdoc, puppydoc 장비는 추가하지 않는다
                     var kittydocDevices: Array = Array<PeripheralData>()
                     for p in self.foundDevices {
                         if p.peripheral != nil {
-//                            if(p.peripheral!.name?.lowercased() != String("sleepdoc")) {// whosecat?
+                            if(p.peripheral!.name?.lowercased() == String("kittydoc")) { // whosecat
                                 kittydocDevices.append(p)
-//                            }
+                            }
                         }
                     }
 
                     self.foundDevices.removeAll()
-                    self.foundDevices.append(contentsOf: kittydocDevices) // [self.foundDevices addObjectsFromArray:puppydocDevices];
+                    self.foundDevices.append(contentsOf: kittydocDevices)
                     self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
                         return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
                     }
@@ -739,7 +739,7 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
         var dict: Dictionary = Dictionary<String, Any>()
         
         dict[DeviceManager.KEY_DEVICE] = uuid
-        dict[DeviceManager.KEY_NAME] = "kittydoc"// puppydoc
+        dict[DeviceManager.KEY_NAME] = "whosecat"// kittydoc
         
         UserDefaults.standard.setValue(dict, forKey: DeviceManager.KEY_DICTIONARY)
     }
@@ -891,7 +891,7 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
         }
         //print("[-]searchSyncRequiredCharacteristics()")
     }
-    
+     
     func startSync() {
         guard (self.syncControlCharacteristic != nil && self.syncDataCharacteristic != nil && self.peripheral != nil) else {
             print("Required sync service not found! or self.peripheral == nil!(startSync)")

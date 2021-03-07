@@ -18,7 +18,7 @@ protocol DeviceManagerDelegate {
     func onBluetoothNotAccessible() // BLE Off or No Permission... etc.
     func onDevicesFound(peripherals: [PeripheralData])
     func onConnectionFailed()
-    func onServiceFound()// 장비에 필요한 서비스/캐랙터리스틱을 모두 찾음. 그냥 연결만하면 서비스 접근시 크래시
+    func onServiceFound()// 장비에 필요한 서비스/캐랙터리스틱을 모두 찾았음
     func onDfuTargFound(peripheral: CBPeripheral)
 }
 protocol DeviceManagerSecondDelegate {
@@ -32,9 +32,9 @@ class DeviceManager: NSObject {
     // Declare class instance property
     public static let shared = DeviceManager()
 
-    public static let KEY_DEVICE = String("device") // NSString* KEY_DEVICE = @"device";
-    public static let KEY_NAME = String("name")     // NSString* KEY_NAME = @"name";
-    public static let KEY_DICTIONARY = String("device_dictionary")// NSString* KEY_DICTIONARY = @"device_dictionary";
+    public static let KEY_DEVICE = String("device")
+    public static let KEY_NAME = String("name")
+    public static let KEY_DICTIONARY = String("device_dictionary")
     
     // queue 예약작업 명령들
     public static let COMMAND_FACTORY_RESET = String("factory_reset")
@@ -42,7 +42,7 @@ class DeviceManager: NSObject {
 
     var delegate: DeviceManagerDelegate?
     var secondDelegate: DeviceManagerSecondDelegate?
-    var commandQueue: [String]// 연결 후 실행할 명령 큐 // @property (strong, nonatomic) NSMutableArray *commandQueue;
+    var commandQueue: [String]// 연결 후 실행할 명령 큐
     var foundDevices: [PeripheralData]
     
     var peripheral: CBPeripheral?
@@ -109,16 +109,16 @@ class DeviceManager: NSObject {
     }
 
     public var syncData: Data
-    public var syncDataCount: Int// KittyDoc 기기로부터 받은 KittyDoc_Ext_Interface_Data_Type 데이터 수
+    public var syncDataCount: Int// WhoseCat 기기로부터 받은 WhoseCat_Ext_Interface_Data_Type 데이터 수
     public var totalSyncBytes: Int// 동기화할 전체 바이트수
     public var totalSyncBytesLeft: Int// 앞으로 동기화할 남은 바이트수
-    // 21.01.31 totalSyncBytes => totalSyncBytesLeft 용도 변경?
 
     private override init() {
         print("DeviceManager.init()")
         
         delegate = nil
         secondDelegate = nil
+        
         commandQueue = [String]()// 연결 후 실행할 명령 큐
         foundDevices = [PeripheralData]()
             
@@ -137,12 +137,8 @@ class DeviceManager: NSObject {
         
         _isConnected = false
         _isSyncServiceFound = false
-        _isRequiredServicesFound = false// 필요 서비스들 모두 찾았는가?
+        _isRequiredServicesFound = false
         _isScanningDfuTarg = false
-        //isConnected
-        //isSyncServiceFound
-        //isRequiredServicesFound
-        //isScanningDfuTarg
         
         syncData = Data()
         syncDataCount = 0
