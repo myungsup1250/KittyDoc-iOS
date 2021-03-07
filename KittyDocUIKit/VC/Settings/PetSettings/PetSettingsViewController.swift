@@ -17,7 +17,6 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         
         tableView.delegate = self
         tableView.dataSource = self
-                
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,7 +75,6 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         return table
     }()
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return PetInfo.shared.petArray.count
     }
@@ -93,16 +91,13 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog("선택된 행은 \(indexPath.row)번째 행 입니다.")
     }
-    
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
@@ -110,7 +105,6 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         let edit = editAction(at: indexPath)
         return UISwipeActionsConfiguration(actions: [delete, edit])
     }
-    
     
     func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
@@ -154,12 +148,9 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         return action
     }
     
-    
     func alertWithMessage(message input: Any) {
         let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .cancel))
         self.present(alert, animated: false)
     }
-    
-   
 }

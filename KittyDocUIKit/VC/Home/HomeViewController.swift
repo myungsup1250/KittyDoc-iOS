@@ -28,12 +28,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         deviceManager.delegate = self
         deviceManager.secondDelegate = self
         print("HomeViewController.viewDidLoad()")
-//        if deviceManager.savedDeviceUUIDString() != nil { // 저장된 기기가 있을 경우 연결 시도
-//            deviceManager.reestablishConnection()
-//        }
-        if let uuid = deviceManager.savedDeviceUUIDString() {
+
+        if let uuid = deviceManager.savedDeviceUUIDString() { // 저장된 기기가 있을 경우 연결 시도
             deviceManager.connectPeripheral(uuid: uuid, name: "kittydoc")
-            //deviceManager.reestablishConnection()
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
@@ -46,10 +43,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS) {
             let jsonString:String = findResponse.getMessage() as! String
-            if let arrData = jsonString.data(using: .utf8){
+            if let arrData = jsonString.data(using: .utf8) {
                 do {
-                    if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject]{
-                        for i in 0..<jsonArray.count{
+                    if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
+                        for i in 0..<jsonArray.count {
                             let petInfo:PetInfo = PetInfo()
                             petInfo.PetID = jsonArray[i]["PetID"] as! Int
                             petInfo.PetName = jsonArray[i]["PetName"] as! String
