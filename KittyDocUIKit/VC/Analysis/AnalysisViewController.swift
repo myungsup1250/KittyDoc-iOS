@@ -62,6 +62,57 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
                 
         barChartView.delegate = self
         setChart(dataPoints: times, values: [Double(5), Double(10), Double(15), Double(20), Double(25), Double(30), Double(35), Double(40), Double(45), Double(50), Double(55), Double(60), Double(65), Double(70), Double(75), Double(80), Double(85), Double(90), Double(95), Double(100), Double(105), Double(110), Double(115), Double(120)])
+        
+        
+        //  //  //  //  //
+        //센서 데이터 수신 코드
+        //  //  //  //  //
+        var dataArray: [PetData] = []
+        let frontTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000)
+        let rearTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000 * 2)
+        print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
+        print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
+                
+        //_petID: 32는 자신의 펫 아이디로 수정되어야 함. 예시로 32를 적어두었음!
+        let analysisData:AnalysisData = AnalysisData(_petID: 32, _frontTime: frontTime, _rearTime: rearTime)
+        let server:KittyDocServer = KittyDocServer()
+        let analysisResponse:ServerResponse = server.sensorRequestHour(data: analysisData)
+                
+        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS){
+            print(analysisResponse.getMessage() as! String)
+                    
+            let jsonString:String = analysisResponse.getMessage() as! String
+            if let arrData = jsonString.data(using: .utf8) {
+                do {
+                    if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
+                        for i in 0..<jsonArray.count {
+                            let petData:PetData = PetData()
+                            petData.time = jsonArray[i]["Time"] as! CLong
+                            petData.sunVal = jsonArray[i]["SunVal"] as! Int
+                            petData.uvVal = jsonArray[i]["UvVal"] as! Double
+                            petData.vitDVal = jsonArray[i]["VitDVal"] as! Double
+                            petData.exerciseVal = jsonArray[i]["ExerciseVal"] as! Int
+                            petData.walkVal = jsonArray[i]["WalkVal"] as! Int
+                            petData.stepVal = jsonArray[i]["StepVal"] as! Int
+                            petData.luxpolVal = jsonArray[i]["LuxpolVal"] as! Double
+                            petData.restVal = jsonArray[i]["RestVal"] as! Int
+                            petData.kalVal = jsonArray[i]["KalVal"] as! Double
+                            petData.waterVal = jsonArray[i]["WaterVal"] as! Int
+                            dataArray.append(petData)
+                        }
+                    }
+                } catch {
+                    print("JSON 파싱 에러")
+                }
+            
+            } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
+                print(analysisResponse.getMessage() as! String)
+            }
+            
+            for data in dataArray{
+                //print(data.stepVal)
+            }
+        }
     }
     
     func manageUserInterfaceStyle() {
@@ -86,7 +137,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     
     // receiveSyncDataDone() will be called when Receiving SyncData Done!
     @objc func receiveSyncDataDone() {
-        print("\n<<< AnalysisViewController.receiveSyncDataDone() >>>")        
+        print("\n<<< AnalysisViewController.receiveSyncDataDone() >>>")
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
