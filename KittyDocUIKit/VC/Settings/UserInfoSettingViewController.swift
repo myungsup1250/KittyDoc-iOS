@@ -258,7 +258,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         }
         
         else {
-            signUpBtn.isOn = .Off
+            signUpBtn.isOn = .On
         }
     }
     
@@ -290,18 +290,23 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-//        let signUpData:SignUpData = SignUpData(_userEmail:emailTF.text!, _userPwd:pwdTF.text!, _userName:nameTF.text!, _userPhone:phoneNumberInput.text!, _userSex:gender, _userBirth:birth)
-//        let server:KittyDocServer = KittyDocServer()
-//        let signUpResponse:ServerResponse = server.userSignUp(data: signUpData)
-//
-//        if (signUpResponse.getCode() as! Int == ServerResponse.JOIN_SUCCESS) {
-//            alertWithMessage(message: signUpResponse.getMessage())
-//            print(signUpResponse.getMessage())
+        if (!isPhoneForm(_phone:phoneNumberInput.text!)) {
+            alertWithMessage(message: "올바른 전화번호 형식이 아닙니다.")
+            return
+        }
+        
+        let modifyData:ModifyData = ModifyData(_userId: UserInfo.shared.UserID, _userName: nameTF.text!, _userPhone: phoneNumberInput.text!, _userSex: gender, _userBirth: birth)
+        let server:KittyDocServer = KittyDocServer()
+        let modifyResponse:ServerResponse = server.userModify(data: modifyData)
+                    
+        if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_SUCCESS){
+            print(modifyResponse.getMessage() as! String)
             
-//            self.presentingViewController?.dismiss(animated: true, completion: nil)
-//        } else {
-//            alertWithMessage(message: signUpResponse.getMessage())
-//        }
+            //이걸로 화면 닫아주는게 아닌가봐유?
+            //self.presentingViewController?.dismiss(animated: true, completion: nil)
+        } else if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_FAILURE){
+            print(modifyResponse.getMessage() as! String)
+        }
     }
     
     func alertWithMessage(message input: Any) {
@@ -310,6 +315,11 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         self.present(alert, animated: false)
     }
 
+}
+
+func isPhoneForm(_phone:String) -> Bool {
+    let phoneReg = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$"
+    return NSPredicate(format: "SELF MATCHES %@", phoneReg).evaluate(with:_phone)
 }
 
 extension UserInfoSettingViewController {
@@ -337,8 +347,7 @@ extension UserInfoSettingViewController {
     
     func initEmailTF() {
         emailTF = UITextField()
-        //emailTF.placeholder = "사용자 이메일 - 비활성화"
-        emailTF.text = "사용자 이메일 - 비활성화"
+        emailTF.text = UserInfo.shared.Email + " - 비활성화"
         emailTF.textColor = .systemGray
         emailTF.keyboardType = .emailAddress
         emailTF.delegate = self
@@ -355,7 +364,7 @@ extension UserInfoSettingViewController {
     
     func initNameTF() {
         nameTF = UITextField()
-        nameTF.placeholder = "이복덩"
+        nameTF.placeholder = UserInfo.shared.Name
         nameTF.delegate = self
         nameTF.borderStyle = .roundedRect
         //nameTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
@@ -368,7 +377,7 @@ extension UserInfoSettingViewController {
     
     func initPhoneNumberInput() {
         phoneNumberInput = UITextField()
-        phoneNumberInput.placeholder = "01012345678"
+        phoneNumberInput.placeholder = UserInfo.shared.UserPhone
         phoneNumberInput.borderStyle = .roundedRect
         //phoneNumberInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
     }
@@ -428,7 +437,7 @@ extension UserInfoSettingViewController {
         signUpBtn.backgroundColor = .systemBlue
         signUpBtn.layer.cornerRadius = 8
         signUpBtn.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
-        signUpBtn.isOn = .Off
+        signUpBtn.isOn = .On
     }
 
 }
