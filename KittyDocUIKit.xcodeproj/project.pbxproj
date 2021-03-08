@@ -25,7 +25,8 @@
 		70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */; };
 		70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80F3825BE942600EE2666 /* onOffButton.swift */; };
 		70D80F3F25BEBBD700EE2666 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */; };
-		DFEC7E4D9AB70527B5B537F3 /* Pods_KittyDocUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */; };
+		71D62348405127804A4DA9B4 /* Pods_KittyDocUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */; };
+		B0A9D81525F66630006EE580 /* ModifyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D81425F66630006EE580 /* ModifyData.swift */; };
 		E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E125B2C52F001484AC /* HomeViewController.swift */; };
 		E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E425B2C538001484AC /* SettingsViewController.swift */; };
 		E00AE1E825B2C542001484AC /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E725B2C542001484AC /* AnalysisViewController.swift */; };
@@ -83,12 +84,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		08DF718CBAF77C9D4D4D05BE /* Pods-KittyDocUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.release.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.release.xcconfig"; sourceTree = "<group>"; };
 		113CCDCA25BA5AA100BF70E5 /* ServerResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
 		113CCDCB25BA5AA100BF70E5 /* ServerApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerApi.swift; sourceTree = "<group>"; };
 		113CCDCC25BA5AA100BF70E5 /* KittyDocServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KittyDocServer.swift; sourceTree = "<group>"; };
 		113CCDEA25C42F5700BF70E5 /* PetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfo.swift; sourceTree = "<group>"; };
-		4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7043EBD325F529BD008A67A4 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7043EBD625F52A0F008A67A4 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingViewController.swift; sourceTree = "<group>"; };
@@ -103,7 +102,9 @@
 		70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetSettingsViewController.swift; sourceTree = "<group>"; };
 		70D80F3825BE942600EE2666 /* onOffButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onOffButton.swift; sourceTree = "<group>"; };
 		70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
-		A8A77652BAB055C4B7DD662A /* Pods-KittyDocUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.debug.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.debug.xcconfig"; sourceTree = "<group>"; };
+		99609129053106202336537A /* Pods-KittyDocUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.debug.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.debug.xcconfig"; sourceTree = "<group>"; };
+		AB7E6C79C095956904E58184 /* Pods-KittyDocUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.release.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.release.xcconfig"; sourceTree = "<group>"; };
+		B0A9D81425F66630006EE580 /* ModifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData.swift; sourceTree = "<group>"; };
 		E00AE1E125B2C52F001484AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E00AE1E425B2C538001484AC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E00AE1E725B2C542001484AC /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +173,7 @@
 		E0BDC31125C871D400D2524B /* CBUUIDExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBUUIDExtension.swift; sourceTree = "<group>"; };
 		E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtension.swift; sourceTree = "<group>"; };
 		E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDataTableViewCell.swift; sourceTree = "<group>"; };
+		F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,7 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DFEC7E4D9AB70527B5B537F3 /* Pods_KittyDocUIKit.framework in Frameworks */,
+				71D62348405127804A4DA9B4 /* Pods_KittyDocUIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,6 +221,7 @@
 				E06CEAEC25E40C0000D966BB /* SignUpData_Pet.swift */,
 				E06CEAF325E40C0000D966BB /* SignUpData.swift */,
 				E06CEAF425E40C0000D966BB /* WaterData.swift */,
+				B0A9D81425F66630006EE580 /* ModifyData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -274,11 +277,19 @@
 			path = Analysis;
 			sourceTree = "<group>";
 		};
+		86E0003DBDF56B2E8C164E07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BA1E6387585B9C17F4062583 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A8A77652BAB055C4B7DD662A /* Pods-KittyDocUIKit.debug.xcconfig */,
-				08DF718CBAF77C9D4D4D05BE /* Pods-KittyDocUIKit.release.xcconfig */,
+				99609129053106202336537A /* Pods-KittyDocUIKit.debug.xcconfig */,
+				AB7E6C79C095956904E58184 /* Pods-KittyDocUIKit.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -383,7 +394,7 @@
 				E08313E325B0ABE200266994 /* KittyDocUIKit */,
 				E08313E225B0ABE200266994 /* Products */,
 				BA1E6387585B9C17F4062583 /* Pods */,
-				EBBB8371894849EE37AE282E /* Frameworks */,
+				86E0003DBDF56B2E8C164E07 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -517,14 +528,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		EBBB8371894849EE37AE282E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4D244AD5C2B93307D33A2576 /* Pods_KittyDocUIKit.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -532,11 +535,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E08313F825B0ABE300266994 /* Build configuration list for PBXNativeTarget "KittyDocUIKit" */;
 			buildPhases = (
-				8FBE012FC8D423F9597AE558 /* [CP] Check Pods Manifest.lock */,
+				A7BF12ADF87DDD8139E3F4AE /* [CP] Check Pods Manifest.lock */,
 				E08313DD25B0ABE200266994 /* Sources */,
 				E08313DE25B0ABE200266994 /* Frameworks */,
 				E08313DF25B0ABE200266994 /* Resources */,
-				66C9225D70A3B33ED6D32926 /* [CP] Embed Pods Frameworks */,
+				3579AAAF54875A850E533522 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -601,7 +604,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		66C9225D70A3B33ED6D32926 /* [CP] Embed Pods Frameworks */ = {
+		3579AAAF54875A850E533522 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -618,7 +621,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8FBE012FC8D423F9597AE558 /* [CP] Check Pods Manifest.lock */ = {
+		A7BF12ADF87DDD8139E3F4AE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -685,6 +688,7 @@
 				E06CEAF725E40C0000D966BB /* SignUpData_Pet.swift in Sources */,
 				70D80F3F25BEBBD700EE2666 /* AddPetViewController.swift in Sources */,
 				E06CEAFA25E40C0000D966BB /* ExistData.swift in Sources */,
+				B0A9D81525F66630006EE580 /* ModifyData.swift in Sources */,
 				E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */,
 				E00AE1E825B2C542001484AC /* AnalysisViewController.swift in Sources */,
 				70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */,
@@ -908,7 +912,7 @@
 		};
 		E08313F925B0ABE300266994 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8A77652BAB055C4B7DD662A /* Pods-KittyDocUIKit.debug.xcconfig */;
+			baseConfigurationReference = 99609129053106202336537A /* Pods-KittyDocUIKit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -929,7 +933,7 @@
 		};
 		E08313FA25B0ABE300266994 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 08DF718CBAF77C9D4D4D05BE /* Pods-KittyDocUIKit.release.xcconfig */;
+			baseConfigurationReference = AB7E6C79C095956904E58184 /* Pods-KittyDocUIKit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

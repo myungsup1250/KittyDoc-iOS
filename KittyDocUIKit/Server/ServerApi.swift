@@ -22,4 +22,5 @@ protocol ServerApi{
     func waterSend(data: WaterData) -> ServerResponse
     func sensorRequestDay(data: AnalysisData) -> ServerResponse
     func sensorRequestHour(data: AnalysisData) -> ServerResponse
+    func userModify(data: ModifyData) -> ServerResponse
 }

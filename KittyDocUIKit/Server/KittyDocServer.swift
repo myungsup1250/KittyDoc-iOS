@@ -92,5 +92,10 @@ class KittyDocServer:ServerApi{
         let url = URL(string:(baseUrl + port + "/pet/analysis/hour"))!
         return doRequestTask(url: url, data: data)
     }
+    
+    func userModify(data: ModifyData) -> ServerResponse {
+        let url = URL(string:(baseUrl + port + "/user/edit"))!
+        return doRequestTask(url: url, data: data)
+    }
     init(){}
 }
