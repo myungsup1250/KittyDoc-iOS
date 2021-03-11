@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
+    
+    let authContext = LAContext()
+    
     var userInterfaceStyle: UIUserInterfaceStyle = .unspecified
     var deviceManager = DeviceManager.shared
     var safeArea: UILayoutGuide!
@@ -51,7 +55,39 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.title = "내 정보"
+    
+        var error: NSError?
+        
+        if authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        {
+            
+        }
+        
+        switch authContext.biometryType {
+        case .faceID:
+            print("계정 정보를 열람하기 위해서 Face ID로 인증 합니다.")
+        case .touchID:
+            print("계정 정보를 열람하기 위해서 Touch ID로 인증 합니다.")
+        case .none:
+            print("계정 정보를 열람하기 위해서는 로그인하십시오. ")
+        }
+        
+        let reason = "Log in to your account"
+        
+        authContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (sucess, error) in
+            
+            if sucess {
+                print("인증 성공")
+                
+            } else {
+                print("인증 실패")
+                if let error = error {
+                    print(error.localizedDescription)
+                    DispatchQueue.main.async { self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            }
+        }
         
         userInterfaceStyle = self.traitCollection.userInterfaceStyle
         
@@ -364,7 +400,7 @@ extension UserInfoSettingViewController {
     
     func initNameTF() {
         nameTF = UITextField()
-        nameTF.placeholder = UserInfo.shared.Name
+        nameTF.text = UserInfo.shared.Name
         nameTF.delegate = self
         nameTF.borderStyle = .roundedRect
         //nameTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
@@ -377,7 +413,7 @@ extension UserInfoSettingViewController {
     
     func initPhoneNumberInput() {
         phoneNumberInput = UITextField()
-        phoneNumberInput.placeholder = UserInfo.shared.UserPhone
+        phoneNumberInput.text = UserInfo.shared.UserPhone
         phoneNumberInput.borderStyle = .roundedRect
         //phoneNumberInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
     }
@@ -389,7 +425,7 @@ extension UserInfoSettingViewController {
 
     func initBirthDataField() {
         birthDataField = UITextField()
-        birthDataField.placeholder = "여기를 클릭해서 생년월일을 입력해주세요"
+        birthDataField.text = UserInfo.shared.UserBirth
         birthDataField.borderStyle = .roundedRect
         //birthDataField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
     }
@@ -421,7 +457,18 @@ extension UserInfoSettingViewController {
         genderSelect.insertSegment(withTitle: "Male", at: 0, animated: true)
         genderSelect.insertSegment(withTitle: "Female", at: 1, animated: true)
         genderSelect.insertSegment(withTitle: "None", at: 2, animated: true)
-        //genderSelect.addTarget(self, action: #selector(segmentDidEndEditing), for: .editingDidEnd)
+        
+        switch UserInfo.shared.gender {
+        case "male":
+            genderSelect.selectedSegmentIndex = 0
+        case "female":
+            genderSelect.selectedSegmentIndex = 1
+        case "none":
+            genderSelect.selectedSegmentIndex = 2
+        default:
+            genderSelect.selectedSegmentIndex = 2
+        }
+        
     }
     
     func initGenderLabel() {
