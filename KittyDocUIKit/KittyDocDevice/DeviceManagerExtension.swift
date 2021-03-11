@@ -428,13 +428,13 @@ extension DeviceManager: CBPeripheralDelegate {
                         return
                     }
 
-                    print("┌-------------------------------------------------------------------------------------------------------------------------------------------┐")
-                    print("|   s_tick   |       s_time        |   e_tick   |       s_time        |  steps  |  t_lux  | avg_lux |  avg_k  |  vct_x  |  vct_y  |  vct_z  |")
+                    print("┌-------------------------------------------------------------------------------------------------------------┐")
+                    print("|  s_tick  |      s_time       |  e_tick  |      s_time       |steps|  t_lux  |avg_lux|avg_k|vct_x|vct_y|vct_z|")
                     for i in 0...5 {
-                        let sensorData:SensorData = SensorData(_object: kittydoc_data.d[i], _petID: UserInfo.shared.UserID, _petLB: PetInfo.shared.petArray.first!.PetLB)
-                        let server:KittyDocServer = KittyDocServer()
-                        let sensorResponse:ServerResponse = server.sensorSend(data: sensorData)
-                        if(sensorResponse.getCode() as! Int == ServerResponse.SENSOR_SUCCESS){
+                        let sensorData = SensorData(_object: kittydoc_data.d[i], _petID: 38, _petLB: PetInfo.shared.petArray.first!.PetLB)
+                        let server = KittyDocServer()
+                        let sensorResponse = server.sensorSend(data: sensorData)
+                        if (sensorResponse.getCode() as! Int == ServerResponse.SENSOR_SUCCESS) {
                             print(sensorResponse.getMessage())
                         } else {
                             print(sensorResponse.getMessage())
@@ -442,17 +442,17 @@ extension DeviceManager: CBPeripheralDelegate {
 
                         let s_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].s_tick))
                         let e_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].e_tick))
-                        print("| \(String(format: "%10d", kittydoc_data.d[i].s_tick)) | \(s_time) |", terminator: "")
-                        print(" \(String(format: "%10d", kittydoc_data.d[i].e_tick)) | \(e_time) |", terminator: "")
-                        print(" \(String(format: "%7d", kittydoc_data.d[i].steps)) |", terminator: "")
-                        print(" \(String(format: "%7d", kittydoc_data.d[i].t_lux)) |", terminator: "")
-                        print(" \(String(format: "%7d", kittydoc_data.d[i].avg_lux)) |", terminator: "")
-                        print(" \(String(format: "%7d", kittydoc_data.d[i].avg_k)) |", terminator: "")
-                        print(" \(String(format: "%7d", kittydoc_data.d[i].vector_x)) |", terminator: "")
-                        print(" \(String(format: "%7d", kittydoc_data.d[i].vector_y)) |", terminator: "")
-                        print(" \(String(format: "%7d", kittydoc_data.d[i].vector_z)) |")
+                        print("|\(String(format: "%10d", kittydoc_data.d[i].s_tick))|\(s_time)|", terminator: "")
+                        print("\(String(format: "%10d", kittydoc_data.d[i].e_tick))|\(e_time)|", terminator: "")
+                        print("\(String(format: "%5d", kittydoc_data.d[i].steps))|", terminator: "")
+                        print("\(String(format: "%9d", kittydoc_data.d[i].t_lux))|", terminator: "")
+                        print(" \(String(format: "%5d", kittydoc_data.d[i].avg_lux)) |", terminator: "")
+                        print("\(String(format: "%5d", kittydoc_data.d[i].avg_k))|", terminator: "")
+                        print("\(String(format: "%5d", kittydoc_data.d[i].vector_x))|", terminator: "")
+                        print("\(String(format: "%5d", kittydoc_data.d[i].vector_y))|", terminator: "")
+                        print("\(String(format: "%5d", kittydoc_data.d[i].vector_z))|")
                     }
-                    print("├-------------------------------------------------------------------------------------------------------------------------------------------┤")
+                    print("├-------------------------------------------------------------------------------------------------------------┤")
 
                     // notify to delegate
                     var progress: Int
@@ -466,8 +466,8 @@ extension DeviceManager: CBPeripheralDelegate {
                     } else if progress > 100 {
                         progress = 100
                     }
-                    print("| remainings : \(String(format: "%8d", kittydoc_data.remainings)), reset_num : \(String(format: "%8d", kittydoc_data.reset_num)), time_zone : \(String(format: "%6d", kittydoc_data.time_zone)), progress : \(String(format: "%3d", progress)) (\(String(format: "%8d", self.syncDataCount * 154)) / \(String(format: "%8d", totalSyncBytes)))                                     |")
-                    print("└-------------------------------------------------------------------------------------------------------------------------------------------┘")
+                    print("| remainings : \(String(format: "%8d", kittydoc_data.remainings)), reset_num : \(String(format: "%8d", kittydoc_data.reset_num)), time_zone : \(String(format: "%6d", kittydoc_data.time_zone)), progress : \(String(format: "%3d", progress)) (\(String(format: "%8d", self.syncDataCount * 154)) / \(String(format: "%8d", totalSyncBytes)))       |")
+                    print("└-------------------------------------------------------------------------------------------------------------┘")
                     
                     guard self.totalSyncBytes >= 0 && (self.secondDelegate?.onSyncProgress(progress: progress) != nil) else {
                         print("self.secondDelegate?.onSyncProgress(:) == nil || totalSyncBytes < 0!(didUpdateValueForCharacteristic)")
