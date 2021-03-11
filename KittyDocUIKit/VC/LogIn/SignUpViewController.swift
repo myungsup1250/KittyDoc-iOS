@@ -56,7 +56,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     }
     
-    func initUIViews() {
+    fileprivate func initUIViews() {
         initWelcomeLabel()
         initGuideLabel()
         
@@ -81,7 +81,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    func addSubviews() {
+    fileprivate func addSubviews() {
         view.addSubview(welcomeLabel)
         view.addSubview(guideLabel)
         
@@ -104,7 +104,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(signInBtn)
     }
     
-    func prepareForAutoLayout() {
+    fileprivate func prepareForAutoLayout() {
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         guideLabel.translatesAutoresizingMaskIntoConstraints = false
         signUpView.translatesAutoresizingMaskIntoConstraints = false
@@ -126,7 +126,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setConstraints() {
+    fileprivate func setConstraints() {
         let signUpViewConstraints = [
             signUpView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             signUpView.centerYAnchor.constraint(equalTo: view.centerYAnchor),

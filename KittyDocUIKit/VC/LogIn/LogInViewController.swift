@@ -25,9 +25,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     var email: String?
     var pw: String?
 
-    override func viewWillLayoutSubviews() {
-        print("LogInViewController.viewWillLayoutSubviews()")
-    }
+//    override func viewWillLayoutSubviews() {
+//        print("LogInViewController.viewWillLayoutSubviews()")
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,19 +40,23 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         prepareForAutoLayout()
         setConstraints()
 
-        // userInfo.wantsRememberEmail = true
-        // userInfo.wantsAutoLogin = true
-
-//        if userInfo.loggedInPrev {
-//            if userInfo.wantsAutoLogin && !userInfo.Email.isEmpty && !userInfo.Pw.isEmpty { // Automatically Log In
-//                print("will AutoLogin")
-//                emailTF.text = userInfo.Email
-//                pwTF.text = userInfo.Pw
-//                didTapSignIn()
-//            } else if userInfo.wantsRememberEmail && !userInfo.Email.isEmpty { // Just Remember User's Email
-//                emailTF.text = userInfo.Email
-//            }
-//        }
+//        let dayInSec: TimeInterval = 86400 // (86400 == 24Hours in seconds)
+//        let hourInSec: TimeInterval = 3600
+//
+//        // 일주일 (604800 == A week in seconds)
+//        //let frontTime = Int(Date().timeIntervalSince1970 * 1000)// - 604800000)    // frontTime in milliseconds
+//        //let rearTime = Int((Date().timeIntervalSince1970 - (dayInSec * 7)) * 1000)// * 2) // rearTime in milliseconds
+//
+//        // 하루 (86400 == 24Hours in seconds)
+//        //let frontTime = Int(Date().timeIntervalSince1970 * 1000)                                    // frontTime in milliseconds
+//        //let rearTime = Int((Date().timeIntervalSince1970 - (dayInSec * Double(forDays))) * 1000)    // rearTime in milliseconds
+//
+//        // 00시부터 지금까지?
+//        let timeIntervalSince1970 = Date().timeIntervalSince1970
+//        let timeIntervalFromMidnight = TimeInterval(Int(timeIntervalSince1970 + hourInSec * 9) % Int(dayInSec))
+//        let frontTime = Int(timeIntervalSince1970 * 1000)                                    // frontTime in milliseconds
+//        let rearTime = Int((timeIntervalSince1970 - timeIntervalFromMidnight) * 1000)   // rearTime in milliseconds
+//        print("requestServerData(From : \(unixtimeToString(unixtime: time_t(rearTime / 1000))), Til : \(unixtimeToString(unixtime: time_t(frontTime / 1000))))")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -199,7 +203,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 }
 
 extension LogInViewController { // AutoLayout
-    func initUIViews() {
+    fileprivate func initUIViews() {
         initEmailTF()
         initPwTF()
         initLabels()
@@ -207,7 +211,7 @@ extension LogInViewController { // AutoLayout
         initSignInView()
     }
     
-    func addSubviews() {
+    fileprivate func addSubviews() {
         view.addSubview(welcomeLabel)
         view.addSubview(guideLabel)
         view.addSubview(signInView)

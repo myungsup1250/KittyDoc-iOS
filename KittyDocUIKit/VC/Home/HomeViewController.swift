@@ -96,20 +96,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         }
 
         PetChange(index: 0)
-        
-        // // // // // // // // // // // // // // // // // // // // //
-        // 기존에 연결했었던 기기가 있으면 다시 연결하는 기능 - UserDefaults 사용?
-//        let userDefaults = UserDefaults.standard
-//        if let uuidString = userDefaults.string(forKey: "KEY") {
-//            // Will Connect Automatically
-//            DeviceManager.shared.connectPeripheral(uuid: uuidString, name: "KittyDoc")
-//
-//        } else {// userDefaults.string(forKey: "KEY") == nil
-//            // Will Not Connect Automatically
-//
-//        }
-        // // // // // // // // // // // // // // // // // // // // //
-        
+
     }
     
 //    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
@@ -164,8 +151,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 //        petWater.text = "수분량: \()"
         
     }
-    
-    
+        
     lazy var pickerView: UIPickerView = {
        let picker = UIPickerView()
         picker.frame = CGRect(x: 0, y: 250, width: self.view.bounds.width, height: 180)
@@ -186,30 +172,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         return picker
     }()
-    
-    // receiveSyncDataDone() will be called when Receiving SyncData Done!
-    @objc func receiveSyncDataDone() {
-        print("\n<<< HomeViewController.receiveSyncDataDone() >>>")
-        let frontTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000)
-        let rearTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000 * 2)
-        print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
-        print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
-        let analysisData:AnalysisData = AnalysisData(_petID: 32, _frontTime: frontTime, _rearTime: rearTime)
-        let server:KittyDocServer = KittyDocServer()
-        let analysisResponse:ServerResponse = server.sensorRequestHour(data: analysisData)
         
-        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS){
-            print(analysisResponse.getMessage() as! String)
-        } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
-            print(analysisResponse.getMessage() as! String)
-        }
-    }
-
-    @objc func doneBtnPressed() {
-        self.view.endEditing(true)
-    }
-    
-    
     let petNameSelectTF: UITextField = {
         let petNameSelectTF = UITextField()
         petNameSelectTF.frame = CGRect(x: 150, y: 160, width: 100, height: 50)
@@ -217,8 +180,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         return petNameSelectTF
     }()
-    
-    
+        
     let petSunEx: UILabel = {
         let sunex = UILabel()
         sunex.frame = CGRect(x: 100, y: 200, width: 300, height: 50)
@@ -294,12 +256,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }()
 
     
-    @objc func didTapWaterBtn() {
-        if PetInfo.shared.petArray.count != 0 {
-            performSegue(withIdentifier: "AddWater", sender: self)
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddWater" {
             let destinationVC = segue.destination as! WaterViewController
@@ -321,14 +277,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         waterRing.maxValue = 300
         return waterRing
     }()
-    
-    
-    
-    
-   
-    
-   
-
 }
 
 extension HomeViewController: DeviceManagerDelegate {
@@ -446,4 +394,36 @@ extension HomeViewController: DeviceManagerSecondDelegate {
             self.present(alert, animated: true, completion: nil)
         }
     }
+}
+
+extension HomeViewController { // @objc funcs
+    
+    // receiveSyncDataDone() will be called when Receiving SyncData Done!
+    @objc func receiveSyncDataDone() {
+        print("\n<<< HomeViewController.receiveSyncDataDone() >>>")
+        let frontTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000)
+        let rearTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000 * 2)
+        print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
+        print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
+        let analysisData:AnalysisData = AnalysisData(_petID: 32, _frontTime: frontTime, _rearTime: rearTime)
+        let server:KittyDocServer = KittyDocServer()
+        let analysisResponse:ServerResponse = server.sensorRequestHour(data: analysisData)
+        
+        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS){
+            print(analysisResponse.getMessage() as! String)
+        } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
+            print(analysisResponse.getMessage() as! String)
+        }
+    }
+
+    @objc func doneBtnPressed() {
+        self.view.endEditing(true)
+    }
+    
+    @objc func didTapWaterBtn() {
+        if PetInfo.shared.petArray.count != 0 {
+            performSegue(withIdentifier: "AddWater", sender: self)
+        }
+    }
+    
 }

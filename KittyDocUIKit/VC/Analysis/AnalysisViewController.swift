@@ -29,13 +29,15 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var safeArea: UILayoutGuide!
     
     var dateInput: String = ""
-    var barChartView: BarChartView!
+    var chartSelect: UISegmentedControl!
     var dateTextField: ConstantUITextField!
     var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
     var pickerView: UIPickerView!
-    var chartSelect: UISegmentedControl!
+    var barChartView: BarChartView!
 
+    var petDatas = [PetData]()
+    
     var options = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"]
     
     var months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
@@ -45,8 +47,6 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.title = "Analysis"
-//        self.navigationController?.navigationBar.prefersLargeTitles = false
         self.navigationController?.setNavigationBarHidden(true, animated: true)
 
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
@@ -59,35 +59,67 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         prepareForAutoLayout()
         setConstraints()
         manageUserInterfaceStyle()
-                
-        barChartView.delegate = self
-        setChart(dataPoints: times, values: [Double(5), Double(10), Double(15), Double(20), Double(25), Double(30), Double(35), Double(40), Double(45), Double(50), Double(55), Double(60), Double(65), Double(70), Double(75), Double(80), Double(85), Double(90), Double(95), Double(100), Double(105), Double(110), Double(115), Double(120)])
+
+        petDatas.removeAll()
+        petDatas = requestServerData(forDays: 1, forHours: 0)//센서 데이터 수신 코드
+
+        //let hour = Calendar.current.component(.hour,  from: Date())
+        var strTest = [String]()
+        var sunValues = [Double]()
+        for i in 0..<petDatas.count {
+            strTest.append(String(petDatas[i].sunVal))
+            sunValues.append(Double((i + 2) * 5))
+        }
         
-        
-        //  //  //  //  //
-        //센서 데이터 수신 코드
-        //  //  //  //  //
+        setChart(dataName: optionTextField.text!, dataPoints: times.dropLast(times.count - sunValues.count), values: sunValues, goal: 80, max: 150)
+        // Initial Setup : Day && Sun && CurrentDate
+    }
+    
+    fileprivate func requestServerData(forDays: UInt, forHours: UInt) -> [PetData] {
+
         var dataArray: [PetData] = []
-        let frontTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000)
-        let rearTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000 * 2)
-        print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
-        print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
-                
-        //_petID: 32는 자신의 펫 아이디로 수정되어야 함. 예시로 32를 적어두었음!
-        let analysisData:AnalysisData = AnalysisData(_petID: 32, _frontTime: frontTime, _rearTime: rearTime)
-        let server:KittyDocServer = KittyDocServer()
-        let analysisResponse:ServerResponse = server.sensorRequestHour(data: analysisData)
-                
-        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS){
-            print(analysisResponse.getMessage() as! String)
-                    
-            let jsonString:String = analysisResponse.getMessage() as! String
+        let dayInSec: TimeInterval = 86400 // (86400 == 24Hours in seconds)
+        let hourInSec: TimeInterval = 3600
+
+        // 일주일 (604800 == A week in seconds)
+        //let frontTime = Int(Date().timeIntervalSince1970 * 1000)// - 604800000)    // frontTime in milliseconds
+        //let rearTime = Int((Date().timeIntervalSince1970 - (dayInSec * 7)) * 1000)// * 2) // rearTime in milliseconds
+        
+        // 하루 (86400 == 24Hours in seconds)
+        //let frontTime = Int(Date().timeIntervalSince1970 * 1000)                                    // frontTime in milliseconds
+        //let rearTime = Int((Date().timeIntervalSince1970 - (dayInSec * Double(forDays))) * 1000)    // rearTime in milliseconds
+        
+        // 00시부터 지금까지?
+        let timeIntervalSince1970 = Date().timeIntervalSince1970
+        let timeIntervalFromMidnight = TimeInterval(Int(timeIntervalSince1970 + hourInSec * 9) % Int(dayInSec))
+        let frontTime = Int(timeIntervalSince1970 * 1000)                                    // frontTime in milliseconds
+        let rearTime = Int((timeIntervalSince1970 - timeIntervalFromMidnight) * 1000)   // rearTime in milliseconds
+        
+//        let frontTime = Int(1615196744000)
+//        let rearTime = Int(1614808744000)
+        print("requestServerData(From : \(unixtimeToString(unixtime: time_t(rearTime / 1000))), Til : \(unixtimeToString(unixtime: time_t(frontTime / 1000))))")
+        //print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
+        //print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
+
+        //_petID: 32는 자신의 펫 아이디로 수정되어야 함. 예시로 38을 적어두었음!
+        let analysisData: AnalysisData = AnalysisData(_petID: 38, _frontTime: frontTime, _rearTime: rearTime)
+        let server: KittyDocServer = KittyDocServer()
+        let analysisResponse: ServerResponse = server.sensorRequestHour(data: analysisData)
+
+        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS) {
+            //print(analysisResponse.getMessage() as! String)
+
+            let jsonString: String = analysisResponse.getMessage() as! String
             if let arrData = jsonString.data(using: .utf8) {
                 do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
                         for i in 0..<jsonArray.count {
                             let petData:PetData = PetData()
                             petData.time = jsonArray[i]["Time"] as! CLong
+                            // Translate millisec to sec
+                            petData.time /= 1000
+                            print("Time : \(unixtimeToString(unixtime: time_t(petData.time)))")
+                            
                             petData.sunVal = jsonArray[i]["SunVal"] as! Int
                             petData.uvVal = jsonArray[i]["UvVal"] as! Double
                             petData.vitDVal = jsonArray[i]["VitDVal"] as! Double
@@ -108,11 +140,10 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
                 print(analysisResponse.getMessage() as! String)
             }
-            
-            for data in dataArray{
-                //print(data.stepVal)
-            }
+
+            print("dataArray.count : \(dataArray.count)")
         }
+        return dataArray
     }
     
     func manageUserInterfaceStyle() {
@@ -157,7 +188,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 //        barChartView.data = data
 //    }
     
-    func setChart(dataPoints: [String], values: [Double]) {
+    func setChart(dataName: String, dataPoints: [String], values: [Double], goal: Double, max: Double) {
         // 데이터 생성
         var dataEntries: [BarChartDataEntry] = []
         for i in 0..<dataPoints.count {
@@ -165,10 +196,10 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             dataEntries.append(dataEntry)
         }
 
-        let chartDataSet = BarChartDataSet(entries: dataEntries, label: "DataSetName")
+        let chartDataSet = BarChartDataSet(entries: dataEntries, label: dataName)
 
         // 차트 컬러
-        chartDataSet.colors = [.systemBlue]//ChartColorTemplates.material()
+        chartDataSet.colors = [.systemBlue] // ChartColorTemplates.material()
         //chartDataSet.axisDependency = .left // .right
         //chartDataSet.highlightEnabled = true
         
@@ -215,7 +246,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         barChartView.setScaleEnabled(false)
         
         // LimitLine
-        let ll = ChartLimitLine(limit: 80.0, label: "Goal")
+        
+        let ll = ChartLimitLine(limit: goal, label: "Goal")
+        //ll.limit = goal
         ll.lineColor = .magenta
         ll.lineWidth = 2.0
         switch userInterfaceStyle {
@@ -228,7 +261,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         }
         barChartView.leftAxis.addLimitLine(ll)
         // 맥시멈
-        barChartView.leftAxis.axisMaximum = 150
+        barChartView.leftAxis.axisMaximum = max
         // 미니멈
         barChartView.leftAxis.axisMinimum = 0
                 
@@ -241,7 +274,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 
 extension AnalysisViewController {
         
-    func initUIViews() {
+    fileprivate func initUIViews() {
         initChartSelect()
         initDateTextField()
         initDatePicker()
@@ -250,7 +283,7 @@ extension AnalysisViewController {
         initBarChartView()
     }
     
-    func addSubviews() {
+    fileprivate func addSubviews() {
         view.addSubview(chartSelect)
         view.addSubview(dateTextField)
         view.addSubview(datePicker)
@@ -259,7 +292,7 @@ extension AnalysisViewController {
         view.addSubview(barChartView)
     }
     
-    func prepareForAutoLayout() {
+    fileprivate func prepareForAutoLayout() {
         chartSelect.translatesAutoresizingMaskIntoConstraints = false
         dateTextField.translatesAutoresizingMaskIntoConstraints = false
         datePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -268,7 +301,7 @@ extension AnalysisViewController {
         barChartView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setConstraints() {
+    fileprivate func setConstraints() {
         chartSelect.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             .isActive = true
         chartSelect.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 10)
@@ -401,7 +434,7 @@ extension AnalysisViewController {
 
     func initBarChartView() {
         barChartView = BarChartView()
-        // What to do?
+        barChartView.delegate = self
     }
 }
 
@@ -419,14 +452,10 @@ extension AnalysisViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
-        let yearDate = dateFormatter.date(from: dateTextField.text!)
-        let year = Calendar.current.component(.year,  from: yearDate!)
-
-        let monthDate = dateFormatter.date(from: dateTextField.text!)
-        let month = Calendar.current.component(.month,  from: monthDate!)
-
-//        let dayDate = dateFormatter.date(from: dateTextField.text!)
-//        let day = Calendar.current.component(.day,  from: dayDate!)
+        let date = dateFormatter.date(from: dateTextField.text!)
+        let year = Calendar.current.component(.year,  from: date!)
+        let month = Calendar.current.component(.month,  from: date!)
+//        let day = Calendar.current.component(.day,  from: date!)
         
         print("dateTextField.text: \(dateTextField.text!)")
         let selected = SegSelect(rawValue: segment.selectedSegmentIndex)!
@@ -437,7 +466,7 @@ extension AnalysisViewController {
             for i in 1...12 {
                 monthValues.append(Double(i * 10))
             }
-            setChart(dataPoints: months, values: monthValues)
+            setChart(dataName: "Year", dataPoints: months, values: monthValues, goal: 80, max: 150)
         case SegSelect.Month:
             print("You Selected Month!")
             guard let numberOfDays = getDaysInMonth(month: month, year: year) else {
@@ -448,21 +477,21 @@ extension AnalysisViewController {
             for i in 1...numberOfDays {
                 dayValues.append(Double(i * 3))
             }
-            setChart(dataPoints: days.dropLast(31-numberOfDays), values: dayValues)
+            setChart(dataName: "Month", dataPoints: days.dropLast(31-numberOfDays), values: dayValues, goal: 80, max: 150)
         case SegSelect.Week:
             print("You Selected Week!")
             var weekValues = [Double]()
             for i in 1...7 {
                 weekValues.append(Double(i * 15))
             }
-            setChart(dataPoints: daysofweek, values: weekValues)
+            setChart(dataName: "Week", dataPoints: daysofweek, values: weekValues, goal: 80, max: 150)
         case SegSelect.Day:
             print("You Selected Day!")
             var dayValues = [Double]()
             for i in 1...24 {
                 dayValues.append(Double(i * 5))
             }
-            setChart(dataPoints: times, values: dayValues)
+            setChart(dataName: "Day", dataPoints: times, values: dayValues, goal: 80, max: 150)
         }
     }
     

@@ -76,7 +76,7 @@ class BTSettingsViewController: UIViewController {
         }
     }
 
-    func setTableView() {
+    fileprivate func setTableView() {
         tableView = UITableView()
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
