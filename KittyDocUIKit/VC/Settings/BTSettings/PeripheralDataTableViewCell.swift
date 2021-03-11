@@ -32,14 +32,14 @@ class PeripheralDataTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func initUIViews() {
+    fileprivate func initUIViews() {
         deviceImg = UIImageView()
         deviceName = UILabel()
         rssiLabel = UILabel()
         deviceUUID = UILabel()
     }
 
-    func addSubviews() {
+    fileprivate func addSubviews() {
         contentView.addSubview(makeDeviceImg())
         contentView.addSubview(makeDeviceName())
         contentView.addSubview(makeRssiLabel())
@@ -86,14 +86,14 @@ class PeripheralDataTableViewCell: UITableViewCell {
         return deviceUUID
     }
     
-    func prepareForAutoLayout() {
+    fileprivate func prepareForAutoLayout() {
         deviceImg.translatesAutoresizingMaskIntoConstraints = false
         deviceName.translatesAutoresizingMaskIntoConstraints = false
         rssiLabel.translatesAutoresizingMaskIntoConstraints = false
         deviceUUID.translatesAutoresizingMaskIntoConstraints = false
     }
         
-    func setConstraints() {
+    fileprivate func setConstraints() {
         deviceImg.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5)
             .isActive = true
         deviceImg.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5)

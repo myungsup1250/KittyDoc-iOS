@@ -70,7 +70,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    func initUIViews() {
+    fileprivate func initUIViews() {
         initTitleLabel()
         initGuideLabel()
         initSignUpView()
@@ -88,7 +88,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         initSignUpBtn()
     }
     
-    func addSubviews() {
+    fileprivate func addSubviews() {
         view.addSubview(titleLabel)
         view.addSubview(guideLabel)
         
@@ -107,7 +107,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(signUpBtn)
     }
     
-    func prepareForAutoLayout() {
+    fileprivate func prepareForAutoLayout() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         guideLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -126,7 +126,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         signUpBtn.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setConstraints() {
+    fileprivate func setConstraints() {
         let userInfoViewConstraints = [
             userInfoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             userInfoView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
