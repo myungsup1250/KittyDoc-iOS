@@ -64,19 +64,30 @@ class SettingsViewController: UIViewController {
     }
     
     func configureSections() {
-
-        Sections.append(Section(title: "My Information", options: [.staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange, handler: {
-            //            let storyboard = UIStoryboard(name: "Main", bundle: nil) // type storyboard name instead of Main
-            guard let vc = self.storyboard?.instantiateViewController(identifier: "EditUserInfo") as? UserInfoSettingViewController else {
-                print("guard let vc = self.storyboard?.instantiateViewController(identifier: EditUserInfo) Error")
-                return
-            }
-            
-            self.navigationController?.pushViewController(vc, animated: true)
-            //self.present(vc, animated: true)
-        }))
-        ]))
-
+        Sections.append(Section(title: "My Information",
+                                options: [
+                                    .staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange, handler: {
+                                        //            let storyboard = UIStoryboard(name: "Main", bundle: nil) // type storyboard name instead of Main
+                                        guard let vc = self.storyboard?.instantiateViewController(identifier: "EditUserInfo") as? UserInfoSettingViewController else {
+                                            print("guard let vc = self.storyboard?.instantiateViewController(identifier: EditUserInfo) Error")
+                                            return
+                                        }
+                                        
+                                        self.navigationController?.pushViewController(vc, animated: true)
+                                        //self.present(vc, animated: true)
+                                    })),
+                                    .staticCell(model: SettingsOption(title: "비밀번호 수정", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .magenta, handler: {
+                                        //guard let vc = self.storyboard?.instantiateViewController(identifier: "EditUserInfo") as? UserInfoSettingViewController else {
+                                        //    print("guard let vc = self.storyboard?.instantiateViewController(identifier: EditUserInfo) Error")
+                                        //    return
+                                        //}
+                                        
+                                        //self.navigationController?.pushViewController(vc, animated: true)
+                                        //self.present(vc, animated: true)
+                                        print("Will it call SetPasswordVC?")
+                                    }))
+                                ]))
+        
         Sections.append(Section(title: "Cat Settings", options: [.staticCell(model: SettingsOption(title: "냥이 등록", icon: UIImage(systemName: "plus.circle")!, iconBackgroundColor: .systemBlue) {
             self.performSegue(withIdentifier: "PetSettingsSegue", sender: self)
         })
@@ -93,8 +104,7 @@ class SettingsViewController: UIViewController {
                                         print("Start Sync!")
                                         DeviceManager.shared.startSync()
                                     }))
-        
-        ]))
+                                ]))
         
         Sections.append(Section(title: "Account", options: [
             .staticCell(model: SettingsOption(title: "로그아웃", icon: UIImage(systemName: "power")!, iconBackgroundColor: .systemRed) {
