@@ -84,7 +84,7 @@ class KittyDocServer:ServerApi{
     }
     
     func sensorRequestYear(data: AnalysisData) -> ServerResponse {
-        let url = URL(string:(baseUrl + port + "/pet/analysis/hour"))!
+        let url = URL(string:(baseUrl + port + "/pet/analysis/year"))!
         return doRequestTask(url: url, data: data)
     }
     
