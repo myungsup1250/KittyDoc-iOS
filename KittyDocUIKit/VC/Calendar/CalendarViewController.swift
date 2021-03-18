@@ -86,7 +86,7 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         addSubViews()
-        addConstraints()
+        setConstraints()
         initCollection()
         initgesture()
         readRealm()
@@ -107,7 +107,7 @@ class CalendarViewController: UIViewController {
         view.addSubview(calendar)
     }
     
-    private func addConstraints() {
+    private func setConstraints() {
         
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),

@@ -10,8 +10,6 @@ import UIKit
 class AddPetViewController: UIViewController {
     
     let deviceManager = DeviceManager.shared
-    var nameInput: UITextField!
-    var weightInput: UITextField!
     var birthInput: String?
     var isEditMode: Bool?
     var editingPetID: Int? //맘대로 바꿔도 됨
@@ -25,22 +23,6 @@ class AddPetViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("AddPetViewController.viewDidLoad()")
-        
-        let _: UITextField = {
-            nameInput = UITextField()
-            nameInput.frame = CGRect(x: 0, y: 0, width: 400, height: 30)
-            nameInput.placeholder = "이름"
-            return nameInput
-        }()
-        
-        let _: UITextField = {
-            weightInput = UITextField()
-            weightInput.frame = CGRect(x: 0, y: 50, width: 400, height: 30)
-            weightInput.placeholder = "몸무게"
-            weightInput.keyboardType = .numberPad
-            return weightInput
-        }()
         
         
         _ = setUpdatePicker()
@@ -48,18 +30,17 @@ class AddPetViewController: UIViewController {
         view.addSubview(image)
         view.addSubview(imageAddBtn)
         
-        view.addSubview(petView)
+        view.addSubview(stackView)
         
+        weightStackView.addArrangedSubview(weightInput)
+        weightStackView.addArrangedSubview(weightSelect)
         
-        petView.addSubview(nameInput)
-        petView.addSubview(weightInput)
-        petView.addSubview(weightSelect)
-        petView.addSubview(genderSelect)
-        petView.addSubview(DateOfBirthLabel)
-        petView.addSubview(birthDataField)
-        petView.addSubview(deviceLabel)
-        petView.addSubview(deviceInput)
-        petView.addSubview(scanBtn)
+        stackView.addArrangedSubview(nameInput)
+        stackView.addArrangedSubview(weightStackView)
+        stackView.addArrangedSubview(genderSelect)
+        stackView.addArrangedSubview(birthDataField)
+        stackView.addArrangedSubview(deviceInput)
+        stackView.addArrangedSubview(scanBtn)
         
         view.addSubview(doneBtn)
 
@@ -86,10 +67,10 @@ class AddPetViewController: UIViewController {
                 genderSelect.selectedSegmentIndex = 2
             }
         }
+        setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("AddPetViewController.viewWillAppear()")
         
         // KittyDoc 기기 등록 여부, 기기 연결 여부 등에 따른 처리가 잘 되는지 확인 필요! 21.02.24 -ms
         // 기존 등록된 펫에 기기 등록되지 않은 상태 && 수정할 때 기기를 새로 연결해도 반영이 안된다..
@@ -133,14 +114,62 @@ class AddPetViewController: UIViewController {
         }
     }
     
+    private func setConstraints() {
+        
+        NSLayoutConstraint.activate([
+            image.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -30),
+            image.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            image.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.3),
+            image.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.3)
+        ])
+        
+        NSLayoutConstraint.activate([
+            imageAddBtn.topAnchor.constraint(equalTo: image.bottomAnchor, constant: -13),
+            imageAddBtn.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 30),
+            imageAddBtn.widthAnchor.constraint(equalTo: image.widthAnchor, multiplier: 0.3),
+            imageAddBtn.heightAnchor.constraint(equalTo: image.heightAnchor, multiplier: 0.2)
+        ])
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: imageAddBtn.bottomAnchor, constant: 30),
+            stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 40),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -40)
+        ])
+        
+        NSLayoutConstraint.activate([
+            doneBtn.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
+            doneBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            doneBtn.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.7),
+            doneBtn.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.06)
+        ])
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
     }
+    
+    let nameInput: UITextField = {
+        let nameInput = UITextField()
+        nameInput.translatesAutoresizingMaskIntoConstraints = false
+        nameInput.placeholder = "이름"
+        return nameInput
+    }()
+    
+    let weightInput: UITextField = {
+        let weightInput = UITextField()
+        weightInput.translatesAutoresizingMaskIntoConstraints = false
+        weightInput.placeholder = "몸무게"
+        weightInput.keyboardType = .numberPad
+        return weightInput
+    }()
+    
+    
 
     let image: UIImageView = {
         let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
         image.image = UIImage(systemName: "person.circle")
-        image.frame = CGRect(x: 110, y: 100, width: 150, height: 150)
         image.layer.cornerRadius = image.frame.height/2
         image.layer.borderWidth = 1
         image.layer.borderColor = UIColor.clear.cgColor
@@ -150,7 +179,7 @@ class AddPetViewController: UIViewController {
     
     let imageAddBtn: UIButton = {
         let btn = UIButton()
-        btn.frame = CGRect(x: 200, y: 230, width: 40, height: 40)
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setBackgroundImage(UIImage(systemName: "pencil"), for: .normal)
         btn.setTitleColor(.black, for: .normal)
         btn.layer.cornerRadius = 8
@@ -165,16 +194,31 @@ class AddPetViewController: UIViewController {
         picker.delegate = self
         self.present(picker, animated: false)
     }
+    
+    let stackView: UIStackView = {
+       let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 20
+        
+        return stackView
+    }()
 
-    let petView: UIView = {
-        let petView = UIView()
-        petView.frame = CGRect(x: 60, y: 300, width: 500, height: 500)
-        return petView
+
+    let weightStackView: UIStackView = {
+        let stackView = UIStackView()
+         stackView.translatesAutoresizingMaskIntoConstraints = false
+         stackView.axis = .horizontal
+         stackView.distribution = .fillEqually
+         stackView.spacing = 20
+        
+         return stackView
     }()
     
     let weightSelect: UISegmentedControl = {
         let segment = UISegmentedControl()
-        segment.frame = CGRect(x: 140, y: 50, width: 100, height: 30)
+        segment.translatesAutoresizingMaskIntoConstraints = false
         segment.insertSegment(withTitle: "kg", at: 0, animated: true)
         segment.insertSegment(withTitle: "lb", at: 1, animated: true)
         //kg단위를 디폴트로 사용
@@ -184,7 +228,7 @@ class AddPetViewController: UIViewController {
     
     let genderSelect: UISegmentedControl = {
         let segment = UISegmentedControl()
-        segment.frame = CGRect(x: 0, y: 110, width: 250, height: 40)
+        segment.translatesAutoresizingMaskIntoConstraints = false
         segment.insertSegment(withTitle: "Male", at: 0, animated: true)
         segment.insertSegment(withTitle: "Female", at: 1, animated: true)
         segment.insertSegment(withTitle: "None", at: 2, animated: true)
@@ -193,17 +237,10 @@ class AddPetViewController: UIViewController {
         return segment
     }()
     
-    let DateOfBirthLabel: UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: 0, y: 170, width: 200, height: 50)
-        label.text = "생년월일"
-        return label
-    }()
-    
     
     let birthDataField: UITextField = {
         let birthDataField = UITextField()
-        birthDataField.frame = CGRect(x: 0, y: 190, width: 300, height: 80)
+        birthDataField.translatesAutoresizingMaskIntoConstraints = false
         birthDataField.placeholder = "여기를 클릭해서 생년월일을 입력해주세요"
         birthDataField.addTarget(self, action: #selector(initBirth), for: .editingDidBegin)
         return birthDataField
@@ -219,7 +256,8 @@ class AddPetViewController: UIViewController {
     }
     
     func setUpdatePicker() -> UIDatePicker {
-        let picker: UIDatePicker = UIDatePicker.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200))
+        let picker: UIDatePicker = UIDatePicker()
+        picker.translatesAutoresizingMaskIntoConstraints = false
         picker.datePickerMode = .date
         picker.addTarget(self, action: #selector(self.dataChanged), for: .allEvents)
         
@@ -246,9 +284,8 @@ class AddPetViewController: UIViewController {
         dateFormatter.dateStyle = .long
         self.birthDataField.text = dateFormatter.string(from: picker.date)
         
-        
         let writedateFormatter = DateFormatter()
-        writedateFormatter.dateFormat = "yyyyMMdd"
+        writedateFormatter.dateFormat = "yyyy년 MM월 dd일"
         birthInput = writedateFormatter.string(from: picker.date)
     }
     
@@ -256,24 +293,17 @@ class AddPetViewController: UIViewController {
         birthDataField.resignFirstResponder()
     }
     
-    let deviceLabel: UILabel = {
-        let label = UILabel()
-        label.frame = CGRect(x: 0, y: 260, width: 100, height: 50)
-        label.text = "디바이스"
-        return label
-    }()
     
     let deviceInput: UILabel = {
-        //var device = UILabel()
         let device = UILabel()
-        device.frame = CGRect(x: 0, y: 290, width: 200, height: 50)
+        device.translatesAutoresizingMaskIntoConstraints = false
         device.text = ""
         return device
     }()
     
     let scanBtn: UIButton = {
         let scanBtn = UIButton()
-        scanBtn.frame = CGRect(x: 170, y: 300, width: 100, height: 30)
+        scanBtn.translatesAutoresizingMaskIntoConstraints = false
         scanBtn.setTitle("스캔", for: .normal)
         scanBtn.backgroundColor = .orange
         scanBtn.layer.cornerRadius = 8
@@ -283,7 +313,7 @@ class AddPetViewController: UIViewController {
     
     let doneBtn: UIButton = {
         let doneBtn = UIButton()
-        doneBtn.frame = CGRect(x: 40, y: 660, width: 300, height: 50)
+        doneBtn.translatesAutoresizingMaskIntoConstraints = false
         doneBtn.setTitle("등록", for: .normal)
         doneBtn.backgroundColor = .systemBlue
         doneBtn.layer.cornerRadius = 8
