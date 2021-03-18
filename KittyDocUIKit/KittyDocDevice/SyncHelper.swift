@@ -65,7 +65,7 @@ class SyncHelper: NSObject {
                 e["vector_x"]   = NSNumber(value: d.vector_x)//[NSNumber numberWithInt:d.vector.x];
                 e["vector_y"]   = NSNumber(value: d.vector_y)//[NSNumber numberWithInt:d.vector.y];
                 e["vector_z"]   = NSNumber(value: d.vector_z)//[NSNumber numberWithInt:d.vector.z];
-                e["timezone"]   = NSNumber(value: d.vector_y)//[NSNumber numberWithInt:sleepdoc_data.time_zone];
+                e["timezone"]   = NSNumber(value: kittydoc_data.time_zone)//[NSNumber numberWithInt:kittydoc_data.time_zone];
                 e["version"]    = version
                 
                 // Discard All data with unixtime 0
@@ -82,19 +82,7 @@ class SyncHelper: NSObject {
 //        cdm.managedObjectContext.save(error)//[[cdm managedObjectContext] save:&error];
     }
     
-    // unixtime 값을 문자열로 변환하여 반환
-    func unixtimeToString(unixtime: time_t) -> String { // SleepDoc_Ext_Interface_Data_Type.time_zone 고려 추가?
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = String("yyyy-MM-dd HH:mm:ss") //String("yyyy-MM-dd HH:mm:ss.SSS")
-    //    dateFormatter.setLocalizedDateFormatFromTemplate(Locale.current.languageCode!)
-    //    dateFormatter.locale = Locale.current
-    //    dateFormatter.timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT())
-        let current_date_string = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(unixtime)))
-        //print("unixtime : \(unixtime), result : \(current_date_string)")
 
-        return current_date_string // dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(unixtime)))
-    }
-    
     func createTestDB() {
 //        var cdm: CoreDataManager = CoreDataManager.shared //CoreDataManager *cdm = [CoreDataManager sharedManager];
 //        cdm.resetDB()//[cdm resetDB];
