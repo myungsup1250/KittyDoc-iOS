@@ -89,11 +89,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func didTapSignIn() {
-//        if emailTF.text == "jmsmart" && pwTF.text == "test" {
-//            self.performSegue(withIdentifier: "LogInSegue", sender: nil)
-//            print("TestMode")
-//            return
-//        }
+
         if emailTF.text!.isEmpty {
             alertWithMessage(message: "아이디를 입력해주세요!")
         } else if pwTF.text!.isEmpty {
@@ -120,13 +116,15 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까! OOOK!
             //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯 ---- LATER
             
+            //서버가 꺼져있어서 서버 연결이 안되는 상황에 로그 외에 UIAlertController 활용해서 서버 연결 실패했다고 알려주고 다시 시도하도록 했으면 좋겠음.
+            //지금은 서버 연결이 안되면 앱이 아무런 말도 없이 멈춰버린다. 로그를 보지 못하면 알 수가 없다!
+            //21.03.12 명섭 제안            
             
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
                 //MARK: TEMP ORIGIN HERE
                 UserDefaults.standard.set(emailTF.text, forKey: "email_test")
                 UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
-                
 
                 let jsonString: String = loginResponse.getMessage() as! String
                 if let data = jsonString.data(using: .utf8) {
@@ -145,8 +143,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                         print("JSON 파싱 에러")
                     }
                 }
-
-                
             } else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL) {
                 alertWithMessage(message: loginResponse.getMessage())
                 self.emailTF.becomeFirstResponder()

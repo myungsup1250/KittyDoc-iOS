@@ -401,11 +401,11 @@ extension HomeViewController { // @objc funcs
     // receiveSyncDataDone() will be called when Receiving SyncData Done!
     @objc func receiveSyncDataDone() {
         print("\n<<< HomeViewController.receiveSyncDataDone() >>>")
-        let frontTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000)
-        let rearTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000 * 2)
-        print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
-        print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
-        let analysisData:AnalysisData = AnalysisData(_petID: 32, _frontTime: frontTime, _rearTime: rearTime)
+        let startTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000 * 2)
+        let endTime = Int(Date().timeIntervalSince1970 * 1000 - 604800000)
+        print("endTime RAW : \(endTime), endTime [\(unixtimeToString(unixtime: time_t(endTime / 1000)))]")
+        print("startTime RAW : \(startTime), startTime [\(unixtimeToString(unixtime: time_t(startTime / 1000)))]")
+        let analysisData:AnalysisData = AnalysisData(_petID: 32, _startMilliSec: startTime, _endMilliSec: endTime)
         let server:KittyDocServer = KittyDocServer()
         let analysisResponse:ServerResponse = server.sensorRequestHour(data: analysisData)
         
