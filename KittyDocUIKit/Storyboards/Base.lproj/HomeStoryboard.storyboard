@@ -18,7 +18,13 @@
                         <viewLayoutGuide key="safeArea" id="GLP-zd-B0v"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="71C-0Q-xmI"/>
+                    <navigationItem key="navigationItem" id="71C-0Q-xmI">
+                        <barButtonItem key="leftBarButtonItem" image="line.horizontal.3" catalog="system" id="vc0-Px-c29">
+                            <connections>
+                                <action selector="didTapSideMenuBtn" destination="cyH-9y-ktJ" id="l6v-ET-eHN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <segue destination="14l-pv-vWW" kind="show" identifier="AddWater" id="lL4-ex-lXh"/>
@@ -66,6 +72,7 @@
     </scenes>
     <resources>
         <image name="house" catalog="system" width="128" height="106"/>
+        <image name="line.horizontal.3" catalog="system" width="128" height="64"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
