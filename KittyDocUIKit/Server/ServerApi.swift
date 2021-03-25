@@ -20,7 +20,7 @@ protocol ServerApi{
     func petModify(data:ModifyData_Pet) -> ServerResponse
     func sensorSend(data: SensorData) -> ServerResponse
     func waterSend(data: WaterData) -> ServerResponse
-    func sensorRequestYear(data: AnalysisData) -> ServerResponse
+    func sensorRequestYear(data: AnalysisData_Year) -> ServerResponse
     func sensorRequestDay(data: AnalysisData) -> ServerResponse
     func sensorRequestHour(data: AnalysisData) -> ServerResponse
     func userModify(data: ModifyData) -> ServerResponse

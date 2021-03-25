@@ -29,6 +29,8 @@
 		71D62348405127804A4DA9B4 /* Pods_KittyDocUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */; };
 		B0A9D81525F66630006EE580 /* ModifyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D81425F66630006EE580 /* ModifyData.swift */; };
 		B0A9D81825F67CCC006EE580 /* PetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D81725F67CCC006EE580 /* PetData.swift */; };
+		E0035D7326037A3E007D7B14 /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */; };
+		B0A9D82326037A71006EE580 /* AnalysisData_Year.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */; };
 		E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E125B2C52F001484AC /* HomeViewController.swift */; };
 		E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E425B2C538001484AC /* SettingsViewController.swift */; };
 		E00AE1E825B2C542001484AC /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E725B2C542001484AC /* AnalysisViewController.swift */; };
@@ -110,6 +112,8 @@
 		AB7E6C79C095956904E58184 /* Pods-KittyDocUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.release.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.release.xcconfig"; sourceTree = "<group>"; };
 		B0A9D81425F66630006EE580 /* ModifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData.swift; sourceTree = "<group>"; };
 		B0A9D81725F67CCC006EE580 /* PetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetData.swift; sourceTree = "<group>"; };
+		E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
+		B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisData_Year.swift; sourceTree = "<group>"; };
 		E00AE1E125B2C52F001484AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E00AE1E425B2C538001484AC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E00AE1E725B2C542001484AC /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
@@ -230,6 +234,7 @@
 				E06CEAF425E40C0000D966BB /* WaterData.swift */,
 				B0A9D81425F66630006EE580 /* ModifyData.swift */,
 				B0A9D81725F67CCC006EE580 /* PetData.swift */,
+				B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -260,6 +265,7 @@
 				E091CEF725CED71000A3DE73 /* BTSettings */,
 				E00AE1E425B2C538001484AC /* SettingsViewController.swift */,
 				70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */,
+				E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -668,6 +674,7 @@
 				E00AE25625B45101001484AC /* LogInView.swift in Sources */,
 				E06CEAFB25E40C0000D966BB /* AnalysisData.swift in Sources */,
 				E00AE1EB25B2C550001484AC /* CalendarViewController.swift in Sources */,
+				B0A9D82326037A71006EE580 /* AnalysisData_Year.swift in Sources */,
 				E05A7C4C25B5AC31007680E2 /* UIColorExtension.swift in Sources */,
 				E06CEB0125E40C0000D966BB /* DeleteData_Pet.swift in Sources */,
 				7043EBD725F52A0F008A67A4 /* DetailTableViewCell.swift in Sources */,
@@ -704,6 +711,7 @@
 				E08313E525B0ABE200266994 /* AppDelegate.swift in Sources */,
 				E00AE1E825B2C542001484AC /* AnalysisViewController.swift in Sources */,
 				70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */,
+				E0035D7326037A3E007D7B14 /* SetPasswordViewController.swift in Sources */,
 				E08313E725B0ABE200266994 /* SceneDelegate.swift in Sources */,
 				113CCDD025BA5AA100BF70E5 /* ServerResponse.swift in Sources */,
 				E00AE22925B2D754001484AC /* SignUpViewController.swift in Sources */,
