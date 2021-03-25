@@ -222,9 +222,22 @@ extension SetPasswordViewController {
         pwdTF.text = UserInfo.shared.Name
         pwdTF.delegate = self
         pwdTF.borderStyle = .roundedRect
-        //pwdTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        let rightViewBtn = UIButton()
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.addTarget(self, action: #selector(onShowPwdBtn(_:)), for: .touchUpInside)
+        rightViewBtn.tintColor = .gray
+        
+        pwdTF.rightView = rightViewBtn
+        pwdTF.rightViewMode = .always
+        pwdTF.enablesReturnKeyAutomatically = true
     }
-    
+
+    @objc private func onShowPwdBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
+        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
+        print("onShowPwdBtn()")
+        pwdTF.isSecureTextEntry.toggle()
+    }
+
     func initPwdConfirmLabel() {
         pwdConfirmLabel = UILabel()
         pwdConfirmLabel.text = "Name"
@@ -235,7 +248,19 @@ extension SetPasswordViewController {
         pwdConfirmTF.text = UserInfo.shared.Name
         pwdConfirmTF.delegate = self
         pwdConfirmTF.borderStyle = .roundedRect
-        //pwdConfirmTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        let rightViewBtn = UIButton()
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.addTarget(self, action: #selector(onShowPwdConfirmBtn(_:)), for: .touchUpInside)
+        rightViewBtn.tintColor = .gray
+        
+        pwdConfirmTF.rightView = rightViewBtn
+        pwdConfirmTF.rightViewMode = .always
+        pwdConfirmTF.enablesReturnKeyAutomatically = true
+    }
+    @objc private func onShowPwdConfirmBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
+        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
+        print("onShowPwdConfirmBtn()")
+        pwdConfirmTF.isSecureTextEntry.toggle()
     }
 
     func initSubmitBtn() {
