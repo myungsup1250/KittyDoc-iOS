@@ -10,5 +10,6 @@ pod 'Charts'
 pod 'CircularSlider'
 pod 'UICircularProgressRing'
 pod 'RealmSwift'
+pod 'SideMenu'
 
 end
