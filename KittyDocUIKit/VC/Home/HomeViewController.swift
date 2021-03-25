@@ -125,8 +125,14 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         waterShowStackView.addArrangedSubview(petWaterTitleLabel)
         waterShowStackView.addArrangedSubview(petWaterLabel)
         
-        waterBtnStackView.addArrangedSubview(WaterPlusBtn)
         waterBtnStackView.addArrangedSubview(WaterMinusBtn)
+        waterBtnStackView.addArrangedSubview(WaterPlusBtn)
+        
+        WeightStackView.addArrangedSubview(weightShowStackView)
+        WeightStackView.addArrangedSubview(WeightInputBtn)
+        
+        weightShowStackView.addArrangedSubview(petWeightTitleLabel)
+        weightShowStackView.addArrangedSubview(petWeightLabel)
         
         
         PetChange(index: 0)
@@ -199,7 +205,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         ])
         
         NSLayoutConstraint.activate([
-            waterStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
+            waterStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
+            
+            waterBtnStackView.heightAnchor.constraint(equalTo: waterStackView.heightAnchor, multiplier: 0.4)
         ])
         
         NSLayoutConstraint.activate([
@@ -443,6 +451,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+        stackView.alignment = .center
         stackView.addBackground(color: .white)
         return stackView
     }()
@@ -451,6 +460,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 20
         stackView.addBackground(color: .white)
         return stackView
     }()
@@ -460,6 +471,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+        stackView.spacing = 20
         stackView.addBackground(color: .white)
         return stackView
     }()
@@ -483,11 +495,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     let WaterPlusBtn: UIButton = {
         let waterBtn = UIButton()
         waterBtn.translatesAutoresizingMaskIntoConstraints = false
-        waterBtn.setTitle("+", for: .normal)
-        waterBtn.titleLabel?.textAlignment = .center
-        waterBtn.backgroundColor = .systemBlue
-        waterBtn.layer.cornerRadius = 50
-        waterBtn.clipsToBounds = true
+        waterBtn.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+        waterBtn.contentHorizontalAlignment = .fill
+        waterBtn.contentVerticalAlignment = .fill
         waterBtn.addTarget(self, action: #selector(didTapWaterBtn), for: .touchUpInside)
         
         return waterBtn
@@ -496,9 +506,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     let WaterMinusBtn: UIButton = {
         let waterBtn = UIButton()
         waterBtn.translatesAutoresizingMaskIntoConstraints = false
-        waterBtn.setTitle("-", for: .normal)
-        waterBtn.titleLabel?.textAlignment = .center
-        waterBtn.backgroundColor = .systemBlue
+        waterBtn.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
+        waterBtn.contentHorizontalAlignment = .fill
+        waterBtn.contentVerticalAlignment = .fill
         waterBtn.addTarget(self, action: #selector(didTapWaterBtn), for: .touchUpInside)
         
         return waterBtn
@@ -509,8 +519,45 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         stackView.addBackground(color: .white)
+        stackView.distribution = .fillEqually
         return stackView
     }()
+    
+    let weightShowStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addBackground(color: .white)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
+    let petWeightTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "체중"
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        return label
+    }()
+    
+    let petWeightLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "30 KG"
+        label.font = UIFont.boldSystemFont(ofSize: 25)
+        return label
+    }()
+    
+    
+    let WeightInputBtn: UIButton = {
+        let btn =  UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("입력", for: .normal)
+        btn.backgroundColor = .systemBlue
+        return btn
+    }()
+    
+    
     
     
     
