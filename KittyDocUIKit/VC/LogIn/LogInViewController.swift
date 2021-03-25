@@ -21,7 +21,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
     var emailTF: UITextField!
     var pwdTF: UITextField!
-    var showPwdUIView: UIView!
+    //var showPwdUIView: UIView!
     var showPwdLabel: UILabel!
     var showPwdSwitch: UISwitch!
 
@@ -240,10 +240,12 @@ extension LogInViewController { // AutoLayout
         signInView.addSubview(pwdLabel)
         signInView.addSubview(emailTF)
         signInView.addSubview(pwdTF)
-        signInView.addSubview(showPwdUIView)
         
-        showPwdUIView.addSubview(showPwdLabel)
-        showPwdUIView.addSubview(showPwdSwitch)
+        //signInView.addSubview(showPwdUIView)
+        //showPwdUIView.addSubview(showPwdLabel)
+        //showPwdUIView.addSubview(showPwdSwitch)
+        signInView.addSubview(showPwdLabel)
+        signInView.addSubview(showPwdSwitch)
     }
 
     func initEmailTF() {
@@ -292,7 +294,7 @@ extension LogInViewController { // AutoLayout
     
     func initUIView() {
         signInView = UIView()
-        showPwdUIView = UIView()
+        //showPwdUIView = UIView()
     }
     
     func initButtons() {
@@ -314,7 +316,8 @@ extension LogInViewController { // AutoLayout
         showPwdSwitch = UISwitch()
         
         showPwdSwitch.isOn = true
-        showPwdSwitch.addTarget(self, action: #selector(onClickSwitch(sender:)), for: UIControl.Event.valueChanged)
+        showPwdSwitch.setOn(true, animated: true)
+        showPwdSwitch.addTarget(self, action: #selector(onClickSwitch(sender:)), for: .valueChanged)
         
         //showPwdSwitch.layer.position = CGPoint(x: self.view.frame.width/2, y: self.view.frame.height - 200)
     }
@@ -330,7 +333,7 @@ extension LogInViewController { // AutoLayout
         signUpBtn.translatesAutoresizingMaskIntoConstraints = false
         emailTF.translatesAutoresizingMaskIntoConstraints = false
         pwdTF.translatesAutoresizingMaskIntoConstraints = false
-        showPwdUIView.translatesAutoresizingMaskIntoConstraints = false
+        //showPwdUIView.translatesAutoresizingMaskIntoConstraints = false
         showPwdLabel.translatesAutoresizingMaskIntoConstraints = false
         showPwdSwitch.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -370,25 +373,23 @@ extension LogInViewController { // AutoLayout
             pwdTF.centerYAnchor.constraint(equalTo: pwdLabel.centerYAnchor)
         ]
         
-        let showPwdUIViewConstraints = [
-            showPwdUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            showPwdUIView.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
-            showPwdUIView.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 15),
-            showPwdUIView.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -15),
-        ]
+//        let showPwdUIViewConstraints = [
+//            showPwdUIView.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
+//            showPwdUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            showPwdUIView.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 15),
+//            showPwdUIView.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -15),
+//        ]
         
         let showPwdLabelConstraints = [
-            showPwdLabel.leftAnchor.constraint(equalTo: showPwdUIView.leftAnchor, constant: 15),
-            //showPwdLabel.topAnchor.constraint(equalTo: showPwdUIView.topAnchor, constant: 15),
+            showPwdLabel.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
+            showPwdLabel.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 30),
             //showPwdLabel.rightAnchor.constraint(equalTo: showPwdUIView.centerXAnchor),
 
         ]
 
         let showPwdSwitchConstraints = [
-            showPwdSwitch.rightAnchor.constraint(equalTo: showPwdUIView.rightAnchor, constant: -15),
-            //showPwdSwitch.topAnchor.constraint(equalTo: showPwdLabel.topAnchor),
-            //showPwdSwitch.leftAnchor.constraint(equalTo: showPwdLabel.rightAnchor, constant: 15),
             showPwdSwitch.centerYAnchor.constraint(equalTo: showPwdLabel.centerYAnchor),
+            showPwdSwitch.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -30),
         ]
         
         let guideLabelConstraints = [
@@ -419,7 +420,9 @@ extension LogInViewController { // AutoLayout
             signUpBtn.rightAnchor.constraint(equalTo: signInBtn.rightAnchor, constant: -15)
         ]
         
-        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, showPwdUIViewConstraints, showPwdLabelConstraints, showPwdSwitchConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
+//        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, showPwdUIViewConstraints, showPwdLabelConstraints, showPwdSwitchConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
+//            .forEach(NSLayoutConstraint.activate(_:))
+        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, showPwdLabelConstraints, showPwdSwitchConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
     }
 }
