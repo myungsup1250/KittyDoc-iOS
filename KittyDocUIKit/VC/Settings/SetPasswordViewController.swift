@@ -202,7 +202,7 @@ extension SetPasswordViewController {
     
     func initEmailTF() {
         emailTF = UITextField()
-        emailTF.text = UserInfo.shared.Email + " - 비활성화"
+        emailTF.text = UserInfo.shared.Email
         emailTF.textColor = .systemGray
         emailTF.keyboardType = .emailAddress
         emailTF.delegate = self
@@ -214,7 +214,7 @@ extension SetPasswordViewController {
 
     func initPwdLabel() {
         pwdLabel = UILabel()
-        pwdLabel.text = "Name"
+        pwdLabel.text = "Current Password"
     }
     
     func initPwdTF() {
@@ -240,7 +240,7 @@ extension SetPasswordViewController {
 
     func initPwdConfirmLabel() {
         pwdConfirmLabel = UILabel()
-        pwdConfirmLabel.text = "Name"
+        pwdConfirmLabel.text = "New Password"
     }
     
     func initPwdConfirmTF() {
@@ -273,4 +273,6 @@ extension SetPasswordViewController {
         //submitBtn.isOn = .On
     }
 
+    
+    // curPwd, newPwd, newConfirmPwd 세개로 늘려야할 것!!!!
 }
