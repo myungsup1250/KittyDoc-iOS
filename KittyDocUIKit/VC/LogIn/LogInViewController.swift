@@ -372,23 +372,23 @@ extension LogInViewController { // AutoLayout
         
         let showPwdUIViewConstraints = [
             showPwdUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            showPwdUIView.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 20),
-            //showPwdSwitch.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
-            //showPwdSwitch.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15),
+            showPwdUIView.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
+            showPwdUIView.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 15),
+            showPwdUIView.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -15),
         ]
         
         let showPwdLabelConstraints = [
-            showPwdLabel.topAnchor.constraint(equalTo: showPwdUIView.topAnchor, constant: 15),
             showPwdLabel.leftAnchor.constraint(equalTo: showPwdUIView.leftAnchor, constant: 15),
+            //showPwdLabel.topAnchor.constraint(equalTo: showPwdUIView.topAnchor, constant: 15),
             //showPwdLabel.rightAnchor.constraint(equalTo: showPwdUIView.centerXAnchor),
 
         ]
 
         let showPwdSwitchConstraints = [
-            showPwdSwitch.topAnchor.constraint(equalTo: showPwdLabel.topAnchor),
+            showPwdSwitch.rightAnchor.constraint(equalTo: showPwdUIView.rightAnchor, constant: -15),
+            //showPwdSwitch.topAnchor.constraint(equalTo: showPwdLabel.topAnchor),
             //showPwdSwitch.leftAnchor.constraint(equalTo: showPwdLabel.rightAnchor, constant: 15),
-            //showPwdSwitch.centerYAnchor.constraint(equalTo: showPwdLabel.centerYAnchor),
-            //showPwdSwitch.rightAnchor.constraint(equalTo: showPwdUIView.rightAnchor, constant: -15),
+            showPwdSwitch.centerYAnchor.constraint(equalTo: showPwdLabel.centerYAnchor),
         ]
         
         let guideLabelConstraints = [
