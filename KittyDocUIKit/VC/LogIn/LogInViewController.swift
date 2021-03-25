@@ -22,8 +22,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     var emailTF: UITextField!
     var pwdTF: UITextField!
     //var showPwdUIView: UIView!
-    var showPwdLabel: UILabel!
-    var showPwdSwitch: UISwitch!
+    //var showPwdLabel: UILabel!
+    //var showPwdSwitch: UISwitch!
 
     var email: String?
     var pw: String?
@@ -41,24 +41,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         addSubviews()
         prepareForAutoLayout()
         setConstraints()
-
-//        let dayInSec: TimeInterval = 86400 // (86400 == 24Hours in seconds)
-//        let hourInSec: TimeInterval = 3600
-//
-//        // 일주일 (604800 == A week in seconds)
-//        //let frontTime = Int(Date().timeIntervalSince1970 * 1000)// - 604800000)    // frontTime in milliseconds
-//        //let rearTime = Int((Date().timeIntervalSince1970 - (dayInSec * 7)) * 1000)// * 2) // rearTime in milliseconds
-//
-//        // 하루 (86400 == 24Hours in seconds)
-//        //let frontTime = Int(Date().timeIntervalSince1970 * 1000)                                    // frontTime in milliseconds
-//        //let rearTime = Int((Date().timeIntervalSince1970 - (dayInSec * Double(forDays))) * 1000)    // rearTime in milliseconds
-//
-//        // 00시부터 지금까지?
-//        let timeIntervalSince1970 = Date().timeIntervalSince1970
-//        let timeIntervalFromMidnight = TimeInterval(Int(timeIntervalSince1970 + hourInSec * 9) % Int(dayInSec))
-//        let frontTime = Int(timeIntervalSince1970 * 1000)                                    // frontTime in milliseconds
-//        let rearTime = Int((timeIntervalSince1970 - timeIntervalFromMidnight) * 1000)   // rearTime in milliseconds
-//        print("requestServerData(From : \(unixtimeToString(unixtime: time_t(rearTime / 1000))), Til : \(unixtimeToString(unixtime: time_t(frontTime / 1000))))")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,24 +65,12 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         emailTF.becomeFirstResponder()
     }
     
-    @objc func onClickSwitch(sender: UISwitch) {
-        print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn)")
-//        var text: String!
-//        var color: UIColor!
-//
-//        if sender.isOn {
-//            text = "On"
-//            color = UIColor.gray
-//        } else {
-//            text = "Off"
-//            color = UIColor.green
-//        }
-//
-//        self.label.text = text
-//        self.label.backgroundColor = color
+    @objc private func onShowPwdBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
+        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
+        print("onShowPwdBtn()")
+        pwdTF.isSecureTextEntry.toggle()
     }
 
-    
     @objc private func didTapSignUp() {
         let signUp = self.storyboard!.instantiateViewController(identifier: "SignUp")
         signUp.modalPresentationStyle = .fullScreen
@@ -123,9 +93,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 alertWithMessage(message: "비밀번호를 입력해주세요!")
                 return
             }
-            // Attemps Log In
-//            let plist = UserDefaults.standard
-            //let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo")
             
             let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwdTF.text!)
             let server:KittyDocServer = KittyDocServer()
@@ -138,7 +105,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             
             //서버가 꺼져있어서 서버 연결이 안되는 상황에 로그 외에 UIAlertController 활용해서 서버 연결 실패했다고 알려주고 다시 시도하도록 했으면 좋겠음.
             //지금은 서버 연결이 안되면 앱이 아무런 말도 없이 멈춰버린다. 로그를 보지 못하면 알 수가 없다!
-            //21.03.12 명섭 제안            
+            
+            //21.03.12 명섭 제안
             
             if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_SUCCESS){
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
@@ -224,7 +192,7 @@ extension LogInViewController { // AutoLayout
         initPwdTF()
         initLabels()
         initButtons()
-        initSwitch()
+        //initSwitch()
         initUIView()
     }
     
@@ -244,8 +212,8 @@ extension LogInViewController { // AutoLayout
         //signInView.addSubview(showPwdUIView)
         //showPwdUIView.addSubview(showPwdLabel)
         //showPwdUIView.addSubview(showPwdSwitch)
-        signInView.addSubview(showPwdLabel)
-        signInView.addSubview(showPwdSwitch)
+        //signInView.addSubview(showPwdLabel)
+        //signInView.addSubview(showPwdSwitch)
     }
 
     func initEmailTF() {
@@ -265,7 +233,14 @@ extension LogInViewController { // AutoLayout
         pwdTF.placeholder = "password"
         pwdTF.isSecureTextEntry = true
         pwdTF.borderStyle = .roundedRect
-        pwdTF.clearButtonMode = .whileEditing
+        //pwdTF.clearButtonMode = .whileEditing
+        let rightViewBtn = UIButton()
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.addTarget(self, action: #selector(onShowPwdBtn(_:)), for: .touchUpInside)
+        rightViewBtn.tintColor = .gray
+        
+        pwdTF.rightView = rightViewBtn
+        pwdTF.rightViewMode = .always
         pwdTF.enablesReturnKeyAutomatically = true
     }
     
@@ -284,8 +259,8 @@ extension LogInViewController { // AutoLayout
         pwdLabel = UILabel()
         pwdLabel.text = "Password"
 
-        showPwdLabel = UILabel()
-        showPwdLabel.text = "Hide/Show Password"
+        //showPwdLabel = UILabel()
+        //showPwdLabel.text = "Hide/Show Password"
             
         askLabel = UILabel()
         askLabel.text = "Don't have an account?"
@@ -299,7 +274,7 @@ extension LogInViewController { // AutoLayout
     
     func initButtons() {
         signInBtn = UIButton()
-        signInBtn.setTitle("Sign in", for: .normal)
+        signInBtn.setTitle("Sign In", for: .normal)
         signInBtn.setTitleColor(.white, for: .highlighted)
         signInBtn.backgroundColor = .systemBlue
         signInBtn.layer.cornerRadius = 8
@@ -312,15 +287,15 @@ extension LogInViewController { // AutoLayout
         signUpBtn.addTarget(self, action: #selector((didTapSignUp)), for: .touchUpInside)
     }
     
-    func initSwitch() {
-        showPwdSwitch = UISwitch()
-        
-        showPwdSwitch.isOn = true
-        showPwdSwitch.setOn(true, animated: true)
-        showPwdSwitch.addTarget(self, action: #selector(onClickSwitch(sender:)), for: .valueChanged)
-        
-        //showPwdSwitch.layer.position = CGPoint(x: self.view.frame.width/2, y: self.view.frame.height - 200)
-    }
+//    func initSwitch() {
+//        showPwdSwitch = UISwitch()
+//
+//        showPwdSwitch.isOn = true
+//        showPwdSwitch.setOn(true, animated: true)
+//        showPwdSwitch.addTarget(self, action: #selector(onClickSwitch(_:)), for: .valueChanged)
+//
+//        //showPwdSwitch.layer.position = CGPoint(x: self.view.frame.width/2, y: self.view.frame.height - 200)
+//    }
     
     func prepareForAutoLayout() {
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -334,8 +309,8 @@ extension LogInViewController { // AutoLayout
         emailTF.translatesAutoresizingMaskIntoConstraints = false
         pwdTF.translatesAutoresizingMaskIntoConstraints = false
         //showPwdUIView.translatesAutoresizingMaskIntoConstraints = false
-        showPwdLabel.translatesAutoresizingMaskIntoConstraints = false
-        showPwdSwitch.translatesAutoresizingMaskIntoConstraints = false
+        //showPwdLabel.translatesAutoresizingMaskIntoConstraints = false
+        //showPwdSwitch.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func setConstraints() {
@@ -380,17 +355,17 @@ extension LogInViewController { // AutoLayout
 //            showPwdUIView.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -15),
 //        ]
         
-        let showPwdLabelConstraints = [
-            showPwdLabel.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
-            showPwdLabel.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 30),
-            //showPwdLabel.rightAnchor.constraint(equalTo: showPwdUIView.centerXAnchor),
+//        let showPwdLabelConstraints = [
+//            showPwdLabel.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
+//            showPwdLabel.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 30),
+//            //showPwdLabel.rightAnchor.constraint(equalTo: showPwdUIView.centerXAnchor),
+//
+//        ]
 
-        ]
-
-        let showPwdSwitchConstraints = [
-            showPwdSwitch.centerYAnchor.constraint(equalTo: showPwdLabel.centerYAnchor),
-            showPwdSwitch.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -30),
-        ]
+//        let showPwdSwitchConstraints = [
+//            showPwdSwitch.centerYAnchor.constraint(equalTo: showPwdLabel.centerYAnchor),
+//            showPwdSwitch.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -30),
+//        ]
         
         let guideLabelConstraints = [
             guideLabel.bottomAnchor.constraint(equalTo: signInView.topAnchor, constant: -10),
@@ -422,7 +397,7 @@ extension LogInViewController { // AutoLayout
         
 //        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, showPwdUIViewConstraints, showPwdLabelConstraints, showPwdSwitchConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
 //            .forEach(NSLayoutConstraint.activate(_:))
-        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, showPwdLabelConstraints, showPwdSwitchConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
+        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
     }
 }
