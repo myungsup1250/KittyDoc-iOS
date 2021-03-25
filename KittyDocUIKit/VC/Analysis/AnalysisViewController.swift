@@ -152,8 +152,8 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         switch segSelect {
         case SegSelect.Year:
             print("[ server.sensorRequestYear() ]")
-            let analysisData_Year: AnalysisData_Year = AnalysisData_Year(_petID: 38, _year: 2021, _offset: -540)
-            analysisResponse = server.sensorRequestYear(data: analysisData_Year)
+            //let analysisData_Year: AnalysisData_Year = AnalysisData_Year(_petID: 38, _year: 2021, _offset: -540)
+            //analysisResponse = server.sensorRequestYear(data: analysisData_Year)
         case SegSelect.Month:
             print("[ server.sensorRequestDay(Month) ]")
             analysisResponse = server.sensorRequestDay(data: analysisData)

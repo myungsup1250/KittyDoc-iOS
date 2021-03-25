@@ -14,13 +14,16 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     var guideLabel: UILabel!
     var signInView: UIView!
     var emailLabel: UILabel!
-    var pswLabel: UILabel!
+    var pwdLabel: UILabel!
     var signInBtn: UIButton!
     var askLabel: UILabel!
     var signUpBtn: UIButton!
-    
+
     var emailTF: UITextField!
-    var pwTF: UITextField!
+    var pwdTF: UITextField!
+    var showPwdUIView: UIView!
+    var showPwdLabel: UILabel!
+    var showPwdSwitch: UISwitch!
 
     var email: String?
     var pw: String?
@@ -34,7 +37,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         print("LogInViewController.viewDidLoad()")
         self.navigationItem.prompt = "UITabBarController"
 
-        // Will convert LogInVC's layout into AutoLayout! 21.02.06 ms
         initUIViews()
         addSubviews()
         prepareForAutoLayout()
@@ -69,7 +71,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         }
         
         if let pw_test = pw {
-            pwTF.text = pw_test
+            pwdTF.text = pw_test
         }
         
         if email != nil && pw != nil {
@@ -80,6 +82,24 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         textFieldSetUp()
         emailTF.becomeFirstResponder()
     }
+    
+    @objc func onClickSwitch(sender: UISwitch) {
+        print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn)")
+//        var text: String!
+//        var color: UIColor!
+//
+//        if sender.isOn {
+//            text = "On"
+//            color = UIColor.gray
+//        } else {
+//            text = "Off"
+//            color = UIColor.green
+//        }
+//
+//        self.label.text = text
+//        self.label.backgroundColor = color
+    }
+
     
     @objc private func didTapSignUp() {
         let signUp = self.storyboard!.instantiateViewController(identifier: "SignUp")
@@ -92,14 +112,14 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 
         if emailTF.text!.isEmpty {
             alertWithMessage(message: "아이디를 입력해주세요!")
-        } else if pwTF.text!.isEmpty {
+        } else if pwdTF.text!.isEmpty {
             alertWithMessage(message: "비밀번호를 입력해주세요!")
         } else {
             if(!isEmailForm(_email:emailTF.text!)){
                 alertWithMessage(message: "올바른 이메일 형식이 아닙니다!")
                 return
             }
-            if(!isPwdForm(_pwd:pwTF.text!)){
+            if(!isPwdForm(_pwd:pwdTF.text!)){
                 alertWithMessage(message: "비밀번호를 입력해주세요!")
                 return
             }
@@ -107,7 +127,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 //            let plist = UserDefaults.standard
             //let userDict: [String : Any]? = plist.dictionary(forKey: "UserInfo")
             
-            let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwTF.text!)
+            let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: pwdTF.text!)
             let server:KittyDocServer = KittyDocServer()
             let loginResponse:ServerResponse = server.userLogin(data: loginData)
             
@@ -124,7 +144,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 self.performSegue(withIdentifier: "LogInSegue", sender: nil)
                 //MARK: TEMP ORIGIN HERE
                 UserDefaults.standard.set(emailTF.text, forKey: "email_test")
-                UserDefaults.standard.set(pwTF.text, forKey: "pwd_test")
+                UserDefaults.standard.set(pwdTF.text, forKey: "pwd_test")
 
                 let jsonString: String = loginResponse.getMessage() as! String
                 if let data = jsonString.data(using: .utf8) {
@@ -148,7 +168,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                 self.emailTF.becomeFirstResponder()
             } else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_PWD) {
                 print(loginResponse.getMessage())
-                self.pwTF.becomeFirstResponder()
+                self.pwdTF.becomeFirstResponder()
                 alertWithMessage(message: loginResponse.getMessage())
             } else {
                 print(loginResponse.getMessage())
@@ -171,7 +191,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldSetUp() {
         emailTF.text = ""
-        pwTF.text = ""
+        pwdTF.text = ""
     }
     
     
@@ -201,10 +221,11 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
 extension LogInViewController { // AutoLayout
     fileprivate func initUIViews() {
         initEmailTF()
-        initPwTF()
+        initPwdTF()
         initLabels()
         initButtons()
-        initSignInView()
+        initSwitch()
+        initUIView()
     }
     
     fileprivate func addSubviews() {
@@ -216,9 +237,13 @@ extension LogInViewController { // AutoLayout
         view.addSubview(signUpBtn)
         
         signInView.addSubview(emailLabel)
-        signInView.addSubview(pswLabel)
+        signInView.addSubview(pwdLabel)
         signInView.addSubview(emailTF)
-        signInView.addSubview(pwTF)
+        signInView.addSubview(pwdTF)
+        signInView.addSubview(showPwdUIView)
+        
+        showPwdUIView.addSubview(showPwdLabel)
+        showPwdUIView.addSubview(showPwdSwitch)
     }
 
     func initEmailTF() {
@@ -232,14 +257,14 @@ extension LogInViewController { // AutoLayout
         emailTF.enablesReturnKeyAutomatically = true
     }
     
-    func initPwTF() {
-        pwTF = UITextField()
-        pwTF.delegate = self
-        pwTF.placeholder = "password"
-        pwTF.isSecureTextEntry = true
-        pwTF.borderStyle = .roundedRect
-        pwTF.clearButtonMode = .whileEditing
-        pwTF.enablesReturnKeyAutomatically = true
+    func initPwdTF() {
+        pwdTF = UITextField()
+        pwdTF.delegate = self
+        pwdTF.placeholder = "password"
+        pwdTF.isSecureTextEntry = true
+        pwdTF.borderStyle = .roundedRect
+        pwdTF.clearButtonMode = .whileEditing
+        pwdTF.enablesReturnKeyAutomatically = true
     }
     
     func initLabels() {
@@ -254,17 +279,20 @@ extension LogInViewController { // AutoLayout
         emailLabel = UILabel()
         emailLabel.text = "Email"
 
-        pswLabel = UILabel()
-        pswLabel.text = "Password"
+        pwdLabel = UILabel()
+        pwdLabel.text = "Password"
 
+        showPwdLabel = UILabel()
+        showPwdLabel.text = "Hide/Show Password"
+            
         askLabel = UILabel()
         askLabel.text = "Don't have an account?"
 
     }
     
-    func initSignInView() {
+    func initUIView() {
         signInView = UIView()
-
+        showPwdUIView = UIView()
     }
     
     func initButtons() {
@@ -282,18 +310,29 @@ extension LogInViewController { // AutoLayout
         signUpBtn.addTarget(self, action: #selector((didTapSignUp)), for: .touchUpInside)
     }
     
+    func initSwitch() {
+        showPwdSwitch = UISwitch()
+        
+        showPwdSwitch.isOn = true
+        showPwdSwitch.addTarget(self, action: #selector(onClickSwitch(sender:)), for: UIControl.Event.valueChanged)
+        
+        //showPwdSwitch.layer.position = CGPoint(x: self.view.frame.width/2, y: self.view.frame.height - 200)
+    }
+    
     func prepareForAutoLayout() {
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         guideLabel.translatesAutoresizingMaskIntoConstraints = false
         signInView.translatesAutoresizingMaskIntoConstraints = false
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
-        pswLabel.translatesAutoresizingMaskIntoConstraints = false
+        pwdLabel.translatesAutoresizingMaskIntoConstraints = false
         signInBtn.translatesAutoresizingMaskIntoConstraints = false
         askLabel.translatesAutoresizingMaskIntoConstraints = false
         signUpBtn.translatesAutoresizingMaskIntoConstraints = false
         emailTF.translatesAutoresizingMaskIntoConstraints = false
-        pwTF.translatesAutoresizingMaskIntoConstraints = false
-
+        pwdTF.translatesAutoresizingMaskIntoConstraints = false
+        showPwdUIView.translatesAutoresizingMaskIntoConstraints = false
+        showPwdLabel.translatesAutoresizingMaskIntoConstraints = false
+        showPwdSwitch.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func setConstraints() {
@@ -311,10 +350,10 @@ extension LogInViewController { // AutoLayout
             emailLabel.widthAnchor.constraint(equalToConstant: 80)
         ]
 
-        let pswLabelConstraints = [
-            pswLabel.topAnchor.constraint(equalTo: signInView.centerYAnchor, constant: 15),
-            pswLabel.leftAnchor.constraint(equalTo: emailLabel.leftAnchor),
-            pswLabel.widthAnchor.constraint(equalToConstant: 80)
+        let pwdLabelConstraints = [
+            pwdLabel.topAnchor.constraint(equalTo: signInView.centerYAnchor, constant: 15),
+            pwdLabel.leftAnchor.constraint(equalTo: emailLabel.leftAnchor),
+            pwdLabel.widthAnchor.constraint(equalToConstant: 80)
         ]
 
         let emailTFConstraints = [
@@ -324,11 +363,32 @@ extension LogInViewController { // AutoLayout
             emailTF.centerYAnchor.constraint(equalTo: emailLabel.centerYAnchor)
         ]
 
-        let pwTFConstraints = [
-            //pwTF.topAnchor.constraint(equalTo: emailTF.bottomAnchor, constant: 10),
-            pwTF.leftAnchor.constraint(equalTo: pswLabel.rightAnchor, constant: 10),
-            pwTF.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -10),
-            pwTF.centerYAnchor.constraint(equalTo: pswLabel.centerYAnchor)
+        let pwdTFConstraints = [
+            //pwdTF.topAnchor.constraint(equalTo: emailTF.bottomAnchor, constant: 10),
+            pwdTF.leftAnchor.constraint(equalTo: pwdLabel.rightAnchor, constant: 10),
+            pwdTF.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -10),
+            pwdTF.centerYAnchor.constraint(equalTo: pwdLabel.centerYAnchor)
+        ]
+        
+        let showPwdUIViewConstraints = [
+            showPwdUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            showPwdUIView.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 20),
+            //showPwdSwitch.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
+            //showPwdSwitch.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15),
+        ]
+        
+        let showPwdLabelConstraints = [
+            showPwdLabel.topAnchor.constraint(equalTo: showPwdUIView.topAnchor, constant: 15),
+            showPwdLabel.leftAnchor.constraint(equalTo: showPwdUIView.leftAnchor, constant: 15),
+            //showPwdLabel.rightAnchor.constraint(equalTo: showPwdUIView.centerXAnchor),
+
+        ]
+
+        let showPwdSwitchConstraints = [
+            showPwdSwitch.topAnchor.constraint(equalTo: showPwdLabel.topAnchor),
+            //showPwdSwitch.leftAnchor.constraint(equalTo: showPwdLabel.rightAnchor, constant: 15),
+            //showPwdSwitch.centerYAnchor.constraint(equalTo: showPwdLabel.centerYAnchor),
+            //showPwdSwitch.rightAnchor.constraint(equalTo: showPwdUIView.rightAnchor, constant: -15),
         ]
         
         let guideLabelConstraints = [
@@ -359,7 +419,7 @@ extension LogInViewController { // AutoLayout
             signUpBtn.rightAnchor.constraint(equalTo: signInBtn.rightAnchor, constant: -15)
         ]
         
-        [signInViewConstraints, emailLabelConstraints, pswLabelConstraints, emailTFConstraints, pwTFConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
+        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, showPwdUIViewConstraints, showPwdLabelConstraints, showPwdSwitchConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
     }
 }
