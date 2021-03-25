@@ -77,14 +77,12 @@ class SettingsViewController: UIViewController {
                                         //self.present(vc, animated: true)
                                     })),
                                     .staticCell(model: SettingsOption(title: "비밀번호 수정", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .magenta, handler: {
-                                        //guard let vc = self.storyboard?.instantiateViewController(identifier: "EditUserInfo") as? UserInfoSettingViewController else {
-                                        //    print("guard let vc = self.storyboard?.instantiateViewController(identifier: EditUserInfo) Error")
-                                        //    return
-                                        //}
-                                        
-                                        //self.navigationController?.pushViewController(vc, animated: true)
+                                        guard let vc = self.storyboard?.instantiateViewController(identifier: "SetPwdSegue") as? SetPasswordViewController else {
+                                            print("guard let vc = self.storyboard?.instantiateViewController(identifier: SetPwdSegue) Error")
+                                            return
+                                        }
+                                        self.navigationController?.pushViewController(vc, animated: true)
                                         //self.present(vc, animated: true)
-                                        print("Will it call SetPasswordVC?")
                                     }))
                                 ]))
         
