@@ -144,16 +144,23 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         //print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
         //print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
 
-        //_petID: 38은 자신의 펫 아이디로 수정되어야 함. 예시로 38을 적어두었음!
+        
+        
+        
+        
+        let date = Date()
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        
         let analysisData: AnalysisData = AnalysisData(_petID: 38, _startMilliSec: startTime, _endMilliSec: endTime)
+        let analysisData_Year: AnalysisData_Year = AnalysisData_Year(_petID: 38, _year: year)
         let server: KittyDocServer = KittyDocServer()
         
         var analysisResponse: ServerResponse!
         switch segSelect {
         case SegSelect.Year:
             print("[ server.sensorRequestYear() ]")
-            //let analysisData_Year: AnalysisData_Year = AnalysisData_Year(_petID: 38, _year: 2021, _offset: -540)
-            //analysisResponse = server.sensorRequestYear(data: analysisData_Year)
+            analysisResponse = server.sensorRequestYear(data: analysisData_Year)
         case SegSelect.Month:
             print("[ server.sensorRequestDay(Month) ]")
             analysisResponse = server.sensorRequestDay(data: analysisData)
@@ -164,8 +171,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             print("[ server.sensorRequestHour() ]")
             analysisResponse = server.sensorRequestHour(data: analysisData)
         }
-
         if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS) {
+            print("ANALYSIS_SUCCESS!!")
+            print(analysisResponse.getMessage())
             //print(analysisResponse.getMessage() as! String)
 
             let jsonString: String = analysisResponse.getMessage() as! String

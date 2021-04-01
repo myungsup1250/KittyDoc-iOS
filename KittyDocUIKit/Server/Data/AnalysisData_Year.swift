@@ -12,10 +12,11 @@ class AnalysisData_Year:ServerData{
     var year: Int
     var offset: Int
     
-    init(_petID: Int, _year: Int, _offset: Int){
+    init(_petID: Int, _year: Int){
         self.petID = _petID
         self.year = _year
-        self.offset = _offset
+        //android와 offset부호가 반대인 관계로 -1 곱함.
+        self.offset = TimeZone.current.secondsFromGMT() / 60 * (-1)
     }
     
     func data() -> Data{
