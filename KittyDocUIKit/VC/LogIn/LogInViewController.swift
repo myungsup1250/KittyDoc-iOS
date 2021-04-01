@@ -129,7 +129,6 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
                             userInfo.UserID = json["UserID"] as! Int
                             userInfo.UserPhone = json["UserPhone"] as! String
                             userInfo.UserBirth = json["UserBirth"] as! String
-                            print(userInfo)
                         }
                     } catch {
                         print("JSON 파싱 에러")
@@ -196,7 +195,6 @@ extension LogInViewController { // AutoLayout
         initPwdTF()
         initLabels()
         initButtons()
-        //initSwitch()
         initUIView()
     }
     
@@ -212,12 +210,6 @@ extension LogInViewController { // AutoLayout
         signInView.addSubview(pwdLabel)
         signInView.addSubview(emailTF)
         signInView.addSubview(pwdTF)
-        
-        //signInView.addSubview(showPwdUIView)
-        //showPwdUIView.addSubview(showPwdLabel)
-        //showPwdUIView.addSubview(showPwdSwitch)
-        //signInView.addSubview(showPwdLabel)
-        //signInView.addSubview(showPwdSwitch)
     }
 
     func initEmailTF() {
@@ -263,9 +255,6 @@ extension LogInViewController { // AutoLayout
         pwdLabel = UILabel()
         pwdLabel.text = "Password"
 
-        //showPwdLabel = UILabel()
-        //showPwdLabel.text = "Hide/Show Password"
-            
         askLabel = UILabel()
         askLabel.text = "Don't have an account?"
 
@@ -273,7 +262,6 @@ extension LogInViewController { // AutoLayout
     
     func initUIView() {
         signInView = UIView()
-        //showPwdUIView = UIView()
     }
     
     func initButtons() {
@@ -291,16 +279,6 @@ extension LogInViewController { // AutoLayout
         signUpBtn.addTarget(self, action: #selector((didTapSignUp)), for: .touchUpInside)
     }
     
-//    func initSwitch() {
-//        showPwdSwitch = UISwitch()
-//
-//        showPwdSwitch.isOn = true
-//        showPwdSwitch.setOn(true, animated: true)
-//        showPwdSwitch.addTarget(self, action: #selector(onClickSwitch(_:)), for: .valueChanged)
-//
-//        //showPwdSwitch.layer.position = CGPoint(x: self.view.frame.width/2, y: self.view.frame.height - 200)
-//    }
-    
     func prepareForAutoLayout() {
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         guideLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -312,9 +290,6 @@ extension LogInViewController { // AutoLayout
         signUpBtn.translatesAutoresizingMaskIntoConstraints = false
         emailTF.translatesAutoresizingMaskIntoConstraints = false
         pwdTF.translatesAutoresizingMaskIntoConstraints = false
-        //showPwdUIView.translatesAutoresizingMaskIntoConstraints = false
-        //showPwdLabel.translatesAutoresizingMaskIntoConstraints = false
-        //showPwdSwitch.translatesAutoresizingMaskIntoConstraints = false
     }
 
     func setConstraints() {
@@ -352,25 +327,6 @@ extension LogInViewController { // AutoLayout
             pwdTF.centerYAnchor.constraint(equalTo: pwdLabel.centerYAnchor)
         ]
         
-//        let showPwdUIViewConstraints = [
-//            showPwdUIView.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
-//            showPwdUIView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            showPwdUIView.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 15),
-//            showPwdUIView.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -15),
-//        ]
-        
-//        let showPwdLabelConstraints = [
-//            showPwdLabel.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
-//            showPwdLabel.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 30),
-//            //showPwdLabel.rightAnchor.constraint(equalTo: showPwdUIView.centerXAnchor),
-//
-//        ]
-
-//        let showPwdSwitchConstraints = [
-//            showPwdSwitch.centerYAnchor.constraint(equalTo: showPwdLabel.centerYAnchor),
-//            showPwdSwitch.rightAnchor.constraint(equalTo: signInView.rightAnchor, constant: -30),
-//        ]
-        
         let guideLabelConstraints = [
             guideLabel.bottomAnchor.constraint(equalTo: signInView.topAnchor, constant: -10),
             guideLabel.leftAnchor.constraint(equalTo: signInView.leftAnchor, constant: 10)
@@ -399,8 +355,6 @@ extension LogInViewController { // AutoLayout
             signUpBtn.rightAnchor.constraint(equalTo: signInBtn.rightAnchor, constant: -15)
         ]
         
-//        [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, showPwdUIViewConstraints, showPwdLabelConstraints, showPwdSwitchConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
-//            .forEach(NSLayoutConstraint.activate(_:))
         [signInViewConstraints, emailLabelConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, guideLabelConstraints, welcomeLabelConstraints, signInBtnConstraints, askLabelConstraints, signUpBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
     }
