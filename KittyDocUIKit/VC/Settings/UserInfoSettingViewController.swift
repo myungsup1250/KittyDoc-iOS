@@ -340,6 +340,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
             }
         } else if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_FAILURE){
             print(modifyResponse.getMessage() as! String)
+            alertWithMessage(message: modifyResponse.getMessage() as! String)
         }
     }
     

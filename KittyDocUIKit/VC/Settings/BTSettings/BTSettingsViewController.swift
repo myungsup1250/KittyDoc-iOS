@@ -144,13 +144,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
     }
 
     func onDeviceConnected(peripheral: CBPeripheral) {
-        DispatchQueue.main.async {
-            print("Successfully Connected to KittyDoc Device!")
-//            let alert: UIAlertController = UIAlertController(title: "Connected!", message: "Successfully Connected to KittyDoc Device!", preferredStyle: .alert)
-//            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//            alert.addAction(cancel)
-//            self.present(alert, animated: true, completion: nil)
-        }
+        print("Successfully Connected to KittyDoc Device!")
     }
 
     func onDeviceDisconnected() {
