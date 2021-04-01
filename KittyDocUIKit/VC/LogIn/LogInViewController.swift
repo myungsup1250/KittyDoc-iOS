@@ -51,11 +51,9 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         if let email_test = email {
             emailTF.text = email_test
         }
-        
         if let pw_test = pw {
             pwdTF.text = pw_test
         }
-        
         if email != nil && pw != nil {
             self.performSegue(withIdentifier: "LogInSegue", sender: nil)
             didTapSignIn()
@@ -69,6 +67,12 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
         print("onShowPwdBtn()")
         pwdTF.isSecureTextEntry.toggle()
+        let eyeButton = pwdTF.rightView as! UIButton
+        if pwdTF.isSecureTextEntry {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
+        } else {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        }
     }
 
     @objc private func didTapSignUp() {
@@ -235,7 +239,7 @@ extension LogInViewController { // AutoLayout
         pwdTF.borderStyle = .roundedRect
         //pwdTF.clearButtonMode = .whileEditing
         let rightViewBtn = UIButton()
-        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
         rightViewBtn.addTarget(self, action: #selector(onShowPwdBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
         

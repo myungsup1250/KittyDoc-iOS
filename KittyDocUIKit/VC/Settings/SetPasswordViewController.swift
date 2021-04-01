@@ -52,18 +52,36 @@ class SetPasswordViewController: UIViewController, UITextFieldDelegate {
         //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
         print("onShowCurPwdBtn()")
         curPwdTF.isSecureTextEntry.toggle()
+        let eyeButton = curPwdTF.rightView as! UIButton
+        if curPwdTF.isSecureTextEntry {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
+        } else {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        }
     }
 
     @objc private func onShowNewPwdBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
         //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
         print("onShowNewPwdBtn()")
         newPwdTF.isSecureTextEntry.toggle()
+        let eyeButton = newPwdTF.rightView as! UIButton
+        if newPwdTF.isSecureTextEntry {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
+        } else {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        }
     }
     
     @objc private func onShowNewPwdConfirmBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
         //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
         print("onShowNewPwdConfirmBtn()")
         newPwdConfirmTF.isSecureTextEntry.toggle()
+        let eyeButton = newPwdConfirmTF.rightView as! UIButton
+        if newPwdConfirmTF.isSecureTextEntry {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
+        } else {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        }
     }
 }
 
@@ -215,11 +233,11 @@ extension SetPasswordViewController {
 extension SetPasswordViewController {
     func initLabels() {
         titleLabel = UILabel()
-        titleLabel.text = "Manage Your Info"
+        titleLabel.text = "Change Password"
         titleLabel.font = titleLabel.font.withSize(40)
 
         guideLabel = UILabel()
-        guideLabel.text = "Manage your Information"
+        guideLabel.text = "Modify Your Password"
         guideLabel.textColor = .systemGray
 
         emailLabel = UILabel()
@@ -257,7 +275,7 @@ extension SetPasswordViewController {
         curPwdTF.delegate = self
         curPwdTF.borderStyle = .roundedRect
         let rightViewBtn = UIButton()
-        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
         rightViewBtn.addTarget(self, action: #selector(onShowCurPwdBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
         
@@ -273,7 +291,7 @@ extension SetPasswordViewController {
         newPwdTF.delegate = self
         newPwdTF.borderStyle = .roundedRect
         let rightViewBtn = UIButton()
-        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
         rightViewBtn.addTarget(self, action: #selector(onShowNewPwdBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
         
@@ -289,7 +307,7 @@ extension SetPasswordViewController {
         newPwdConfirmTF.delegate = self
         newPwdConfirmTF.borderStyle = .roundedRect
         let rightViewBtn = UIButton()
-        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
         rightViewBtn.addTarget(self, action: #selector(onShowNewPwdConfirmBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
         

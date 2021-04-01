@@ -159,11 +159,23 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @objc private func onShowPwdBtn(_ sender: UIButton) {
         print("onShowPwdBtn()")
         pwdTF.isSecureTextEntry.toggle()
+        let eyeButton = pwdTF.rightView as! UIButton
+        if pwdTF.isSecureTextEntry {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
+        } else {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        }
     }
     
     @objc private func onShowPwdConfirmBtn(_ sender: UIButton) {
         print("onShowPwdConfirmBtn()")
         pwdConfirmTF.isSecureTextEntry.toggle()
+        let eyeButton = pwdConfirmTF.rightView as! UIButton
+        if pwdConfirmTF.isSecureTextEntry {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
+        } else {
+            eyeButton.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        }
     }
             
     @objc private func didTapRegister() {
@@ -538,7 +550,7 @@ extension SignUpViewController {
         pwdTF.borderStyle = .roundedRect
         pwdTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
         let rightViewBtn = UIButton()
-        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
         rightViewBtn.addTarget(self, action: #selector(onShowPwdBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
 
@@ -561,7 +573,7 @@ extension SignUpViewController {
         pwdConfirmTF.borderStyle = .roundedRect
         pwdConfirmTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
         let rightViewBtn = UIButton()
-        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye.slash"), for: UIControl.State())
         rightViewBtn.addTarget(self, action: #selector(onShowPwdConfirmBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
 
