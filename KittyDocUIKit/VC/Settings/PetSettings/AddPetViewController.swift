@@ -24,7 +24,7 @@ class AddPetViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("AddPetViewController.viewDidLoad()")
         
         datePicker = setUpdatePicker()
         
@@ -48,8 +48,8 @@ class AddPetViewController: UIViewController {
         if isEditMode == true {
             nameInput.text = editName
             weightInput.text = String(editWeight)
+            editBirth.insert("-", at: editBirth.index(editBirth.startIndex, offsetBy: 6))
             editBirth.insert("-", at: editBirth.index(editBirth.startIndex, offsetBy: 4))
-            editBirth.insert("-", at: editBirth.index(editBirth.startIndex, offsetBy: 7))
             birthDataField.text = editBirth
             deviceInput.text = editDevice
             print(editGender)
@@ -74,7 +74,8 @@ class AddPetViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        print("AddPetViewController.viewWillAppear()")
+
         // KittyDoc 기기 등록 여부, 기기 연결 여부 등에 따른 처리가 잘 되는지 확인 필요! 21.02.24 -ms
         // 기존 등록된 펫에 기기 등록되지 않은 상태 && 수정할 때 기기를 새로 연결해도 반영이 안된다..
         if editingPetID != nil {
