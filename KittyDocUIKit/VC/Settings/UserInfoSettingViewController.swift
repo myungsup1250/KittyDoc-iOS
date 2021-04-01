@@ -78,7 +78,8 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
                 print("인증 실패")
                 if let error = error {
                     print(error.localizedDescription)
-                    DispatchQueue.main.async { self.navigationController?.popViewController(animated: true)
+                    DispatchQueue.main.async {
+                        self.navigationController?.popViewController(animated: true)
                     }
                 }
             }
@@ -327,9 +328,16 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
                     
         if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_SUCCESS){
             print(modifyResponse.getMessage() as! String)
-            
-            //이걸로 화면 닫아주는게 아닌가봐유?
-            //self.presentingViewController?.dismiss(animated: true, completion: nil)
+            //정보 수정했으므로 VC에서 나가기
+            DispatchQueue.main.async {
+                //let alert: UIAlertController = UIAlertController(title: "Service Found!", message: "Found all required Service!", preferredStyle: .alert)
+                let alert: UIAlertController = UIAlertController(title: "Success!", message: "Successfully modified your Info!", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                }
+                alert.addAction(confirm)
+                self.present(alert, animated: true, completion: nil)
+            }
         } else if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_FAILURE){
             print(modifyResponse.getMessage() as! String)
         }
