@@ -357,7 +357,7 @@ extension SignUpViewController { // Auto Layout 코드 분리
             signUpView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             signUpView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
             signUpView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15),
-            signUpView.heightAnchor.constraint(equalToConstant: 450)
+            signUpView.heightAnchor.constraint(equalToConstant: 385)
         ]
 
         let emailLabelConstraints = [
@@ -392,28 +392,28 @@ extension SignUpViewController { // Auto Layout 코드 분리
         let pwdTFConstraints = [
             pwdTF.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 10),
             pwdTF.leftAnchor.constraint(equalTo: pwdLabel.leftAnchor),
-            pwdTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
+            pwdTF.rightAnchor.constraint(equalTo: signUpView.centerXAnchor, constant: -10),
 //            pwdTF.heightAnchor.constraint(equalToConstant: 20)
         ]
         
         let pwdConfirmLabelConstraints = [
-            pwdConfirmLabel.topAnchor.constraint(equalTo: pwdTF.bottomAnchor, constant: 10),
-            pwdConfirmLabel.leftAnchor.constraint(equalTo: pwdTF.leftAnchor),
+            pwdConfirmLabel.topAnchor.constraint(equalTo: pwdLabel.topAnchor),
+            pwdConfirmLabel.leftAnchor.constraint(equalTo: signUpView.centerXAnchor, constant: 10),
 //            pwdConfirmLabel.heightAnchor.constraint(equalToConstant: 20),
             //pwdConfirmLabel.widthAnchor.constraint(equalToConstant: 150)
         ]
 
         let pwdConfirmTFConstraints = [
-            pwdConfirmTF.topAnchor.constraint(equalTo: pwdConfirmLabel.bottomAnchor, constant: 10),
+            pwdConfirmTF.topAnchor.constraint(equalTo: pwdTF.topAnchor),
             pwdConfirmTF.leftAnchor.constraint(equalTo: pwdConfirmLabel.leftAnchor),
             pwdConfirmTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
 //            pwdTF.heightAnchor.constraint(equalToConstant: 20)
         ]
                 
         let nameLabelConstraints = [
-            nameLabel.topAnchor.constraint(equalTo: pwdConfirmTF.bottomAnchor, constant: 10),
-            nameLabel.leftAnchor.constraint(equalTo: pwdConfirmTF.leftAnchor),
-//            nameLabel.heightAnchor.constraint(equalToConstant: 20),
+            nameLabel.topAnchor.constraint(equalTo: pwdTF.bottomAnchor, constant: 10),
+            nameLabel.leftAnchor.constraint(equalTo: pwdTF.leftAnchor),
+            //nameLabel.heightAnchor.constraint(equalToConstant: 20),
             //nameLabel.widthAnchor.constraint(equalToConstant: 80)
         ]
         
@@ -531,7 +531,7 @@ extension SignUpViewController {
     
     func initPwdTF() {
         pwdTF = UITextField()
-        pwdTF.placeholder = "password"
+        pwdTF.placeholder = "Password"
         pwdTF.isSecureTextEntry = true
         pwdTF.delegate = self
         pwdTF.autocapitalizationType = .none
@@ -554,7 +554,7 @@ extension SignUpViewController {
     
     func initPwdConfirmTF() {
         pwdConfirmTF = UITextField()
-        pwdConfirmTF.placeholder = "Confirm password"
+        pwdConfirmTF.placeholder = "Confirm Password"
         pwdConfirmTF.isSecureTextEntry = true
         pwdConfirmTF.delegate = self
         pwdConfirmTF.autocapitalizationType = .none
