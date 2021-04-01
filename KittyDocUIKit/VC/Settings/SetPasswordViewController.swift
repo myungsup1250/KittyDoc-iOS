@@ -6,21 +6,22 @@
 //
 
 import UIKit
-
+// Commit Test!!asdas
 class SetPasswordViewController: UIViewController, UITextFieldDelegate {
     var userInterfaceStyle: UIUserInterfaceStyle = .unspecified
     var safeArea: UILayoutGuide!
 
     var titleLabel: UILabel!
     var guideLabel: UILabel!
-    
     var userInfoView: UIView!
     var emailLabel: UILabel!
     var emailTF: UITextField!
-    var pwdLabel: UILabel!
-    var pwdTF: UITextField!
-    var pwdConfirmLabel: UILabel!
-    var pwdConfirmTF: UITextField!
+    var curPwdLabel: UILabel!
+    var curPwdTF: UITextField!
+    var newPwdLabel: UILabel!
+    var newPwdTF: UITextField!
+    var newPwdConfirmLabel: UILabel!
+    var newPwdConfirmTF: UITextField!
 
     var submitBtn: UIButton!
 
@@ -46,20 +47,35 @@ class SetPasswordViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
     }
+
+    @objc private func onShowCurPwdBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
+        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
+        print("onShowCurPwdBtn()")
+        curPwdTF.isSecureTextEntry.toggle()
+    }
+
+    @objc private func onShowNewPwdBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
+        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
+        print("onShowNewPwdBtn()")
+        newPwdTF.isSecureTextEntry.toggle()
+    }
+    
+    @objc private func onShowNewPwdConfirmBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
+        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
+        print("onShowNewPwdConfirmBtn()")
+        newPwdConfirmTF.isSecureTextEntry.toggle()
+    }
 }
 
 extension SetPasswordViewController {
     
     fileprivate func initUIViews() {
-        initTitleLabel()
-        initGuideLabel()
+        initLabels()
         initUserInfoView()
-        initEmailLabel()
         initEmailTF()
-        initPwdLabel()
-        initPwdTF()
-        initPwdConfirmLabel()
-        initPwdConfirmTF()
+        initCurPwdTF()
+        initNewPwdTF()
+        initNewPwdConfirmTF()
         initSubmitBtn()
     }
 
@@ -69,10 +85,12 @@ extension SetPasswordViewController {
         view.addSubview(userInfoView)
         userInfoView.addSubview(emailLabel)
         userInfoView.addSubview(emailTF)
-        userInfoView.addSubview(pwdLabel)
-        userInfoView.addSubview(pwdTF)
-        userInfoView.addSubview(pwdConfirmLabel)
-        userInfoView.addSubview(pwdConfirmTF)
+        userInfoView.addSubview(curPwdLabel)
+        userInfoView.addSubview(curPwdTF)
+        userInfoView.addSubview(newPwdLabel)
+        userInfoView.addSubview(newPwdTF)
+        userInfoView.addSubview(newPwdConfirmLabel)
+        userInfoView.addSubview(newPwdConfirmTF)
         view.addSubview(submitBtn)
     }
     
@@ -82,10 +100,12 @@ extension SetPasswordViewController {
         userInfoView.translatesAutoresizingMaskIntoConstraints = false
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         emailTF.translatesAutoresizingMaskIntoConstraints = false
-        pwdLabel.translatesAutoresizingMaskIntoConstraints = false
-        pwdTF.translatesAutoresizingMaskIntoConstraints = false
-        pwdConfirmLabel.translatesAutoresizingMaskIntoConstraints = false
-        pwdConfirmTF.translatesAutoresizingMaskIntoConstraints = false
+        curPwdLabel.translatesAutoresizingMaskIntoConstraints = false
+        curPwdTF.translatesAutoresizingMaskIntoConstraints = false
+        newPwdLabel.translatesAutoresizingMaskIntoConstraints = false
+        newPwdTF.translatesAutoresizingMaskIntoConstraints = false
+        newPwdConfirmLabel.translatesAutoresizingMaskIntoConstraints = false
+        newPwdConfirmTF.translatesAutoresizingMaskIntoConstraints = false
         submitBtn.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -113,33 +133,48 @@ extension SetPasswordViewController {
 //            emailLabel.heightAnchor.constraint(equalToConstant: 20)
         ]
 
-        let pwdLabelConstraints = [
-            pwdLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 30),
-            pwdLabel.leftAnchor.constraint(equalTo: emailLabel.leftAnchor),
-//            pwdLabel.heightAnchor.constraint(equalToConstant: 20),
-            pwdLabel.widthAnchor.constraint(equalToConstant: 120)
+        let curPwdLabelConstraints = [
+            curPwdLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 30),
+            curPwdLabel.leftAnchor.constraint(equalTo: emailLabel.leftAnchor),
+//            curPwdLabel.heightAnchor.constraint(equalToConstant: 20),
+            curPwdLabel.widthAnchor.constraint(equalToConstant: 120)
         ]
 
-        let pwdTFConstraints = [
-            pwdTF.centerYAnchor.constraint(equalTo: pwdLabel.centerYAnchor),
-//            pwdTF.topAnchor.constraint(equalTo: pwdLabel.topAnchor),
-            pwdTF.leftAnchor.constraint(equalTo: pwdLabel.rightAnchor, constant: 10),
-            pwdTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
+        let curPwdTFConstraints = [
+            curPwdTF.centerYAnchor.constraint(equalTo: curPwdLabel.centerYAnchor),
+//            curPwdTF.topAnchor.constraint(equalTo: curPwdLabel.topAnchor),
+            curPwdTF.leftAnchor.constraint(equalTo: curPwdLabel.rightAnchor, constant: 10),
+            curPwdTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
 //            pwdTF.heightAnchor.constraint(equalToConstant: 20)
         ]
 
-        let pwdConfirmLabelConstraints = [
-            pwdConfirmLabel.topAnchor.constraint(equalTo: pwdLabel.bottomAnchor, constant: 30),
-            pwdConfirmLabel.leftAnchor.constraint(equalTo: pwdLabel.leftAnchor),
-//            pwdConfirmLabel.heightAnchor.constraint(equalToConstant: 20),
-            pwdConfirmLabel.widthAnchor.constraint(equalToConstant: 120)
+        let newPwdLabelConstraints = [
+            newPwdLabel.topAnchor.constraint(equalTo: curPwdLabel.bottomAnchor, constant: 30),
+            newPwdLabel.leftAnchor.constraint(equalTo: curPwdLabel.leftAnchor),
+//            newPwdLabel.heightAnchor.constraint(equalToConstant: 20),
+            newPwdLabel.widthAnchor.constraint(equalToConstant: 120)
         ]
 
-        let pwdConfirmTFConstraints = [
-            pwdConfirmTF.centerYAnchor.constraint(equalTo: pwdConfirmLabel.centerYAnchor),
-//            pwdConfirmTF.topAnchor.constraint(equalTo: pwdConfirmLabel.topAnchor),
-            pwdConfirmTF.leftAnchor.constraint(equalTo: pwdConfirmLabel.rightAnchor, constant: 10),
-            pwdConfirmTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
+        let newPwdTFConstraints = [
+            newPwdTF.centerYAnchor.constraint(equalTo: newPwdLabel.centerYAnchor),
+//            newPwdTF.topAnchor.constraint(equalTo: newPwdLabel.topAnchor),
+            newPwdTF.leftAnchor.constraint(equalTo: newPwdLabel.rightAnchor, constant: 10),
+            newPwdTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
+//            newPwdTF.heightAnchor.constraint(equalToConstant: 20)
+        ]
+
+        let newPwdConfirmLabelConstraints = [
+            newPwdConfirmLabel.topAnchor.constraint(equalTo: newPwdLabel.bottomAnchor, constant: 30),
+            newPwdConfirmLabel.leftAnchor.constraint(equalTo: newPwdLabel.leftAnchor),
+//            newPwdConfirmLabel.heightAnchor.constraint(equalToConstant: 20),
+            newPwdConfirmLabel.widthAnchor.constraint(equalToConstant: 120)
+        ]
+
+        let newPwdConfirmTFConstraints = [
+            newPwdConfirmTF.centerYAnchor.constraint(equalTo: newPwdConfirmLabel.centerYAnchor),
+//            newPwdConfirmTF.topAnchor.constraint(equalTo: newPwdConfirmLabel.topAnchor),
+            newPwdConfirmTF.leftAnchor.constraint(equalTo: newPwdConfirmLabel.rightAnchor, constant: 10),
+            newPwdConfirmTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
 //            pwdConfirmTF.heightAnchor.constraint(equalToConstant: 20)
         ]
 
@@ -161,7 +196,7 @@ extension SetPasswordViewController {
         ]
         
 
-        [userInfoViewConstraints, emailLabelConstraints, emailTFConstraints, pwdLabelConstraints, pwdTFConstraints, pwdConfirmLabelConstraints, pwdConfirmTFConstraints, guideLabelConstraints, titleLabelConstraints, submitBtnConstraints]
+        [userInfoViewConstraints, emailLabelConstraints, emailTFConstraints, curPwdLabelConstraints, curPwdTFConstraints, newPwdLabelConstraints, newPwdTFConstraints, newPwdConfirmLabelConstraints, newPwdConfirmTFConstraints, guideLabelConstraints, titleLabelConstraints, submitBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
     }
 
@@ -178,89 +213,90 @@ extension SetPasswordViewController {
 }
 
 extension SetPasswordViewController {
-    func initTitleLabel() {
+    func initLabels() {
         titleLabel = UILabel()
         titleLabel.text = "Manage Your Info"
         titleLabel.font = titleLabel.font.withSize(40)
-    }
-    
-    func initGuideLabel() {
+
         guideLabel = UILabel()
         guideLabel.text = "Manage your Information"
         guideLabel.textColor = .systemGray
+
+        emailLabel = UILabel()
+        emailLabel.text = "Email"
+
+        curPwdLabel = UILabel()
+        curPwdLabel.text = "Current PW"
+
+        newPwdLabel = UILabel()
+        newPwdLabel.text = "New PW"
+
+        newPwdConfirmLabel = UILabel()
+        newPwdConfirmLabel.text = "Confirm PW"
     }
 
     func initUserInfoView() {
         userInfoView = UIView()
     }
 
-    func initEmailLabel() {
-        emailLabel = UILabel()
-        //emailLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 30)
-        emailLabel.text = "Email"
-    }
-    
     func initEmailTF() {
         emailTF = UITextField()
-        emailTF.text = UserInfo.shared.Email + " - 비활성화"
+        emailTF.text = UserInfo.shared.Email
+        emailTF.isEnabled = false // 수정 못하도록 비활성화
         emailTF.textColor = .systemGray
         emailTF.keyboardType = .emailAddress
         emailTF.delegate = self
         emailTF.autocapitalizationType = .none
         emailTF.borderStyle = .roundedRect
         //emailTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
-        emailTF.isEnabled = false
     }
 
-    func initPwdLabel() {
-        pwdLabel = UILabel()
-        pwdLabel.text = "Name"
-    }
-    
-    func initPwdTF() {
-        pwdTF = UITextField()
-        pwdTF.text = UserInfo.shared.Name
-        pwdTF.delegate = self
-        pwdTF.borderStyle = .roundedRect
+    func initCurPwdTF() {
+        curPwdTF = UITextField()
+        //curPwdTF.text = ""
+        curPwdTF.delegate = self
+        curPwdTF.borderStyle = .roundedRect
         let rightViewBtn = UIButton()
         rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
-        rightViewBtn.addTarget(self, action: #selector(onShowPwdBtn(_:)), for: .touchUpInside)
+        rightViewBtn.addTarget(self, action: #selector(onShowCurPwdBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
         
-        pwdTF.rightView = rightViewBtn
-        pwdTF.rightViewMode = .always
-        pwdTF.enablesReturnKeyAutomatically = true
+        curPwdTF.rightView = rightViewBtn
+        curPwdTF.rightViewMode = .always
+        curPwdTF.isSecureTextEntry = true
+        curPwdTF.enablesReturnKeyAutomatically = true
     }
 
-    @objc private func onShowPwdBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
-        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
-        print("onShowPwdBtn()")
-        pwdTF.isSecureTextEntry.toggle()
-    }
-
-    func initPwdConfirmLabel() {
-        pwdConfirmLabel = UILabel()
-        pwdConfirmLabel.text = "Name"
-    }
-    
-    func initPwdConfirmTF() {
-        pwdConfirmTF = UITextField()
-        pwdConfirmTF.text = UserInfo.shared.Name
-        pwdConfirmTF.delegate = self
-        pwdConfirmTF.borderStyle = .roundedRect
+    func initNewPwdTF() {
+        newPwdTF = UITextField()
+        //newPwdTF.text = ""
+        newPwdTF.delegate = self
+        newPwdTF.borderStyle = .roundedRect
         let rightViewBtn = UIButton()
         rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
-        rightViewBtn.addTarget(self, action: #selector(onShowPwdConfirmBtn(_:)), for: .touchUpInside)
+        rightViewBtn.addTarget(self, action: #selector(onShowNewPwdBtn(_:)), for: .touchUpInside)
         rightViewBtn.tintColor = .gray
         
-        pwdConfirmTF.rightView = rightViewBtn
-        pwdConfirmTF.rightViewMode = .always
-        pwdConfirmTF.enablesReturnKeyAutomatically = true
+        newPwdTF.rightView = rightViewBtn
+        newPwdTF.rightViewMode = .always
+        newPwdTF.isSecureTextEntry = true
+        newPwdTF.enablesReturnKeyAutomatically = true
     }
-    @objc private func onShowPwdConfirmBtn(_ sender: UIButton) {//onClickSwitch(_ sender: UISwitch)
-        //print("onClickSwitch(UISwitch : \(showPwdSwitch.isOn))")
-        print("onShowPwdConfirmBtn()")
-        pwdConfirmTF.isSecureTextEntry.toggle()
+
+    func initNewPwdConfirmTF() {
+        newPwdConfirmTF = UITextField()
+        //newPwdConfirmTF.text = ""
+        newPwdConfirmTF.delegate = self
+        newPwdConfirmTF.borderStyle = .roundedRect
+        let rightViewBtn = UIButton()
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.addTarget(self, action: #selector(onShowNewPwdConfirmBtn(_:)), for: .touchUpInside)
+        rightViewBtn.tintColor = .gray
+        
+        newPwdConfirmTF.rightView = rightViewBtn
+        newPwdConfirmTF.rightViewMode = .always
+        newPwdConfirmTF.isSecureTextEntry = true
+        newPwdConfirmTF.enablesReturnKeyAutomatically = true
     }
 
     func initSubmitBtn() {
