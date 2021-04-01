@@ -102,7 +102,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         walkStackView.addArrangedSubview(petWalkTitleLabel)
         walkStackView.addArrangedSubview(walkAndCalStackView)
-        walkStackView.addArrangedSubview(walkProgressView)
+        walkStackView.addArrangedSubview(walkProgressViewHolder)
+        
+        walkProgressViewHolder.addSubview(walkProgressView)
     
         
         walkAndCalStackView.addArrangedSubview(petWalkLabel)
@@ -125,8 +127,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         waterShowStackView.addArrangedSubview(petWaterTitleLabel)
         waterShowStackView.addArrangedSubview(petWaterLabel)
         
-        waterBtnStackView.addArrangedSubview(WaterPlusBtn)
         waterBtnStackView.addArrangedSubview(WaterMinusBtn)
+        waterBtnStackView.addArrangedSubview(WaterPlusBtn)
+        
+        WeightStackView.addArrangedSubview(weightShowStackView)
+        WeightStackView.addArrangedSubview(weightBtnView)
+        weightBtnView.addSubview(WeightInputBtn)
+        
+        weightShowStackView.addArrangedSubview(petWeightTitleLabel)
+        weightShowStackView.addArrangedSubview(petWeightLabel)
         
         
         PetChange(index: 0)
@@ -160,7 +169,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         NSLayoutConstraint.activate([
             petNameSelectTF.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
-            petNameSelectTF.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
+            petNameSelectTF.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            petNameSelectTF.heightAnchor.constraint(equalToConstant: 30)
         ])
         
         
@@ -177,7 +187,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             piStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 20),
             piStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             piStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
-        
             
             petTripletTitleLabel.topAnchor.constraint(equalTo: piStackView.topAnchor, constant: 10)
         ])
@@ -188,8 +197,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             walkAndCalStackView.leadingAnchor.constraint(equalTo: walkStackView.leadingAnchor),
             walkAndCalStackView.widthAnchor.constraint(equalTo: walkStackView.widthAnchor, multiplier: 0.9),
             
-            
-            //walkProgressView.heightAnchor.constraint(equalTo: walkStackView.heightAnchor, multiplier: 0.1)
+            walkProgressView.heightAnchor.constraint(equalTo: walkProgressViewHolder.heightAnchor, multiplier: 0.7),
+            walkProgressView.widthAnchor.constraint(equalTo: walkProgressViewHolder.widthAnchor, constant: -20)
         ])
         
         NSLayoutConstraint.activate([
@@ -199,12 +208,19 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         ])
         
         NSLayoutConstraint.activate([
-            waterStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
+            waterStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
+            
+            
+            waterBtnStackView.heightAnchor.constraint(equalTo: waterStackView.heightAnchor, multiplier: 0.4),
         ])
         
         NSLayoutConstraint.activate([
-            WeightStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2)
+            WeightStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
         
+            WeightInputBtn.centerXAnchor.constraint(equalTo: weightBtnView.centerXAnchor),
+            WeightInputBtn.centerYAnchor.constraint(equalTo: weightBtnView.centerYAnchor),
+            WeightInputBtn.widthAnchor.constraint(equalTo: weightBtnView.widthAnchor, multiplier: 0.5),
+            WeightInputBtn.heightAnchor.constraint(equalTo: weightBtnView.heightAnchor, multiplier: 0.3)
         ])
         
         
@@ -214,6 +230,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     //        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
     //        print("HomeViewController.viewDidDisappear()")
     //    }
+    
+    @IBAction func didTapSideMenuBtn() {
+        
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         waterValue = UserDefaults.standard.integer(forKey: "waterValue")
     }
@@ -335,10 +356,16 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return stackView
     }()
     
+    let walkProgressViewHolder: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     let walkProgressView: UIProgressView = {
         let view = UIProgressView(progressViewStyle: .bar)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.trackTintColor = .gray
+        view.trackTintColor = .lightGray
         view.progressTintColor = .systemBlue
         view.setProgress(0.5, animated: true)
         return view
@@ -443,6 +470,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+        stackView.alignment = .center
         stackView.addBackground(color: .white)
         return stackView
     }()
@@ -451,6 +479,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 20
         stackView.addBackground(color: .white)
         return stackView
     }()
@@ -460,6 +490,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+        stackView.spacing = 20
         stackView.addBackground(color: .white)
         return stackView
     }()
@@ -483,11 +514,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     let WaterPlusBtn: UIButton = {
         let waterBtn = UIButton()
         waterBtn.translatesAutoresizingMaskIntoConstraints = false
-        waterBtn.setTitle("+", for: .normal)
-        waterBtn.titleLabel?.textAlignment = .center
-        waterBtn.backgroundColor = .systemBlue
-        waterBtn.layer.cornerRadius = 50
-        waterBtn.clipsToBounds = true
+        waterBtn.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
+        waterBtn.contentHorizontalAlignment = .fill
+        waterBtn.contentVerticalAlignment = .fill
         waterBtn.addTarget(self, action: #selector(didTapWaterBtn), for: .touchUpInside)
         
         return waterBtn
@@ -496,9 +525,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     let WaterMinusBtn: UIButton = {
         let waterBtn = UIButton()
         waterBtn.translatesAutoresizingMaskIntoConstraints = false
-        waterBtn.setTitle("-", for: .normal)
-        waterBtn.titleLabel?.textAlignment = .center
-        waterBtn.backgroundColor = .systemBlue
+        waterBtn.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
+        waterBtn.contentHorizontalAlignment = .fill
+        waterBtn.contentVerticalAlignment = .fill
         waterBtn.addTarget(self, action: #selector(didTapWaterBtn), for: .touchUpInside)
         
         return waterBtn
@@ -509,8 +538,54 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         stackView.addBackground(color: .white)
+        stackView.distribution = .fillEqually
         return stackView
     }()
+    
+    let weightShowStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addBackground(color: .white)
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        return stackView
+    }()
+    
+    let petWeightTitleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "체중"
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        return label
+    }()
+    
+    let petWeightLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "30 KG"
+        label.font = UIFont.boldSystemFont(ofSize: 25)
+        return label
+    }()
+    
+    let weightBtnView: UIView = {
+      let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+        
+    }()
+    
+    
+    let WeightInputBtn: UIButton = {
+        let btn =  UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("입력", for: .normal)
+        btn.backgroundColor = .systemBlue
+        btn.layer.cornerRadius = 10
+        btn.clipsToBounds = true
+        return btn
+    }()
+    
+    
     
     
     

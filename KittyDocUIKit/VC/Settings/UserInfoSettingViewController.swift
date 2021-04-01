@@ -38,21 +38,6 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     var datePicker: UIDatePicker!
     var birthInput: String?
 
-
-//    var userEmailLabel: UILabel!
-//    var userPwLabel: UILabel!
-//    var userPhoneLabel: UILabel!
-//    var userBirthLabel: UILabel!
-//    var userNameLabel: UILabel!
-//    var userGenderLabel: UILabel!
-//
-//    var userPhoneTF: UITextField!
-//    var userPwTF: UITextField!
-//    var userBirthTF: UITextField!
-//    var userEmailTF: UITextField!
-//    var userNameTF: UITextField!
-//    var userGenderTF: UITextField!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -97,7 +82,6 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         addSubviews()
         prepareForAutoLayout()
         setConstraints()
-        
         
     }
     

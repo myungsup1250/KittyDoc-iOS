@@ -26,6 +26,7 @@
                         <segue destination="S5t-Om-3Pb" kind="show" identifier="PetSettingsSegue" id="2fn-Cm-ife"/>
                         <segue destination="UoU-MN-wde" kind="unwind" identifier="logoutSegue" unwindAction="logout:" id="9ub-3G-CnS"/>
                         <segue destination="DwX-f7-NFa" kind="show" identifier="UserInfoSegue" id="pmn-c1-daC"/>
+                        <segue destination="mLg-YY-dkR" kind="show" identifier="SetPwdSegue" id="ZdW-jK-AUD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AqY-3y-9db" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -90,6 +91,22 @@
             </objects>
             <point key="canvasLocation" x="2730" y="491"/>
         </scene>
+        <!--Set Password View Controller-->
+        <scene sceneID="0qD-hk-HLb">
+            <objects>
+                <viewController storyboardIdentifier="SetPwdSegue" id="mLg-YY-dkR" customClass="SetPasswordViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ShL-d4-DRs">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="RbF-Ss-OOY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="1M6-HH-HEA"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mVp-Yp-Wdc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1497" y="-863"/>
+        </scene>
         <!--Settings View Controller-->
         <scene sceneID="G6U-44-mU2">
             <objects>
@@ -126,7 +143,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="K6i-Ry-I69"/>
+        <segue reference="K28-FX-LWX"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="gearshape" catalog="system" width="128" height="121"/>

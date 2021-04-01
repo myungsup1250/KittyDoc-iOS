@@ -105,7 +105,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         switch segSelect {
         case SegSelect.Year:
             print("[ Year Data! ]")
-            
+            // 
             //startTime = Int((timeIntervalSince1970 - timeIntervalFromMidnight) * 1000)
             //endTime = startTime + Int((dayInSec - 1) * 1000)
         case SegSelect.Month:

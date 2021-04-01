@@ -18,6 +18,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     var emailLabel: UILabel!
     var duplicateBtn: UIButton!
     var pwdLabel: UILabel!
+    var pwdConfirmLabel: UILabel!
     var nameLabel: UILabel!
     var phoneNumberLabel: UILabel!
     var genderSelect: UISegmentedControl!
@@ -29,6 +30,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     var emailTF: UITextField!
     var pwdTF: UITextField!
+    var pwdConfirmTF: UITextField!
     var nameTF: UITextField!
     var phoneNumberInput: UITextField!
     var datePicker: UIDatePicker!
@@ -66,6 +68,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         initDuplicateBtn()
         initPwdLabel()
         initPwdTF()
+        initPwdConfirmLabel()
+        initPwdConfirmTF()
         initNameLabel()
         initNameTF()
         initGenderSelect()
@@ -91,6 +95,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         signUpView.addSubview(duplicateBtn)
         signUpView.addSubview(pwdLabel)
         signUpView.addSubview(pwdTF)
+        signUpView.addSubview(pwdConfirmLabel)
+        signUpView.addSubview(pwdConfirmTF)
         signUpView.addSubview(nameLabel)
         signUpView.addSubview(nameTF)
         signUpView.addSubview(genderSelect)
@@ -113,6 +119,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         duplicateBtn.translatesAutoresizingMaskIntoConstraints = false
         pwdLabel.translatesAutoresizingMaskIntoConstraints = false
         pwdTF.translatesAutoresizingMaskIntoConstraints = false
+        pwdConfirmLabel.translatesAutoresizingMaskIntoConstraints = false
+        pwdConfirmTF.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameTF.translatesAutoresizingMaskIntoConstraints = false
         genderSelect.translatesAutoresizingMaskIntoConstraints = false
@@ -132,14 +140,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             signUpView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             signUpView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15),
             signUpView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15),
-            signUpView.heightAnchor.constraint(equalToConstant: 385)
+            signUpView.heightAnchor.constraint(equalToConstant: 450)
         ]
 
         let emailLabelConstraints = [
             emailLabel.topAnchor.constraint(equalTo: signUpView.topAnchor, constant: 15),
             emailLabel.leftAnchor.constraint(equalTo: signUpView.leftAnchor, constant: 10),
 //            emailLabel.heightAnchor.constraint(equalToConstant: 20),
-            emailLabel.widthAnchor.constraint(equalToConstant: 80)
+            //emailLabel.widthAnchor.constraint(equalToConstant: 80)
         ]
         
         let duplicateBtnConstraints = [
@@ -161,7 +169,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             pwdLabel.topAnchor.constraint(equalTo: emailTF.bottomAnchor, constant: 10),
             pwdLabel.leftAnchor.constraint(equalTo: emailTF.leftAnchor),
 //            pwdLabel.heightAnchor.constraint(equalToConstant: 20),
-            pwdLabel.widthAnchor.constraint(equalToConstant: 80)
+            //pwdLabel.widthAnchor.constraint(equalToConstant: 80)
         ]
 
         let pwdTFConstraints = [
@@ -171,11 +179,25 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 //            pwdTF.heightAnchor.constraint(equalToConstant: 20)
         ]
         
+        let pwdConfirmLabelConstraints = [
+            pwdConfirmLabel.topAnchor.constraint(equalTo: pwdTF.bottomAnchor, constant: 10),
+            pwdConfirmLabel.leftAnchor.constraint(equalTo: pwdTF.leftAnchor),
+//            pwdConfirmLabel.heightAnchor.constraint(equalToConstant: 20),
+            //pwdConfirmLabel.widthAnchor.constraint(equalToConstant: 150)
+        ]
+
+        let pwdConfirmTFConstraints = [
+            pwdConfirmTF.topAnchor.constraint(equalTo: pwdConfirmLabel.bottomAnchor, constant: 10),
+            pwdConfirmTF.leftAnchor.constraint(equalTo: pwdConfirmLabel.leftAnchor),
+            pwdConfirmTF.rightAnchor.constraint(equalTo: emailTF.rightAnchor),
+//            pwdTF.heightAnchor.constraint(equalToConstant: 20)
+        ]
+                
         let nameLabelConstraints = [
-            nameLabel.topAnchor.constraint(equalTo: pwdTF.bottomAnchor, constant: 10),
-            nameLabel.leftAnchor.constraint(equalTo: pwdTF.leftAnchor),
+            nameLabel.topAnchor.constraint(equalTo: pwdConfirmTF.bottomAnchor, constant: 10),
+            nameLabel.leftAnchor.constraint(equalTo: pwdConfirmTF.leftAnchor),
 //            nameLabel.heightAnchor.constraint(equalToConstant: 20),
-            nameLabel.widthAnchor.constraint(equalToConstant: 80)
+            //nameLabel.widthAnchor.constraint(equalToConstant: 80)
         ]
         
         let nameTFConstraints = [
@@ -195,7 +217,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         let phoneNumberLabelConstraints = [
             phoneNumberLabel.topAnchor.constraint(equalTo: nameTF.bottomAnchor, constant: 10),
             phoneNumberLabel.leftAnchor.constraint(equalTo: nameTF.leftAnchor),
-            phoneNumberLabel.widthAnchor.constraint(equalToConstant: 160),
+            //phoneNumberLabel.widthAnchor.constraint(equalToConstant: 160),
 //            phoneNumberLabel.heightAnchor.constraint(equalToConstant: 20)
         ]
         
@@ -210,7 +232,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             dateOfBirthLabel.topAnchor.constraint(equalTo: phoneNumberInput.bottomAnchor, constant: 10),
             dateOfBirthLabel.leftAnchor.constraint(equalTo: phoneNumberInput.leftAnchor),
 //            dateOfBirthLabel.heightAnchor.constraint(equalToConstant: 20),
-            dateOfBirthLabel.widthAnchor.constraint(equalToConstant: 160)
+            //dateOfBirthLabel.widthAnchor.constraint(equalToConstant: 160)
         ]
         
         let birthDataFieldConstraints = [
@@ -249,7 +271,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             signInBtn.rightAnchor.constraint(equalTo: signUpBtn.rightAnchor, constant: -10)
         ]
         
-        [signUpViewConstraints, emailLabelConstraints, duplicateBtnConstraints, pwdLabelConstraints, emailTFConstraints, pwdTFConstraints, nameLabelConstraints, nameTFConstraints, genderSelectConstraints, phoneNumberLabelConstraints, phoneNumberInputConstraints, dateOfBirthLabelConstraints, birthDataFieldConstraints, guideLabelConstraints, welcomeLabelConstraints, signUpBtnConstraints, askLabelConstraints, signInBtnConstraints]
+        [signUpViewConstraints, emailLabelConstraints, duplicateBtnConstraints, emailTFConstraints, pwdLabelConstraints, pwdTFConstraints, pwdConfirmLabelConstraints, pwdConfirmTFConstraints, nameLabelConstraints, nameTFConstraints, genderSelectConstraints, phoneNumberLabelConstraints, phoneNumberInputConstraints, dateOfBirthLabelConstraints, birthDataFieldConstraints, guideLabelConstraints, welcomeLabelConstraints, signUpBtnConstraints, askLabelConstraints, signInBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
 
     }
@@ -259,7 +281,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func textFieldDidEndEditing(_ textField: UITextField) {
-        if emailTF.hasText && pwdTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+        if emailTF.hasText && pwdTF.hasText && pwdConfirmTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
             signUpBtn.isOn = .On
         }
         
@@ -269,7 +291,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func segmentDidEndEditing(_ segment: UISegmentedControl) {
-        if emailTF.hasText && pwdTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+        if emailTF.hasText && pwdTF.hasText && pwdConfirmTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
             signUpBtn.alpha = 1.0
         }
         else {
@@ -351,7 +373,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         if (!isPwdForm(_pwd:pwdTF.text!)) {
             alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
-            print(birth)
+            print(pwdTF.text!)
+            return
+        }
+        if (!isPwdForm(_pwd:pwdConfirmTF.text!)) {
+            alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
+            print(pwdConfirmTF.text!)
+            return
+        }
+        if (pwdTF.text! != pwdConfirmTF.text!) {
+            alertWithMessage(message: "비밀번호가 서로 다릅니다!")
+            print("pwdTF.text :", pwdTF.text!, "pwdConfirmTF.text :", pwdConfirmTF.text!)
             return
         }
         if (!isPhoneForm(_phone:phoneNumberInput.text!)) {
@@ -433,32 +465,27 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 extension SignUpViewController {
     func initWelcomeLabel() {
         welcomeLabel = UILabel()
-        //welcomeLabel.frame = CGRect(x: 40, y: 80, width: 350, height: 80)
         welcomeLabel.text = "Create Account"
         welcomeLabel.font = welcomeLabel.font.withSize(40)
     }
     
     func initGuideLabel() {
         guideLabel = UILabel()
-        //guideLabel.frame = CGRect(x: 40, y: 130, width: 200, height: 40)
         guideLabel.text = "Sign up to get Started!"
         guideLabel.textColor = .systemGray
     }
     
     func initSignUpView() {
         signUpView = UIView()
-        //signUpView.frame = CGRect(x: 40, y: 210, width: 300, height: 300)
     }
     
     func initEmailLabel() {
         emailLabel = UILabel()
-        //emailLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 30)
         emailLabel.text = "Email"
     }
     
     func initDuplicateBtn() {
         duplicateBtn = UIButton()
-        //duplicateBtn.frame = CGRect(x: 160, y: 0, width: 100, height: 20)
         duplicateBtn.setTitle("중복 확인", for: .normal)
         duplicateBtn.setTitleColor(.white, for: .highlighted)
         duplicateBtn.backgroundColor = .systemBlue
@@ -468,36 +495,72 @@ extension SignUpViewController {
 
     func initPwdLabel() {
         pwdLabel = UILabel()
-        //pwdLabel.frame = CGRect(x: 0, y: 70, width: 200, height: 30)
         pwdLabel.text = "Password"
     }
     
     func initPwdTF() {
         pwdTF = UITextField()
-        //pwdTF.frame = CGRect(x: 0, y: 100, width: signUpView.frame.size.width, height: 30)
         pwdTF.placeholder = "password"
         pwdTF.isSecureTextEntry = true
         pwdTF.delegate = self
         pwdTF.autocapitalizationType = .none
         pwdTF.borderStyle = .roundedRect
         pwdTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        let rightViewBtn = UIButton()
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.addTarget(self, action: #selector(onShowPwdBtn(_:)), for: .touchUpInside)
+        rightViewBtn.tintColor = .gray
+
+        pwdTF.rightView = rightViewBtn
+        pwdTF.rightViewMode = .always
+        pwdTF.enablesReturnKeyAutomatically = true
+    }
+
+    @objc private func onShowPwdBtn(_ sender: UIButton) {
+        print("onShowPwdBtn()")
+        pwdTF.isSecureTextEntry.toggle()
     }
     
+    func initPwdConfirmLabel() {
+        pwdConfirmLabel = UILabel()
+        pwdConfirmLabel.text = "Confirm Password"
+    }
+    
+    func initPwdConfirmTF() {
+        pwdConfirmTF = UITextField()
+        pwdConfirmTF.placeholder = "Confirm password"
+        pwdConfirmTF.isSecureTextEntry = true
+        pwdConfirmTF.delegate = self
+        pwdConfirmTF.autocapitalizationType = .none
+        pwdConfirmTF.borderStyle = .roundedRect
+        pwdConfirmTF.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        let rightViewBtn = UIButton()
+        rightViewBtn.setBackgroundImage(UIImage(systemName: "eye"), for: UIControl.State())
+        rightViewBtn.addTarget(self, action: #selector(onShowPwdConfirmBtn(_:)), for: .touchUpInside)
+        rightViewBtn.tintColor = .gray
+
+        pwdConfirmTF.rightView = rightViewBtn
+        pwdConfirmTF.rightViewMode = .always
+        pwdConfirmTF.enablesReturnKeyAutomatically = true
+    }
+
+    @objc private func onShowPwdConfirmBtn(_ sender: UIButton) {
+        print("onShowPwdConfirmBtn()")
+        pwdConfirmTF.isSecureTextEntry.toggle()
+    }
+            
     func initNameLabel() {
         nameLabel = UILabel()
-        //nameLabel.frame = CGRect(x: 0, y: 140, width: 200, height: 30)
         nameLabel.text = "Name"
     }
     
     func initPhoneNumberLabel() {
         phoneNumberLabel = UILabel()
-        //phoneNumberLabel.frame = CGRect(x: 0, y: 200, width: 200, height: 50)
         phoneNumberLabel.text = "Phone number"
     }
     
     func initGenderSelect() {
         genderSelect = UISegmentedControl()
-        //genderSelect.frame = CGRect(x: 120, y: 170, width: 180, height: 30)
         genderSelect.insertSegment(withTitle: "Male", at: 0, animated: true)
         genderSelect.insertSegment(withTitle: "Female", at: 1, animated: true)
         genderSelect.insertSegment(withTitle: "None", at: 2, animated: true)
@@ -506,13 +569,11 @@ extension SignUpViewController {
 
     func initDateOfBirthLabel() {
         dateOfBirthLabel = UILabel()
-        //dateOfBirthLabel.frame = CGRect(x: 0, y: 270, width: 200, height: 40)
         dateOfBirthLabel.text = "Date of Birth"
     }
 
     func initBirthDataField() {
         birthDataField = UITextField()
-        //birthDataField.frame = CGRect(x: 0, y: 290, width: 300, height: 40)
         birthDataField.placeholder = "여기를 클릭해서 생년월일을 입력해주세요"
 //        birthDataField.text = ""
         birthDataField.borderStyle = .roundedRect
@@ -521,7 +582,6 @@ extension SignUpViewController {
     
     func initEmailTF() {
         emailTF = UITextField()
-        //emailTF.frame = CGRect(x: 0, y: 30, width: signUpView.frame.size.width, height: 30)
         emailTF.placeholder = "kittydoc@jmsmart.co.kr"
         emailTF.keyboardType = .emailAddress
         emailTF.delegate = self
@@ -532,7 +592,6 @@ extension SignUpViewController {
 
     func initNameTF() {
         nameTF = UITextField()
-        //nameTF.frame = CGRect(x: 0, y: 170, width: signUpView.frame.size.width, height: 30)
         nameTF.placeholder = "이복덩"
         nameTF.delegate = self
         nameTF.borderStyle = .roundedRect
@@ -541,7 +600,6 @@ extension SignUpViewController {
     
     func initPhoneNumberInput() {
         phoneNumberInput = UITextField()
-        //phoneNumberInput.frame = CGRect(x: 0, y: 230, width: view.frame.size.width, height: 50)
         phoneNumberInput.placeholder = "01037757666"
         phoneNumberInput.borderStyle = .roundedRect
         phoneNumberInput.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
@@ -549,7 +607,6 @@ extension SignUpViewController {
     
     func initUpdatePicker() {
         datePicker = UIDatePicker()//UIDatePicker.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200))
-        //datePicker.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 200)
         datePicker.datePickerMode = .date
         datePicker.addTarget(self, action: #selector(self.dataChanged), for: .allEvents)
         
@@ -559,7 +616,7 @@ extension SignUpViewController {
         
         self.birthDataField.inputView = datePicker
         
-        let toolBar: UIToolbar = UIToolbar()//UIToolbar.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 44))
+        let toolBar: UIToolbar = UIToolbar()
         toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 44)
         let space: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         let done: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.tapOnDoneBtn))
@@ -571,7 +628,6 @@ extension SignUpViewController {
 
     func initSignUpBtn() {
         signUpBtn = onOffButton()
-        //signUpBtn.frame = CGRect(x: 40, y: 610, width: 300, height: 50)
         signUpBtn.setTitle("Sign Up", for: .normal)
         signUpBtn.setTitleColor(.white, for: .highlighted)
         signUpBtn.backgroundColor = .systemBlue
@@ -582,14 +638,12 @@ extension SignUpViewController {
         
     func initAskLabel() {
         askLabel = UILabel()
-        //askLabel.frame = CGRect(x: 0, y: 0, width: 200, height: 50)
         askLabel.text = "Already have an Account?"
         
     }
     
     func initSignInBtn() {
         signInBtn = UIButton()
-        //signInBtn.frame = CGRect(x: 190, y: 0, width: 100, height: 50)
         signInBtn.setTitle("Sign In", for: .normal)
         signInBtn.setTitleColor(.systemIndigo, for: .normal)
         signInBtn.addTarget(self, action: #selector((didTapSignIn)), for: .touchUpInside)
