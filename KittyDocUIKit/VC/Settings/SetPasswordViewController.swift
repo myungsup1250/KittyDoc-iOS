@@ -6,7 +6,7 @@
 //
 
 import UIKit
-// Commit Test!!asdas
+
 class SetPasswordViewController: UIViewController, UITextFieldDelegate {
     var userInterfaceStyle: UIUserInterfaceStyle = .unspecified
     var safeArea: UILayoutGuide!
@@ -309,4 +309,6 @@ extension SetPasswordViewController {
         //submitBtn.isOn = .On
     }
 
+    
+    // curPwd, newPwd, newConfirmPwd 세개로 늘려야할 것!!!!
 }
