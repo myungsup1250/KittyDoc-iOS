@@ -114,7 +114,7 @@ class DeviceManager: NSObject {
     public var totalSyncBytesLeft: Int// 앞으로 동기화할 남은 바이트수
 
     private override init() {
-        print("DeviceManager.init()")
+        //print("DeviceManager.init()")
         
         delegate = nil
         secondDelegate = nil
@@ -239,6 +239,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                             }
                         } else {
                             print("Found some KittyDoc Devices!")
+                            print("foundDevices : \(self.foundDevices)")
                         }
                     }
                 }
@@ -810,7 +811,7 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
                     var kittydocDevices: Array = Array<PeripheralData>()
                     for p in self.foundDevices {
                         if p.peripheral != nil {
-                            if(p.peripheral!.name?.lowercased() == String("kittydoc")) { // whosecat
+                            if(p.peripheral!.name?.lowercased() == String("whosecat")) { // kittydoc
                                 kittydocDevices.append(p)
                             }
                         }
@@ -821,7 +822,6 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
                     self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
                         return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
                     }
-                    //print("foundDevices : \(self.foundDevices)")
                     guard self.delegate?.onDevicesFound(peripherals: self.foundDevices) != nil else {
                         print("self.delegate?.onDevicesFound(:) == nil!(scanPeripheral)")
                         return
