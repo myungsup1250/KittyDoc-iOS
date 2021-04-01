@@ -297,7 +297,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func didTapRegister() {
-        print(genderSelect.selectedSegmentIndex) //성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
+        print("didTapRegister(genderSelect : \(genderSelect.selectedSegmentIndex)")//성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
         var gender: String = "None"
         if(genderSelect.selectedSegmentIndex == 0) {
             gender = "Male"
