@@ -36,15 +36,23 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     var nameTF: UITextField!
     var phoneNumberInput: UITextField!
     var datePicker: UIDatePicker!
-    var birthInput: String?
+    var birthInput: String = "19700101"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        userInterfaceStyle = self.traitCollection.userInterfaceStyle
+        
+        print("AnalysisViewController.viewDidLoad()")
+        safeArea = view.layoutMarginsGuide
+        initUIViews()
+        addSubviews()
+        prepareForAutoLayout()
+        setConstraints()
+        
+        birthInput = UserInfo.shared.UserBirth
         var error: NSError?
         
-        if authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
-        {
+        if authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             
         }
         
@@ -55,6 +63,8 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
             print("계정 정보를 열람하기 위해서 Touch ID로 인증 합니다.")
         case .none:
             print("계정 정보를 열람하기 위해서는 로그인하십시오. ")
+        @unknown default:
+            fatalError("생체 인증 오류!!!(UserInfoSettingViewController)")
         }
         
         let reason = "Log in to your account"
@@ -73,16 +83,6 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-        
-        userInterfaceStyle = self.traitCollection.userInterfaceStyle
-        
-        print("AnalysisViewController.viewDidLoad()")
-        safeArea = view.layoutMarginsGuide
-        initUIViews()
-        addSubviews()
-        prepareForAutoLayout()
-        setConstraints()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -252,16 +252,30 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func dataChanged(_ picker: UIDatePicker) {
-        
+        manageDateFormatter(date: picker.date)
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateStyle = .medium
+//
+//        self.birthDataField.text = dateFormatter.string(from: picker.date)
+//        print(dateFormatter.string(from: picker.date))
+//
+//        let writedateFormatter = DateFormatter()
+//        writedateFormatter.dateFormat = "yyyyMMdd"
+//        birthInput = writedateFormatter.string(from: picker.date)
+    }
+    
+    func manageDateFormatter(date: Date?) { // date가 nil일 경우 picker.date 사용
+        if date != nil {
+            datePicker.date = date!
+        }
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        
-        self.birthDataField.text = dateFormatter.string(from: picker.date)
-        print(dateFormatter.string(from: picker.date))
-        
-        let writedateFormatter = DateFormatter()
-        writedateFormatter.dateFormat = "yyyyMMdd"
-        birthInput = writedateFormatter.string(from: picker.date)
+        //dateFormatter.dateStyle = .long
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        birthDataField.text = dateFormatter.string(from: datePicker.date)
+
+        dateFormatter.dateFormat = "yyyyMMdd"
+        birthInput = dateFormatter.string(from: datePicker.date)
+        print("birthDataField.text : \(birthDataField.text ?? "0000-00-00"), birthInput : \(birthInput)")
     }
 
     @objc func tapOnDoneBtn(_ picker: UIDatePicker) {
@@ -293,29 +307,21 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
             gender = "None"
         }
         
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        
-        let birth: String = birthInput ?? dateFormatter.string(from: date)
-        
         if (nameTF.text!.count < 1) {
             alertWithMessage(message: "이름을 입력하세요.")
             return
         }
         //생일에 대해서만 너가 조건문을 작성해주면좋겠어... 아래 작성한 함수 제대로 동작못한당... TEST
     
-        if (birthInput == nil) {
-            alertWithMessage(message: "생일을 입력하세요.")
-            return
-        }
+        UserInfo.shared.UserBirth = birthInput
+        print("birthInput : \(birthInput)")
         
         if (!isPhoneForm(_phone:phoneNumberInput.text!)) {
             alertWithMessage(message: "올바른 전화번호 형식이 아닙니다.")
             return
         }
         
-        let modifyData:ModifyData = ModifyData(_userId: UserInfo.shared.UserID, _userName: nameTF.text!, _userPhone: phoneNumberInput.text!, _userSex: gender, _userBirth: birth)
+        let modifyData:ModifyData = ModifyData(_userId: UserInfo.shared.UserID, _userName: nameTF.text!, _userPhone: phoneNumberInput.text!, _userSex: gender, _userBirth: birthInput)
         let server:KittyDocServer = KittyDocServer()
         let modifyResponse:ServerResponse = server.userModify(data: modifyData)
                     
@@ -367,7 +373,7 @@ extension UserInfoSettingViewController {
     
     func initEmailTF() {
         emailTF = UITextField()
-        emailTF.text = UserInfo.shared.Email + " - 비활성화"
+        emailTF.text = UserInfo.shared.Email
         emailTF.textColor = .systemGray
         emailTF.keyboardType = .emailAddress
         emailTF.delegate = self
@@ -409,7 +415,10 @@ extension UserInfoSettingViewController {
 
     func initBirthDataField() {
         birthDataField = UITextField()
-        birthDataField.text = UserInfo.shared.UserBirth
+        var birthString = UserInfo.shared.UserBirth
+        birthString.insert("-", at: birthString.index(birthString.startIndex, offsetBy: 6))
+        birthString.insert("-", at: birthString.index(birthString.startIndex, offsetBy: 4))
+        birthDataField.text = birthString
         birthDataField.borderStyle = .roundedRect
         //birthDataField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
     }
