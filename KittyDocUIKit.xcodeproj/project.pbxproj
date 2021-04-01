@@ -29,8 +29,8 @@
 		71D62348405127804A4DA9B4 /* Pods_KittyDocUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */; };
 		B0A9D81525F66630006EE580 /* ModifyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D81425F66630006EE580 /* ModifyData.swift */; };
 		B0A9D81825F67CCC006EE580 /* PetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D81725F67CCC006EE580 /* PetData.swift */; };
-		E0035D7326037A3E007D7B14 /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */; };
 		B0A9D82326037A71006EE580 /* AnalysisData_Year.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */; };
+		E0035D7326037A3E007D7B14 /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */; };
 		E00AE1E225B2C52F001484AC /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E125B2C52F001484AC /* HomeViewController.swift */; };
 		E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E425B2C538001484AC /* SettingsViewController.swift */; };
 		E00AE1E825B2C542001484AC /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE1E725B2C542001484AC /* AnalysisViewController.swift */; };
@@ -79,7 +79,6 @@
 		E08313F425B0ABE300266994 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E08313F225B0ABE300266994 /* LaunchScreen.storyboard */; };
 		E087BC0525DCF46500C12173 /* NotificationNameExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E087BC0425DCF46500C12173 /* NotificationNameExtension.swift */; };
 		E0BDC30A25C8717200D2524B /* PeripheralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC30925C8717200D2524B /* PeripheralData.swift */; };
-		E0BDC30D25C871A500D2524B /* DeviceManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC30C25C871A500D2524B /* DeviceManagerExtension.swift */; };
 		E0BDC31225C871D400D2524B /* KittyDocUtillity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */; };
 		E0BDC31325C871D400D2524B /* SyncHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31025C871D400D2524B /* SyncHelper.swift */; };
 		E0BDC31425C871D400D2524B /* CBUUIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31125C871D400D2524B /* CBUUIDExtension.swift */; };
@@ -112,8 +111,8 @@
 		AB7E6C79C095956904E58184 /* Pods-KittyDocUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.release.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.release.xcconfig"; sourceTree = "<group>"; };
 		B0A9D81425F66630006EE580 /* ModifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData.swift; sourceTree = "<group>"; };
 		B0A9D81725F67CCC006EE580 /* PetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetData.swift; sourceTree = "<group>"; };
-		E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
 		B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisData_Year.swift; sourceTree = "<group>"; };
+		E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
 		E00AE1E125B2C52F001484AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E00AE1E425B2C538001484AC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E00AE1E725B2C542001484AC /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
@@ -176,7 +175,6 @@
 		E083140525B0AD4600266994 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E087BC0425DCF46500C12173 /* NotificationNameExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNameExtension.swift; sourceTree = "<group>"; };
 		E0BDC30925C8717200D2524B /* PeripheralData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralData.swift; sourceTree = "<group>"; };
-		E0BDC30C25C871A500D2524B /* DeviceManagerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceManagerExtension.swift; sourceTree = "<group>"; };
 		E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KittyDocUtillity.swift; sourceTree = "<group>"; };
 		E0BDC31025C871D400D2524B /* SyncHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncHelper.swift; sourceTree = "<group>"; };
 		E0BDC31125C871D400D2524B /* CBUUIDExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBUUIDExtension.swift; sourceTree = "<group>"; };
@@ -381,7 +379,6 @@
 				E05A7CA125B9387B007680E2 /* MSLibrary */,
 				E0C0A8C825E63433009E59C4 /* Model */,
 				E05A7C9D25B9387B007680E2 /* DeviceManager.swift */,
-				E0BDC30C25C871A500D2524B /* DeviceManagerExtension.swift */,
 				E0BDC31025C871D400D2524B /* SyncHelper.swift */,
 				E0BDC30F25C871D400D2524B /* KittyDocUtillity.swift */,
 			);
@@ -720,7 +717,6 @@
 				E0BDC31325C871D400D2524B /* SyncHelper.swift in Sources */,
 				70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */,
 				708A280725E642DD004DCBC2 /* daySchedule.swift in Sources */,
-				E0BDC30D25C871A500D2524B /* DeviceManagerExtension.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
 				E06CEAF825E40C0000D966BB /* ServerData.swift in Sources */,
 				113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */,
