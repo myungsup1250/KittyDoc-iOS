@@ -58,6 +58,223 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
+    }
+    
+    @objc func textFieldDidEndEditing(_ textField: UITextField) {
+        if emailTF.hasText && pwdTF.hasText && pwdConfirmTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+            signUpBtn.isOn = .On
+        }
+        
+        else {
+            signUpBtn.isOn = .Off
+        }
+    }
+    
+    @objc func segmentDidEndEditing(_ segment: UISegmentedControl) {
+        if emailTF.hasText && pwdTF.hasText && pwdConfirmTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+            signUpBtn.alpha = 1.0
+        }
+        else {
+            signUpBtn.alpha = 0.5
+        }
+    }
+    
+    @objc func dataChanged(_ picker: UIDatePicker) {
+        
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateStyle = .medium
+//
+//        self.birthDataField.text = dateFormatter.string(from: picker.date)
+//        print(dateFormatter.string(from: picker.date))
+//
+//        let writedateFormatter = DateFormatter()
+//        writedateFormatter.dateFormat = "yyyyMMdd"
+//        birthInput = writedateFormatter.string(from: picker.date)
+//
+//        print("[dataChanged] birthDataField.text : \(birthDataField.text ?? "0000-00-00"), birthInput : \(birthInput)")
+        
+        
+        // 21.04.01 birthDataField에 Apr 1, 2021 등으로 언어 별로 헛갈리게 저장하지 않고 숫자로 통일!
+        manageDateFormatter(date: picker.date)
+    }
+
+    func manageDateFormatter(date: Date?) { // date가 nil일 경우 picker.date 사용
+        if date != nil {
+            datePicker.date = date!
+        }
+        let dateFormatter = DateFormatter()
+        //dateFormatter.dateStyle = .long
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        birthDataField.text = dateFormatter.string(from: datePicker.date)
+        
+        dateFormatter.dateFormat = "yyyyMMdd"
+        birthInput = dateFormatter.string(from: datePicker.date)
+        print("[manageDateFormatter] birthDataField.text : \(birthDataField.text ?? "0000-00-00"), birthInput : \(birthInput ?? "19700101")")
+    }
+    
+    @objc func tapOnDoneBtn(_ picker: UIDatePicker) {
+        birthDataField.resignFirstResponder()
+    }
+    
+    @objc private func didTapSignIn() {
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func didTapDuplicate() {
+        if(!isEmailForm(_email:emailTF.text!)){
+            alertWithMessage(message: "올바른 이메일 형식이 아닙니다")
+            return
+        }
+        
+        //중복 확인 버튼 눌렀을 때
+        let existData:ExistData = ExistData(_userEmail:emailTF.text!)
+        let server:KittyDocServer = KittyDocServer()
+        let existResponse:ServerResponse = server.userExist(data: existData)
+        
+        //아이디 중복여부 분기. 여기서 중복과 관련된 동작을 처리하면됨!
+        //중복확인 하기 전에는 레지스터 버튼이 회색, 중복확인 버튼은 파란색
+        //중복확인 하고난 후에는 레지스터 버튼이 파란색, 중복확인 버튼은 회색 이었으면 좋겠다고 생각!
+        //근데 기능은 색에 상관없이 적용되었슴다
+        
+        //RE: 사용자가 칸 다 채워놓고 중복확인 안했을 경우 잉 왜 버튼 투명이야 띠용 이런 경우가 많을 거 같아서
+        //    register 버튼 눌렀을 때 중복확인 하세요! 팝업을 띄우는 걸로 해봤는데 어때?!
+        if (existResponse.getCode() as! Int == ServerResponse.EXIST_IS_EXIST) {
+            alertWithMessage(message: existResponse.getMessage())
+            
+        } else if(existResponse.getCode() as! Int == ServerResponse.EXIST_NOT_EXIST) {
+            alertWithMessage(message: existResponse.getMessage())
+            didDupEx = true
+            signUpBtn.isEnabled = true
+            emailTF.isEnabled = false
+            duplicateBtn.isEnabled = false
+            emailTF.textColor = .systemGray
+            duplicateBtn.backgroundColor = .systemGray
+        } else {
+            alertWithMessage(message: existResponse.getMessage())
+        }
+    }
+    
+    @objc private func onShowPwdBtn(_ sender: UIButton) {
+        print("onShowPwdBtn()")
+        pwdTF.isSecureTextEntry.toggle()
+    }
+    
+    @objc private func onShowPwdConfirmBtn(_ sender: UIButton) {
+        print("onShowPwdConfirmBtn()")
+        pwdConfirmTF.isSecureTextEntry.toggle()
+    }
+            
+    @objc private func didTapRegister() {
+        print(genderSelect.selectedSegmentIndex) //성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
+        var gender:String="None"
+        if(genderSelect.selectedSegmentIndex == 0) {
+            gender="Male"
+        } else if(genderSelect.selectedSegmentIndex == 1) {
+            gender="FeMale"
+        } else {
+            gender="None"
+        }
+        
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd"
+        
+        let birth:String = birthInput ?? dateFormatter.string(from: date)
+        
+        if (!isPwdForm(_pwd:pwdTF.text!)) {
+            alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
+            print(pwdTF.text!)
+            return
+        }
+        if (!isPwdForm(_pwd:pwdConfirmTF.text!)) {
+            alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
+            print(pwdConfirmTF.text!)
+            return
+        }
+        if (pwdTF.text! != pwdConfirmTF.text!) {
+            alertWithMessage(message: "비밀번호가 서로 다릅니다!")
+            print("pwdTF.text :", pwdTF.text!, "pwdConfirmTF.text :", pwdConfirmTF.text!)
+            return
+        }
+        if (!isPhoneForm(_phone:phoneNumberInput.text!)) {
+            alertWithMessage(message: "올바른 전화번호 형식이 아닙니다.")
+            return
+        }
+        if (nameTF.text!.count < 1) {
+            alertWithMessage(message: "이름을 입력하세요.")
+            return
+        }
+        //생일에 대해서만 너가 조건문을 작성해주면좋겠어... 아래 작성한 함수 제대로 동작못한당... TEST
+    
+        if (birthInput == nil) {
+            alertWithMessage(message: "생일을 입력하세요.")
+            return
+        }
+        
+        if (didDupEx == false) {
+            alertWithMessage(message: "이메일 중복확인을 해주세요.")
+            return
+        }
+        
+        let signUpData:SignUpData = SignUpData(_userEmail:emailTF.text!, _userPwd:pwdTF.text!, _userName:nameTF.text!, _userPhone:phoneNumberInput.text!, _userSex:gender, _userBirth:birth)
+        let server:KittyDocServer = KittyDocServer()
+        let signUpResponse:ServerResponse = server.userSignUp(data: signUpData)
+
+        if (signUpResponse.getCode() as! Int == ServerResponse.JOIN_SUCCESS) {
+            alertWithMessage(message: signUpResponse.getMessage())
+            print(signUpResponse.getMessage())
+            
+            //MARK: TEST
+//            let preVC = self.presentingViewController
+//            guard let vc = preVC as? LogInViewController else {
+//                return
+//            }
+//            vc.email = self.emailInput.text
+            ///
+            
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        } else {
+            alertWithMessage(message: signUpResponse.getMessage())
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    func alertWithMessage(message input: Any) {
+        let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+        self.present(alert, animated: false)
+    }
+
+    //이메일 형식인지에 대한 정규표현식. 인터넷에 검색하면 쉽게 나오니 바꾸고 싶은게 있으면 바꾸셈
+    func isEmailForm(_email:String) -> Bool {
+        let emailReg = "[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,50}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailReg)
+        return emailTest.evaluate(with: _email)
+    }
+    
+    //비밀번호 형식에 대한 검사함수. 지금은 길이가 1이상만 되면 되는 것으로 했지만 추후에 특수문자포함여부, 길이제한 추가
+    //하게 될지도?
+    func isPwdForm(_pwd:String) -> Bool {
+        if(_pwd.count > 0){
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    func isPhoneForm(_phone:String) -> Bool {
+        let phoneReg = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$"
+        return NSPredicate(format: "SELF MATCHES %@", phoneReg).evaluate(with:_phone)
+    }
+}
+
+extension SignUpViewController { // Auto Layout 코드 분리
     fileprivate func initUIViews() {
         initWelcomeLabel()
         initGuideLabel()
@@ -273,192 +490,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         [signUpViewConstraints, emailLabelConstraints, duplicateBtnConstraints, emailTFConstraints, pwdLabelConstraints, pwdTFConstraints, pwdConfirmLabelConstraints, pwdConfirmTFConstraints, nameLabelConstraints, nameTFConstraints, genderSelectConstraints, phoneNumberLabelConstraints, phoneNumberInputConstraints, dateOfBirthLabelConstraints, birthDataFieldConstraints, guideLabelConstraints, welcomeLabelConstraints, signUpBtnConstraints, askLabelConstraints, signInBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
-
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
-    }
-    
-    @objc func textFieldDidEndEditing(_ textField: UITextField) {
-        if emailTF.hasText && pwdTF.hasText && pwdConfirmTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
-            signUpBtn.isOn = .On
-        }
-        
-        else {
-            signUpBtn.isOn = .Off
-        }
-    }
-    
-    @objc func segmentDidEndEditing(_ segment: UISegmentedControl) {
-        if emailTF.hasText && pwdTF.hasText && pwdConfirmTF.hasText && nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
-            signUpBtn.alpha = 1.0
-        }
-        else {
-            signUpBtn.alpha = 0.5
-        }
-    }
-    
-    @objc func dataChanged(_ picker: UIDatePicker) {
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        
-        self.birthDataField.text = dateFormatter.string(from: picker.date)
-        print(dateFormatter.string(from: picker.date))
-        
-        let writedateFormatter = DateFormatter()
-        writedateFormatter.dateFormat = "yyyyMMdd"
-        birthInput = writedateFormatter.string(from: picker.date)
-    }
-
-    @objc func tapOnDoneBtn(_ picker: UIDatePicker) {
-        birthDataField.resignFirstResponder()
-    }
-    
-    @objc private func didTapSignIn() {
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
-    }
-    
-    @objc private func didTapDuplicate() {
-        if(!isEmailForm(_email:emailTF.text!)){
-            alertWithMessage(message: "올바른 이메일 형식이 아닙니다")
-            return
-        }
-        
-        //중복 확인 버튼 눌렀을 때
-        let existData:ExistData = ExistData(_userEmail:emailTF.text!)
-        let server:KittyDocServer = KittyDocServer()
-        let existResponse:ServerResponse = server.userExist(data: existData)
-        
-        //아이디 중복여부 분기. 여기서 중복과 관련된 동작을 처리하면됨!
-        //중복확인 하기 전에는 레지스터 버튼이 회색, 중복확인 버튼은 파란색
-        //중복확인 하고난 후에는 레지스터 버튼이 파란색, 중복확인 버튼은 회색 이었으면 좋겠다고 생각!
-        //근데 기능은 색에 상관없이 적용되었슴다
-        
-        //RE: 사용자가 칸 다 채워놓고 중복확인 안했을 경우 잉 왜 버튼 투명이야 띠용 이런 경우가 많을 거 같아서
-        //    register 버튼 눌렀을 때 중복확인 하세요! 팝업을 띄우는 걸로 해봤는데 어때?!
-        if (existResponse.getCode() as! Int == ServerResponse.EXIST_IS_EXIST) {
-            alertWithMessage(message: existResponse.getMessage())
-            
-        } else if(existResponse.getCode() as! Int == ServerResponse.EXIST_NOT_EXIST) {
-            alertWithMessage(message: existResponse.getMessage())
-            didDupEx = true
-            signUpBtn.isEnabled = true
-            emailTF.isEnabled = false
-            duplicateBtn.isEnabled = false
-            emailTF.textColor = .systemGray
-            duplicateBtn.backgroundColor = .systemGray
-        } else {
-            alertWithMessage(message: existResponse.getMessage())
-        }
-    }
-    
-    @objc private func didTapRegister() {
-        print(genderSelect.selectedSegmentIndex) //성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
-        var gender:String="None"
-        if(genderSelect.selectedSegmentIndex == 0) {
-            gender="Male"
-        } else if(genderSelect.selectedSegmentIndex == 1) {
-            gender="FeMale"
-        } else {
-            gender="None"
-        }
-        
-        let date = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        
-        let birth:String = birthInput ?? dateFormatter.string(from: date)
-        
-        if (!isPwdForm(_pwd:pwdTF.text!)) {
-            alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
-            print(pwdTF.text!)
-            return
-        }
-        if (!isPwdForm(_pwd:pwdConfirmTF.text!)) {
-            alertWithMessage(message: "비밀번호는 1글자 이상이어야 합니다.")
-            print(pwdConfirmTF.text!)
-            return
-        }
-        if (pwdTF.text! != pwdConfirmTF.text!) {
-            alertWithMessage(message: "비밀번호가 서로 다릅니다!")
-            print("pwdTF.text :", pwdTF.text!, "pwdConfirmTF.text :", pwdConfirmTF.text!)
-            return
-        }
-        if (!isPhoneForm(_phone:phoneNumberInput.text!)) {
-            alertWithMessage(message: "올바른 전화번호 형식이 아닙니다.")
-            return
-        }
-        if (nameTF.text!.count < 1) {
-            alertWithMessage(message: "이름을 입력하세요.")
-            return
-        }
-        //생일에 대해서만 너가 조건문을 작성해주면좋겠어... 아래 작성한 함수 제대로 동작못한당... TEST
-    
-        if (birthInput == nil) {
-            alertWithMessage(message: "생일을 입력하세요.")
-            return
-        }
-        
-        if (didDupEx == false) {
-            alertWithMessage(message: "이메일 중복확인을 해주세요.")
-            return
-        }
-        
-        let signUpData:SignUpData = SignUpData(_userEmail:emailTF.text!, _userPwd:pwdTF.text!, _userName:nameTF.text!, _userPhone:phoneNumberInput.text!, _userSex:gender, _userBirth:birth)
-        let server:KittyDocServer = KittyDocServer()
-        let signUpResponse:ServerResponse = server.userSignUp(data: signUpData)
-
-        if (signUpResponse.getCode() as! Int == ServerResponse.JOIN_SUCCESS) {
-            alertWithMessage(message: signUpResponse.getMessage())
-            print(signUpResponse.getMessage())
-            
-            //MARK: TEST
-//            let preVC = self.presentingViewController
-//            guard let vc = preVC as? LogInViewController else {
-//                return
-//            }
-//            vc.email = self.emailInput.text
-            ///
-            
-            self.presentingViewController?.dismiss(animated: true, completion: nil)
-        } else {
-            alertWithMessage(message: signUpResponse.getMessage())
-        }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    func alertWithMessage(message input: Any) {
-        let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
-        self.present(alert, animated: false)
-    }
-
-    //이메일 형식인지에 대한 정규표현식. 인터넷에 검색하면 쉽게 나오니 바꾸고 싶은게 있으면 바꾸셈
-    func isEmailForm(_email:String) -> Bool {
-        let emailReg = "[A-Z0-9a-z._%+-]+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,50}"
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailReg)
-        return emailTest.evaluate(with: _email)
-    }
-    
-    //비밀번호 형식에 대한 검사함수. 지금은 길이가 1이상만 되면 되는 것으로 했지만 추후에 특수문자포함여부, 길이제한 추가
-    //하게 될지도?
-    func isPwdForm(_pwd:String) -> Bool {
-        if(_pwd.count > 0){
-            return true
-        }else{
-            return false
-        }
-    }
-    
-    func isPhoneForm(_phone:String) -> Bool {
-        let phoneReg = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$"
-        return NSPredicate(format: "SELF MATCHES %@", phoneReg).evaluate(with:_phone)
     }
 }
 
@@ -516,11 +547,6 @@ extension SignUpViewController {
         pwdTF.enablesReturnKeyAutomatically = true
     }
 
-    @objc private func onShowPwdBtn(_ sender: UIButton) {
-        print("onShowPwdBtn()")
-        pwdTF.isSecureTextEntry.toggle()
-    }
-    
     func initPwdConfirmLabel() {
         pwdConfirmLabel = UILabel()
         pwdConfirmLabel.text = "Confirm Password"
@@ -544,11 +570,6 @@ extension SignUpViewController {
         pwdConfirmTF.enablesReturnKeyAutomatically = true
     }
 
-    @objc private func onShowPwdConfirmBtn(_ sender: UIButton) {
-        print("onShowPwdConfirmBtn()")
-        pwdConfirmTF.isSecureTextEntry.toggle()
-    }
-            
     func initNameLabel() {
         nameLabel = UILabel()
         nameLabel.text = "Name"
@@ -650,3 +671,4 @@ extension SignUpViewController {
         
     }
 }
+
