@@ -23,6 +23,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         }
     }
     
+    let MINUTE_IN_SEC:Int = 60
+    let HOUR_IN_SEC:Int = 60 * 60
+    
+    //sunExValue랑 lightVal이 뭘 뜻하는지 애매해서 이야기 해봐야함
+    var breakValue: Int = 0
+    var exerciseValue: Int = 0
+    var walkValue: Int = 0
+    var stepValue: Int = 0
+    var vitaDValue: Double = 0
+    var sunExValue: Double = 0
+    var lightValue: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -236,7 +247,60 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        waterValue = UserDefaults.standard.integer(forKey: "waterValue")
+        let today = Date()
+        let hour = Calendar.current.component(.hour, from: today)
+        let minute = Calendar.current.component(.minute, from: today)
+        let second = Calendar.current.component(.second, from: today)
+        let timeIntervalSince1970 = today.timeIntervalSince1970
+        let thisDayStartSec = Int(timeIntervalSince1970) - (HOUR_IN_SEC * hour) - (MINUTE_IN_SEC * minute) - second
+        let thisDayEndSec = Int(timeIntervalSince1970) + (HOUR_IN_SEC * (23-hour)) + (MINUTE_IN_SEC * (59 - minute)) + (60-second) - 1
+        
+        let analysisData:AnalysisData = AnalysisData(_petID: PetInfo.shared.petArray[selectedRow].PetID, _startMilliSec: (thisDayStartSec * 1000), _endMilliSec: (thisDayEndSec * 1000))
+        let server:KittyDocServer = KittyDocServer()
+        let analysisResponse:ServerResponse = server.sensorRequestDay(data: analysisData)
+        
+        
+        
+        
+        
+        
+
+        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS) {
+            let jsonString: String = analysisResponse.getMessage() as! String
+            if let arrData = jsonString.data(using: .utf8) {
+                do {
+                    if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
+                        
+                        //let petData = PetData()
+                        //petData.time = jsonArray[0]["Time"] as! CLong
+                        //petData.time /= 1000 // Translate millisec to sec
+                        lightValue = jsonArray[0]["SunVal"] as! Int
+                        //petData.uvVal = jsonArray[0]["UvVal"] as! Double
+                        vitaDValue = jsonArray[0]["VitDVal"] as! Double
+                        exerciseValue = jsonArray[0]["ExerciseVal"] as! Int
+                        walkValue = jsonArray[0]["WalkVal"] as! Int
+                        stepValue = jsonArray[0]["StepVal"] as! Int
+                        sunExValue = jsonArray[0]["LuxpolVal"] as! Double
+                        breakValue = jsonArray[0]["RestVal"] as! Int
+                        //petData.kalVal = jsonArray[0]["KalVal"] as! Double
+                        //petData.waterVal = jsonArray[0]["WaterVal"] as! Int
+                        print("today's data!")
+                        print(lightValue)
+                        print(vitaDValue)
+                        print(exerciseValue)
+                        print(walkValue)
+                        print(stepValue)
+                        print(sunExValue)
+                        print(breakValue)
+                    }
+                } catch {
+                    print("JSON 파싱 에러")
+                }
+            
+            } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
+                print(analysisResponse.getMessage() as! String)
+            }
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
