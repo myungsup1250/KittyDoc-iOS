@@ -11,9 +11,10 @@ class AddPetViewController: UIViewController {
     
     let deviceManager = DeviceManager.shared
     var birthInput: String = "19700101"
-    var isEditMode: Bool?
+    var isEditMode: Bool!
     var editingPetID: Int? //맘대로 바꿔도 됨
     var datePicker: UIDatePicker!
+    //var newDeviceConnected: Bool!
     
     var editName = ""
     var editWeight = 0.0
@@ -27,6 +28,7 @@ class AddPetViewController: UIViewController {
         print("AddPetViewController.viewDidLoad()")
         
         datePicker = setUpdatePicker()
+        //newDeviceConnected = false
         
         view.addSubview(image)
         view.addSubview(imageAddBtn)
@@ -79,18 +81,18 @@ class AddPetViewController: UIViewController {
         // KittyDoc 기기 등록 여부, 기기 연결 여부 등에 따른 처리가 잘 되는지 확인 필요! 21.02.24 -ms
         // 기존 등록된 펫에 기기 등록되지 않은 상태 && 수정할 때 기기를 새로 연결해도 반영이 안된다..
         if editingPetID != nil {
-            print("editingPetID != nil")
+            print("\teditingPetID != nil")
             let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
             
-            if petInfo != nil {
-                print("petInfo != nil")
+            if petInfo != nil { // petInfo 존재함 : 수정 모드
+                print("\tpetInfo != nil")
                 if petInfo!.Device.isEmpty {
-                    print("petInfo!.Device.isEmpty == true")
+                    print("\tpetInfo!.Device.isEmpty == true")
                     deviceInput.text = "Plz Connect to Device!"
                 } else {
-                    print("petInfo!.Device.isEmpty == false")
+                    print("\tpetInfo!.Device.isEmpty == false")
                     if deviceInput.text == "Plz Connect to Device!" {
-                        print("deviceInput.text == Plz Connect to Device!")
+                        print("\tdeviceInput.text == Plz Connect to Device!")
                         if deviceManager.isConnected {
                             print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == true")
                             deviceInput.text = deviceManager.peripheral!.identifier.uuidString
@@ -105,8 +107,8 @@ class AddPetViewController: UIViewController {
             } else {
                 print("\tpetInfo == nil")
             }
-        } else {
-            print("editingPetID == nil(Adding New Pet)")
+        } else { // petInfo 없음 : 새로 등록할 때
+            print("\teditingPetID == nil(Adding New Pet)")
             
             if deviceInput.text!.isEmpty {
                 deviceInput.text = "Plz Connect to Device!"
