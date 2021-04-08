@@ -361,7 +361,6 @@ extension SetPasswordViewController {
         print(modifyData.data())
         
         if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_SUCCESS){
-            print("수정완료")
             self.navigationController?.popViewController(animated: true)
             //여기서 다른화면으로 넘어가면됨~
             return
