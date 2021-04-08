@@ -196,7 +196,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
                             petData.waterVal = jsonArray[i]["WaterVal"] as! Int
                             dataArray.append(petData)
                             print("Time : \(unixtimeToString(unixtime: time_t(petData.time)))", terminator: " ")
-                            print("Sun : \(petData.sunVal)")
+                            print("Sun : \(petData.sunVal)", terminator: " ")
+                            print("UV : \(petData.uvVal)", terminator: " ")
+                            print("Vit-D : \(petData.vitDVal)")
                         }
                     }
                 } catch {
@@ -255,7 +257,6 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 }
 
 extension AnalysisViewController {
-    
     enum SegSelect: Int {
         case Year = 0
         case Month
@@ -444,36 +445,48 @@ extension AnalysisViewController {
         switch segSelect {
         case SegSelect.Year:
             print("And Year Data![Demo]")
-            var monthValues = [Double]()
-            for i in 1...12 {
-                monthValues.append(Double(i * 10))
+
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
+            if petDatas.isEmpty {
+                values.append(0)
             }
-            setChart(dataName: "Year", dataPoints: months, values: monthValues, goal: 80, max: 150)
+
+            setChart(dataName: optionTextField.text!, dataPoints: months.dropLast(months.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case SegSelect.Month:
             print("And Month Data![Demo]")
-            guard let numberOfDays = getDaysInMonth(month: month, year: year) else {
-                print("Error in getDaysInMonth(month: , year:)!!")
-                return
+//            guard let numberOfDays = getDaysInMonth(month: month, year: year) else {
+//                print("Error in getDaysInMonth(month: , year:)!!")
+//                return
+//            }
+            
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
+            if petDatas.isEmpty {
+                values.append(0)
             }
-            var dayValues = [Double]()
-            for i in 1...numberOfDays {
-                dayValues.append(Double(i * 3))
-            }
-            setChart(dataName: "Month", dataPoints: days.dropLast(31-numberOfDays), values: dayValues, goal: 80, max: 150)
+
+            setChart(dataName: optionTextField.text!, dataPoints: days.dropLast(days.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case SegSelect.Week:
             print("And Week Data![Demo]")
-            var weekValues = [Double]()
-            for i in 1...7 {
-                weekValues.append(Double(i * 15))
+            
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
+            if petDatas.isEmpty {
+                values.append(0)
             }
-            setChart(dataName: "Week", dataPoints: daysofweek, values: weekValues, goal: 80, max: 150)
+
+            setChart(dataName: optionTextField.text!, dataPoints: daysofweek.dropLast(daysofweek.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case SegSelect.Day:
             print("And Day Data!")
             
             //let hour = Calendar.current.component(.hour,  from: Date())
-            for i in 0..<petDatas.count {
-                values[i] = Double(i + 1) * valueGoal / 24
-            }
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
             if petDatas.isEmpty {
                 values.append(0)
             }
@@ -489,6 +502,7 @@ extension AnalysisViewController {
         petDatas.removeAll()
         petDatas = requestServerData(forDays: 1, forHours: 0)//센서 데이터 수신 코드
 
+        //datePicker.datePickerStyle = UIDatePickerStyle.inline
         chartOptionChanged(selected: SegSelect(rawValue: segment.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
     }
     
@@ -678,8 +692,9 @@ extension AnalysisViewController {
     func initDatePicker() {
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
+        //datePicker.preferredDatePickerStyle = UIDatePickerStyle.compact
         if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
+            //datePicker.preferredDatePickerStyle = .wheels
         }
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
 

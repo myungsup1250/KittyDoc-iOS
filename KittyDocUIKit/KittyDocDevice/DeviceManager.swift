@@ -194,8 +194,8 @@ extension DeviceManager: CBCentralManagerDelegate {
                     central.connect(self.peripheral!, options: nil)
 
                     // 장비연결 안되는 경우 대비. 10초 내로 필요 서비스를 다 찾으면 아무것도 안하고 못찾은 상태라면 타임아웃 처리.
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                        print("DispatchQueue.main.asyncAfter(deadline: .now() + 5)")
+                    DispatchQueue.background(delay: 5.0, background: nil) {
+                        print("DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5)")
                         if (!self.isConnected || !self.isRequiredServicesFound) {
                             print("Timeout. Cancel connection.")
                             if self.peripheral != nil {
@@ -208,6 +208,9 @@ extension DeviceManager: CBCentralManagerDelegate {
                             }
                         }
                     }
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//
+//                    }
                 } else {
                     // 연결할 수 있는 장비가 없음
                     guard self.delegate?.onConnectionFailed() != nil else {
@@ -227,7 +230,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                 //central.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
                 central.scanForPeripherals(withServices: [PeripheralUUID.SYNC_SERVICE_UUID, PeripheralUUID.GENERAL_SERVICE_UUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])// options에 nil을 줄 경우 모든 BLE 기기를 탐색한다.
                 DispatchQueue.background(delay: 10.0, background: nil) { // 10초 동안 KittyDoc 기기를 검색. 못찾은 상태라면 타임아웃 처리.
-                    print("DispatchQueue.main.asyncAfter(deadline: .now() + 10)")
+                    print("DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10)")
                     if (!self.isConnected || !self.isRequiredServicesFound) {
                         self.manager?.stopScan()
                         if self.foundDevices.isEmpty {
@@ -798,7 +801,7 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
         //self.manager = CBCentralManager(delegate: self, queue: nil)
         
         DispatchQueue.background(delay: 11.0, background: nil) {// Stop scanning after deadine
-            print("DispatchQueue.main.asyncAfter(deadline: .now() + 11)")
+            print("DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 11)")
             self.manager?.stopScan()
             if (!self.isConnected || !self.isRequiredServicesFound) {
                 if (self.foundDevices.count == 0) {
