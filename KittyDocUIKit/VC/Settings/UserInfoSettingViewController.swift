@@ -50,6 +50,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         setConstraints()
         
         birthInput = UserInfo.shared.UserBirth
+        
         var error: NSError?
         
         if authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
@@ -73,24 +74,133 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
             
             if sucess {
                 print("인증 성공")
-                
             } else {
                 print("인증 실패")
                 if let error = error {
                     print(error.localizedDescription)
                     DispatchQueue.main.async {
-                        self.navigationController?.popViewController(animated: true)
+                        let alert: UIAlertController = UIAlertController(title: "Failed!", message: "Failed to get Authorization!", preferredStyle: .alert)
+                        let confirm = UIAlertAction(title: "Dismiss", style: .destructive) { _ in
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(confirm)
+                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }
         }
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//    }
+    
+    @objc func dataChanged(_ picker: UIDatePicker) {
+        manageDateFormatter(date: picker.date)
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateStyle = .medium
+//
+//        self.birthDataField.text = dateFormatter.string(from: picker.date)
+//        print(dateFormatter.string(from: picker.date))
+//
+//        let writedateFormatter = DateFormatter()
+//        writedateFormatter.dateFormat = "yyyyMMdd"
+//        birthInput = writedateFormatter.string(from: picker.date)
     }
     
+    func manageDateFormatter(date: Date?) { // date가 nil일 경우 picker.date 사용
+        if date != nil {
+            datePicker.date = date!
+        }
+        let dateFormatter = DateFormatter()
+        //dateFormatter.dateStyle = .long
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        birthDataField.text = dateFormatter.string(from: datePicker.date)
+
+        dateFormatter.dateFormat = "yyyyMMdd"
+        birthInput = dateFormatter.string(from: datePicker.date)
+        print("birthDataField.text : \(birthDataField.text ?? "0000-00-00"), birthInput : \(birthInput)")
+    }
+
+    @objc func tapOnDoneBtn(_ picker: UIDatePicker) {
+        birthDataField.resignFirstResponder()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
+    }
+    
+    @objc func textFieldDidEndEditing(_ textField: UITextField) {
+        if nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+            signUpBtn.isOn = .On
+        }
+        
+        else {
+            signUpBtn.isOn = .On
+        }
+    }
+    
+    @objc private func didTapRegister() {
+        print("didTapRegister(genderSelect : \(genderSelect.selectedSegmentIndex)")//성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
+        var gender: String = "None"
+        if(genderSelect.selectedSegmentIndex == 0) {
+            gender = "Male"
+        } else if(genderSelect.selectedSegmentIndex == 1) {
+            gender = "FeMale"
+        } else {
+            gender = "None"
+        }
+        
+        if (nameTF.text!.count < 1) {
+            alertWithMessage(message: "이름을 입력하세요.")
+            return
+        }
+        //생일에 대해서만 너가 조건문을 작성해주면좋겠어... 아래 작성한 함수 제대로 동작못한당... TEST
+    
+        UserInfo.shared.UserBirth = birthInput
+        print("birthInput : \(birthInput)")
+        
+        if (!isPhoneForm(_phone:phoneNumberInput.text!)) {
+            alertWithMessage(message: "올바른 전화번호 형식이 아닙니다.")
+            return
+        }
+        
+        let modifyData:ModifyData = ModifyData(_userId: UserInfo.shared.UserID, _userName: nameTF.text!, _userPhone: phoneNumberInput.text!, _userSex: gender, _userBirth: birthInput)
+        let server:KittyDocServer = KittyDocServer()
+        let modifyResponse:ServerResponse = server.userModify(data: modifyData)
+                    
+        if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_SUCCESS){
+            print(modifyResponse.getMessage() as! String)
+            //정보 수정했으므로 VC에서 나가기
+            DispatchQueue.main.async {
+                //let alert: UIAlertController = UIAlertController(title: "Service Found!", message: "Found all required Service!", preferredStyle: .alert)
+                let alert: UIAlertController = UIAlertController(title: "Success!", message: "Successfully modified your Info!", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                }
+                alert.addAction(confirm)
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_FAILURE) {
+            print(modifyResponse.getMessage() as! String)
+            alertWithMessage(message: modifyResponse.getMessage() as! String)
+        }
+    }
+    
+    func alertWithMessage(message input: Any) {
+        let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+        self.present(alert, animated: false)
+    }
+
+}
+
+func isPhoneForm(_phone:String) -> Bool {
+    let phoneReg = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$"
+    return NSPredicate(format: "SELF MATCHES %@", phoneReg).evaluate(with:_phone)
+}
+
+extension UserInfoSettingViewController { // Auto Layout
     fileprivate func initUIViews() {
         initTitleLabel()
         initGuideLabel()
@@ -251,110 +361,6 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
         [userInfoViewConstraints, emailLabelConstraints, emailTFConstraints, nameLabelConstraints, nameTFConstraints, genderLabelConstraints, genderSelectConstraints, dateOfBirthLabelConstraints, birthDataFieldConstraints, phoneNumberLabelConstraints, phoneNumberInputConstraints, guideLabelConstraints, titleLabelConstraints, signUpBtnConstraints]
             .forEach(NSLayoutConstraint.activate(_:))
     }
-    
-    @objc func dataChanged(_ picker: UIDatePicker) {
-        manageDateFormatter(date: picker.date)
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateStyle = .medium
-//
-//        self.birthDataField.text = dateFormatter.string(from: picker.date)
-//        print(dateFormatter.string(from: picker.date))
-//
-//        let writedateFormatter = DateFormatter()
-//        writedateFormatter.dateFormat = "yyyyMMdd"
-//        birthInput = writedateFormatter.string(from: picker.date)
-    }
-    
-    func manageDateFormatter(date: Date?) { // date가 nil일 경우 picker.date 사용
-        if date != nil {
-            datePicker.date = date!
-        }
-        let dateFormatter = DateFormatter()
-        //dateFormatter.dateStyle = .long
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        birthDataField.text = dateFormatter.string(from: datePicker.date)
-
-        dateFormatter.dateFormat = "yyyyMMdd"
-        birthInput = dateFormatter.string(from: datePicker.date)
-        print("birthDataField.text : \(birthDataField.text ?? "0000-00-00"), birthInput : \(birthInput)")
-    }
-
-    @objc func tapOnDoneBtn(_ picker: UIDatePicker) {
-        birthDataField.resignFirstResponder()
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
-    }
-    
-    @objc func textFieldDidEndEditing(_ textField: UITextField) {
-        if nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
-            signUpBtn.isOn = .On
-        }
-        
-        else {
-            signUpBtn.isOn = .On
-        }
-    }
-    
-    @objc private func didTapRegister() {
-        print("didTapRegister(genderSelect : \(genderSelect.selectedSegmentIndex)")//성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
-        var gender: String = "None"
-        if(genderSelect.selectedSegmentIndex == 0) {
-            gender = "Male"
-        } else if(genderSelect.selectedSegmentIndex == 1) {
-            gender = "FeMale"
-        } else {
-            gender = "None"
-        }
-        
-        if (nameTF.text!.count < 1) {
-            alertWithMessage(message: "이름을 입력하세요.")
-            return
-        }
-        //생일에 대해서만 너가 조건문을 작성해주면좋겠어... 아래 작성한 함수 제대로 동작못한당... TEST
-    
-        UserInfo.shared.UserBirth = birthInput
-        print("birthInput : \(birthInput)")
-        
-        if (!isPhoneForm(_phone:phoneNumberInput.text!)) {
-            alertWithMessage(message: "올바른 전화번호 형식이 아닙니다.")
-            return
-        }
-        
-        let modifyData:ModifyData = ModifyData(_userId: UserInfo.shared.UserID, _userName: nameTF.text!, _userPhone: phoneNumberInput.text!, _userSex: gender, _userBirth: birthInput)
-        let server:KittyDocServer = KittyDocServer()
-        let modifyResponse:ServerResponse = server.userModify(data: modifyData)
-                    
-        if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_SUCCESS){
-            print(modifyResponse.getMessage() as! String)
-            //정보 수정했으므로 VC에서 나가기
-            DispatchQueue.main.async {
-                //let alert: UIAlertController = UIAlertController(title: "Service Found!", message: "Found all required Service!", preferredStyle: .alert)
-                let alert: UIAlertController = UIAlertController(title: "Success!", message: "Successfully modified your Info!", preferredStyle: .alert)
-                let confirm = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.navigationController?.popViewController(animated: true)
-                }
-                alert.addAction(confirm)
-                self.present(alert, animated: true, completion: nil)
-            }
-        } else if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_FAILURE){
-            print(modifyResponse.getMessage() as! String)
-            alertWithMessage(message: modifyResponse.getMessage() as! String)
-        }
-    }
-    
-    func alertWithMessage(message input: Any) {
-        let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
-        self.present(alert, animated: false)
-    }
-
-}
-
-func isPhoneForm(_phone:String) -> Bool {
-    let phoneReg = "^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$"
-    return NSPredicate(format: "SELF MATCHES %@", phoneReg).evaluate(with:_phone)
 }
 
 extension UserInfoSettingViewController {
