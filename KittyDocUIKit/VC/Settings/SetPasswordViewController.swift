@@ -41,7 +41,6 @@ class SetPasswordViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -323,10 +322,67 @@ extension SetPasswordViewController {
         submitBtn.setTitleColor(.white, for: .highlighted)
         submitBtn.backgroundColor = .systemBlue
         submitBtn.layer.cornerRadius = 8
-        //submitBtn.addTarget(self, action: #selector(didTapRegister), for: .touchUpInside)
+        submitBtn.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
         //submitBtn.isOn = .On
     }
-
     
-    // curPwd, newPwd, newConfirmPwd 세개로 늘려야할 것!!!!
+    @objc func didTapSubmit() {
+        print("didTapSubmit")
+        let loginData:LoginData = LoginData(_userEmail: emailTF.text!, _userPwd: curPwdTF.text!)
+        let server:KittyDocServer = KittyDocServer()
+        let loginResponse:ServerResponse = server.userLogin(data: loginData)
+        
+        print(loginResponse.getCode())
+        
+        if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_PWD){
+            alertWithMessage(message: "현재 비밀번호를 올바르게 입력하세요")
+            return
+        }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_FAILURE){
+            alertWithMessage(message: "unknown error")
+            return
+        }else if(loginResponse.getCode() as! Int == ServerResponse.LOGIN_WRONG_EMAIL){
+            alertWithMessage(message: "unknown error")
+            return
+        }
+        
+        if(!isPwdForm(_pwd: newPwdTF.text ?? "")){
+            alertWithMessage(message: "패스워드를 입력하지 않으셨거나 올바른 패스워드 형식이 아닙니다.")
+            return
+        }
+        if(!(newPwdTF.text == newPwdConfirmTF.text)){
+            alertWithMessage(message: "새로운 비밀번호와 비밀번호 확인은 동일해야 합니다.")
+            return
+        }
+        
+        let modifyData:ModifyData_Pwd = ModifyData_Pwd(_userEmail: emailTF.text!, _userPwd: newPwdConfirmTF.text!)
+        let modifyResponse:ServerResponse = server.pwdModify(data: modifyData)
+        
+        print("modifyData")
+        print(modifyData.data())
+        
+        if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_SUCCESS){
+            print("수정완료")
+            self.navigationController?.popViewController(animated: true)
+            //여기서 다른화면으로 넘어가면됨~
+            return
+        }else{
+            alertWithMessage(message: "비밀번호 수정을 실패하였습니다.")
+            return
+        }
+    }
+    
+    func alertWithMessage(message input: Any) {
+        let alert = UIAlertController(title: "", message: input as? String, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+        self.present(alert, animated: false)
+    }
+    
+    //To Do: 비밀번호 형식에 대한 부분은 추후에 논의 필요
+    func isPwdForm(_pwd:String) -> Bool{
+        if _pwd.count > 0 {
+            return true
+        } else {
+            return false
+        }
+    }
 }

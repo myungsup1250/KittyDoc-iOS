@@ -27,6 +27,7 @@
 		70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80F3825BE942600EE2666 /* onOffButton.swift */; };
 		70D80F3F25BEBBD700EE2666 /* AddPetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */; };
 		71D62348405127804A4DA9B4 /* Pods_KittyDocUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */; };
+		B092414A261EBF23001EEFDC /* ModifyData_Pwd.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0924149261EBF23001EEFDC /* ModifyData_Pwd.swift */; };
 		B0A9D81525F66630006EE580 /* ModifyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D81425F66630006EE580 /* ModifyData.swift */; };
 		B0A9D81825F67CCC006EE580 /* PetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D81725F67CCC006EE580 /* PetData.swift */; };
 		B0A9D82326037A71006EE580 /* AnalysisData_Year.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */; };
@@ -109,6 +110,7 @@
 		70D80F3E25BEBBD700EE2666 /* AddPetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewController.swift; sourceTree = "<group>"; };
 		99609129053106202336537A /* Pods-KittyDocUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.debug.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.debug.xcconfig"; sourceTree = "<group>"; };
 		AB7E6C79C095956904E58184 /* Pods-KittyDocUIKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KittyDocUIKit.release.xcconfig"; path = "Target Support Files/Pods-KittyDocUIKit/Pods-KittyDocUIKit.release.xcconfig"; sourceTree = "<group>"; };
+		B0924149261EBF23001EEFDC /* ModifyData_Pwd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData_Pwd.swift; sourceTree = "<group>"; };
 		B0A9D81425F66630006EE580 /* ModifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData.swift; sourceTree = "<group>"; };
 		B0A9D81725F67CCC006EE580 /* PetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetData.swift; sourceTree = "<group>"; };
 		B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisData_Year.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				B0A9D81425F66630006EE580 /* ModifyData.swift */,
 				B0A9D81725F67CCC006EE580 /* PetData.swift */,
 				B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */,
+				B0924149261EBF23001EEFDC /* ModifyData_Pwd.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -698,6 +701,7 @@
 				70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */,
 				E0BDC31225C871D400D2524B /* KittyDocUtillity.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,
+				B092414A261EBF23001EEFDC /* ModifyData_Pwd.swift in Sources */,
 				E05A7CAB25B9387B007680E2 /* ActivityIndicatorView.swift in Sources */,
 				E087BC0525DCF46500C12173 /* NotificationNameExtension.swift in Sources */,
 				E0BDC31725C8723D00D2524B /* DispatchQueueExtension.swift in Sources */,

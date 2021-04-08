@@ -24,4 +24,5 @@ protocol ServerApi{
     func sensorRequestDay(data: AnalysisData) -> ServerResponse
     func sensorRequestHour(data: AnalysisData) -> ServerResponse
     func userModify(data: ModifyData) -> ServerResponse
+    func pwdModify(data: ModifyData_Pwd) -> ServerResponse
 }

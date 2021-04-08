@@ -103,5 +103,10 @@ class KittyDocServer:ServerApi{
         let url = URL(string:(baseUrl + port + "/user/edit"))!
         return doRequestTask(url: url, data: data)
     }
+    
+    func pwdModify(data: ModifyData_Pwd) -> ServerResponse {
+        let url = URL(string:(baseUrl + port + "/user/edit/pwd"))!
+        return doRequestTask(url: url, data: data)
+    }
     init(){}
 }
