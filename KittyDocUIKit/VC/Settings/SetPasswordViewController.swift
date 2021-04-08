@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class SetPasswordViewController: UIViewController, UITextFieldDelegate {
     var userInterfaceStyle: UIUserInterfaceStyle = .unspecified
     var safeArea: UILayoutGuide!
+    let authContext = LAContext()
 
     var titleLabel: UILabel!
     var guideLabel: UILabel!
@@ -37,6 +39,45 @@ class SetPasswordViewController: UIViewController, UITextFieldDelegate {
         addSubviews()
         prepareForAutoLayout()
         setConstraints()
+        
+        var error: NSError?
+        
+        if authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            
+        }
+        
+        switch authContext.biometryType {
+        case .faceID:
+            print("계정 정보를 수정하기 위해서 Face ID로 인증 합니다.")
+        case .touchID:
+            print("계정 정보를 수정하기 위해서 Touch ID로 인증 합니다.")
+        case .none:
+            print("계정 정보를 수정하기 위해서는 로그인하십시오. ")
+        @unknown default:
+            fatalError("생체 인증 오류!!!(UserInfoSettingViewController)")
+        }
+        
+        let reason = "Log in to your account"
+        
+        authContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { (sucess, error) in
+            
+            if sucess {
+                print("인증 성공")
+            } else {
+                print("인증 실패")
+                if let error = error {
+                    print(error.localizedDescription)
+                    DispatchQueue.main.async {
+                        let alert: UIAlertController = UIAlertController(title: "Failed!", message: "Failed to get Authorization!", preferredStyle: .alert)
+                        let confirm = UIAlertAction(title: "Dismiss", style: .destructive) { _ in
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(confirm)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
