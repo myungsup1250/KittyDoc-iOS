@@ -9,12 +9,16 @@ import UIKit
 import Charts
 import CoreBluetooth
 import UICircularProgressRing
+import SideMenu
+
 
 class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    private let sideMenu = SideMenuNavigationController(rootViewController: UIViewController())
     let deviceManager = DeviceManager.shared
     var count = 0
     var selectedRow = 0
     var piChart = PieChartView()
+    var piValues: [Int] = []
     
     var waterValue: Int = 0 {
         didSet {
@@ -37,6 +41,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        sideMenu.leftSide = true
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: view)
         piChart.delegate = self
         self.title = "Home"
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -151,16 +158,18 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         PetChange(index: 0)
         setConstraints()
-        setPiChartsData()
+        //setPiChartsData()
     }
     
     func setPiChartsData() {
         var entries = [ChartDataEntry]()
         
-        for x in 0..<4 {
+        for x in 0..<piValues.count {
             entries.append(ChartDataEntry(x: Double(x),
-                                          y: Double(x)))
+                                          y: Double(piValues[x])))
         }
+        print("이거다~~")
+        print(entries)
         
         let set = PieChartDataSet(entries: entries)
         set.colors = ChartColorTemplates.colorful()
@@ -207,6 +216,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             
             walkAndCalStackView.leadingAnchor.constraint(equalTo: walkStackView.leadingAnchor),
             walkAndCalStackView.widthAnchor.constraint(equalTo: walkStackView.widthAnchor, multiplier: 0.9),
+            petCalLabel.trailingAnchor.constraint(equalTo: walkAndCalStackView.trailingAnchor, constant: 20),
             
             walkProgressView.heightAnchor.constraint(equalTo: walkProgressViewHolder.heightAnchor, multiplier: 0.7),
             walkProgressView.widthAnchor.constraint(equalTo: walkProgressViewHolder.widthAnchor, constant: -20)
@@ -243,7 +253,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     //    }
     
     @IBAction func didTapSideMenuBtn() {
-        
+        present(sideMenu, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -261,9 +271,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         
         
-        
-        
-        
 
         if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS) {
             let jsonString: String = analysisResponse.getMessage() as! String
@@ -277,11 +284,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         lightValue = jsonArray[0]["SunVal"] as! Int
                         //petData.uvVal = jsonArray[0]["UvVal"] as! Double
                         vitaDValue = jsonArray[0]["VitDVal"] as! Double
-                        exerciseValue = jsonArray[0]["ExerciseVal"] as! Int
-                        walkValue = jsonArray[0]["WalkVal"] as! Int
+//                        exerciseValue = jsonArray[0]["ExerciseVal"] as! Int
+//                        walkValue = jsonArray[0]["WalkVal"] as! Int
+                        //breakValue = jsonArray[0]["RestVal"] as! Int
+                        exerciseValue = 13
+                        walkValue = 4
+                        breakValue = 6
                         stepValue = jsonArray[0]["StepVal"] as! Int
                         sunExValue = jsonArray[0]["LuxpolVal"] as! Double
-                        breakValue = jsonArray[0]["RestVal"] as! Int
+                        
                         //petData.kalVal = jsonArray[0]["KalVal"] as! Double
                         //petData.waterVal = jsonArray[0]["WaterVal"] as! Int
                         print("today's data!")
@@ -292,6 +303,14 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         print(stepValue)
                         print(sunExValue)
                         print(breakValue)
+                        
+                        piValues.append(exerciseValue)
+                        piValues.append(breakValue)
+                        piValues.append(walkValue)
+                        
+                        print(piValues[0])
+                        print(piValues[1])
+                        print(piValues[2])
                     }
                 } catch {
                     print("JSON 파싱 에러")
@@ -300,7 +319,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
                 print(analysisResponse.getMessage() as! String)
             }
+            
         }
+        setPiChartsData()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -336,15 +357,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         //이 함수는 위의 pickerView(....didSelectRow...) 함수안에 있는 메소드야! (didSelectRow 저 함수는 피커뷰로 펫을 선택했을 때 호출되는 함수이고!) 보이는 데이터들을 변경해주려고 만든 함수임!!
         //PetInfo.shared.petArray[index] 이것이 펫 배열에서 펫 가져오기!
         
-        //주석 풀고 괄호 사이에 펫 정보를 넣어주면됨! 햇빛 노출량 같은거??
-        //        petSunEx.text = "햇빛 노출량 : \()"
-        //        petVitaD.text = "비타민 D : \()"
-        //        petExe.text = "운동량 : \()"
-        //        petBreak.text = "휴식량 : \()"
-        //        petCal.text = "칼로리 : \()"
-        //        petWalk.text = "걸음수 : \()"
-        //        petLight.text = "빛 공해량: \()"
-        //        petWater.text = "수분량: \()"
         
     }
     
@@ -449,12 +461,13 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return walk
     }()
     
-    let petWalkLabel: UILabel = {
+    lazy var petWalkLabel: UILabel = {
         let label = UILabel()
-        label.text = "3500 / 7000"
+        label.text = "\(stepValue) / 7000"
         label.font = UIFont.boldSystemFont(ofSize: 25)
         return label
     }()
+
     
     let petCalLabel: UILabel = {
         let cal = UILabel()
@@ -496,10 +509,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return sunex
     }()
     
-    let petSunExLabel: UILabel = {
+    lazy var petSunExLabel: UILabel = {
         let sunex = UILabel()
         sunex.translatesAutoresizingMaskIntoConstraints = false
-        sunex.text = "1000 lux"
+        sunex.text = "\(sunExValue) lux"
         sunex.font = UIFont.boldSystemFont(ofSize: 25)
         return sunex
     }()
@@ -512,10 +525,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return vitaD
     }()
     
-    let petVitaDLabel: UILabel = {
+    lazy var petVitaDLabel: UILabel = {
         let vitaD = UILabel()
         vitaD.translatesAutoresizingMaskIntoConstraints = false
-        vitaD.text = "1000 lux"
+        vitaD.text = "\(vitaDValue) lux"
         vitaD.font = UIFont.boldSystemFont(ofSize: 25)
         return vitaD
     }()
