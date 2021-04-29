@@ -62,7 +62,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: view)
         piChart.delegate = self
-        self.title = "Hello, JENNY👋"
+        self.title = "Hello, " + "JENNY" + "👋"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         deviceManager.delegate = self
         deviceManager.secondDelegate = self
