@@ -58,9 +58,6 @@ class DeviceManager: NSObject {
             return self._batteryLevel
         }
         set(newLevel) {
-//            if(newLevel == -1) {
-//                print("Set batteryLevl to \(newLevel) as an initial value!")
-//            }
             guard (newLevel > -1 && newLevel < 101) else {
                 print("batteryLevel should be 0 to 100, input : \(newLevel)")
                 return
@@ -74,7 +71,7 @@ class DeviceManager: NSObject {
     private var _isSyncServiceFound: Bool
     private var _isRequiredServicesFound: Bool// 필요 서비스들 모두 찾았는가?
     private var _isScanningDfuTarg: Bool
-    // https://medium.com/ios-development-with-swift/%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0-get-set-didset-willset-in-ios-a8f2d4da5514 참고: Getter & Setter
+
     public var isConnected: Bool {
         get {
             return self._isConnected
@@ -115,7 +112,6 @@ class DeviceManager: NSObject {
 
     private override init() {
         //print("DeviceManager.init()")
-        
         delegate = nil
         secondDelegate = nil
         
@@ -130,8 +126,7 @@ class DeviceManager: NSObject {
         batteryCharacteristic = nil
         firmwareVersion = ""
         
-        _batteryLevel = -1
-        //batteryLevel = 100
+        _batteryLevel = -1 // Initial value : -1
         curRSSI = 0
         maxRSSI = 0
         
@@ -167,7 +162,7 @@ extension DeviceManager: CBCentralManagerDelegate {
         case .poweredOff:
             //print("central.state is .poweredOff")
             // 연결할 수 없음
-            print("central.state is .poweredOn, DeviceManager will scan IoT Device")
+            print("central.state is unable to Start Connection Sequence")
             guard self.delegate?.onBluetoothNotAccessible() != nil else {
                 print("self.delegate?.onBluetoothNotAccessible() == nil!(centralManagerDidUpdateState)")
                 return
@@ -180,7 +175,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                 var peripherals = [CBPeripheral]()
                 let uuid: CBUUID? = CBUUID(string: savedDeviceUUID)
                 //let uuidTest: UUID? = UUID(uuidString: self.savedDeviceUUIDString() ?? "")
-                // 안드 mac 형식이면 nil 이 된다?
+                // 안드로이드에서 등록한 MAC Address 형식이면 nil 이 된다
                 
                 if uuid != nil {
                     peripherals = central.retrievePeripherals(withIdentifiers: [uuid!.UUIDValue!])
@@ -189,11 +184,13 @@ extension DeviceManager: CBCentralManagerDelegate {
                 }
                 
                 if peripherals.count > 0 {
-                    self.peripheral = peripherals[0]
+                    self.peripheral = peripherals[0] // 어차피 한 기기만 스캔된다
                     self.peripheral!.delegate = self
                     central.connect(self.peripheral!, options: nil)
 
                     // 장비연결 안되는 경우 대비. 10초 내로 필요 서비스를 다 찾으면 아무것도 안하고 못찾은 상태라면 타임아웃 처리.
+//                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//                    }
                     DispatchQueue.background(delay: 5.0, background: nil) {
                         print("DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5)")
                         if (!self.isConnected || !self.isRequiredServicesFound) {
@@ -208,9 +205,6 @@ extension DeviceManager: CBCentralManagerDelegate {
                             }
                         }
                     }
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//
-//                    }
                 } else {
                     // 연결할 수 있는 장비가 없음
                     guard self.delegate?.onConnectionFailed() != nil else {
@@ -218,7 +212,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                         return
                     }
                 }
-            } else { // deviceManager.savedDeviceUUIDString() == nil
+            } else { // deviceManager.savedDeviceUUIDString() == nil : 기존에 연결했던 기기 없음!
                 print("deviceManager.savedDeviceUUIDString() == nil")
                 self.maxRSSI = -100
                 self.peripheral = nil
@@ -227,8 +221,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                     return
                 }
                 
-                //central.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])
-                central.scanForPeripherals(withServices: [PeripheralUUID.SYNC_SERVICE_UUID, PeripheralUUID.GENERAL_SERVICE_UUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])// options에 nil을 줄 경우 모든 BLE 기기를 탐색한다.
+                central.scanForPeripherals(withServices: [PeripheralUUID.SYNC_SERVICE_UUID, PeripheralUUID.GENERAL_SERVICE_UUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey : true])// withServices에 nil을 줄 경우 모든 BLE 기기를 탐색, options에 nil을 줄 경우 중복 탐색 가능성이 있다.
                 DispatchQueue.background(delay: 10.0, background: nil) { // 10초 동안 KittyDoc 기기를 검색. 못찾은 상태라면 타임아웃 처리.
                     print("DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 10)")
                     if (!self.isConnected || !self.isRequiredServicesFound) {
@@ -255,13 +248,13 @@ extension DeviceManager: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         //print("[+] centralManager(didDiscover)")
-        
+        //print("didDiscovorPeripheral : \(advertisementData["kCBAdvDataLocalName"] ?? "-"), RSSI : \(RSSI.intValue)")
+        //Keys : "kCBAdvDataRxSecondaryPHY", "kCBAdvDataServiceUUIDs", "kCBAdvDataLocalName", "kCBAdvDataRxPrimaryPHY", "kCBAdvDataIsConnectable", "kCBAdvDataTimestamp"
+
         guard self.manager == central else {
             print("self.manager != central!(didDiscoverPeripheral)")
             return
         }
-        //print("didDiscovorPeripheral : \(advertisementData["kCBAdvDataLocalName"] ?? "-"), RSSI : \(RSSI.intValue)")
-        //Keys : "kCBAdvDataRxSecondaryPHY", "kCBAdvDataServiceUUIDs", "kCBAdvDataLocalName", "kCBAdvDataRxPrimaryPHY", "kCBAdvDataIsConnectable", "kCBAdvDataTimestamp"
 
         if isScanningDfuTarg {
             central.stopScan()
@@ -272,29 +265,30 @@ extension DeviceManager: CBCentralManagerDelegate {
             return
         }
         
-        var found: Bool = false
+        var isKnownDevice: Bool = false
         let rssi: Int = RSSI.intValue
         for i in 0..<self.foundDevices.count {
             if (self.foundDevices[i].peripheral!.isEqual(peripheral) && rssi < 0) {
-                found = true
-                // rssi 업데이트. 가끔 127이라는 엉뚱한 값이 나와서 음수인 경우만 처리? => overflow
+                isKnownDevice = true
+                // rssi 업데이트. 가끔 발생하는 Overflow는 무시.
                 self.foundDevices[i].rssi = self.foundDevices[i].rssi < rssi ? rssi : self.foundDevices[i].rssi
-                
                 break
             }
         }
 
-        if (!found && rssi < 0) {// not found and rssi < 0
-            // add
+        if (!isKnownDevice && rssi < 0) {// not found and rssi < 0
+            // Add new devices into self.foundDevices
             var peripheralData = PeripheralData()
             peripheralData.peripheral = peripheral
             peripheralData.rssi = rssi
             self.foundDevices.append(peripheralData)
             print("Adding \(peripheralData.peripheral?.name ?? "Unknown") to foundDevices")
         }
-        self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
-            return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
-        }
+//        self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
+//            return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
+//        }
+        self.foundDevices.sort(by: >) // Added 21.04.26
+        
         //print("[-] centralManager(didDiscover)")
     }
     
@@ -336,23 +330,25 @@ extension DeviceManager: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBCentralManager, connectionEventDidOccur event: CBConnectionEvent, for peripheral: CBPeripheral) {
         print(" [+]centralManager(connectionEventDidOccur)")
+        
         if peripheral == self.peripheral {
             print("Connection event occurred [ \(String(describing: event)) ]")
+        } else {
+            print("Connected, But peripheral != self.peripheral (Might be an error!)")
         }
+        
         print(" [-]centralManager(connectionEventDidOccur)")
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         print("[+] centralManager(didDisconnectPeripheral)")
         
-        print("didDisconnectPeripheral error : \(error?.localizedDescription ?? "-")")
+        if error != nil {
+            print("didDisconnectPeripheral error : \(String(describing: error?.localizedDescription))")
+        }
+        
         self.isConnected = false
         self.isRequiredServicesFound = false
-//        pred = 0;
-        // 기존 장비 지우고 -> 장비에서 연결 끊은 경우 지워지면 안됨. 앱에서 끊는 경우에만 지우자.
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-//        self.removePeripheral()
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 
         guard self.delegate?.onDeviceDisconnected() != nil else {
             print("self.delegate?.onDeviceDisconnected() == nil!(didDisconnectPeripheral)")
@@ -379,16 +375,16 @@ extension DeviceManager: CBPeripheralDelegate {
         //print(peripheral.state) // 1 service exist
         //print("Discovered Services : \(services.count)") // 1 service exist
         for service: CBService in services {
-            print("Discovered service : \(service.uuid)")//\(service.uuid.uuidString)")
+            print("Discovered service : \(service.uuid)")
             if service.uuid.isEqual(PeripheralUUID.SYNC_SERVICE_UUID) {
                 //print("Sync Service Found!")
                 isSyncServiceFound = true
             }
-            // Now kick off discovery of characteristics
+            // Now start discovery of characteristics
             self.peripheral!.discoverCharacteristics(nil, for: service)
         }
         if isSyncServiceFound {
-            // Found KittyDoc
+            // Found KittyDoc(WhoseCat)
             guard self.delegate?.onDeviceConnected(peripheral: peripheral) != nil else {
                 print("self.delegate?.onDeviceConnected(:) == nil!(didDiscoverServices)")
                 return
@@ -412,13 +408,12 @@ extension DeviceManager: CBPeripheralDelegate {
         //print("Found \(characteristics.count) characteristics")
         for characteristic in characteristics {
             //print("\t\(characteristic.uuid) (\(characteristic.uuid.uuidString))")
-            // general(main) service
-            if service.uuid.isEqual(PeripheralUUID.GENERAL_SERVICE_UUID) && characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {
+            
+            if service.uuid.isEqual(PeripheralUUID.GENERAL_SERVICE_UUID) && characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {// General(main) service
                 self.sysCmdCharacteristic = characteristic // 0xFFFE, 0xFFFF
             }
 
-            // battery
-            if service.uuid.isEqual(PeripheralUUID.BATTERY_SERVICE_UUID) && characteristic.uuid.isEqual(PeripheralUUID.BATTERY_CHAR_UUID) {
+            if service.uuid.isEqual(PeripheralUUID.BATTERY_SERVICE_UUID) && characteristic.uuid.isEqual(PeripheralUUID.BATTERY_CHAR_UUID) {// Battery
                 self.batteryCharacteristic = characteristic // 0x180F,0x2A19
             }
 
@@ -453,18 +448,13 @@ extension DeviceManager: CBPeripheralDelegate {
         }
         let bytes = [UInt8](data)
         
-        guard error == nil else {
+        guard (error == nil && bytes.count > 0) else {
             print("Error in Notification state: \(String(describing: error))")
-            return
-       }
-        guard bytes.count > 0 else {
             print("char.value is Empty!")
             return
         }
         
-
-        if characteristic.uuid.isEqual(PeripheralUUID.SW_REVISION_CHAR_UUID) {
-            // SW Revision
+        if characteristic.uuid.isEqual(PeripheralUUID.SW_REVISION_CHAR_UUID) {// SW Revision
             self.firmwareVersion = String(data: data, encoding: String.Encoding.ascii)!
             print("FirmwareVersion : \(self.firmwareVersion)")
         } else if characteristic.uuid.isEqual(PeripheralUUID.BATTERY_CHAR_UUID) {
@@ -504,7 +494,7 @@ extension DeviceManager: CBPeripheralDelegate {
 
             // 길이 필드 값이 0이 될 때까지 다음 패킷을 읽어들인다
             if bytes[0] != 0 {
-                let len: Int = Int(bytes[0])
+                let len = Int(bytes[0])
                 //print("Data len : \(len), bytes.count : \(bytes.count)") // len 값이 19가 아니라 2이어도, 길이는 19개로 나머지 3~19 칸 데이터를 0으로 채워서 보낸다. 참고
                 guard !(len > bytes.count) else { // 있을 수 없는 경우이므로 리턴
                     print("len > bytes.count!(didUpdateValueForCharacteristic)")
@@ -515,7 +505,7 @@ extension DeviceManager: CBPeripheralDelegate {
                 syncData.append(contentsOf: data.subdata(in: Range(1...len)))
                 //print("syncData : \(syncData.count), totalSyncBytesLeft : \(totalSyncBytesLeft), totalSyncBytes : \(totalSyncBytes)");
 
-                // 진행률 카운트를 위해 sleepdoc_ext_interface_data_type 크기만큼 받아오면 remainings를 가져와서 진행률 계산
+                // 진행률 카운트를 위해 KittyDoc_Ext_Interface_Data_Type 크기만큼 받아오면 remainings를 가져와서 진행률 계산
                 if syncData.count >= 154 { // KittyDoc_Ext_Interface_Data_Type size should be 154...
                     var kittydoc_data: KittyDoc_Ext_Interface_Data_Type // 10분단위가 6개 모이고 위에 타임존, 리셋회수, 남은 개수 데이터가 있는 데이터
                     guard syncData.count >= 154 else {
@@ -555,11 +545,6 @@ extension DeviceManager: CBPeripheralDelegate {
                             //print("writeValue(0x03) done <SYNC_CONTROL_DONE>")
                         }
                         
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-//                        let helper: SyncHelper = SyncHelper()
-//                        helper.parseData(data: syncData)
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-
                         NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
                         //현재 HomeViewController, AnalysisViewController에 등록되어있음.
                         
@@ -581,7 +566,7 @@ extension DeviceManager: CBPeripheralDelegate {
                             print(sensorResponse.getMessage())
                         } else {
                             print(sensorResponse.getMessage())
-                        }
+                        }// 어쨌든 센서 전송 결과는 봐야한다?
 
                         let s_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].s_tick))
                         let e_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].e_tick))
@@ -602,7 +587,7 @@ extension DeviceManager: CBPeripheralDelegate {
                     if totalSyncBytes == 0 {
                         progress = 0
                     } else {
-                        progress = Int(Double((self.syncDataCount * 154 * 100) / totalSyncBytes)) // int progress = (int)([syncData length] * 100/totalSyncBytes);
+                        progress = Int(Double((self.syncDataCount * 154 * 100) / totalSyncBytes))
                     }
                     if progress < 0 {
                         progress = 0
@@ -633,11 +618,6 @@ extension DeviceManager: CBPeripheralDelegate {
 
                 peripheral.writeValue(Data([SyncCmd.SYNC_CONTROL_DONE]), for: self.syncControlCharacteristic!, type: .withResponse)
                 
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-//                let helper: SyncHelper = SyncHelper()
-//                helper.parseData(data: syncData)
-// // // // // // // // // // // // // // // // // // // // // // // // // // // // // //
-
                 NotificationCenter.default.post(name: .receiveSyncDataDone, object: nil)
                 //현재 HomeViewController, AnalysisViewController에 등록되어있음.
                 
