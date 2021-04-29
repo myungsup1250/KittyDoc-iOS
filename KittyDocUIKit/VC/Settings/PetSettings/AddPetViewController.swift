@@ -226,10 +226,11 @@ class AddPetViewController: UIViewController {
         
         let toolBar: UIToolbar = UIToolbar.init(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 44))
         
+        let today: UIBarButtonItem = UIBarButtonItem(title: "Today", style: .plain, target: self, action: #selector(setToday))
         let space: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         let done: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.tapOnDoneBtn))
         
-        toolBar.setItems([space, done], animated: true)
+        toolBar.setItems([today, space, done], animated: true)
         
         self.birthDataField.inputAccessoryView = toolBar
         return picker
@@ -294,6 +295,12 @@ class AddPetViewController: UIViewController {
         } else {
             return false
         }
+    }
+
+    @objc func setToday(_ picker: UIDatePicker) {
+        print("setToday()")
+        
+        manageDateFormatter(date: Date())
     }
 }
 
@@ -398,7 +405,7 @@ extension AddPetViewController {
         //dateFormatter.dateStyle = .long
 //        dateFormatter.dateFormat = "yyyy-MM-dd"
 //        birthDataField.text = dateFormatter.string(from: datePicker.date)
-//
+
 //        dateFormatter.dateFormat = "yyyyMMdd"
 //        birthInput = dateFormatter.string(from: datePicker.date)
         dateFormatter.dateFormat = "yyyyMMdd"
