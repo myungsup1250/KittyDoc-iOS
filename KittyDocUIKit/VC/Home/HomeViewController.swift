@@ -12,7 +12,21 @@ import UICircularProgressRing
 import SideMenu
 
 
+
 class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    
+    @IBOutlet weak var piChartView: UIView!
+    @IBOutlet weak var walkView: UIView!
+    @IBOutlet weak var sunExView: UIView!
+    @IBOutlet weak var vitaDView: UIView!
+    @IBOutlet weak var waterView: UIView!
+    @IBOutlet weak var weightView: UIView!
+    
+    
+    @IBOutlet weak var progressView: RingProgressGroupView!
+    
+    
     private let sideMenu = SideMenuNavigationController(rootViewController: UIViewController())
     let deviceManager = DeviceManager.shared
     var count = 0
@@ -41,11 +55,14 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        viewAddBackground()
+
         sideMenu.leftSide = true
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: view)
         piChart.delegate = self
-        self.title = "Home"
+        self.title = "Hello, JENNY👋"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         deviceManager.delegate = self
         deviceManager.secondDelegate = self
@@ -57,7 +74,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
         
+        // These are optional and only serve to improve accessibility
+        progressView.ring1.accessibilityLabel = NSLocalizedString("Move", comment: "Move")
+        progressView.ring2.accessibilityLabel = NSLocalizedString("Exercise", comment: "Exercise")
+        progressView.ring3.accessibilityLabel = NSLocalizedString("Stand", comment: "Stand")
         
+        progressView.ring1.progress = 0.2
+        progressView.ring2.progress = 0.7
+        progressView.ring3.progress = 0.52
+
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
         let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
         let server:KittyDocServer = KittyDocServer()
@@ -101,64 +126,14 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
         }
         
-        view.backgroundColor = .lightGray
+        view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
-        scrollView.addSubview(petNameSelectTF)
-        petNameSelectTF.inputView = pickerView
-        
-        view.addSubview(scrollView)
-        
-        scrollView.addSubview(stackView)
-        stackView.addArrangedSubview(piStackView)
-        stackView.addArrangedSubview(walkStackView)
-        stackView.addArrangedSubview(sunStackView)
-        stackView.addArrangedSubview(waterStackView)
-        stackView.addArrangedSubview(WeightStackView)
-        
-        piStackView.addArrangedSubview(petTripletTitleLabel)
-        piStackView.addArrangedSubview(piChart)
-        
-        walkStackView.addArrangedSubview(petWalkTitleLabel)
-        walkStackView.addArrangedSubview(walkAndCalStackView)
-        walkStackView.addArrangedSubview(walkProgressViewHolder)
-        
-        walkProgressViewHolder.addSubview(walkProgressView)
-    
-        
-        walkAndCalStackView.addArrangedSubview(petWalkLabel)
-        walkAndCalStackView.addArrangedSubview(petCalLabel)
-        
-        
-        sunStackView.addArrangedSubview(daySunStackView)
-        sunStackView.addArrangedSubview(dayVitaDStackView)
-        
-        daySunStackView.addArrangedSubview(petSunExTitleLabel)
-        daySunStackView.addArrangedSubview(petSunExLabel)
-        
-        dayVitaDStackView.addArrangedSubview(petVitaDTitleLabel)
-        dayVitaDStackView.addArrangedSubview(petVitaDLabel)
-        
-        
-        waterStackView.addArrangedSubview(waterShowStackView)
-        waterStackView.addArrangedSubview(waterBtnStackView)
-        
-        waterShowStackView.addArrangedSubview(petWaterTitleLabel)
-        waterShowStackView.addArrangedSubview(petWaterLabel)
-        
-        waterBtnStackView.addArrangedSubview(WaterMinusBtn)
-        waterBtnStackView.addArrangedSubview(WaterPlusBtn)
-        
-        WeightStackView.addArrangedSubview(weightShowStackView)
-        WeightStackView.addArrangedSubview(weightBtnView)
-        weightBtnView.addSubview(WeightInputBtn)
-        
-        weightShowStackView.addArrangedSubview(petWeightTitleLabel)
-        weightShowStackView.addArrangedSubview(petWeightLabel)
-        
+       
         
         PetChange(index: 0)
-        setConstraints()
         //setPiChartsData()
+        //piChartView.addSubview(progress)
+
     }
     
     func setPiChartsData() {
@@ -178,73 +153,14 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         piChart.data = data
     }
     
-    private func setConstraints() {
+    
         
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            petNameSelectTF.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10),
-            petNameSelectTF.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            petNameSelectTF.heightAnchor.constraint(equalToConstant: 30)
-        ])
-        
-        
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: petNameSelectTF.bottomAnchor, constant: 20),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
-            piStackView.topAnchor.constraint(equalTo: stackView.topAnchor),
-            piStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 20),
-            piStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            piStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
-            
-            petTripletTitleLabel.topAnchor.constraint(equalTo: piStackView.topAnchor, constant: 10)
-        ])
-        
-        NSLayoutConstraint.activate([
-            walkStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
-            
-            walkAndCalStackView.leadingAnchor.constraint(equalTo: walkStackView.leadingAnchor),
-            walkAndCalStackView.widthAnchor.constraint(equalTo: walkStackView.widthAnchor, multiplier: 0.9),
-            petCalLabel.trailingAnchor.constraint(equalTo: walkAndCalStackView.trailingAnchor, constant: 20),
-            
-            walkProgressView.heightAnchor.constraint(equalTo: walkProgressViewHolder.heightAnchor, multiplier: 0.7),
-            walkProgressView.widthAnchor.constraint(equalTo: walkProgressViewHolder.widthAnchor, constant: -20)
-        ])
-        
-        NSLayoutConstraint.activate([
-            sunStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
-            
-            
-        ])
-        
-        NSLayoutConstraint.activate([
-            waterStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
-            
-            
-            waterBtnStackView.heightAnchor.constraint(equalTo: waterStackView.heightAnchor, multiplier: 0.4),
-        ])
-        
-        NSLayoutConstraint.activate([
-            WeightStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.2),
-        
-            WeightInputBtn.centerXAnchor.constraint(equalTo: weightBtnView.centerXAnchor),
-            WeightInputBtn.centerYAnchor.constraint(equalTo: weightBtnView.centerYAnchor),
-            WeightInputBtn.widthAnchor.constraint(equalTo: weightBtnView.widthAnchor, multiplier: 0.5),
-            WeightInputBtn.heightAnchor.constraint(equalTo: weightBtnView.heightAnchor, multiplier: 0.3)
-        ])
-        
-        
+    func viewAddBackground() {
+        walkView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        sunExView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        vitaDView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        waterView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        weightView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
     }
     
     //    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
@@ -284,12 +200,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         lightValue = jsonArray[0]["SunVal"] as! Int
                         //petData.uvVal = jsonArray[0]["UvVal"] as! Double
                         vitaDValue = jsonArray[0]["VitDVal"] as! Double
-//                        exerciseValue = jsonArray[0]["ExerciseVal"] as! Int
-//                        walkValue = jsonArray[0]["WalkVal"] as! Int
-                        //breakValue = jsonArray[0]["RestVal"] as! Int
-                        exerciseValue = 13
-                        walkValue = 4
-                        breakValue = 6
+                        exerciseValue = jsonArray[0]["ExerciseVal"] as! Int
+                        walkValue = jsonArray[0]["WalkVal"] as! Int
+                        breakValue = jsonArray[0]["RestVal"] as! Int
                         stepValue = jsonArray[0]["StepVal"] as! Int
                         sunExValue = jsonArray[0]["LuxpolVal"] as! Double
                         
@@ -849,6 +762,21 @@ extension UIStackView {
         insertSubview(subView, at: 0)
     }
 }
+
+
+extension UIView {
+    func addColor(color: UIColor) {
+        self.backgroundColor = color
+        self.layer.cornerRadius = 20
+        self.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        self.layer.shadowOpacity = 0.3
+        self.layer.shadowOffset = .init(width: self.layer.borderWidth, height: 10)
+        self.layer.shadowRadius = 5
+    }
+}
+
+
+
 
 extension HomeViewController: ChartViewDelegate {
     
