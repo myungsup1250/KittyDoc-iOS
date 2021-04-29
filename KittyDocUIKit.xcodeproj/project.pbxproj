@@ -15,6 +15,7 @@
 		7043EBD725F52A0F008A67A4 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7043EBD625F52A0F008A67A4 /* DetailTableViewCell.swift */; };
 		70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */; };
 		707940AC25D2E5AA0073315D /* WaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707940AB25D2E5AA0073315D /* WaterViewController.swift */; };
+		7080A3A42636E0DA00EC2A30 /* RingProgressGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7080A3A32636E0DA00EC2A30 /* RingProgressGroupView.swift */; };
 		708A280725E642DD004DCBC2 /* daySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280625E642DD004DCBC2 /* daySchedule.swift */; };
 		708A280B25E6431E004DCBC2 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280A25E6431E004DCBC2 /* CalendarCollectionViewCell.swift */; };
 		708A280E25E6437C004DCBC2 /* AddScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */; };
@@ -96,6 +97,7 @@
 		7043EBD625F52A0F008A67A4 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		70793FD425C8EDC00073315D /* UserInfoSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoSettingViewController.swift; sourceTree = "<group>"; };
 		707940AB25D2E5AA0073315D /* WaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterViewController.swift; sourceTree = "<group>"; };
+		7080A3A32636E0DA00EC2A30 /* RingProgressGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingProgressGroupView.swift; sourceTree = "<group>"; };
 		708A280625E642DD004DCBC2 /* daySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = daySchedule.swift; sourceTree = "<group>"; };
 		708A280A25E6431E004DCBC2 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleViewController.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
+				7080A3A32636E0DA00EC2A30 /* RingProgressGroupView.swift */,
 				707940AB25D2E5AA0073315D /* WaterViewController.swift */,
 			);
 			path = Home;
@@ -719,6 +722,7 @@
 				708A280725E642DD004DCBC2 /* daySchedule.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
 				E06CEAF825E40C0000D966BB /* ServerData.swift in Sources */,
+				7080A3A42636E0DA00EC2A30 /* RingProgressGroupView.swift in Sources */,
 				113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */,
 				70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */,
 				E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */,
