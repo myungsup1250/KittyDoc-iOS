@@ -30,6 +30,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
             if let arrData = jsonString.data(using: .utf8){
                 do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject]{
+                        PetInfo.shared.petArray.removeAll()
                         for i in 0..<jsonArray.count{
                             let petInfo:PetInfo = PetInfo()
                             petInfo.PetID = jsonArray[i]["PetID"] as! Int
@@ -43,11 +44,11 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                             petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
                             petInfo.Device = jsonArray[i]["Device"] as! String
                             
-                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
-                                return original.PetName == petInfo.PetName
-                            }) {
-                                PetInfo.shared.petArray.append(petInfo)
-                            }
+//                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
+//                                return original.PetName == petInfo.PetName
+//                            }) {
+                            PetInfo.shared.petArray.append(petInfo)
+//                            }
                         }
                     }
                 } catch {
