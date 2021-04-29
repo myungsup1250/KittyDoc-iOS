@@ -11,9 +11,10 @@ class AddPetViewController: UIViewController {
     
     let deviceManager = DeviceManager.shared
     var birthInput: String = "19700101"
-    var isEditMode: Bool?
+    var isEditMode: Bool = false
     var editingPetID: Int? //맘대로 바꿔도 됨
     var datePicker: UIDatePicker!
+    //var newDeviceConnected: Bool!
     
     var editName = ""
     var editWeight = 0.0
@@ -27,6 +28,7 @@ class AddPetViewController: UIViewController {
         print("AddPetViewController.viewDidLoad()")
         
         datePicker = setUpdatePicker()
+        //newDeviceConnected = false
         
         view.addSubview(image)
         view.addSubview(imageAddBtn)
@@ -45,11 +47,15 @@ class AddPetViewController: UIViewController {
         
         view.addSubview(doneBtn)
 
-        if isEditMode == true {
+        if !isEditMode {
+            deviceManager.disconnect()
+        } else {
             nameInput.text = editName
             weightInput.text = String(editWeight)
-            editBirth.insert("-", at: editBirth.index(editBirth.startIndex, offsetBy: 6))
-            editBirth.insert("-", at: editBirth.index(editBirth.startIndex, offsetBy: 4))
+//            print("editBirth.insert(1)")
+//            editBirth.insert("-", at: editBirth.index(editBirth.startIndex, offsetBy: 6))
+//            print("editBirth.insert(2)")
+//            editBirth.insert("-", at: editBirth.index(editBirth.startIndex, offsetBy: 4))
             birthDataField.text = editBirth
             deviceInput.text = editDevice
             print(editGender)
@@ -70,6 +76,7 @@ class AddPetViewController: UIViewController {
                 genderSelect.selectedSegmentIndex = 2
             }
         }
+        
         setConstraints()
     }
     
@@ -79,35 +86,28 @@ class AddPetViewController: UIViewController {
         // KittyDoc 기기 등록 여부, 기기 연결 여부 등에 따른 처리가 잘 되는지 확인 필요! 21.02.24 -ms
         // 기존 등록된 펫에 기기 등록되지 않은 상태 && 수정할 때 기기를 새로 연결해도 반영이 안된다..
         if editingPetID != nil {
-            print("editingPetID != nil")
+            print("\tEdit Pet Info Mode(editingPetID: \(editingPetID!))")
             let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
             
-            if petInfo != nil {
-                print("petInfo != nil")
+            if petInfo != nil { // petInfo 존재함 : 수정 모드
+                print("\t\tpetInfo != nil")
                 if petInfo!.Device.isEmpty {
-                    print("petInfo!.Device.isEmpty == true")
+                    print("\t\t\tpetInfo.Device.is Empty")
+                    petInfo!.Device = "No device"
                     deviceInput.text = "Plz Connect to Device!"
                 } else {
-                    print("petInfo!.Device.isEmpty == false")
-                    if deviceInput.text == "Plz Connect to Device!" {
-                        print("deviceInput.text == Plz Connect to Device!")
-                        if deviceManager.isConnected {
-                            print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == true")
-                            deviceInput.text = deviceManager.peripheral!.identifier.uuidString
-                        } else {
-                            print("\tpetInfo!.Device.isEmpty == true && deviceManager.isConnected == false")
-                        }
-                    } else {
-                        print("\tpetInfo!.Device.isEmpty == false (\(petInfo!.Device)")
-                        deviceInput.text = petInfo!.Device
+                    if deviceManager.isConnected && deviceManager.peripheral != nil {
+                        print("\t\t\t\tdeviceManager.isConnected")
+                        deviceInput.text = deviceManager.peripheral!.identifier.uuidString
+                        petInfo!.Device = deviceManager.peripheral!.identifier.uuidString
                     }
                 }
             } else {
-                print("\tpetInfo == nil")
+                print("\t\tpetInfo is nil! Serious ERROR!")
             }
-        } else {
-            print("editingPetID == nil(Adding New Pet)")
-            
+        } else { // petInfo 없음 : 새로 등록할 때
+            print("\tNew Pet Info Mode(editingPetID: \(editingPetID))")
+
             if deviceInput.text!.isEmpty {
                 deviceInput.text = "Plz Connect to Device!"
             } else {
@@ -374,7 +374,6 @@ extension AddPetViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         birthDataField.text = dateFormatter.string(from: date)
-        // 그냥 Date()로 생성자 호출 시 현재 시간으로 생성하는 것으로 기억... ms
     }
     
     @objc func dataChanged(_ picker: UIDatePicker) {
@@ -397,12 +396,16 @@ extension AddPetViewController {
         }
         let dateFormatter = DateFormatter()
         //dateFormatter.dateStyle = .long
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        birthDataField.text = dateFormatter.string(from: datePicker.date)
-
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        birthDataField.text = dateFormatter.string(from: datePicker.date)
+//
+//        dateFormatter.dateFormat = "yyyyMMdd"
+//        birthInput = dateFormatter.string(from: datePicker.date)
         dateFormatter.dateFormat = "yyyyMMdd"
+        birthDataField.text = dateFormatter.string(from: datePicker.date)
         birthInput = dateFormatter.string(from: datePicker.date)
-        print("birthDataField.text : \(birthDataField.text ?? "0000-00-00"), birthInput : \(birthInput)")
+        // 21.04.26 by ms
+        print("birthDataField.text : \(birthDataField.text ?? "00000000"), birthInput : \(birthInput)")
     }
 
     @objc func tapOnDoneBtn(_ picker: UIDatePicker) {

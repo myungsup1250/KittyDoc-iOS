@@ -24,4 +24,8 @@ struct PeripheralData {
     static func ==(lhs: PeripheralData, rhs: PeripheralData) -> Bool {
         return lhs.peripheral == rhs.peripheral
     }
+
+    static func >(lhs: PeripheralData, rhs: PeripheralData) -> Bool { // Added 21.04.26
+        return lhs.rssi > rhs.rssi
+    }
 }

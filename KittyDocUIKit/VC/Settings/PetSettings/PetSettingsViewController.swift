@@ -96,11 +96,10 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        NSLog("선택된 행은 \(indexPath.row)번째 행 입니다.")
+        //print("선택된 행은 \(indexPath.row)번째 행 입니다.")
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
         let delete = deleteAction(at: indexPath)
         let edit = editAction(at: indexPath)
         return UISwipeActionsConfiguration(actions: [delete, edit])

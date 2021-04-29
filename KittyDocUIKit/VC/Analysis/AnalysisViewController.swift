@@ -45,16 +45,22 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var times = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
     
     var petDatas = [PetData]()
-    
+    var dateFormatter: DateFormatter!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("AnalysisViewController.viewDidLoad()")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
         
         safeArea = view.safeAreaLayoutGuide// view.layoutMarginsGuide
         userInterfaceStyle = self.traitCollection.userInterfaceStyle
+        
+        dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
+
         initUIViews()
         addSubviews()
         prepareForAutoLayout()
@@ -62,77 +68,90 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 
         manageUserInterfaceStyle()
 
-        petDatas.removeAll()
-        petDatas = requestServerData(forDays: 1, forHours: 0)//센서 데이터 수신 코드
-
-        var sunValues = [Double]()
-        for i in 0..<petDatas.count {
-            sunValues.append(Double((i + 1) * 3000))
-        }
-        if petDatas.isEmpty {
-            sunValues.append(0)
-        }
-        setChart(dataName: optionTextField.text!, dataPoints: times.dropLast(times.count - sunValues.count), values: sunValues, goal: ChartUtility.SunGoal, max: ChartUtility.SunGoal * 4 / 3)
+        refreshChartData()
+        chartOptionChanged(selected: SegSelect(rawValue: 3)!, pickerOption: options[optionsIndex])
+//        var sunValues = [Double]()
+//        for i in 0..<petDatas.count {
+//            sunValues.append(Double((i + 1) * 3000))
+//        }
+//        if petDatas.isEmpty {
+//            sunValues.append(0)
+//        }
+//        setChart(dataName: optionTextField.text!, dataPoints: times.dropLast(times.count - sunValues.count), values: sunValues, goal: ChartUtility.SunGoal, max: ChartUtility.SunGoal * 4 / 3)
+        // segSelect = 3 : Day
         // Initial Setup : Day && Sun && CurrentDate
-        
-        // 데이터가 없을 경우 Crash!!!!!! 21.03.15
     }
     
-    fileprivate func requestServerData(forDays: UInt, forHours: UInt) -> [PetData] {
+    private func refreshChartData() {
+        petDatas.removeAll()
+        petDatas = requestServerData()//(forDays: 1, forHours: 0)//센서 데이터 수신 코드
+    }
+    
+    fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
 
         var dataArray: [PetData] = []
         let hourInSec: TimeInterval = 3600
         let dayInSec: TimeInterval = 86400 // (86400 == 24Hours in seconds)
         //let weekInSec: TimeInterval = 604800 // (604800 == A week in seconds)
 
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-
         let today = Date()
-        let segDate = dateFormatter.date(from: dateTextField.text!)!
+        //let segDate = dateFormatter.date(from: dateTextField.text!)!
+        let segDate = dateFormatter.date(from: dateFormatter.string(from: datePicker.date))!
+        print("\t[segDate : \(segDate)]")
+        let currentCal = Calendar.current
         let timeIntervalSince1970 = today.timeIntervalSince1970
         let timeIntervalFromMidnight = TimeInterval(Int(timeIntervalSince1970 + hourInSec * 9) % Int(dayInSec))
-        guard !(Calendar.current.compare(segDate, to: today, toGranularity: .day) == ComparisonResult.orderedDescending) else {
+        
+        guard !(currentCal.compare(segDate, to: today, toGranularity: .day) == .orderedDescending) else {
             print("segDate(\(unixtimeToString(unixtime: time_t((segDate.timeIntervalSince1970))))) and today(\(unixtimeToString(unixtime: time_t((today.timeIntervalSince1970))))) is orderedDescending!")
             print("There will be no data!")
+            DispatchQueue.main.async {
+                let alert: UIAlertController = UIAlertController(title: "ERROR in Date!", message: "There is no data for future!", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "Confirm", style: .default) { _ in
+                    self.manageDateFormatter(date: Date())
+                    self.dateTextField.becomeFirstResponder()
+                }
+                alert.addAction(confirm)
+                self.present(alert, animated: true, completion: nil)
+            }
             return []
         }
 
         var endTime: time_t = 0
         var startTime: time_t = 0
+        let segDateYear = currentCal.component(.year,  from: segDate)
+        let segDateMonth = currentCal.component(.month,  from: segDate)
+        let segDateDay = currentCal.component(.day,  from: segDate)
         let segSelect = SegSelect(rawValue: chartSelect.selectedSegmentIndex)!
-        print("segDate(\(unixtimeToString(unixtime: time_t((segDate.timeIntervalSince1970))))) and today(\(unixtimeToString(unixtime: time_t((today.timeIntervalSince1970))))) is", terminator: " ")
+        print("segDate(\(unixtimeToString(unixtime: time_t((segDate.timeIntervalSince1970))))) and today(\(unixtimeToString(unixtime: time_t((today.timeIntervalSince1970)))))")
+        
         switch segSelect {
         case SegSelect.Year:
-            print("[ Year Data! ]")
-            // 
-            //startTime = Int((timeIntervalSince1970 - timeIntervalFromMidnight) * 1000)
-            //endTime = startTime + Int((dayInSec - 1) * 1000)
+            print("[ Year Data! \(segDateYear)년도의 데이터만을 불러옵니다.]")
+            // Nothing to do here...
         case SegSelect.Month:
-            print("[ Month Data! ]")
+            print("[ Month Data! \(segDateMonth)월 1~\(segDateDay)일간의 데이터만을 불러옵니다.]")
             
-            let segDateYear = Calendar.current.component(.year,  from: segDate)
-            let segDateMonth = Calendar.current.component(.month,  from: segDate)
-            //let segDateDay = Calendar.current.component(.day,  from: segDate)
-            let daysOfThisMonth = getDaysInMonth(month: segDateMonth, year: segDateYear)!
-            //let daysOfLastMonth = getDaysInMonth(month: segDateMonth - 1, year: segDateYear)!
+            //let daysOfThisMonth = getDaysInMonth(month: segDateMonth, year: segDateYear)!
 
             endTime = Int((segDate.timeIntervalSince1970 + dayInSec - 1) * 1000)
-            startTime = endTime - Int((dayInSec * Double(daysOfThisMonth)) * 1000)
+            startTime = endTime - Int((dayInSec * Double(segDateDay)) * 1000)
         case SegSelect.Week:
-            print("[ Week Data! ]")
-
+            print("[ Week Data! 7일간(\(segDateMonth)월 \(segDateDay)일 포함)의 데이터를 불러옵니다.]")
+            //let weekday = currentCal.component(.weekday, from: segDate)
+            //startTime = Int((segDate.timeIntervalSince1970 - (dayInSec * Double(weekday - 1))) * 1000)
             startTime = Int((segDate.timeIntervalSince1970 - (dayInSec * 6)) * 1000)
             endTime = Int((segDate.timeIntervalSince1970 + dayInSec - 1) * 1000)
         case SegSelect.Day:
             print("[ Day Data! ]")
-            if Calendar.current.compare(segDate, to: today, toGranularity: .day) == .orderedSame {
+            if currentCal.compare(segDate, to: today, toGranularity: .day) == .orderedSame {
                 print("Same Day!")
 
                 // 00시부터 지금까지
                 startTime = Int((timeIntervalSince1970 - timeIntervalFromMidnight) * 1000)
                 endTime = Int(timeIntervalSince1970 * 1000)
-            } else if Calendar.current.compare(segDate, to: today, toGranularity: .day) == ComparisonResult.orderedAscending {
+            } else if currentCal.compare(segDate, to: today, toGranularity: .day) == ComparisonResult.orderedAscending {
                 print("orderedAscending!")
 
                 startTime = Int(segDate.timeIntervalSince1970 * 1000)
@@ -141,26 +160,18 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             }
         }
         print("requestServerData(From : \(unixtimeToString(unixtime: startTime / 1000))), Til : \(unixtimeToString(unixtime: endTime / 1000)))")
-        //print("rearTime RAW : \(rearTime), rearTime [\(unixtimeToString(unixtime: time_t(rearTime / 1000)))]")
-        //print("frontTime RAW : \(frontTime), frontTime [\(unixtimeToString(unixtime: time_t(frontTime / 1000)))]")
+        //print("startTime RAW : \(startTime), endTime RAW : \(endTime)")
 
-        
-        
-        
-        
-        let date = Date()
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: date)
-        
-        let analysisData: AnalysisData = AnalysisData(_petID: 38, _startMilliSec: startTime, _endMilliSec: endTime)
-        let analysisData_Year: AnalysisData_Year = AnalysisData_Year(_petID: 38, _year: year)
-        let server: KittyDocServer = KittyDocServer()
-        
+        let petID = 38
+        let analysisData = AnalysisData(_petID: petID, _startMilliSec: startTime, _endMilliSec: endTime)
+        let server = KittyDocServer()
         var analysisResponse: ServerResponse!
+        
         switch segSelect {
         case SegSelect.Year:
             print("[ server.sensorRequestYear() ]")
-            analysisResponse = server.sensorRequestYear(data: analysisData_Year)
+            let analData_Year = AnalysisData_Year(_petID: petID, _year: segDateYear)
+            analysisResponse = server.sensorRequestYear(data: analData_Year)
         case SegSelect.Month:
             print("[ server.sensorRequestDay(Month) ]")
             analysisResponse = server.sensorRequestDay(data: analysisData)
@@ -171,12 +182,12 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             print("[ server.sensorRequestHour() ]")
             analysisResponse = server.sensorRequestHour(data: analysisData)
         }
+        
         if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS) {
             print("ANALYSIS_SUCCESS!!")
-            print(analysisResponse.getMessage())
-            //print(analysisResponse.getMessage() as! String)
-
+            
             let jsonString: String = analysisResponse.getMessage() as! String
+            //print(jsonString)
             if let arrData = jsonString.data(using: .utf8) {
                 do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
@@ -195,8 +206,11 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
                             petData.kalVal = jsonArray[i]["KalVal"] as! Double
                             petData.waterVal = jsonArray[i]["WaterVal"] as! Int
                             dataArray.append(petData)
+                            
                             print("Time : \(unixtimeToString(unixtime: time_t(petData.time)))", terminator: " ")
-                            print("Sun : \(petData.sunVal)")
+                            print("Sun : \(petData.sunVal)", terminator: " ")
+                            print("UV : \(petData.uvVal)", terminator: " ")
+                            print("Vit-D : \(petData.vitDVal)")
                         }
                     }
                 } catch {
@@ -255,7 +269,6 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 }
 
 extension AnalysisViewController {
-    
     enum SegSelect: Int {
         case Year = 0
         case Month
@@ -365,15 +378,8 @@ extension AnalysisViewController {
     func chartOptionChanged(selected segSelect: SegSelect, pickerOption: String) {
         print("chartOptionChanged(selected: \(segSelect), pickerOption: \(pickerOption))")
         
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let date = dateFormatter.date(from: dateTextField.text!)
-        
-        let year = Calendar.current.component(.year,  from: date!)
-        let month = Calendar.current.component(.month,  from: date!)
-        //let day = Calendar.current.component(.day,  from: date!)
-        //let hour = Calendar.current.component(.hour,  from: date!)
-        
+
         var values = [Double]()
         var valueGoal: Double = 0
         let optSelect = OptSelect(rawValue: optionsIndex)!
@@ -443,37 +449,72 @@ extension AnalysisViewController {
 
         switch segSelect {
         case SegSelect.Year:
-            print("And Year Data![Demo]")
-            var monthValues = [Double]()
-            for i in 1...12 {
-                monthValues.append(Double(i * 10))
+            print("And Year Data! [Demo]")
+
+            dateFormatter.dateFormat = "yyyy"
+            dateTextField.text = dateFormatter.string(from: datePicker.date)
+
+//            let segDate = dateFormatter.date(from: dateTextField.text!)!
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let segDate = dateFormatter.date(from: dateFormatter.string(from: datePicker.date))!
+            let segDateMonth = Calendar.current.component(.month,  from: segDate)
+            print("[\tsegDate : \(segDate), segDateMonth : \(segDateMonth)]")
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
+            print("Show data only from 1st to until \(segDateMonth)")
+            print("values : ", values)
+            if values.count > (12 - segDateMonth) {
+                values.removeLast(12 - segDateMonth)
             }
-            setChart(dataName: "Year", dataPoints: months, values: monthValues, goal: 80, max: 150)
+            
+            if petDatas.isEmpty {
+                values.append(0)
+            }
+
+            setChart(dataName: optionTextField.text!, dataPoints: months.dropLast(months.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case SegSelect.Month:
             print("And Month Data![Demo]")
-            guard let numberOfDays = getDaysInMonth(month: month, year: year) else {
-                print("Error in getDaysInMonth(month: , year:)!!")
-                return
+            
+            dateFormatter.dateFormat = "yyyy-MM"
+            dateTextField.text = dateFormatter.string(from: datePicker.date)
+            
+//            guard let numberOfDays = getDaysInMonth(month: month, year: year) else {
+//                print("Error in getDaysInMonth(month: , year:)!!")
+//                return
+//            }
+            
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
+            if petDatas.isEmpty {
+                values.append(0)
             }
-            var dayValues = [Double]()
-            for i in 1...numberOfDays {
-                dayValues.append(Double(i * 3))
-            }
-            setChart(dataName: "Month", dataPoints: days.dropLast(31-numberOfDays), values: dayValues, goal: 80, max: 150)
+
+            setChart(dataName: optionTextField.text!, dataPoints: days.dropLast(days.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case SegSelect.Week:
-            print("And Week Data![Demo]")
-            var weekValues = [Double]()
-            for i in 1...7 {
-                weekValues.append(Double(i * 15))
+            print("And Week Data!")
+            
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            dateTextField.text = dateFormatter.string(from: datePicker.date)
+            
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
+            if petDatas.isEmpty {
+                values.append(0)
             }
-            setChart(dataName: "Week", dataPoints: daysofweek, values: weekValues, goal: 80, max: 150)
+
+            setChart(dataName: optionTextField.text!, dataPoints: daysofweek.dropLast(daysofweek.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case SegSelect.Day:
             print("And Day Data!")
             
-            //let hour = Calendar.current.component(.hour,  from: Date())
-            for i in 0..<petDatas.count {
-                values[i] = Double(i + 1) * valueGoal / 24
-            }
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            dateTextField.text = dateFormatter.string(from: datePicker.date)
+            
+//            for i in 0..<petDatas.count {
+//                values[i] = Double(i + 1) * valueGoal / 24
+//            }
             if petDatas.isEmpty {
                 values.append(0)
             }
@@ -486,8 +527,7 @@ extension AnalysisViewController {
         print("selectedSegChanged()")
         
         // 날짜 세그먼트가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
-        petDatas.removeAll()
-        petDatas = requestServerData(forDays: 1, forHours: 0)//센서 데이터 수신 코드
+        refreshChartData()
 
         chartOptionChanged(selected: SegSelect(rawValue: segment.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
     }
@@ -508,11 +548,21 @@ extension AnalysisViewController {
         if date != nil {
             datePicker.date = date!
         }
-        let dateFormatter = DateFormatter()
         //dateFormatter.dateStyle = .long
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateTextField.text = dateFormatter.string(from: datePicker.date)
         
+        switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
+        case SegSelect.Year:
+            print("Year!")
+            dateFormatter.dateFormat = "yyyy"
+        case SegSelect.Month:
+            print("Month!")
+            dateFormatter.dateFormat = "yyyy-MM"
+        default:
+            print("Week and Day!")
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+        }
+        dateTextField.text = dateFormatter.string(from: datePicker.date)
+
         dateFormatter.dateFormat = "yyyyMMdd"
         dateInput = dateFormatter.string(from: datePicker.date)
         print("dateTextField.text : \(dateTextField.text ?? "0000-00-00"), dateInput : \(dateInput)")
@@ -523,9 +573,8 @@ extension AnalysisViewController {
         dateTextField.resignFirstResponder()//self.view.endEditing(true)
 
         // 날짜가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
-        petDatas.removeAll()
-        petDatas = requestServerData(forDays: 1, forHours: 0)//센서 데이터 수신 코드
-
+        refreshChartData()
+        
         chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
 
     }
@@ -546,18 +595,6 @@ extension AnalysisViewController {
         }
     }
 
-//    @objc func didTapStartSync() {
-//        let deviceManager = DeviceManager.shared
-//
-//        if deviceManager.isConnected {
-//            print("didTapStartSync() will start sync")
-//            deviceManager.startSync()
-//            //deviceManager.getUUID()
-//            //deviceManager.setRTC()
-//        } else {
-//            print("didTapStartSync() Not Connected to KittyDoc Device!")
-//        }
-//    }
 }
 
 extension AnalysisViewController {
@@ -667,7 +704,7 @@ extension AnalysisViewController {
     func initDateTextField() {
         dateTextField = ConstantUITextField()
         let date = Date()
-        let dateFormatter = DateFormatter()
+
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateTextField.font = UIFont.systemFont(ofSize: 25)
         dateTextField.text = dateFormatter.string(from: date)
@@ -680,6 +717,8 @@ extension AnalysisViewController {
         datePicker.datePickerMode = .date
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            //datePicker.preferredDatePickerStyle = UIDatePickerStyle.compact
         }
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
 

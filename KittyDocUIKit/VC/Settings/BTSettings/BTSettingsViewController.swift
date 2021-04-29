@@ -16,33 +16,34 @@ class BTSettingsViewController: UIViewController {
     var deviceManager: DeviceManager = DeviceManager.shared
     var delegate: DeviceManagerDelegate!
     private var viewReloadTimer: Timer?
-    var peripherals: [PeripheralData] = []
+    var petDevices = [String]()
+    var knownDevices = [PeripheralData]()
+    private let sections: [String] = ["Known Devices", "Found Devices"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Manage Device"
-        //self.navigationItem.prompt = "기기 등록을 진행해주세요"
-        
+
         print("BTSettingsViewController.viewDidLoad()")
-//        view.backgroundColor = .white
         safeArea = view.layoutMarginsGuide
+
+        if !PetInfo.shared.petArray.isEmpty { // Pet's Device UUID in String
+            for pet in PetInfo.shared.petArray {
+                //print("Pet<\(pet.PetName)>'s Device\t: [ \(pet.Device) ]")
+                if (!pet.Device.isEmpty && pet.Device != "No device") {
+                    let uuid: CBUUID? = CBUUID(string: pet.Device)
+                    // 안드로이드에서 등록한 MAC Address 형식이면 nil 이 된다
+                    if uuid != nil && !petDevices.contains(uuid!.uuidString) {
+                        petDevices.append(uuid!.uuidString)
+                    }
+                }
+            }
+        }
+        print("petDevices :", petDevices)
 
         setTableView()
         deviceManager.delegate = self
-        if deviceManager.isConnected {
-            print("\ndeviceManager.isConnected == true")
-            //이미 연결된 기기가 있을 경우 어떻게?
-            var prevPeripheralData = PeripheralData()
-            prevPeripheralData.peripheral = deviceManager.peripheral
-            deviceManager.peripheral?.readRSSI()
-            prevPeripheralData.rssi = 0//deviceManager.curRSSI
-            peripherals.append(prevPeripheralData)
-            deviceManager.scanPeripheral()
-
-        } else {
-            print("\ndeviceManager.isConnected != true")
-            deviceManager.scanPeripheral()
-        }
+        deviceManager.scanPeripheral()
     }
     
     @objc func pullToRefresh(_ sender: Any) {
@@ -65,6 +66,22 @@ class BTSettingsViewController: UIViewController {
         viewReloadTimer?.invalidate()
     }
     
+    public func manageFoundDevices() {
+        knownDevices.removeAll()
+        for i in (0..<deviceManager.foundDevices.count).reversed() {
+            for uuid in petDevices {
+                if deviceManager.foundDevices[i].peripheral!.identifier.uuidString == uuid {
+                    var peripheralData = PeripheralData()
+                    peripheralData.peripheral = deviceManager.foundDevices[i].peripheral!
+                    peripheralData.rssi = deviceManager.foundDevices[i].rssi
+                    knownDevices.append(peripheralData)
+                    //deviceManager.foundDevices.remove(at: i)
+                }
+            }
+        }
+        tableView.reloadData()
+    }
+    
     @objc private func refreshTableView() {
         print("refreshTableView()")
         guard deviceManager.manager != nil else {
@@ -74,6 +91,7 @@ class BTSettingsViewController: UIViewController {
         if deviceManager.foundDevices.count > 0 && deviceManager.manager!.isScanning {
             tableView.reloadData()
         }
+        manageFoundDevices()
     }
 
     fileprivate func setTableView() {
@@ -98,14 +116,40 @@ class BTSettingsViewController: UIViewController {
     }
 }
 
-extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
-    // TableView Funcs
+extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource { // TableView Funcs
+
+    // Returns the number of sections.
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    // Returns the title of the section.
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section]
+    }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return deviceManager.foundDevices.count// peripherals.count
+        if section == 0 {
+            return knownDevices.count
+        } else {// section == 1
+            return deviceManager.foundDevices.count
+        }
+        //return deviceManager.foundDevices.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let peripheralData = deviceManager.foundDevices[indexPath.row]//peripherals[indexPath.row] // 종종 index 오류 발생... Why???
+        // 가끔 OutOfRangeException 발생... Cell 생성 이전에 foundDevices에 변동이 있을 경우...
+        guard indexPath.row < deviceManager.foundDevices.count else {
+            print("There's something wrong with the deviceManager.foundDevices!")
+            exit(0)
+        }
+        var peripheralData: PeripheralData
+        if indexPath.section == 0 {
+            peripheralData = knownDevices[indexPath.row]
+        } else { // indexPath.section == 1
+            peripheralData = deviceManager.foundDevices[indexPath.row]
+        }
+        //let peripheralData = deviceManager.foundDevices[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PeripheralDataTableViewCell
         
         cell.setTableViewCell(peripheralData: peripheralData)
@@ -114,7 +158,19 @@ extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let peripheralData = deviceManager.foundDevices[indexPath.row]
+        // 가끔 OutOfRangeException 발생... Cell 생성 이전에 foundDevices에 변동이 있을 경우...
+        guard indexPath.row < deviceManager.foundDevices.count else {
+            print("There's something wrong with the deviceManager.foundDevices!")
+            exit(0)
+        }
+        var peripheralData: PeripheralData
+        if indexPath.section == 0 {
+            peripheralData = knownDevices[indexPath.row]
+        } else { // indexPath.section == 1
+            peripheralData = deviceManager.foundDevices[indexPath.row]
+        }
+
+        //let peripheralData = deviceManager.foundDevices[indexPath.row]
         let alert: UIAlertController = UIAlertController(title: "Connect?", message: "KittyDoc will connect to \(peripheralData.peripheral!.name ?? "Unknown")", preferredStyle: .alert)
         let confirm = UIAlertAction(title: "OK", style: .default) { [self] _ in
             deviceManager.manager?.stopScan()
@@ -122,8 +178,8 @@ extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
             deviceManager.peripheral = peripheralData.peripheral
             deviceManager.connectPeripheral()//self.deviceManager.connectPeripheral()
         }
-        alert.addAction(confirm)
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(confirm)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
         print("You've selected \(indexPath.row)th Row!")
@@ -181,15 +237,14 @@ extension BTSettingsViewController: DeviceManagerDelegate {
 
     func onDevicesFound(peripherals: [PeripheralData]) {// peripherals 사용?
         //print("[+]onDevicesFound()")
-        // 찾은 장치는 이미 테이블뷰에 잘 보이니, viewReloadTimer만 작동 중지시킨다?
         viewReloadTimer?.invalidate()
-        tableView.reloadData()// 검색된 기기 모두 보여주다가 foundDevices 정렬 후에 reloadData()하거나, 모든 기기 다 찾은 후에 보여줄 것인가?
+        manageFoundDevices()
         //print("[-]onDevicesFound()")
     }
 
     func onConnectionFailed() {
         DispatchQueue.main.async {
-            let alert: UIAlertController = UIAlertController(title: "Failed to Connect!", message: "Failed to Connect to KittyDoc Device!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Failed to Connect!", message: "Failed to Connect to KittyDoc Device!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
             self.present(alert, animated: true, completion: nil)
@@ -200,14 +255,12 @@ extension BTSettingsViewController: DeviceManagerDelegate {
         print("[+]onServiceFound")
         print("<<< Found all required Service! >>>")
         DispatchQueue.main.async {
-            //let alert: UIAlertController = UIAlertController(title: "Service Found!", message: "Found all required Service!", preferredStyle: .alert)
-            let alert: UIAlertController = UIAlertController(title: "KittyDoc is all Set!", message: "Ready to go!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "KittyDoc is all Set!", message: "Ready to go!", preferredStyle: .alert)
             let confirm = UIAlertAction(title: "OK", style: .default) { _ in
                 self.navigationController?.popViewController(animated: true)
                 self.deviceManager.getBattery()
                 //self.deviceManager.startSync()
             }
-//            let confirm = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(confirm)
             self.present(alert, animated: true, completion: nil)
         }
@@ -217,7 +270,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
     
     func onDfuTargFound(peripheral: CBPeripheral) {
         DispatchQueue.main.async {
-            let alert: UIAlertController = UIAlertController(title: "Found DFU Device!", message: "There is a DFU Device!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Found DFU Device!", message: "There is a DFU Device!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
             self.present(alert, animated: true, completion: nil)
@@ -233,9 +286,9 @@ extension BTSettingsViewController: DeviceManagerDelegate {
     }
     
     func onSyncProgress(progress: Int) {
-        //print("[+]onSyncProgress")
-        //print("Progress Percent : \(progress)")
-        //print("[-]onSyncProgress")
+        print("[+]onSyncProgress")
+        print("Progress Percent : \(progress)")
+        print("[-]onSyncProgress")
     }
     
     func onReadBattery(percent: Int) {
