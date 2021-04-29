@@ -23,6 +23,26 @@ class ConstantUITextField: UITextField {
     }
 }
 
+enum SegSelect: Int {
+    case Year = 0
+    case Month
+    case Week
+    case Day
+}
+
+enum OptSelect: Int {
+    case Sun = 0
+    case UV
+    case Vit_D
+    case Exercise
+    case Walk
+    case Steps
+    case LuxPol
+    case Rest
+    case Kal
+    case Water
+}
+
 class AnalysisViewController: UIViewController, ChartViewDelegate {
     var userInterfaceStyle: UIUserInterfaceStyle!
     var deviceManager = DeviceManager.shared
@@ -88,8 +108,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     }
     
     fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
-
-        var dataArray: [PetData] = []
+        var dataArray = [PetData]()
         let hourInSec: TimeInterval = 3600
         let dayInSec: TimeInterval = 86400 // (86400 == 24Hours in seconds)
         //let weekInSec: TimeInterval = 604800 // (604800 == A week in seconds)
@@ -131,10 +150,24 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             print("[ Year Data! \(segDateYear)년도의 데이터만을 불러옵니다.]")
             // Nothing to do here...
         case SegSelect.Month:
-            print("[ Month Data! \(segDateMonth)월 1~\(segDateDay)일간의 데이터만을 불러옵니다.]")
-            //let daysOfThisMonth = getDaysInMonth(month: segDateMonth, year: segDateYear)!
-            endTime = Int((segDate.timeIntervalSince1970 + dayInSec - 1) * 1000)
-            startTime = endTime - Int((dayInSec * Double(segDateDay)) * 1000)
+            print("[ Month Data! ]")//\(segDateMonth)월 1~\(segDateDay)일간의 데이터만을 불러옵니다.]")
+            let comparisonResult = currentCal.compare(segDate, to: today, toGranularity: .month)
+            if comparisonResult == .orderedSame {
+                print("Same Month!")
+
+                endTime = Int((segDate.timeIntervalSince1970 + dayInSec - 1) * 1000)
+                startTime = endTime - Int((dayInSec * Double(segDateDay)) * 1000)
+            } else if comparisonResult == ComparisonResult.orderedAscending {
+                print("orderedAscending!")
+                
+                let daysOfThisMonth = getDaysInMonth(month: segDateMonth, year: segDateYear)!
+                let tmpDate = dateFormatter.date(from: String(segDateYear)+"-"+String(segDateMonth)+"-"+String(daysOfThisMonth))!
+
+                endTime = Int((tmpDate.timeIntervalSince1970 + dayInSec - 1) * 1000)
+                startTime = endTime - Int((dayInSec * Double(daysOfThisMonth)) * 1000)
+            }
+            print("startTime: \(unixtimeToString(unixtime: startTime / 1000))), endTime: \(unixtimeToString(unixtime: endTime / 1000)))")
+
         case SegSelect.Week:
             print("[ Week Data! 7일간(\(segDateMonth)월 \(segDateDay)일 포함)의 데이터를 불러옵니다.]")
             //let weekday = currentCal.component(.weekday, from: segDate)
@@ -161,7 +194,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         print("requestServerData(From : \(unixtimeToString(unixtime: startTime / 1000))), Til : \(unixtimeToString(unixtime: endTime / 1000)))")
         //print("startTime RAW : \(startTime), endTime RAW : \(endTime)")
 
-        let petID = 38// // // // // // // // // // 
+        let petID = 41// // // // // // // // // // 
         let analysisData = AnalysisData(_petID: petID, _startMilliSec: startTime, _endMilliSec: endTime)
         let server = KittyDocServer()
         var analysisResponse: ServerResponse!
@@ -268,26 +301,6 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 }
 
 extension AnalysisViewController {
-    enum SegSelect: Int {
-        case Year = 0
-        case Month
-        case Week
-        case Day
-    }
-
-    enum OptSelect: Int {
-        case Sun = 0
-        case UV
-        case Vit_D
-        case Exercise
-        case Walk
-        case Steps
-        case LuxPol
-        case Rest
-        case Kal
-        case Water
-    }
-    
     func setChart(dataName: String, dataPoints: [String], values: [Double], goal: Double, max: Double) {
         // 데이터 생성
         var dataEntries: [BarChartDataEntry] = []
@@ -301,7 +314,7 @@ extension AnalysisViewController {
         // 차트 컬러
         chartDataSet.colors = [.systemBlue] // ChartColorTemplates.material()
         //chartDataSet.axisDependency = .left // .right
-        //chartDataSet.highlightEnabled = true
+        chartDataSet.highlightEnabled = true
         
         // 데이터의 값을 출력할 것인가?
         chartDataSet.drawValuesEnabled = false

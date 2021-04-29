@@ -31,7 +31,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                 do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject]{
                         PetInfo.shared.petArray.removeAll()
-                        for i in 0..<jsonArray.count{
+                        for i in 0..<jsonArray.count {
                             let petInfo:PetInfo = PetInfo()
                             petInfo.PetID = jsonArray[i]["PetID"] as! Int
                             petInfo.PetName = jsonArray[i]["PetName"] as! String

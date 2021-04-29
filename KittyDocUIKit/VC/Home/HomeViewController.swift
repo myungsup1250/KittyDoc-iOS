@@ -106,7 +106,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                             petInfo.PetSex = jsonArray[i]["PetSex"] as! String
                             petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
                             petInfo.Device = jsonArray[i]["Device"] as! String
-                            
+                            print("[ PetName :", petInfo.PetName, "petID :", petInfo.PetID, "]")
 //                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
 //                                return original.PetName == petInfo.PetName
 //                            }) {
