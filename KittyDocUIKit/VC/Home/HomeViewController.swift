@@ -20,11 +20,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var walkView: UIView!
     @IBOutlet weak var sunExView: UIView!
     @IBOutlet weak var vitaDView: UIView!
-    @IBOutlet weak var waterView: UIView!
-    @IBOutlet weak var weightView: UIView!
-    
-    
+    @IBOutlet weak var uvRayView: UIView!
+    @IBOutlet weak var LuxPolView: UIView!
     @IBOutlet weak var progressView: RingProgressGroupView!
+    
+    @IBOutlet weak var stepLabel: UILabel!
+    @IBOutlet weak var kcalLabel: UILabel!
+    @IBOutlet weak var sunExLabel: UILabel!
+    @IBOutlet weak var vitaDLabel: UILabel!
+    @IBOutlet weak var uvRayLabel: UILabel!
+    @IBOutlet weak var luxPolLabel: UILabel!
+    @IBOutlet weak var stepProgressView: UIProgressView!
     
     
     private let sideMenu = SideMenuNavigationController(rootViewController: UIViewController())
@@ -36,7 +42,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     var waterValue: Int = 0 {
         didSet {
-            petWaterLabel.text = "\(waterValue)"
+            //petWaterLabel.text = "\(waterValue)"
             waterRing.value = CGFloat(waterValue)
         }
     }
@@ -50,8 +56,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     var walkValue: Int = 0
     var stepValue: Int = 0
     var vitaDValue: Double = 0
-    var sunExValue: Double = 0
-    var lightValue: Int = 0
+    var sunExValue: Int = 0
+    var uvRayValue: Double = 0
+    var luxPolValue: Double = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +67,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
         sideMenu.leftSide = true
         SideMenuManager.default.leftMenuNavigationController = sideMenu
-        SideMenuManager.default.addPanGestureToPresent(toView: view)
+        SideMenuManager.default.addPanGestureToPresent(toView: self.view)
         piChart.delegate = self
         self.title = "Hello, " + "JENNY" + "👋"
         self.navigationController?.navigationBar.prefersLargeTitles = true
@@ -124,7 +131,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         }
         ////json parsing
         if !PetInfo.shared.petArray.isEmpty {
-            petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+           // petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
         }
         
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -134,7 +141,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         PetChange(index: 0)
         //setPiChartsData()
         //piChartView.addSubview(progress)
+        setData()
 
+        stepProgressView.setProgress(2, animated: true)
+        stepProgressView.progress = 0.3
     }
     
     func setPiChartsData() {
@@ -154,14 +164,23 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         piChart.data = data
     }
     
+    func setData() {
+        stepLabel.text = "\(stepValue)"
+        kcalLabel.text = ""
+        sunExLabel.text = "\(sunExValue) Lux"
+        vitaDLabel.text = "\(vitaDValue) iu"
+        uvRayLabel.text = "\(uvRayValue) 점"
+        luxPolLabel.text = "\(luxPolValue) 점"
+    }
+    
     
         
     func viewAddBackground() {
         walkView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-        sunExView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        sunExView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.6849207594))
         vitaDView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-        waterView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-        weightView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        uvRayView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        LuxPolView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.6786131195))
     }
     
     //    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
@@ -198,25 +217,26 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         //let petData = PetData()
                         //petData.time = jsonArray[0]["Time"] as! CLong
                         //petData.time /= 1000 // Translate millisec to sec
-                        lightValue = jsonArray[0]["SunVal"] as! Int
+                        sunExValue = jsonArray[0]["SunVal"] as! Int
                         //petData.uvVal = jsonArray[0]["UvVal"] as! Double
+                        uvRayValue = jsonArray[0]["UvVal"] as! Double
                         vitaDValue = jsonArray[0]["VitDVal"] as! Double
                         exerciseValue = jsonArray[0]["ExerciseVal"] as! Int
                         walkValue = jsonArray[0]["WalkVal"] as! Int
                         breakValue = jsonArray[0]["RestVal"] as! Int
                         stepValue = jsonArray[0]["StepVal"] as! Int
-                        sunExValue = jsonArray[0]["LuxpolVal"] as! Double
+                        luxPolValue = jsonArray[0]["LuxpolVal"] as! Double
                         
                         //petData.kalVal = jsonArray[0]["KalVal"] as! Double
                         //petData.waterVal = jsonArray[0]["WaterVal"] as! Int
-                        print("today's data!")
-                        print(lightValue)
-                        print(vitaDValue)
-                        print(exerciseValue)
-                        print(walkValue)
-                        print(stepValue)
-                        print(sunExValue)
-                        print(breakValue)
+//                        print("today's data!")
+//                        print(lightValue)
+//                        print(vitaDValue)
+//                        print(exerciseValue)
+//                        print(walkValue)
+//                        print(stepValue)
+//                        print(sunExValue)
+//                        print(breakValue)
                         
                         piValues.append(exerciseValue)
                         piValues.append(breakValue)
@@ -261,7 +281,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        petNameSelectTF.text = PetInfo.shared.petArray[row].PetName //텍스트 필드 이름 변경
+        //petNameSelectTF.text = PetInfo.shared.petArray[row].PetName //텍스트 필드 이름 변경
         selectedRow = row
         PetChange(index: row) //표시되는 데이터들 변경
     } //펫이 선택되었을 때 호출되는 함수!!!
@@ -290,291 +310,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         let toolBar = UIToolbar()
         toolBar.frame = CGRect(x: 0, y: 0, width: 0, height: 35)
         toolBar.setItems([flexSpace, doneBtn], animated: true)
-        petNameSelectTF.inputAccessoryView = toolBar
+        //petNameSelectTF.inputAccessoryView = toolBar
         
         return picker
     }()
     
-    let petNameSelectTF: UITextField = {
-        let petNameSelectTF = UITextField()
-        petNameSelectTF.translatesAutoresizingMaskIntoConstraints = false
-        petNameSelectTF.placeholder = "냥냥"
-        return petNameSelectTF
-    }()
-    
-    let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-    
-    let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 15
-        return stackView
-    }()
-    
-    let piStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.addBackground(color: .white)
-
-        return stackView
-    }()
-    
-    let petTripletTitleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "운동량 / 휴식량 / 산책량"
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        
-        return label
-    }()
-    
-    let walkStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.addBackground(color: .white)
-        return stackView
-    }()
-    
-    let walkProgressViewHolder: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let walkProgressView: UIProgressView = {
-        let view = UIProgressView(progressViewStyle: .bar)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.trackTintColor = .lightGray
-        view.progressTintColor = .systemBlue
-        view.setProgress(0.5, animated: true)
-        return view
-    }()
-    
-    let walkAndCalStackView: UIStackView = {
-       let stackView = UIStackView()
-        stackView.axis = .horizontal
-        return stackView
-    }()
-    
-    let petWalkTitleLabel: UILabel = {
-        let walk = UILabel()
-        walk.translatesAutoresizingMaskIntoConstraints = false
-        walk.text = "걸음 수"
-        walk.font = UIFont.boldSystemFont(ofSize: 18)
-        return walk
-    }()
-    
-    lazy var petWalkLabel: UILabel = {
-        let label = UILabel()
-        label.text = "\(stepValue) / 7000"
-        label.font = UIFont.boldSystemFont(ofSize: 25)
-        return label
-    }()
-
-    
-    let petCalLabel: UILabel = {
-        let cal = UILabel()
-        cal.translatesAutoresizingMaskIntoConstraints = false
-        cal.text = "300 kcal"
-        return cal
-    }()
-    
-    let sunStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 20
-        stackView.addBackground(color: .white)
-        return stackView
-    }()
-    
-    let daySunStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
-    
-    let dayVitaDStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
-
-    
-    let petSunExTitleLabel: UILabel = {
-        let sunex = UILabel()
-        sunex.translatesAutoresizingMaskIntoConstraints = false
-        sunex.text = "햇빛 노출량"
-        sunex.font = UIFont.boldSystemFont(ofSize: 18)
-        return sunex
-    }()
-    
-    lazy var petSunExLabel: UILabel = {
-        let sunex = UILabel()
-        sunex.translatesAutoresizingMaskIntoConstraints = false
-        sunex.text = "\(sunExValue) lux"
-        sunex.font = UIFont.boldSystemFont(ofSize: 25)
-        return sunex
-    }()
-    
-    let petVitaDTitleLabel: UILabel = {
-        let vitaD = UILabel()
-        vitaD.translatesAutoresizingMaskIntoConstraints = false
-        vitaD.text = "비타민 D"
-        vitaD.font = UIFont.boldSystemFont(ofSize: 18)
-        return vitaD
-    }()
-    
-    lazy var petVitaDLabel: UILabel = {
-        let vitaD = UILabel()
-        vitaD.translatesAutoresizingMaskIntoConstraints = false
-        vitaD.text = "\(vitaDValue) lux"
-        vitaD.font = UIFont.boldSystemFont(ofSize: 25)
-        return vitaD
-    }()
-    
-    
-    let petLightTitleLabel: UILabel = {
-        let light = UILabel()
-        light.translatesAutoresizingMaskIntoConstraints = false
-        light.text = "빛 공해량 : "
-        
-        return light
-    }()
-
-    let waterStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        stackView.addBackground(color: .white)
-        return stackView
-    }()
-    
-    let waterShowStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 20
-        stackView.addBackground(color: .white)
-        return stackView
-    }()
-    
-    let waterBtnStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.spacing = 20
-        stackView.addBackground(color: .white)
-        return stackView
-    }()
-    
-    lazy var petWaterTitleLabel: UILabel = {
-        let water = UILabel()
-        water.translatesAutoresizingMaskIntoConstraints = false
-        water.text = "수분량"
-        water.font = UIFont.boldSystemFont(ofSize: 18)
-        return water
-    }()
-    
-    lazy var petWaterLabel: UILabel = {
-        let water = UILabel()
-        water.translatesAutoresizingMaskIntoConstraints = false
-        water.text = "\(waterValue)"
-        water.font = UIFont.boldSystemFont(ofSize: 25)
-        return water
-    }()
-    
-    let WaterPlusBtn: UIButton = {
-        let waterBtn = UIButton()
-        waterBtn.translatesAutoresizingMaskIntoConstraints = false
-        waterBtn.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-        waterBtn.contentHorizontalAlignment = .fill
-        waterBtn.contentVerticalAlignment = .fill
-        waterBtn.addTarget(self, action: #selector(didTapWaterBtn), for: .touchUpInside)
-        
-        return waterBtn
-    }()
-    
-    let WaterMinusBtn: UIButton = {
-        let waterBtn = UIButton()
-        waterBtn.translatesAutoresizingMaskIntoConstraints = false
-        waterBtn.setImage(UIImage(systemName: "minus.circle.fill"), for: .normal)
-        waterBtn.contentHorizontalAlignment = .fill
-        waterBtn.contentVerticalAlignment = .fill
-        waterBtn.addTarget(self, action: #selector(didTapWaterBtn), for: .touchUpInside)
-        
-        return waterBtn
-    }()
-    
-    let WeightStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        stackView.addBackground(color: .white)
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
-    
-    let weightShowStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addBackground(color: .white)
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        return stackView
-    }()
-    
-    let petWeightTitleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "체중"
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        return label
-    }()
-    
-    let petWeightLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "30 KG"
-        label.font = UIFont.boldSystemFont(ofSize: 25)
-        return label
-    }()
-    
-    let weightBtnView: UIView = {
-      let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-        
-    }()
-    
-    
-    let WeightInputBtn: UIButton = {
-        let btn =  UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("입력", for: .normal)
-        btn.backgroundColor = .systemBlue
-        btn.layer.cornerRadius = 10
-        btn.clipsToBounds = true
-        return btn
-    }()
     
     
     
@@ -769,7 +509,7 @@ extension UIView {
     func addColor(color: UIColor) {
         self.backgroundColor = color
         self.layer.cornerRadius = 20
-        self.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        self.layer.shadowColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
         self.layer.shadowOpacity = 0.3
         self.layer.shadowOffset = .init(width: self.layer.borderWidth, height: 10)
         self.layer.shadowRadius = 5
@@ -782,5 +522,10 @@ extension UIView {
 extension HomeViewController: ChartViewDelegate {
     
     
+    
+}
+
+
+class SideMenuViewController: UIViewController {
     
 }
