@@ -132,9 +132,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             // Nothing to do here...
         case SegSelect.Month:
             print("[ Month Data! \(segDateMonth)월 1~\(segDateDay)일간의 데이터만을 불러옵니다.]")
-            
             //let daysOfThisMonth = getDaysInMonth(month: segDateMonth, year: segDateYear)!
-
             endTime = Int((segDate.timeIntervalSince1970 + dayInSec - 1) * 1000)
             startTime = endTime - Int((dayInSec * Double(segDateDay)) * 1000)
         case SegSelect.Week:
@@ -145,13 +143,14 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             endTime = Int((segDate.timeIntervalSince1970 + dayInSec - 1) * 1000)
         case SegSelect.Day:
             print("[ Day Data! ]")
-            if currentCal.compare(segDate, to: today, toGranularity: .day) == .orderedSame {
+            let comparisonResult = currentCal.compare(segDate, to: today, toGranularity: .day)
+            if comparisonResult == .orderedSame {
                 print("Same Day!")
 
                 // 00시부터 지금까지
                 startTime = Int((timeIntervalSince1970 - timeIntervalFromMidnight) * 1000)
                 endTime = Int(timeIntervalSince1970 * 1000)
-            } else if currentCal.compare(segDate, to: today, toGranularity: .day) == ComparisonResult.orderedAscending {
+            } else if comparisonResult == ComparisonResult.orderedAscending {
                 print("orderedAscending!")
 
                 startTime = Int(segDate.timeIntervalSince1970 * 1000)
@@ -162,7 +161,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         print("requestServerData(From : \(unixtimeToString(unixtime: startTime / 1000))), Til : \(unixtimeToString(unixtime: endTime / 1000)))")
         //print("startTime RAW : \(startTime), endTime RAW : \(endTime)")
 
-        let petID = 38
+        let petID = 38// // // // // // // // // // 
         let analysisData = AnalysisData(_petID: petID, _startMilliSec: startTime, _endMilliSec: endTime)
         let server = KittyDocServer()
         var analysisResponse: ServerResponse!
