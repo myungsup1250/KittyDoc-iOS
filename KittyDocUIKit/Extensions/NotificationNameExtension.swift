@@ -9,4 +9,5 @@ import Foundation
 
 extension Notification.Name {
     static let receiveSyncDataDone = Notification.Name("receiveSyncDataDone")
+    static let highlightedData = Notification.Name("highlightedData")
 }
