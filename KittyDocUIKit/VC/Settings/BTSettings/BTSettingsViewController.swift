@@ -30,7 +30,7 @@ class BTSettingsViewController: UIViewController {
         if !PetInfo.shared.petArray.isEmpty { // Pet's Device UUID in String
             for pet in PetInfo.shared.petArray {
                 //print("Pet<\(pet.PetName)>'s Device\t: [ \(pet.Device) ]")
-                if (!pet.Device.isEmpty && pet.Device != "No device") {
+                if (!pet.Device.isEmpty && pet.Device != "No device" && pet.Device != "NULL") {
                     let uuid: CBUUID? = CBUUID(string: pet.Device)
                     // 안드로이드에서 등록한 MAC Address 형식이면 nil 이 된다
                     if uuid != nil && !petDevices.contains(uuid!.uuidString) {
