@@ -7,8 +7,8 @@
 
 import Foundation
 
-class PetData{
-    var time: CLong
+class PetData {
+    var time: TimeInterval//CLong
     var sunVal: Int
     var uvVal: Double
     var vitDVal: Double
@@ -34,7 +34,7 @@ class PetData{
         self.waterVal = 0
     }
     
-    init(_time: CLong, _sunVal: Int, _uvVal: Double, _vitDVal: Double, _exerciseVal: Int, _walkVal: Int, _stepVal: Int, _luxpolVal: Double, _restVal: Int, _kalVal: Double, _waterVal: Int){
+    init(_time: TimeInterval, _sunVal: Int, _uvVal: Double, _vitDVal: Double, _exerciseVal: Int, _walkVal: Int, _stepVal: Int, _luxpolVal: Double, _restVal: Int, _kalVal: Double, _waterVal: Int){
         self.time = _time
         self.sunVal = _sunVal
         self.uvVal = _uvVal

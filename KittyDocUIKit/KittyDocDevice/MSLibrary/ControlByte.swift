@@ -39,11 +39,11 @@ public func convertUInt32(bytes: [UInt8], isLittleEndian: Bool) -> UInt32 {
 }
 
 // unixtime 값을 문자열로 변환하여 반환
-func unixtimeToString(unixtime: time_t) -> String { // SleepDoc_Ext_Interface_Data_Type.time_zone 고려 추가?
+func unixtimeToString(unixtime: TimeInterval) -> String { // SleepDoc_Ext_Interface_Data_Type.time_zone 고려 추가?
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = String("yyyy-MM-dd HH:mm:ss") //String("yyyy-MM-dd HH:mm:ss.SSS")
-//    dateFormatter.timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT())
-    let current_date_string = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(unixtime)))
+    dateFormatter.timeZone = TimeZone(secondsFromGMT: TimeZone.current.secondsFromGMT())
+    let current_date_string = dateFormatter.string(from: Date(timeIntervalSince1970: unixtime))
     //print("unixtime : \(unixtime), result : \(current_date_string)")
 
     return current_date_string // dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(unixtime)))

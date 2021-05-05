@@ -568,8 +568,8 @@ extension DeviceManager: CBPeripheralDelegate {
                             print(sensorResponse.getMessage())
                         }// 어쨌든 센서 전송 결과는 봐야한다?
 
-                        let s_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].s_tick))
-                        let e_time = unixtimeToString(unixtime: time_t(kittydoc_data.d[i].e_tick))
+                        let s_time = unixtimeToString(unixtime: TimeInterval(kittydoc_data.d[i].s_tick))
+                        let e_time = unixtimeToString(unixtime: TimeInterval(kittydoc_data.d[i].e_tick))
                         print("|\(String(format: "%10d", kittydoc_data.d[i].s_tick))|\(s_time)|", terminator: "")
                         print("\(String(format: "%10d", kittydoc_data.d[i].e_tick))|\(e_time)|", terminator: "")
                         print("\(String(format: "%5d", kittydoc_data.d[i].steps))|", terminator: "")

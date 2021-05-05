@@ -17,3 +17,19 @@ extension UITextField {
             .eraseToAnyPublisher()
     }
 }
+
+class ConstantUITextField: UITextField {
+    override func caretRect(for position: UITextPosition) -> CGRect {
+        return CGRect.zero
+    }
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        //if action == #selector(paste(_:)) {
+        //    return true
+        //}
+        //return super.canPerformAction(action, withSender: sender)
+        // Can't perform Paste func
+        return false // Disable all funcs
+    }
+}
+

@@ -85,6 +85,7 @@
 		E0BDC31425C871D400D2524B /* CBUUIDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31125C871D400D2524B /* CBUUIDExtension.swift */; };
 		E0BDC31725C8723D00D2524B /* DispatchQueueExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */; };
 		E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */; };
+		E0BE1E94263FBE56008EC181 /* BarChartViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */; };
 		E0F226E925FB3574009F336F /* ChartUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F226E825FB3574009F336F /* ChartUtility.swift */; };
 /* End PBXBuildFile section */
 
@@ -182,6 +183,7 @@
 		E0BDC31125C871D400D2524B /* CBUUIDExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBUUIDExtension.swift; sourceTree = "<group>"; };
 		E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtension.swift; sourceTree = "<group>"; };
 		E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDataTableViewCell.swift; sourceTree = "<group>"; };
+		E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewExtension.swift; sourceTree = "<group>"; };
 		E0F226E825FB3574009F336F /* ChartUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartUtility.swift; sourceTree = "<group>"; };
 		F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -362,6 +364,7 @@
 				E05A7C4525B5AB4F007680E2 /* TextFieldExtention.swift */,
 				E05A7C4825B5ABFB007680E2 /* UIButtonExtension.swift */,
 				E05A7C4B25B5AC31007680E2 /* UIColorExtension.swift */,
+				E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -701,6 +704,7 @@
 				70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */,
 				E0BDC31225C871D400D2524B /* KittyDocUtillity.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,
+				E0BE1E94263FBE56008EC181 /* BarChartViewExtension.swift in Sources */,
 				E05A7CAB25B9387B007680E2 /* ActivityIndicatorView.swift in Sources */,
 				E087BC0525DCF46500C12173 /* NotificationNameExtension.swift in Sources */,
 				E0BDC31725C8723D00D2524B /* DispatchQueueExtension.swift in Sources */,
