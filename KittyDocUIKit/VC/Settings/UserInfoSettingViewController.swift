@@ -36,7 +36,7 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     var nameTF: UITextField!
     var phoneNumberInput: UITextField!
     var datePicker: UIDatePicker!
-    var birthInput: String = "19700101"
+    var birthInput = "19700101"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,11 +131,9 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func textFieldDidEndEditing(_ textField: UITextField) {
-        if nameTF.hasText && phoneNumberInput.hasText && birthInput != nil && genderSelect.selectedSegmentIndex != -1 {
+        if nameTF.hasText && phoneNumberInput.hasText && !birthInput.isEmpty && genderSelect.selectedSegmentIndex != -1 {
             signUpBtn.isOn = .On
-        }
-        
-        else {
+        } else {
             signUpBtn.isOn = .On
         }
     }
@@ -143,9 +141,9 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
     @objc private func didTapRegister() {
         print("didTapRegister(genderSelect : \(genderSelect.selectedSegmentIndex)")//성별 @@@ -1 = 선택안함, 0 = 남성, 1 = 여성, 2 = None
         var gender: String = "None"
-        if(genderSelect.selectedSegmentIndex == 0) {
+        if genderSelect.selectedSegmentIndex == 0 {
             gender = "Male"
-        } else if(genderSelect.selectedSegmentIndex == 1) {
+        } else if genderSelect.selectedSegmentIndex == 1 {
             gender = "FeMale"
         } else {
             gender = "None"
@@ -165,8 +163,8 @@ class UserInfoSettingViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let modifyData:ModifyData = ModifyData(_userId: UserInfo.shared.UserID, _userName: nameTF.text!, _userPhone: phoneNumberInput.text!, _userSex: gender, _userBirth: birthInput)
-        let server:KittyDocServer = KittyDocServer()
+        let modifyData = ModifyData(_userId: UserInfo.shared.UserID, _userName: nameTF.text!, _userPhone: phoneNumberInput.text!, _userSex: gender, _userBirth: birthInput)
+        let server = KittyDocServer()
         let modifyResponse:ServerResponse = server.userModify(data: modifyData)
                     
         if(modifyResponse.getCode() as! Int == ServerResponse.EDIT_SUCCESS){

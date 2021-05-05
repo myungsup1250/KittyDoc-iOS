@@ -9,15 +9,11 @@
 import Foundation
 
 public class KittyDoc_Ext_Interface_Data_Type {
-    var d : Array<KittyDoc_10_Min_Data_Type> = [KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type()]
-//    var d = [KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type()]
+    var d = [KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type(), KittyDoc_10_Min_Data_Type()]
     var time_zone : Int32 = 0   // Time Zone
     var reset_num : Int16 = 0   // Reset 횟수 ( 나중에 tick 보정에 사용할 예정)
     var remainings : Int32 = 0  // 남아있는 데이터 개수
-    //    sleepdoc_10_min_data_type d[SDATA_SIZE];
-    //    int32_t time_zone;      // Time Zone
-    //    int16_t reset_num;      // Reset 횟수 ( 나중에 tick 보정에 사용할 예정)
-    //    int32_t remainings;     // 남아있는 데이터 개수
+
     init() {
         for i in 0..<6 {
             d[i] = KittyDoc_10_Min_Data_Type()

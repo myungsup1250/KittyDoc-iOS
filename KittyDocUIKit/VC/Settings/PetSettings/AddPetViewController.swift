@@ -106,7 +106,7 @@ class AddPetViewController: UIViewController {
                 print("\t\tpetInfo is nil! Serious ERROR!")
             }
         } else { // petInfo 없음 : 새로 등록할 때
-            print("\tNew Pet Info Mode(editingPetID: \(editingPetID))")
+            print("\tNew Pet Info Mode(editingPetID: \(editingPetID ?? -1))")// -1 means Error
 
             if deviceInput.text!.isEmpty {
                 deviceInput.text = "Plz Connect to Device!"
