@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="j0K-Bj-2jE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="j0K-Bj-2jE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,26 +16,88 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cqh-c3-80B" customClass="BarChartView">
-                                <rect key="frame" x="57" y="298" width="300" height="300"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Qn-5R-T25">
+                                <rect key="frame" x="20" y="88" width="374" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="YUr-na-eOT"/>
-                                    <constraint firstAttribute="height" constant="300" id="njM-rw-BNZ"/>
+                                    <constraint firstAttribute="height" constant="100" id="f8L-ji-RbD"/>
                                 </constraints>
+                            </pickerView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4Xu-wN-fFB">
+                                <rect key="frame" x="30" y="198" width="354" height="32"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Month"/>
+                                    <segment title="Day"/>
+                                </segments>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dM-rr-uBW">
+                                <rect key="frame" x="30" y="249" width="75" height="22"/>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button" image="calendar" catalog="system"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Odf-u2-GyX">
+                                <rect key="frame" x="0.0" y="154" width="30" height="30"/>
+                                <state key="normal" title="&lt;"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6TO-bo-8ca">
+                                <rect key="frame" x="384" y="154" width="30" height="30"/>
+                                <state key="normal" title="&gt;"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JcW-Dr-M9w">
+                                <rect key="frame" x="305" y="249" width="79" height="30"/>
+                                <state key="normal" title="1970-01-01"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gcI-OJ-PGE">
+                                <rect key="frame" x="30" y="294" width="19" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="unit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hsT-0I-emG">
+                                <rect key="frame" x="56" y="299" width="28.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zt8-OT-4ab" customClass="BarChartView" customModule="KittyDocUIKit" customModuleProvider="target">
+                                <rect key="frame" x="15" y="380" width="384" height="418"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NwE-yg-0PY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Cqh-c3-80B" firstAttribute="centerY" secondItem="dZn-pW-ZSY" secondAttribute="centerY" id="56a-kN-7ur"/>
-                            <constraint firstItem="Cqh-c3-80B" firstAttribute="centerX" secondItem="dZn-pW-ZSY" secondAttribute="centerX" id="k7S-wu-AdW"/>
+                            <constraint firstItem="Zt8-OT-4ab" firstAttribute="top" secondItem="gcI-OJ-PGE" secondAttribute="bottom" constant="50" id="1zb-39-kMv"/>
+                            <constraint firstItem="Odf-u2-GyX" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" id="2iK-wH-I1t"/>
+                            <constraint firstItem="4Qn-5R-T25" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="20" id="2vC-NT-aCJ"/>
+                            <constraint firstItem="8dM-rr-uBW" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="BVv-7E-KgY"/>
+                            <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="4Xu-wN-fFB" secondAttribute="trailing" constant="30" id="Dx4-M8-7hI"/>
+                            <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="JcW-Dr-M9w" secondAttribute="trailing" constant="30" id="ESN-D5-Vcp"/>
+                            <constraint firstItem="hsT-0I-emG" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="70" id="Eoh-ax-utT"/>
+                            <constraint firstItem="6TO-bo-8ca" firstAttribute="top" secondItem="NwE-yg-0PY" secondAttribute="top" constant="66" id="Im4-MF-Shw"/>
+                            <constraint firstItem="Zt8-OT-4ab" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="15" id="JuQ-lI-mAd"/>
+                            <constraint firstItem="4Qn-5R-T25" firstAttribute="top" secondItem="NwE-yg-0PY" secondAttribute="top" id="MES-4H-e3I"/>
+                            <constraint firstItem="4Qn-5R-T25" firstAttribute="trailing" secondItem="NwE-yg-0PY" secondAttribute="trailing" constant="-20" id="S4C-9b-Xun"/>
+                            <constraint firstItem="4Xu-wN-fFB" firstAttribute="top" secondItem="4Qn-5R-T25" secondAttribute="bottom" constant="10" id="SiY-Ub-hlo"/>
+                            <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="Zt8-OT-4ab" secondAttribute="trailing" constant="15" id="SqP-cT-Bzq"/>
+                            <constraint firstItem="JcW-Dr-M9w" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="20" id="TbE-od-T2t"/>
+                            <constraint firstItem="hsT-0I-emG" firstAttribute="leading" secondItem="gcI-OJ-PGE" secondAttribute="trailing" constant="7" id="Ty7-Kr-RCn"/>
+                            <constraint firstItem="8dM-rr-uBW" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="20" id="UpJ-8C-2gn"/>
+                            <constraint firstItem="Odf-u2-GyX" firstAttribute="top" secondItem="NwE-yg-0PY" secondAttribute="top" constant="66" id="cKw-an-AnJ"/>
+                            <constraint firstItem="gcI-OJ-PGE" firstAttribute="top" secondItem="JcW-Dr-M9w" secondAttribute="bottom" constant="15" id="crb-yH-hsc"/>
+                            <constraint firstItem="NwE-yg-0PY" firstAttribute="bottom" secondItem="Zt8-OT-4ab" secondAttribute="bottom" constant="15" id="qML-7T-c3c"/>
+                            <constraint firstItem="4Xu-wN-fFB" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="qOY-ds-q6R"/>
+                            <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="6TO-bo-8ca" secondAttribute="trailing" id="txV-tN-U9e"/>
+                            <constraint firstItem="gcI-OJ-PGE" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="uVx-cR-faw"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Y9J-66-U3g"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="barChartView" destination="Cqh-c3-80B" id="hrq-qv-JjI"/>
+                        <outlet property="chartSelect" destination="4Xu-wN-fFB" id="dxV-V2-8Hj"/>
+                        <outlet property="presentTimeBtn" destination="JcW-Dr-M9w" id="D8Q-cT-Hu9"/>
+                        <outlet property="valueLabel" destination="gcI-OJ-PGE" id="Yrt-zl-ZQI"/>
+                        <outlet property="valueUnitLabel" destination="hsT-0I-emG" id="6S3-GD-ncw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NoC-Pj-gGs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -63,6 +125,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="calendar" catalog="system" width="128" height="106"/>
         <image name="note" catalog="system" width="128" height="106"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -12,5 +12,6 @@ pod 'UICircularProgressRing'
 pod 'RealmSwift'
 pod 'SideMenu'
 pod 'MKRingProgressView'
+pod 'CircularCarousel'
 
 end
