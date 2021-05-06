@@ -37,20 +37,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var waterFinalLabel: UILabel!
     @IBOutlet weak var stepProgressView: UIProgressView!
     
-    
+    let width: CGFloat = 100
+    let height: CGFloat = 100
     private let sideMenu = SideMenuNavigationController(rootViewController: SideMenuViewController())
     let deviceManager = DeviceManager.shared
     var count = 0
     var selectedRow = 0
     var piChart = PieChartView()
     var piValues: [Int] = []
-    
-    var waterValue: Int = 0 {
-        didSet {
-            //petWaterLabel.text = "\(waterValue)"
-            waterRing.value = CGFloat(waterValue)
-        }
-    }
+
     
     let MINUTE_IN_SEC:Int = 60
     let HOUR_IN_SEC:Int = 60 * 60
@@ -71,8 +66,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
         viewAddBackground()
         
-        petPickerView.delegate = self
-        petPickerView.dataSource = self
+        setPetPickerView()
         
         //petPickerView.transform = CGAffineTransform(rotationAngle: -90 * (.pi/180))
 
@@ -97,9 +91,13 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         progressView.ring2.accessibilityLabel = NSLocalizedString("Exercise", comment: "Exercise")
         progressView.ring3.accessibilityLabel = NSLocalizedString("Stand", comment: "Stand")
         
-        progressView.ring1.progress = 0.2
-        progressView.ring2.progress = 0.7
-        progressView.ring3.progress = 0.52
+        
+        breakValue = 2
+        walkValue = 1
+        exerciseValue = 1
+        progressView.ring1.progress = Double(3 / (breakValue))
+        progressView.ring2.progress = Double(2 / (walkValue))
+        progressView.ring3.progress = Double(3 / (exerciseValue))
 
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
         let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
@@ -130,6 +128,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 //                            }) {
                             PetInfo.shared.petArray.append(petInfo)
 //                            }
+                            
+                
                         }
                     }
                 } catch {
@@ -152,7 +152,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         PetChange(index: 0)
         //setPiChartsData()
         //piChartView.addSubview(progress)
-        setData()
 
         stepProgressView.setProgress(2, animated: true)
         stepProgressView.progress = 0.3
@@ -176,11 +175,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     func setData() {
         stepLabel.text = "\(stepValue)"
-        kcalLabel.text = ""
+        kcalLabel.text = "\(Int(kcalValue))"
         sunExLabel.text = "\(sunExValue) Lux"
-        vitaDLabel.text = "\(vitaDValue) iu"
-        uvRayLabel.text = "\(uvRayValue) 점"
-        luxPolLabel.text = "\(luxPolValue) 점"
+        vitaDLabel.text = "\(Int(vitaDValue)) iu"
+        uvRayLabel.text = "\(Int(uvRayValue)) 점"
+        luxPolLabel.text = "\(Int(luxPolValue)) 점"
     }
     
     func viewAddBackground() {
@@ -190,6 +189,24 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         uvRayView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         LuxPolView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.68))
         connectionView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.7892104395))
+    }
+    
+    func setPetPickerView() {
+        var rotationAngle: CGFloat!
+        
+        petPickerView.delegate = self
+        petPickerView.dataSource = self
+        
+        // 회전 - 전체 틀을 horizontal로 돌리기 위함
+        rotationAngle = -90 * (.pi/180)
+        petPickerView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+//
+//        레이어
+//        petPickerView.layer.borderColor = #colorLiteral(red: 0.4300610423, green: 0.5195892453, blue: 1, alpha: 1)
+//        petPickerView.layer.borderWidth = 1.0
+//        petPickerView.layer.cornerRadius = 20
+//
+        
     }
     
     //    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
@@ -208,7 +225,36 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     
     @IBAction func waterSubmitBtnClicked(_ sender: Any) {
-        waterFinalLabel.text = waterLabel.text
+        let waterData:WaterData = WaterData(_petID: PetInfo.shared.petArray[selectedRow].PetID, _tick: Int(Date().timeIntervalSince1970) * 1000, _waterVal: Int(waterLabel.text!)!)
+        let server:KittyDocServer = KittyDocServer()
+        let waterResponse:ServerResponse = server.waterSend(data: waterData)
+        
+        //가능하다면 실패 시에 잘못 입력한 뷰로 focus를 주는 기능이 들어가는게 좋을듯. --- O
+        //회원가입 화면에 보면, UserInfo를 회원가입 성공시 초기화 한다는 주석이 있는데 아닌것 같음.
+        //회원가입만 하면 로그인도 안했는데 로그인 한것처럼 어플이 이미 모든 로그인 데이터를 가지고 있게 되니까! OOOK!
+        //intent느낌으로 메인 화면 방금 가입한 이메일이랑 비밀번호 채워주는건 좋은듯 ---- LATER
+        
+        //서버가 꺼져있어서 서버 연결이 안되는 상황에 로그 외에 UIAlertController 활용해서 서버 연결 실패했다고 알려주고 다시 시도하도록 했으면 좋겠음.
+        //지금은 서버 연결이 안되면 앱이 아무런 말도 없이 멈춰버린다. 로그를 보지 못하면 알 수가 없다!
+        
+        //21.03.12 명섭 제안
+        
+        if(waterResponse.getCode() as! Int == ServerResponse.WATER_SUCCESS){
+            let present:Int = Int(waterFinalLabel.text!)!
+            let new:Int = Int(waterResponse.getMessage() as! String) ?? 0
+            print("present")
+            print(present)
+            print("new")
+            print(new)
+            
+            waterFinalLabel.text = String(present + new)
+            //수분량 입력 화면의 숫자와 막대가 올라간 양? 모두 0으로 만들기
+        } else if(waterResponse.getCode() as! Int == ServerResponse.WATER_FAILURE){
+            //수분량 입력 화면의 숫자와 막대가 올라간 양? 모두 0으로 만들기
+        } else {
+            print("water unknown error")
+            //수분량 입력 화면의 숫자와 막대가 올라간 양? 모두 0으로 만들기
+        }
     }
     
     
@@ -246,13 +292,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         
                         //petData.waterVal = jsonArray[0]["WaterVal"] as! Int
                         
-//                        piValues.append(exerciseValue)
-//                        piValues.append(breakValue)
-//                        piValues.append(walkValue)
-//
-//                        print(piValues[0])
-//                        print(piValues[1])
-//                        print(piValues[2])
+//                        print(walkValue)
+//                        print(sunExValue)
+//                        print(breakValue)
+//                        print(exerciseValue)
+                        print(luxPolValue)
+                        //print(kcalValue)
                     }
                 } catch {
                     print("JSON 파싱 에러")
@@ -264,6 +309,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             
         }
         setPiChartsData()
+        setData()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -283,36 +329,36 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return PetInfo.shared.petArray.count
     }
     
-//    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-//        return 50
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-//        return 200
-//    }
-//
-//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-//
-//        let width: CGFloat = 200
-//        let height: CGFloat = 50
-//
-//        let view = UIView()
-//        view.frame = CGRect(x: -50, y: 0, width: width + 50, height: height)
-//
-//        let label = UILabel()
-//        label.textAlignment = .center
-//        label.frame = CGRect(x: 0, y: 0, width: width, height: height)
-//        label.text = PetInfo.shared.petArray[row].PetName
-//        label.font = UIFont.systemFont(ofSize: 25)
-//
-//        view.addSubview(label)
-//        view.transform = CGAffineTransform(rotationAngle: 90 * (.pi/180))
-//
-//        return view
-//    }
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return PetInfo.shared.petArray[row].PetName
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return height
     }
+
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return width
+    }
+
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+
+        pickerView.subviews.forEach {
+            $0.backgroundColor = .clear
+        }
+        
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        view.transform = CGAffineTransform(rotationAngle: 90 * (.pi/180))
+
+        let label = UILabel()
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        label.text = PetInfo.shared.petArray[row].PetName
+        label.font = UIFont.systemFont(ofSize: 25)
+        view.addSubview(label)
+        
+
+
+        return view
+    }
+    
     
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -355,29 +401,21 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }()
     
     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "AddWater" {
-            let destinationVC = segue.destination as! WaterViewController
-            destinationVC.petNum = selectedRow
-            destinationVC.water.setValue(Float(waterValue), animated: true)
-            
-        }
         
     }
     
-    lazy var waterRing: UICircularProgressRing = {
+    var waterRing: UICircularProgressRing = {
         let waterRing = UICircularProgressRing()
         waterRing.frame = CGRect(x: 200, y: 500, width: 100, height: 100)
         waterRing.style = .ontop
         waterRing.outerRingColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         waterRing.innerRingColor = .systemBlue
-        waterRing.value = CGFloat(waterValue)
+        //waterRing.value = CGFloat(waterValue)
         waterRing.minValue = 0
         waterRing.maxValue = 300
         return waterRing
     }()
-}
+
 
 extension HomeViewController: DeviceManagerDelegate {
     func onDeviceNotFound() {

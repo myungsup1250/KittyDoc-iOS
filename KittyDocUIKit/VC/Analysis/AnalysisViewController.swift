@@ -19,7 +19,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
     var pickerView: UIPickerView!
-    var barChartView: BarChartView!
+    @IBOutlet weak var barChartView: BarChartView!
     var infoLabel: UILabel!
     var timeLabel: UILabel!
     var infoValueLabel: UILabel!
@@ -52,9 +52,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         dateFormatter.timeZone = TimeZone.autoupdatingCurrent
 
         initUIViews()
-        addSubviews()
-        prepareForAutoLayout()
-        setConstraints()
+        //addSubviews()
+        //prepareForAutoLayout()
+        //setConstraints()
 
         manageUserInterfaceStyle()
 
@@ -605,14 +605,14 @@ extension AnalysisViewController {
     }
     
     fileprivate func addSubviews() {
-        view.addSubview(chartSelect)
-        view.addSubview(dateTextField)
-        view.addSubview(optionTextField)
-        view.addSubview(barChartView)
-        view.addSubview(timeLabel)
-        view.addSubview(infoLabel)
-        view.addSubview(timeValueLabel)
-        view.addSubview(infoValueLabel)
+//        view.addSubview(chartSelect)
+//        view.addSubview(dateTextField)
+//        view.addSubview(optionTextField)
+//        view.addSubview(barChartView)
+//        view.addSubview(timeLabel)
+//        view.addSubview(infoLabel)
+//        view.addSubview(timeValueLabel)
+//        view.addSubview(infoValueLabel)
     }
     
     fileprivate func prepareForAutoLayout() {
@@ -748,8 +748,7 @@ extension AnalysisViewController {
     }
 
     func initBarChartView() {
-        barChartView = BarChartView()
-        barChartView.delegate = self
+        //barChartView.delegate = self
         barChartView.addTapRecognizer()
     }
     
