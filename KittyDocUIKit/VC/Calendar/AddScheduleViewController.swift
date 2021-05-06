@@ -128,10 +128,11 @@ class AddScheduleViewController: UIViewController {
     }
 
     @objc func didTapDoneBtn() {
-        if let inputText = textInput.text {
-            tempDaySchedule?.title = inputText
+        if textInput.text?.isEmpty == false {
+            tempDaySchedule?.title = textInput.text!
         } else {
             print("값 입력 안함")
+            return
         }
         
         switch typeSegment.selectedSegmentIndex {
