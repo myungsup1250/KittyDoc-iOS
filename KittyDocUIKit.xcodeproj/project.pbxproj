@@ -48,6 +48,7 @@
 		E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE23E25B3140D001484AC /* UserInfo.swift */; };
 		E00AE25025B44E9F001484AC /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE24F25B44E9F001484AC /* StringExtension.swift */; };
 		E00AE25625B45101001484AC /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE25525B45101001484AC /* LogInView.swift */; };
+		E0561BE82644113200AA5396 /* UIDatePickerViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0561BE72644113200AA5396 /* UIDatePickerViewExtensions.swift */; };
 		E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C2F25B58919007680E2 /* InitStoryboard.swift */; };
 		E05A7C3325B58CBF007680E2 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */; };
 		E05A7C3625B58DED007680E2 /* LogInViewController(MVVM).swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3525B58DED007680E2 /* LogInViewController(MVVM).swift */; };
@@ -142,6 +143,7 @@
 		E00AE23E25B3140D001484AC /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		E00AE24F25B44E9F001484AC /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		E00AE25525B45101001484AC /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
+		E0561BE72644113200AA5396 /* UIDatePickerViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDatePickerViewExtensions.swift; sourceTree = "<group>"; };
 		E05A7C2F25B58919007680E2 /* InitStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitStoryboard.swift; sourceTree = "<group>"; };
 		E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
 		E05A7C3525B58DED007680E2 /* LogInViewController(MVVM).swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LogInViewController(MVVM).swift"; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 				E05A7C4825B5ABFB007680E2 /* UIButtonExtension.swift */,
 				E05A7C4B25B5AC31007680E2 /* UIColorExtension.swift */,
 				E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */,
+				E0561BE72644113200AA5396 /* UIDatePickerViewExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -676,6 +679,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0561BE82644113200AA5396 /* UIDatePickerViewExtensions.swift in Sources */,
 				E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */,
 				E0BDC30A25C8717200D2524B /* PeripheralData.swift in Sources */,
 				113CCDD225BA5AA100BF70E5 /* KittyDocServer.swift in Sources */,

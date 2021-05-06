@@ -15,12 +15,13 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     
     var dateInput: String = ""
     @IBOutlet weak var chartSelect: UISegmentedControl!
-    var dateTextField: ConstantUITextField!
+    @IBOutlet weak var dateTextField: ConstantUITextField!
     var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
-    var pickerView: UIPickerView!
+    var yearMonthPickerView: DatePickerView!
+    //var pickerView: UIPickerView!
     var barChartView: BarChartView!
-    @IBOutlet weak var presentTimeBtn: UIButton!
+    @IBOutlet weak var chartDateLabel: UILabel!
     @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var valueUnitLabel: UILabel!
     
@@ -44,6 +45,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(describeHighlightedData(_:)), name: .highlightedData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(custumDatePickerChanged(_:)), name: .custumDatePickerChanged, object: nil)
 
         safeArea = view.safeAreaLayoutGuide// view.layoutMarginsGuide
         userInterfaceStyle = self.traitCollection.userInterfaceStyle
@@ -65,11 +67,13 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     }
     
     private func refreshChartData() {
+        chartDateLabel.text = ""
         petDatas.removeAll()
         petDatas = requestServerData()//센서 데이터 수신 코드
     }
     
     fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
+        print("\nrequestServerData()")
         var dataArray = [PetData]()
         let hourInSec: TimeInterval = 3600
         let dayInSec: TimeInterval = 86400 // 24Hours in seconds
@@ -100,7 +104,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         let segSelect = SegSelect(rawValue: chartSelect.selectedSegmentIndex)!
         let timeIntervalSince1970 = today.timeIntervalSince1970
         let timeIntervalFromMidnight = TimeInterval(Int(timeIntervalSince1970 + hourInSec * 9) % Int(dayInSec))
-        print("segDate(\(unixtimeToString(unixtime: segDate.timeIntervalSince1970))) and today(\(unixtimeToString(unixtime: today.timeIntervalSince1970)))")
+        //print("segDate(\(unixtimeToString(unixtime: segDate.timeIntervalSince1970))) and today(\(unixtimeToString(unixtime: today.timeIntervalSince1970)))")
         
         switch segSelect {
         case .Year:
@@ -195,10 +199,10 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
                             petData.waterVal = item["WaterVal"] as! Int
                             dataArray.append(petData)
                             
-                            print("Time : \(unixtimeToString(unixtime: petData.time))", terminator: " ")
-                            print("UV : \(String(format: "%.2f", petData.uvVal))", terminator: " ")
-                            print("Vit-D : \(String(format: "%.2f", petData.vitDVal))", terminator: " ")
-                            print("Rest : \(String(format: "%.2f", petData.restVal))")
+                            //print("Time : \(unixtimeToString(unixtime: petData.time))", terminator: " ")
+                            //print("UV : \(String(format: "%.2f", petData.uvVal))", terminator: " ")
+                            //print("Vit-D : \(String(format: "%.2f", petData.vitDVal))", terminator: " ")
+                            //print("Rest : \(String(format: "%.2f", petData.restVal))")
                         }
                     }
                 } catch {
@@ -235,9 +239,8 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     // receiveSyncDataDone() will be called when Receiving SyncData Done!
     @objc func receiveSyncDataDone() {
         print("\n<<< AnalysisViewController.receiveSyncDataDone() >>>")
-        DispatchQueue.background(delay: 0, background: nil) { [self] in// Stop scanning after deadine
+        DispatchQueue.background(delay: 0, background: nil) { [self] in
             refreshChartData()
-            //chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
         }
     }
     
@@ -248,16 +251,17 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             if let highlight = data["highlighted"] {
                 //print("highlight: \(highlight.x), value: \(highlight.y)")
                 valueLabel.text = String(Int(highlight.y))
+                valueUnitLabel.text = options[optionsIndex]
                 switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
                 case .Year:
                     dateFormatter.dateFormat = "yyyy "
-                    presentTimeBtn.titleLabel!.text = dateFormatter.string(from: datePicker.date) + months[Int(highlight.x)]
+                    chartDateLabel.text = dateFormatter.string(from: datePicker.date) + months[Int(highlight.x)]
                 case .Month:
                     dateFormatter.dateFormat = "yyyy MMM "
-                    presentTimeBtn.titleLabel!.text = dateFormatter.string(from: datePicker.date) + days[Int(highlight.x)]
+                    chartDateLabel.text = dateFormatter.string(from: datePicker.date) + days[Int(highlight.x)]
                 case .Day:
                     dateFormatter.dateFormat = "MMM dd "
-                    presentTimeBtn.titleLabel!.text = dateFormatter.string(from: datePicker.date) +  times[Int(highlight.x)]
+                    chartDateLabel.text = dateFormatter.string(from: datePicker.date) +  times[Int(highlight.x)]
                 case .Week:
                     print("Week")
 //                    dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -267,6 +271,17 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         }
     }
 
+    // custumDatePickerChanged() will be called when Chart Data highlighted!
+    @objc func custumDatePickerChanged(_ notification: Notification) {
+        print("\t\t[ custumDatePickerChanged() ]")
+        if let data = notification.userInfo as? [String: Date] {
+            if let receivedDate = data["date"] {
+                print("received date : \(unixtimeToString(unixtime: receivedDate.timeIntervalSince1970))")
+                manageDateFormatter(date: receivedDate)
+                //manageDateFormatter(date: nil)
+            }
+        }
+    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가도록
     }
@@ -494,21 +509,21 @@ extension AnalysisViewController {
 //                print("orderedAscending! Do nothing")
 //            }
             
-            setChart(dataName: optionTextField.text!, dataPoints: months.dropLast(months.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
+            setChart(dataName: options[optionsIndex], dataPoints: months.dropLast(months.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case .Month:
             print("And Month Data!")
             
             dateFormatter.dateFormat = "yyyy-MM"
             dateTextField.text = dateFormatter.string(from: datePicker.date)
             
-            setChart(dataName: optionTextField.text!, dataPoints: days.dropLast(days.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
+            setChart(dataName: options[optionsIndex], dataPoints: days.dropLast(days.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case .Day:
             print("And Day Data!")
             
             dateFormatter.dateFormat = "yyyy-MM-dd"
             dateTextField.text = dateFormatter.string(from: datePicker.date)
             
-            setChart(dataName: optionTextField.text!, dataPoints: times.dropLast(times.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
+            setChart(dataName: options[optionsIndex], dataPoints: times.dropLast(times.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         case .Week:
             print("And Week Data!")
             
@@ -523,7 +538,7 @@ extension AnalysisViewController {
             for i in 0..<weekDays.count {
                 tmpWeekDays.append(weekDays[(segDateWeekDay + i) % weekDays.count])
             }
-            setChart(dataName: optionTextField.text!, dataPoints: tmpWeekDays.dropLast(tmpWeekDays.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
+            setChart(dataName: options[optionsIndex], dataPoints: tmpWeekDays.dropLast(tmpWeekDays.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         }
     }
     
@@ -531,21 +546,53 @@ extension AnalysisViewController {
         print("selectedSegChanged()")
         
         // 날짜 세그먼트가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
+        let toolBar = UIToolbar()
+        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
+        let today = UIBarButtonItem(title: "Today", style: .plain, target: self, action: #selector(setToday))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
+        switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
+        case .Year:
+            let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
+            toolBar.setItems([today, space, done], animated: true)
+            dateTextField.inputAccessoryView = toolBar
+            dateTextField.inputView = yearMonthPickerView
+            yearMonthPickerView.selectToday()
+        case .Month:
+            let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
+            toolBar.setItems([today, space, done], animated: true)
+            dateTextField.inputAccessoryView = toolBar
+            dateTextField.inputView = yearMonthPickerView
+            yearMonthPickerView.selectToday()
+        case .Day:
+            let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnDatePicker(_:)))
+            toolBar.setItems([today, space, done], animated: true)
+            dateTextField.inputAccessoryView = toolBar
+            dateTextField.inputView = datePicker
+            manageDateFormatter(date: Date())//datePicker.date = Date()
+        case .Week:
+            print("Week")
+//            dateTextField.inputView = datePicker
+//            manageDateFormatter(date: Date())//datePicker.date = Date()
+        }
         refreshChartData()
         chartOptionChanged(selected: SegSelect(rawValue: segment.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
     }
     
     @objc func doneBtnOnDatePicker(_ picker: UIDatePicker) {
-        dateTextField.resignFirstResponder()//self.view.endEditing(true)
+        doneBtnOnPickers()
+    }
+    
+    @objc func doneBtnOnPickerView(_ picker: UIPickerView) {
+        doneBtnOnPickers()
+    }
+
+    func doneBtnOnPickers() {
+        print("doneBtnOnPickers()")
+        self.view.endEditing(true)//dateTextField.resignFirstResponder()
         
         // 날짜가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
         refreshChartData()
-        chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
-    }
-    
-    @objc func doneBtnOnPickerView(_ picker: UIPickerView) {// UIDatePicker, UIPickerView의 Done 버튼 핸들링 통합?
-        self.view.endEditing(true)
-        
         chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
     }
 
@@ -554,12 +601,24 @@ extension AnalysisViewController {
     }
 
     @objc func setToday(_ picker: UIDatePicker) {
-        manageDateFormatter(date: Date())
+        switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
+        case .Year:
+            yearMonthPickerView.selectToday()
+            manageDateFormatter(date: Date())
+        case .Month:
+            yearMonthPickerView.selectToday()
+            manageDateFormatter(date: Date())
+        case .Day:
+            manageDateFormatter(date: Date())//datePicker.date = Date()
+        case .Week:
+            print("Deprecated Week")
+        }
     }
     
-    func manageDateFormatter(date: Date?) { // date가 nil일 경우 picker.date 사용
+    func manageDateFormatter(date: Date?) { // date가 nil일 경우 picker.date 사용// // // // // // // // // //
         if date != nil {
             datePicker.date = date!
+            // YearPicker, MonthYearPicker도 세팅?
         }
         dateFormatter.dateStyle = .medium //.long
         
@@ -596,10 +655,9 @@ extension AnalysisViewController {
     fileprivate func initUIViews() {
         initChartSelect()
         initDateTextField()
-        initDatePicker()
         initOptionTextField()
-        initPickerView()
-        initLabels()
+        initPickerViews()
+        //initLabels()
         initBarChartView()
     }
     
@@ -688,23 +746,23 @@ extension AnalysisViewController {
     }
 
     func initDateTextField() {
-        dateTextField = ConstantUITextField()
+//        dateTextField = ConstantUITextField()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateTextField.font = UIFont.systemFont(ofSize: 25)
+        //dateTextField.font = UIFont.systemFont(ofSize: 25)
         dateTextField.text = dateFormatter.string(from: Date())
         //dateTextField.textColor = .systemBlue
         dateTextField.textAlignment = .center
-        dateTextField.borderStyle = .roundedRect
+        //dateTextField.borderStyle = .roundedRect
     }
     
     func initDatePicker() {
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-//        if #available(iOS 13.4, *) {
-//            datePicker.preferredDatePickerStyle = .wheels
-//        } else {
-            datePicker.preferredDatePickerStyle = UIDatePickerStyle.compact
-//        }
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        } else {
+            datePicker.preferredDatePickerStyle = UIDatePickerStyle.automatic
+        }
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
 
         let toolBar = UIToolbar()
@@ -718,27 +776,52 @@ extension AnalysisViewController {
     }
     
     func initOptionTextField() {
-        optionTextField = ConstantUITextField()
-        optionTextField.font = UIFont.systemFont(ofSize: 25)
-        optionTextField.text = options[optionsIndex]
-        //optionTextField.textColor = .systemBlue
-        optionTextField.textAlignment = .center
-        optionTextField.borderStyle = .roundedRect
+//        optionTextField = ConstantUITextField()
+//        optionTextField.font = UIFont.systemFont(ofSize: 25)
+//        optionTextField.text = options[optionsIndex]
+//        //optionTextField.textColor = .systemBlue
+//        optionTextField.textAlignment = .center
+//        optionTextField.borderStyle = .roundedRect
     }
     
-    func initPickerView() {
-        pickerView = UIPickerView()
-        pickerView.delegate = self
-        pickerView.dataSource = self
+    func initPickerViews() {
+        initDatePicker()
+        initOptionTFPickerView()
+        initYearPickerView()
+        initYearMonthPickerView()
+    }
+    
+    func initOptionTFPickerView() {
+//        pickerView = UIPickerView()
+//        pickerView.delegate = self
+//        pickerView.dataSource = self
+//
+//        let toolBar = UIToolbar()
+//        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
+//        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
+//
+//        toolBar.setItems([flexSpace, doneBtn], animated: true)
+//        optionTextField.inputAccessoryView = toolBar
+//        optionTextField.inputView = pickerView
+    }
 
-        let toolBar = UIToolbar()
-        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
-
-        toolBar.setItems([flexSpace, doneBtn], animated: true)
-        optionTextField.inputAccessoryView = toolBar
-        optionTextField.inputView = pickerView
+    func initYearPickerView() {
+        
+    }
+    
+    func initYearMonthPickerView() {
+        yearMonthPickerView = DatePickerView()
+        
+//        let toolBar = UIToolbar()
+//        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
+//        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+//        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
+//
+//        toolBar.setItems([flexSpace, doneBtn], animated: true)
+//        dateTextField.inputAccessoryView = toolBar
+//        dateTextField.inputView = yearMonthPickerView
+//        yearMonthPickerView.selectToday()
     }
 
     func initBarChartView() {
