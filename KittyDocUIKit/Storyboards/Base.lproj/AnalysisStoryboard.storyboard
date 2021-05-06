@@ -25,7 +25,7 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4Xu-wN-fFB">
                                 <rect key="frame" x="30" y="198" width="354" height="32"/>
                                 <segments>
-                                    <segment title="First"/>
+                                    <segment title="Year"/>
                                     <segment title="Month"/>
                                     <segment title="Day"/>
                                 </segments>
