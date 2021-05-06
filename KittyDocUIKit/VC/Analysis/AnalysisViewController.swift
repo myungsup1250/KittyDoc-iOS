@@ -726,7 +726,7 @@ extension AnalysisViewController {
     func initOptionTextField() {
         optionTextField = ConstantUITextField()
         optionTextField.font = UIFont.systemFont(ofSize: 25)
-        optionTextField.text = options[7]//[0]
+        optionTextField.text = options[optionsIndex]
         //optionTextField.textColor = .systemBlue
         optionTextField.textAlignment = .center
         optionTextField.borderStyle = .roundedRect
@@ -740,7 +740,7 @@ extension AnalysisViewController {
         let toolBar = UIToolbar()
         toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneBtn: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
+        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
 
         toolBar.setItems([flexSpace, doneBtn], animated: true)
         optionTextField.inputAccessoryView = toolBar

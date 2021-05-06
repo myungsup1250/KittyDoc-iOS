@@ -487,7 +487,7 @@ extension AddPetViewController {
 
         // KittyDoc Device 연결하지 않고 펫 등록 및 수정할 경우 처리 21.02.24 -ms
         if deviceInput.text == "Plz Connect to Device!" {
-            deviceInput.text = ""
+            deviceInput.text = ""//////////
         }
         // // // // // // // // // // // // // // // // // // // //
 
