@@ -66,7 +66,7 @@ class SettingsViewController: UIViewController {
     func configureSections() {
         Sections.append(Section(title: "My Information",
                                 options: [
-                                    .staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .systemOrange, handler: {
+                                    .staticCell(model: SettingsOption(title: "내 정보", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 1), handler: {
                                         //            let storyboard = UIStoryboard(name: "Main", bundle: nil) // type storyboard name instead of Main
                                         guard let vc = self.storyboard?.instantiateViewController(identifier: "EditUserInfo") as? UserInfoSettingViewController else {
                                             print("guard let vc = self.storyboard?.instantiateViewController(identifier: EditUserInfo) Error")
@@ -76,7 +76,7 @@ class SettingsViewController: UIViewController {
                                         self.navigationController?.pushViewController(vc, animated: true)
                                         //self.present(vc, animated: true)
                                     })),
-                                    .staticCell(model: SettingsOption(title: "비밀번호 수정", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: .magenta, handler: {
+                                    .staticCell(model: SettingsOption(title: "비밀번호 수정", icon: UIImage(systemName: "person.fill")!, iconBackgroundColor: #colorLiteral(red: 0.6196078431, green: 0.7607843137, blue: 0.9019607843, alpha: 1), handler: {
                                         guard let vc = self.storyboard?.instantiateViewController(identifier: "SetPwdSegue") as? SetPasswordViewController else {
                                             print("guard let vc = self.storyboard?.instantiateViewController(identifier: SetPwdSegue) Error")
                                             return
@@ -86,19 +86,19 @@ class SettingsViewController: UIViewController {
                                     }))
                                 ]))
         
-        Sections.append(Section(title: "Cat Settings", options: [.staticCell(model: SettingsOption(title: "냥이 등록", icon: UIImage(systemName: "plus.circle")!, iconBackgroundColor: .systemBlue) {
+        Sections.append(Section(title: "Cat Settings", options: [.staticCell(model: SettingsOption(title: "냥이 등록", icon: UIImage(systemName: "plus.circle")!, iconBackgroundColor: #colorLiteral(red: 0.4470588235, green: 0.6823529412, blue: 0.9019607843, alpha: 1)) {
             self.performSegue(withIdentifier: "PetSettingsSegue", sender: self)
         })
         ]))
 
         Sections.append(Section(title: "Device Connection",
                                 options: [
-                                    .switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: .systemYellow, handler: {
+                                    .switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: #colorLiteral(red: 0.3098039216, green: 0.5803921569, blue: 0.831372549, alpha: 1), handler: {
                                     }, isOn: true)),
-                                    .staticCell(model: SettingsOption(title: "기기 설정(TEST)", icon: UIImage(systemName: "gear")!, iconBackgroundColor: .systemGreen, handler: {
+                                    .staticCell(model: SettingsOption(title: "기기 설정(TEST)", icon: UIImage(systemName: "gear")!, iconBackgroundColor: #colorLiteral(red: 0.2078431373, green: 0.5098039216, blue: 0.768627451, alpha: 1), handler: {
                                         self.performSegue(withIdentifier: "BTSettingsSegue", sender: self)
                                     })),
-                                    .staticCell(model: SettingsOption(title: "Start Sync(TEST)", icon: UIImage(systemName: "tray.and.arrow.down") ?? .strokedCheckmark, iconBackgroundColor: .darkGray, handler: {
+                                    .staticCell(model: SettingsOption(title: "Start Sync(TEST)", icon: UIImage(systemName: "tray.and.arrow.down") ?? .strokedCheckmark, iconBackgroundColor: #colorLiteral(red: 0.1333333333, green: 0.4431372549, blue: 0.6941176471, alpha: 1), handler: {
                                         print("Start Sync!")
                                         DeviceManager.shared.startSync()
                                     }))

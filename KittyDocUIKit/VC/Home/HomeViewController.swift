@@ -24,7 +24,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var LuxPolView: UIView!
     @IBOutlet weak var progressView: RingProgressGroupView!
     @IBOutlet weak var connectionView: UIView!
-    
+    @IBOutlet weak var waterView: UIView!
+    @IBOutlet weak var waterFinalView: UIView!
     
     @IBOutlet weak var petPickerView: UIPickerView!
     @IBOutlet weak var stepLabel: UILabel!
@@ -36,6 +37,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var waterLabel: UILabel!
     @IBOutlet weak var waterFinalLabel: UILabel!
     @IBOutlet weak var stepProgressView: UIProgressView!
+    @IBOutlet weak var waterSlide: UISlider!
+    @IBOutlet weak var connectionLabel: UILabel!
+    
     
     let width: CGFloat = 100
     let height: CGFloat = 100
@@ -60,6 +64,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     var uvRayValue: Double = 0
     var luxPolValue: Double = 0
     var kcalValue: Double = 0
+    var waterFinalValue: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,12 +97,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         progressView.ring3.accessibilityLabel = NSLocalizedString("Stand", comment: "Stand")
         
         
-        breakValue = 2
-        walkValue = 1
-        exerciseValue = 1
-        progressView.ring1.progress = Double(3 / (breakValue))
-        progressView.ring2.progress = Double(2 / (walkValue))
-        progressView.ring3.progress = Double(3 / (exerciseValue))
 
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
         let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
@@ -180,6 +179,19 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         vitaDLabel.text = "\(Int(vitaDValue)) iu"
         uvRayLabel.text = "\(Int(uvRayValue)) 점"
         luxPolLabel.text = "\(Int(luxPolValue)) 점"
+        waterFinalLabel.text = "\(waterFinalValue)"
+        
+        progressView.ring1.progress = (Double((breakValue)) / ChartUtility.RestGoal)
+        progressView.ring2.progress = (Double((walkValue)) / ChartUtility.StepGoal)
+        progressView.ring3.progress = (Double((exerciseValue)) / ChartUtility.ExerciseGoal)
+        
+        print("%%%%%%%%")
+        print(breakValue)
+        print(walkValue)
+        print(exerciseValue)
+        print((Double((breakValue))) / ChartUtility.RestGoal)
+        print((Double((walkValue))) / ChartUtility.StepGoal)
+        print((Double((exerciseValue))) / ChartUtility.ExerciseGoal)
     }
     
     func viewAddBackground() {
@@ -189,6 +201,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         uvRayView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         LuxPolView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.68))
         connectionView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.7892104395))
+        waterView.addColor(color: .white)
+        waterFinalView.addColor(color: .white)
     }
     
     func setPetPickerView() {
@@ -221,6 +235,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     @IBAction func waterValueChanged(_ sender: UISlider) {
         waterLabel.text = "\(Int(round(sender.value)))"
+    }
+    
+    @IBAction func waterValueMakeZero(_ sender: Any) {
+        waterSlide.value = 0
+        waterLabel.text = "0"
     }
     
     
@@ -257,8 +276,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         }
     }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
+    func getData(index: Int) {
         let today = Date()
         let hour = Calendar.current.component(.hour, from: today)
         let minute = Calendar.current.component(.minute, from: today)
@@ -267,7 +285,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         let thisDayStartSec = Int(timeIntervalSince1970) - (HOUR_IN_SEC * hour) - (MINUTE_IN_SEC * minute) - second
         let thisDayEndSec = Int(timeIntervalSince1970) + (HOUR_IN_SEC * (23-hour)) + (MINUTE_IN_SEC * (59 - minute)) + (60-second) - 1
         
-        let analysisData:AnalysisData = AnalysisData(_petID: PetInfo.shared.petArray[selectedRow].PetID, _startMilliSec: (thisDayStartSec * 1000), _endMilliSec: (thisDayEndSec * 1000))
+        
+        let analysisData:AnalysisData = AnalysisData(_petID: PetInfo.shared.petArray[index].PetID, _startMilliSec: (thisDayStartSec * 1000), _endMilliSec: (thisDayEndSec * 1000))
         let server:KittyDocServer = KittyDocServer()
         let analysisResponse:ServerResponse = server.sensorRequestDay(data: analysisData)
 
@@ -289,15 +308,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         stepValue = jsonArray[0]["StepVal"] as! Int
                         luxPolValue = jsonArray[0]["LuxpolVal"] as! Double
                         kcalValue = jsonArray[0]["KalVal"] as! Double
+                        waterFinalValue = jsonArray[0]["WaterVal"] as! Int
                         
-                        //petData.waterVal = jsonArray[0]["WaterVal"] as! Int
-                        
-//                        print(walkValue)
-//                        print(sunExValue)
-//                        print(breakValue)
-//                        print(exerciseValue)
-                        print(luxPolValue)
-                        //print(kcalValue)
                     }
                 } catch {
                     print("JSON 파싱 에러")
@@ -306,9 +318,14 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
                 print(analysisResponse.getMessage() as! String)
             }
-            
+        
         }
+    }
+    
+
+    override func viewWillAppear(_ animated: Bool) {
         setPiChartsData()
+        getData(index: selectedRow)
         setData()
     }
     
@@ -364,19 +381,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row
         PetChange(index: row) //표시되는 데이터들 변경
-    } //펫이 선택되었을 때 호출되는 함수!!!
+    }
     
-//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-//        let view = UIView(frame: CGRect(x: 0, y: 0, width: petPickerView.frame.height, height: petPickerView.frame.width))
-//        view.transform = CGAffineTransform(rotationAngle: 90 * (.pi/180))
-//        return view
-//    }
     
     func PetChange(index: Int) {
-        //이 함수는 위의 pickerView(....didSelectRow...) 함수안에 있는 메소드야! (didSelectRow 저 함수는 피커뷰로 펫을 선택했을 때 호출되는 함수이고!) 보이는 데이터들을 변경해주려고 만든 함수임!!
-        //PetInfo.shared.petArray[index] 이것이 펫 배열에서 펫 가져오기!
-        
-        
+        getData(index: selectedRow)
+        setData()
     }
     
     lazy var pickerView: UIPickerView = {
@@ -421,17 +431,21 @@ extension HomeViewController: DeviceManagerDelegate {
     func onDeviceNotFound() {
         DispatchQueue.main.async {
             print("Couldn't find any KittyDoc Devices!")
+            self.connectionLabel.text = "기기를 찾을 수 없습니다"
+            
         }
     }
     
     func onDeviceConnected(peripheral: CBPeripheral) {
         DispatchQueue.main.async {
             print("Successfully Connected to KittyDoc Device!")
+            self.connectionLabel.text = "기기에 성공적으로 연결되었습니다"
         }
     }
     
     func onDeviceDisconnected() {
         DispatchQueue.main.async {
+            self.connectionLabel.text = "기기 연결이 해제되었습니다"
             let alert: UIAlertController = UIAlertController(title: "Disconnected!", message: "Disonnected from KittyDoc Device!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
@@ -442,6 +456,7 @@ extension HomeViewController: DeviceManagerDelegate {
     func onBluetoothNotAccessible() {
         print("[+]onBluetoothNotAccessible()")
         DispatchQueue.main.async {
+            self.connectionLabel.text = "블루투스 에러 : 설정을 확인하세요"
             let alert = UIAlertController(title: "Error on Bluetooth!", message: "Please check your settings!", preferredStyle: .alert)
             let confirm = UIAlertAction(title: "Settings", style: .default) { (alert: UIAlertAction!) in
                 if let appSettings = URL(string: UIApplication.openSettingsURLString) {//"App-Prefs:root=Bluetooth" //Banned from Apple App Store
@@ -465,6 +480,7 @@ extension HomeViewController: DeviceManagerDelegate {
         print("[+]onDevicesFound()")
         DispatchQueue.main.async {
             print("\n<<< Found some KittyDoc Devices! >>>\n")
+            self.connectionLabel.text = "기기를 찾았습니다"
         }
         print("[-]onDevicesFound()")
     }
@@ -473,6 +489,7 @@ extension HomeViewController: DeviceManagerDelegate {
         print("[+]onConnectionFailed()")
         DispatchQueue.main.async {
             print("\n<<< Failed to Connect to KittyDoc Device! >>>\n")
+            self.connectionLabel.text = "연결이 해제되었습니다"
         }
         print("[-]onConnectionFailed()")
     }
@@ -490,6 +507,7 @@ extension HomeViewController: DeviceManagerDelegate {
     
     func onDfuTargFound(peripheral: CBPeripheral) {
         DispatchQueue.main.async {
+            self.connectionLabel.text = "초기화가 필요합니다"
             let alert: UIAlertController = UIAlertController(title: "Found DFU Device!", message: "There is a DFU Device!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
@@ -528,6 +546,7 @@ extension HomeViewController: DeviceManagerSecondDelegate {
     
     func onSyncCompleted() {
         DispatchQueue.main.async {
+            self.connectionLabel.text = "동기화 완료"
             let alert: UIAlertController = UIAlertController(title: "Sync Completed!", message: "Synchronization Completed!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
@@ -604,14 +623,24 @@ extension HomeViewController: ChartViewDelegate {
 
 class SideMenuViewController: UITableViewController {
     
-    var items = ["1"]
+    var items = ["몸무게 측정", "급수량 측정", "급식량 측정", "CCTV 관리"]
+    var images = ["scalemass", "drop", "torus", "camera.metering.center.weighted"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let nib = UINib(nibName: "SideMenuTableViewCell", bundle: nil)
-        let header = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 250))
+        let emailLabel = UILabel(frame: CGRect(x: 20, y: 100, width: 200, height: 50))
+        let nameLabel = UILabel(frame: CGRect(x: 20, y: 130, width: 150, height: 50))
+        emailLabel.text = "\(UserInfo.shared.Email)"
+        nameLabel.text = "\(UserInfo.shared.Name)"
         
+        emailLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        
+        header.addSubview(emailLabel)
+        header.addSubview(nameLabel)
+
         tableView.tableHeaderView = header
         tableView.register(nib, forCellReuseIdentifier: "SideMenuTableViewCell")
         tableView.backgroundColor = #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 1)
@@ -625,16 +654,16 @@ class SideMenuViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuTableViewCell",                                       for: indexPath) as! SideMenuTableViewCell
         
-        cell.emailLabel.text = "\(UserInfo.shared.Email)"
-        cell.nameLabel.text = "\(UserInfo.shared.Name)"
-        cell.userimageView.image = UIImage(named: "profileUserImg")
+        cell.nameLabel.text = items[indexPath.row]
+        cell.userimageView.image = UIImage(systemName: images[indexPath.row])
+        cell.userimageView.tintColor = #colorLiteral(red: 0.3336932659, green: 0.535705924, blue: 0.6768123507, alpha: 1)
 
         cell.backgroundColor = #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 1)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        250
+        60
     }
 
 }
