@@ -489,7 +489,7 @@ extension AddPetViewController {
         // 빈 문자열 대신 안드로이드처럼 NULL을 넣어서 서버에 등록하도록 수정 21.05.06 -ms
         if deviceInput.text == "Plz Connect to Device!" {
             deviceInput.text = "NULL"
-        }
+        }//
 
         if isEditMode == true {
             let modifyData = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
