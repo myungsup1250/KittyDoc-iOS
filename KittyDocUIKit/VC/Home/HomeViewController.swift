@@ -173,8 +173,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         luxPolLabel.text = "\(luxPolValue) 점"
     }
     
-    
-        
     func viewAddBackground() {
         walkView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         sunExView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.6849207594))
@@ -204,11 +202,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         let analysisData:AnalysisData = AnalysisData(_petID: PetInfo.shared.petArray[selectedRow].PetID, _startMilliSec: (thisDayStartSec * 1000), _endMilliSec: (thisDayEndSec * 1000))
         let server:KittyDocServer = KittyDocServer()
         let analysisResponse:ServerResponse = server.sensorRequestDay(data: analysisData)
-        
-        
-        
 
-        if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS) {
+        if (analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_SUCCESS) {
             let jsonString: String = analysisResponse.getMessage() as! String
             if let arrData = jsonString.data(using: .utf8) {
                 do {
@@ -407,6 +402,8 @@ extension HomeViewController: DeviceManagerDelegate {
         //print("[+]HomeViewController.onServiceFound")
         DispatchQueue.main.async {
             print("\n<<< Found all required Service! >>>\n")
+            self.deviceManager.getBattery()
+            self.deviceManager.startSync()
         }
         //print("[-]HomeViewController.onServiceFound")
         
@@ -478,6 +475,8 @@ extension HomeViewController { // @objc funcs
         } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE){
             print(analysisResponse.getMessage() as! String)
         }
+        
+        // UI에 값 입력해서 출력시키기.
     }
     
     @objc func doneBtnPressed() {
