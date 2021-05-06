@@ -84,26 +84,45 @@ class AddPetViewController: UIViewController {
         print("AddPetViewController.viewWillAppear()")
 
         // KittyDoc 기기 등록 여부, 기기 연결 여부 등에 따른 처리가 잘 되는지 확인 필요! 21.02.24 -ms
-        // 기존 등록된 펫에 기기 등록되지 않은 상태 && 수정할 때 기기를 새로 연결해도 반영이 안된다..
         if editingPetID != nil {
             print("\tEdit Pet Info Mode(editingPetID: \(editingPetID!))")
             let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
-            
+            print("petInfo.Device :", petInfo!.Device)
             if petInfo != nil { // petInfo 존재함 : 수정 모드
                 print("\t\tpetInfo != nil")
-                if petInfo!.Device.isEmpty {
+                if (petInfo!.Device.isEmpty || petInfo!.Device == "NULL") {
                     print("\t\t\tpetInfo.Device.is Empty")
                     petInfo!.Device = "No device"
                     deviceInput.text = "Plz Connect to Device!"
                 } else {
                     if deviceManager.isConnected && deviceManager.peripheral != nil {
                         print("\t\t\t\tdeviceManager.isConnected")
-                        deviceInput.text = deviceManager.peripheral!.identifier.uuidString
-                        petInfo!.Device = deviceManager.peripheral!.identifier.uuidString
+                        let connected = deviceManager.peripheral!.identifier.uuidString
+                        if petInfo!.Device == "No device" { // Connected to New Device
+                            deviceInput.text = connected
+                            petInfo!.Device = connected
+                        } else { // Already got its own device
+                            deviceInput.text = petInfo!.Device
+                            if petInfo!.Device != connected {
+                                DispatchQueue.main.async {
+                                    let alert: UIAlertController = UIAlertController(title: "Change Device?", message: "Do you want to change \(petInfo!.PetName)'s Device to currently connected Device?", preferredStyle: .alert)
+                                    let confirm = UIAlertAction(title: "Yes", style: .default) { [self] _ in
+                                        deviceInput.text = connected
+                                        petInfo!.Device = connected
+                                    }
+                                    let cancel = UIAlertAction(title: "No", style: .cancel, handler: nil)
+                                    alert.addAction(confirm)
+                                    alert.addAction(cancel)
+                                    self.present(alert, animated: true, completion: nil)
+                                }
+                            }
+                        }
+                    } else {
+                        deviceInput.text = petInfo!.Device
                     }
                 }
             } else {
-                print("\t\tpetInfo is nil! Serious ERROR!")
+                print("\t\tpetInfo is nil! ERROR!")
             }
         } else { // petInfo 없음 : 새로 등록할 때
             print("\tNew Pet Info Mode(editingPetID: \(editingPetID ?? -1))")// -1 means Error
@@ -421,6 +440,11 @@ extension AddPetViewController {
     }
  
     @objc func didTapScanBtn() {
+//        let petInfo: PetInfo? = PetInfo.shared.petArray[editingPetID!]
+//        print("didTapScanBtn(pet's device : \(petInfo?.Device)")
+//        if !(petInfo?.Device.isEmpty ?? false) {
+//
+//        }
         self.performSegue(withIdentifier: "BTListViewSegue", sender: self)// 필요 시 새로운 ListViewController 생성 필요
         // 기기 연결 이후 싱크 데이터 받아오거나, 기존 화면에 특화된 기능 수정 필요 -ms
     }
