@@ -19,3 +19,23 @@ struct ChartUtility {
     public static let KalGoal: Double = 548
     public static let WaterGoal: Double = 400
 }
+
+enum SegSelect: Int {
+    case Year = 0
+    case Month
+    case Day
+    case Week
+}
+
+enum OptSelect: Int {
+    case Sun = 0
+    case UV
+    case Vit_D
+    case Exercise
+    case Walk
+    case Steps
+    case LuxPol
+    case Rest
+    case Kal
+    case Water
+}

@@ -191,6 +191,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                     // 장비연결 안되는 경우 대비. 10초 내로 필요 서비스를 다 찾으면 아무것도 안하고 못찾은 상태라면 타임아웃 처리.
 //                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
 //                    }
+                    // 찾았는데 사용자가 아무것도 안하고 있을 때에도 Timeout 메세지가 뜬다?
                     DispatchQueue.background(delay: 5.0, background: nil) {
                         print("DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 5)")
                         if (!self.isConnected || !self.isRequiredServicesFound) {
@@ -293,7 +294,7 @@ extension DeviceManager: CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        print("[+] centralManager(didConnect)")
+        //print("[+] centralManager(didConnect)")
         
         // User defaults에 저장
         var dict: Dictionary = Dictionary<String, Any>()
@@ -306,17 +307,17 @@ extension DeviceManager: CBCentralManagerDelegate {
         print("Saved device \(dict[DeviceManager.KEY_DEVICE] ?? "-") to UserDefaults!")
         
         if peripheral == self.peripheral {
-            print("Connected! \(peripheral)")
+            print("Connected to \(peripheral.name ?? "Unknown") Device!")
             self.peripheral = peripheral;
             self.peripheral!.delegate = self;
             self.peripheral!.discoverServices(nil)
         }
         
-        print("[-] centralManager(didConnect)")
+        //print("[-] centralManager(didConnect)")
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        print("[+] centralManager(didFailToConnect)")
+        //print("[+] centralManager(didFailToConnect)")
         
         print("Failed to Connect to KittyDoc Device!\n\tError: \(error?.localizedDescription ?? "-")")
         self.isConnected = false
@@ -325,11 +326,11 @@ extension DeviceManager: CBCentralManagerDelegate {
             print("self.delegate?.onConnectionFailed() == nil!(didFailToConnect)")
             return
         }
-        print("[-] centralManager(didFailToConnect)")
+        //print("[-] centralManager(didFailToConnect)")
     }
 
     func centralManager(_ central: CBCentralManager, connectionEventDidOccur event: CBConnectionEvent, for peripheral: CBPeripheral) {
-        print(" [+]centralManager(connectionEventDidOccur)")
+        //print("[+]centralManager(connectionEventDidOccur)")
         
         if peripheral == self.peripheral {
             print("Connection event occurred [ \(String(describing: event)) ]")
@@ -337,11 +338,11 @@ extension DeviceManager: CBCentralManagerDelegate {
             print("Connected, But peripheral != self.peripheral (Might be an error!)")
         }
         
-        print(" [-]centralManager(connectionEventDidOccur)")
+        //print("[-]centralManager(connectionEventDidOccur)")
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        print("[+] centralManager(didDisconnectPeripheral)")
+        //print("[+] centralManager(didDisconnectPeripheral)")
         
         if error != nil {
             print("didDisconnectPeripheral error : \(String(describing: error?.localizedDescription))")
@@ -355,13 +356,13 @@ extension DeviceManager: CBCentralManagerDelegate {
             return
         }
 
-        print("[-] centralManager(didDisconnectPeripheral)")
+        //print("[-] centralManager(didDisconnectPeripheral)")
     }
 }
 
 extension DeviceManager: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
-        print("[+] centralManager(didDiscoverServices)")
+        //print("[+] centralManager(didDiscoverServices)")
                 
         guard let services = peripheral.services else {
             print("There is no Service at all!(didDiscoverServices)")
@@ -390,7 +391,7 @@ extension DeviceManager: CBPeripheralDelegate {
                 return
             }
         }
-        print("[-] centralManager(didDiscoverServices)")
+        //print("[-] centralManager(didDiscoverServices)")
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
@@ -419,7 +420,7 @@ extension DeviceManager: CBPeripheralDelegate {
 
             // firmware version
             if service.uuid.isEqual(PeripheralUUID.DEVICE_INFO_SERVICE_UUID) && characteristic.uuid.isEqual(PeripheralUUID.SW_REVISION_CHAR_UUID) { // 0x180A,0x2A28
-                print("[+] peripheral.readvalue() <SW_REVISION_CHAR_UUID>")
+                //print("[+] peripheral.readvalue() <SW_REVISION_CHAR_UUID>")
                 guard self.peripheral == peripheral else {
                     print("self.peripheral != peripheral!(didDiscoverCharacteristicsFor)")
                     return
@@ -630,7 +631,7 @@ extension DeviceManager: CBPeripheralDelegate {
         } else if characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID) {// 17 bytes on respond.
             // getUUID 호출 응답 (17Bytes) 11 218 36 68 179 86 114 75 88 164 51 166 109 100 235 140 4
             // setUUID 호출 응답 (17Bytes) 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-            print("\n[+]characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID)\n")
+            print("[+]characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID)\n")
             // system command 응답 처리
             print("data(count : \(bytes.count)) => ", terminator: "")
             for i in 0..<bytes.count {
@@ -644,7 +645,7 @@ extension DeviceManager: CBPeripheralDelegate {
                 print("self.secondDelegate?.onSysCmdResponse(:) == nil!(didUpdateValueForCharacteristic)")
                 return
             }
-            print("\n[-]characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID)\n")
+            //print("[-]characteristic.uuid.isEqual(PeripheralUUID.SYSCMD_CHAR_UUID)\n")
         }
         
         if (self.syncControlCharacteristic != nil && self.syncDataCharacteristic != nil && self.sysCmdCharacteristic != nil && !self.firmwareVersion.isEmpty && !self.isRequiredServicesFound) {
@@ -720,7 +721,7 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
     }
     
     func connectPeripheral() {
-        print("[+]connectPeripheral()")
+        //print("[+]connectPeripheral()")
         self.isRequiredServicesFound = false
         
         //pred = 0// static dispatch_once_t pred; // delegate method 중복호출 방지
@@ -734,7 +735,7 @@ extension DeviceManager {// Manage Services, Characteristics, Peripherals
             return
         }
         self.manager!.connect(self.peripheral!, options: nil)
-        print("[-]connectPeripheral()")
+        //print("[-]connectPeripheral()")
     }
 
     func connectPeripheral(uuid: String, name: String) { // 지정한 UUID의 장비로 연결

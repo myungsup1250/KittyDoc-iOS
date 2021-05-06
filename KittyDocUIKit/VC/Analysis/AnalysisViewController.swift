@@ -8,32 +8,11 @@
 import UIKit
 import Charts
 
-enum SegSelect: Int {
-    case Year = 0
-    case Month
-    case Day
-    case Week
-}
-
-enum OptSelect: Int {
-    case Sun = 0
-    case UV
-    case Vit_D
-    case Exercise
-    case Walk
-    case Steps
-    case LuxPol
-    case Rest
-    case Kal
-    case Water
-}
-
 class AnalysisViewController: UIViewController, ChartViewDelegate {
     var userInterfaceStyle: UIUserInterfaceStyle!
     var deviceManager = DeviceManager.shared
     var safeArea: UILayoutGuide!
     
-    var highlighted = Highlight()
     var dateInput: String = ""
     var chartSelect: UISegmentedControl!
     var dateTextField: ConstantUITextField!
@@ -45,25 +24,25 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var timeLabel: UILabel!
     var infoValueLabel: UILabel!
     var timeValueLabel: UILabel!
-
-    var options = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"]
-    var optionsIndex = 7//0
-    
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    var days = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
-    var daysofweek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    var times = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
     
     var petDatas = [PetData]()
+    var highlighted = Highlight()
     var dateFormatter: DateFormatter!
 
+    var optionsIndex = 7//0
+    let options = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"]
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    let days = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
+    let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    let times = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("AnalysisViewController.viewDidLoad()")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone(_:)), name: .receiveSyncDataDone, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(describeHighlightedData(_:)), name: .highlightedData, object: nil)
 
         safeArea = view.safeAreaLayoutGuide// view.layoutMarginsGuide
@@ -83,23 +62,21 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         chartOptionChanged(selected: SegSelect(rawValue: 2)!, pickerOption: options[optionsIndex])
         // segSelect = 2 : Day
         // Initial Setup : Day && Sun && CurrentDate
-        barChartView.addTapRecognizer()
     }
     
     private func refreshChartData() {
         petDatas.removeAll()
-        petDatas = requestServerData()//(forDays: 1, forHours: 0)//센서 데이터 수신 코드
+        petDatas = requestServerData()//센서 데이터 수신 코드
     }
     
     fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
         var dataArray = [PetData]()
         let hourInSec: TimeInterval = 3600
-        let dayInSec: TimeInterval = 86400 // (86400 == 24Hours in seconds)
-        //let weekInSec: TimeInterval = 604800 // (604800 == A week in seconds)
+        let dayInSec: TimeInterval = 86400 // 24Hours in seconds
 
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let today = Date()
-        //let segDate = dateFormatter.date(from: dateTextField.text!)!
+        // Multiple Castings to get exact day without extra seconds
         let segDate = dateFormatter.date(from: dateFormatter.string(from: datePicker.date))!
         guard Calendar.current.compare(segDate, to: today, toGranularity: .day) != .orderedDescending else {
             print("segDate(\(unixtimeToString(unixtime: segDate.timeIntervalSince1970))) and today(\(unixtimeToString(unixtime: today.timeIntervalSince1970))) is not orderedDescending, [There will be no data!]")
@@ -250,14 +227,18 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
-        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
-        print("AnalysisViewController.viewDidDisappear()")
-    }
+//    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
+//        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
+//        print("AnalysisViewController.viewDidDisappear()")
+//    }
     
     // receiveSyncDataDone() will be called when Receiving SyncData Done!
-    @objc func receiveSyncDataDone(_ notification: Notification) {
+    @objc func receiveSyncDataDone() {
         print("\n<<< AnalysisViewController.receiveSyncDataDone() >>>")
+        DispatchQueue.background(delay: 0, background: nil) { [self] in// Stop scanning after deadine
+            refreshChartData()
+            //chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
+        }
     }
     
     // describeHighlightedData() will be called when Chart Data highlighted!
@@ -269,18 +250,18 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
                 infoValueLabel.text = String(Int(highlight.y))
                 switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
                 case .Year:
-                    dateFormatter.dateFormat = "yyyy MMM"
-                    timeValueLabel.text = dateFormatter.string(from: datePicker.date)
+                    dateFormatter.dateFormat = "yyyy "
+                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) + months[Int(highlight.x)]
                 case .Month:
-                    dateFormatter.dateFormat = "yyyy MMM"
-                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) + " " + days[Int(highlight.x)]
+                    dateFormatter.dateFormat = "yyyy MMM "
+                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) + days[Int(highlight.x)]
                 case .Day:
-                    dateFormatter.dateFormat = "MMM dd"
-                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) + " " +  times[Int(highlight.x)] + " ~ " + times[Int(highlight.x) + 1]
+                    dateFormatter.dateFormat = "MMM dd "
+                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) +  times[Int(highlight.x)]
                 case .Week:
                     print("Week")
 //                    dateFormatter.dateFormat = "yyyy-MM-dd"
-//                    timeValueLabel.text = daysofweek[Int(highlight.x)] + " ~ " + daysofweek[Int(highlight.x) + 1]
+//                    timeValueLabel.text = weekDays[Int(highlight.x)] + " ~ " + weekDays[Int(highlight.x) + 1]
                 }
             }
         }
@@ -290,10 +271,10 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가도록
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print("AnalysisViewController.viewDidLayoutSubviews()")
-    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        print("AnalysisViewController.viewDidLayoutSubviews()")
+//    }
 }
 
 extension AnalysisViewController {
@@ -397,10 +378,10 @@ extension AnalysisViewController {
             barChartView.setScaleEnabled(true)// Disables Pinch to zoom feature
 //        }
         
-        setLimitLines(barChartView, goal: goal)
+        setLimitLines(to: barChartView, goal: goal)
     }
     
-    func setLimitLines(_ barChartView: BarChartView, goal: Double) {
+    func setLimitLines(to barChartView: BarChartView, goal: Double) {
         // Use LimitLine as Goal
         let ll = ChartLimitLine(limit: goal, label: "Goal")
         ll.lineColor = .lightblue
@@ -420,8 +401,7 @@ extension AnalysisViewController {
 
     func chartOptionChanged(selected segSelect: SegSelect, pickerOption: String) {
         print("chartOptionChanged(selected: \(segSelect), pickerOption: \(pickerOption))")
-        
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        //dateFormatter.dateFormat = "yyyy-MM-dd"
 
         var values = [Double]()
         var valueGoal: Double = 0
@@ -480,9 +460,10 @@ extension AnalysisViewController {
             }
         }
 
-        if petDatas.isEmpty {
+        if petDatas.isEmpty { // Avoid crash
             values.append(0)
         }
+        
         switch segSelect {
         case .Year:
             print("And Year Data!")
@@ -493,8 +474,8 @@ extension AnalysisViewController {
             // 현재 달 까지만 나오도록 12달 데이터를 자르는 기능 -> 제거 21.05.04
 //            dateFormatter.dateFormat = "yyyy-MM-dd"
 //            let today = Date()
+//            // Multiple Castings to get exact day without extra seconds
 //            let segDate = dateFormatter.date(from: dateFormatter.string(from: datePicker.date))!
-//            //let segDate = dateFormatter.date(from: dateTextField.text!)!
 //            let comparisonResult = Calendar.current.compare(segDate, to: today, toGranularity: .year)
 //            if comparisonResult == .orderedSame {
 //                print("Same Year!")
@@ -534,7 +515,16 @@ extension AnalysisViewController {
             dateFormatter.dateFormat = "yyyy-MM-dd"
             dateTextField.text = dateFormatter.string(from: datePicker.date)
             
-            setChart(dataName: optionTextField.text!, dataPoints: daysofweek.dropLast(daysofweek.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
+            let segDate = datePicker.date
+            let segDateWeekDay = Calendar.current.component(.weekday,  from: segDate)
+            print("segDate: \(segDate), Weekday: \(segDateWeekDay)(\(weekDays[segDateWeekDay - 1]))")
+
+            var tmpWeekDays = [String]()
+            for i in 0..<weekDays.count {
+                tmpWeekDays.append(weekDays[(segDateWeekDay + i) % weekDays.count])
+            }
+            //print("tmpWeekDays: \(tmpWeekDays)")
+            setChart(dataName: optionTextField.text!, dataPoints: tmpWeekDays.dropLast(tmpWeekDays.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         }
     }
     
@@ -546,6 +536,20 @@ extension AnalysisViewController {
         chartOptionChanged(selected: SegSelect(rawValue: segment.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
     }
     
+    @objc func doneBtnOnDatePicker(_ picker: UIDatePicker) {
+        dateTextField.resignFirstResponder()//self.view.endEditing(true)
+        
+        // 날짜가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
+        refreshChartData()
+        chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
+    }
+    
+    @objc func doneBtnOnPickerView(_ picker: UIPickerView) {// UIDatePicker, UIPickerView의 Done 버튼 핸들링 통합?
+        self.view.endEditing(true)
+        
+        chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
+    }
+
     @objc func dateChanged(_ picker: UIDatePicker) {
         manageDateFormatter(date: nil)
     }
@@ -575,31 +579,17 @@ extension AnalysisViewController {
 
         dateFormatter.dateFormat = "yyyyMMdd"
         dateInput = dateFormatter.string(from: datePicker.date)
-        print("dateTextField.text : \(dateTextField.text ?? "0000-00-00"), dateInput : \(dateInput)")
+        print("dateTextField.text : \(dateTextField.text ?? "-"), dateInput : \(dateInput)")
     }
 
-    @objc func doneBtnOnDatePicker(_ picker: UIDatePicker) {
-        dateTextField.resignFirstResponder()//self.view.endEditing(true)
-        
-        // 날짜가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
-        refreshChartData()
-        chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
-    }
-    
-    @objc func doneBtnOnPickerView(_ picker: UIPickerView) {// UIDatePicker, UIPickerView의 Done 버튼 핸들링 통합?
-        self.view.endEditing(true)
-        
-        chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
-    }
-
-    func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat, entry: ChartDataEntry?, highlight: Highlight?, centerIndices:Highlight?) {
-        if let entry = entry, let highlight = highlight {
-            print("chartTranslated info:\n\(self)\ndX and dY:\(dX)-\(dY)\nentry:\(entry)\nhightlight:\(highlight)")
-        }
-        if let centerIndices = centerIndices {
-            print("\n center indices is:\n\(centerIndices)")
-        }
-    }
+//    func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat, entry: ChartDataEntry?, highlight: Highlight?, centerIndices:Highlight?) {
+//        if let entry = entry, let highlight = highlight {
+//            print("chartTranslated info:\n\(self)\ndX and dY:\(dX)-\(dY)\nentry:\(entry)\nhightlight:\(highlight)")
+//        }
+//        if let centerIndices = centerIndices {
+//            print("\n center indices is:\n\(centerIndices)")
+//        }
+//    }
 }
 
 extension AnalysisViewController {
@@ -695,23 +685,20 @@ extension AnalysisViewController {
     
     func initChartSelect() {
         chartSelect = UISegmentedControl()
-
         chartSelect.insertSegment(withTitle: "Year", at: 0, animated: true)
         chartSelect.insertSegment(withTitle: "Month", at: 1, animated: true)
         chartSelect.insertSegment(withTitle: "Day", at: 2, animated: true)
         chartSelect.insertSegment(withTitle: "Week", at: 3, animated: true)
-
         chartSelect.selectedSegmentIndex = 2 // Set Day as a Default
         chartSelect.addTarget(self, action: #selector(selectedSegChanged(_:)), for: .valueChanged)
     }
 
     func initDateTextField() {
         dateTextField = ConstantUITextField()
-        let date = Date()
-
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateTextField.font = UIFont.systemFont(ofSize: 25)
-        dateTextField.text = dateFormatter.string(from: date)
+        dateTextField.text = dateFormatter.string(from: Date())
+        //dateTextField.textColor = .systemBlue
         dateTextField.textAlignment = .center
         dateTextField.borderStyle = .roundedRect
     }
@@ -726,13 +713,11 @@ extension AnalysisViewController {
         }
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
 
-        let toolBar: UIToolbar = UIToolbar()
+        let toolBar = UIToolbar()
         toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
-
-        let today: UIBarButtonItem = UIBarButtonItem(title: "Today", style: .plain, target: self, action: #selector(setToday))
-        let space: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let done: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnDatePicker(_:)))
-
+        let today = UIBarButtonItem(title: "Today", style: .plain, target: self, action: #selector(setToday))
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnDatePicker(_:)))
         toolBar.setItems([today, space, done], animated: true)
         dateTextField.inputAccessoryView = toolBar
         dateTextField.inputView = datePicker
@@ -740,9 +725,9 @@ extension AnalysisViewController {
     
     func initOptionTextField() {
         optionTextField = ConstantUITextField()
-        
         optionTextField.font = UIFont.systemFont(ofSize: 25)
-        optionTextField.text = options[7]//[0]
+        optionTextField.text = options[optionsIndex]
+        //optionTextField.textColor = .systemBlue
         optionTextField.textAlignment = .center
         optionTextField.borderStyle = .roundedRect
     }
@@ -754,9 +739,8 @@ extension AnalysisViewController {
 
         let toolBar = UIToolbar()
         toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
-        
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneBtn: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
+        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
 
         toolBar.setItems([flexSpace, doneBtn], animated: true)
         optionTextField.inputAccessoryView = toolBar
@@ -766,29 +750,29 @@ extension AnalysisViewController {
     func initBarChartView() {
         barChartView = BarChartView()
         barChartView.delegate = self
+        barChartView.addTapRecognizer()
     }
     
     func initLabels() {
         timeLabel = UILabel()
         timeLabel.text = "Date : "
-        timeLabel.font = UIFont.systemFont(ofSize: 25)
+        timeLabel.font = UIFont.systemFont(ofSize: 20)
         
         timeValueLabel = UILabel()
-        timeValueLabel.text = "-"
-        timeValueLabel.font = UIFont.systemFont(ofSize: 25)
+        timeValueLabel.text = " "
+        timeValueLabel.font = UIFont.systemFont(ofSize: 20)
         
         infoLabel = UILabel()
         infoLabel.text = "Value : "
-        infoLabel.font = UIFont.systemFont(ofSize: 25)
+        infoLabel.font = UIFont.systemFont(ofSize: 20)
         
         infoValueLabel = UILabel()
-        infoValueLabel.text = "-"
-        infoValueLabel.font = UIFont.systemFont(ofSize: 25)
+        infoValueLabel.text = " "
+        infoValueLabel.font = UIFont.systemFont(ofSize: 20)
     }
 }
 
 extension AnalysisViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         1
     }
@@ -801,12 +785,10 @@ extension AnalysisViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         return options[row]
     }
     
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         optionsIndex = row // Manage selected row globally - 21.03.12 by ms
         optionTextField.text = options[row]
         print("Change chart data for \(options[row]) graph!")
-        
     }
 }
 

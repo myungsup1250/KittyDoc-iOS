@@ -13,12 +13,13 @@ class BTSettingsViewController: UIViewController {
     var tableView: UITableView!
     let tableViewRowHeight: CGFloat = 55
     var safeArea: UILayoutGuide!
-    var deviceManager: DeviceManager = DeviceManager.shared
+    var deviceManager = DeviceManager.shared
     var delegate: DeviceManagerDelegate!
     private var viewReloadTimer: Timer?
     var petDevices = [String]()
     var knownDevices = [PeripheralData]()
-    private let sections: [String] = ["Known Devices", "Found Devices"]
+    var unknownDevices = [PeripheralData]()
+    private let sections = ["Known Devices", "Unknown Devices"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +27,11 @@ class BTSettingsViewController: UIViewController {
 
         print("BTSettingsViewController.viewDidLoad()")
         safeArea = view.layoutMarginsGuide
-
+        
         if !PetInfo.shared.petArray.isEmpty { // Pet's Device UUID in String
             for pet in PetInfo.shared.petArray {
-                //print("Pet<\(pet.PetName)>'s Device\t: [ \(pet.Device) ]")
-                if (!pet.Device.isEmpty && pet.Device != "No device" && pet.Device != "NULL") {
+                print("Pet<\(pet.PetName)>'s Device\t: [ \(pet.Device) ]")
+                if (!pet.Device.isEmpty && pet.Device != "NULL" && pet.Device != "No device") {
                     let uuid: CBUUID? = CBUUID(string: pet.Device)
                     // 안드로이드에서 등록한 MAC Address 형식이면 nil 이 된다
                     if uuid != nil && !petDevices.contains(uuid!.uuidString) {
@@ -46,20 +47,24 @@ class BTSettingsViewController: UIViewController {
         deviceManager.scanPeripheral()
     }
     
-    @objc func pullToRefresh(_ sender: Any) {
-        // 끌어내려서 새로고침? 추가?
+    @objc func pullToRefresh(_ sender: Any) { // Restart scan IoT Device
+        viewReloadTimer?.invalidate()
+        deviceManager.manager?.stopScan()
+        deviceManager.scanPeripheral()
+        viewReloadTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(refreshTableView), userInfo: nil, repeats: true)
+        self.tableView.refreshControl?.endRefreshing()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("BTSettingsViewController.viewWillAppear()")
         viewReloadTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(refreshTableView), userInfo: nil, repeats: true)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("BTSettingsViewController.viewWillDisappear()")
@@ -68,15 +73,15 @@ class BTSettingsViewController: UIViewController {
     
     public func manageFoundDevices() {
         knownDevices.removeAll()
-        for i in (0..<deviceManager.foundDevices.count).reversed() {
-            for uuid in petDevices {
-                if deviceManager.foundDevices[i].peripheral!.identifier.uuidString == uuid {
-                    var peripheralData = PeripheralData()
-                    peripheralData.peripheral = deviceManager.foundDevices[i].peripheral!
-                    peripheralData.rssi = deviceManager.foundDevices[i].rssi
-                    knownDevices.append(peripheralData)
-                    //deviceManager.foundDevices.remove(at: i)
-                }
+        unknownDevices.removeAll()
+        for foundDevice in deviceManager.foundDevices {
+            var peripheralData = PeripheralData()
+            peripheralData.peripheral = foundDevice.peripheral!
+            peripheralData.rssi = foundDevice.rssi
+            if petDevices.contains(foundDevice.peripheral!.identifier.uuidString) {
+                knownDevices.append(peripheralData)
+            } else {
+                unknownDevices.append(peripheralData)
             }
         }
         tableView.reloadData()
@@ -109,10 +114,11 @@ class BTSettingsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(PeripheralDataTableViewCell.self, forCellReuseIdentifier: "cell")
-//        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         tableView.rowHeight = tableViewRowHeight
-//        tableView.rowHeight = UITableView.automaticDimension
-//        tableView.estimatedRowHeight = tableViewRowHeight
+
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.attributedTitle = NSAttributedString(string: "Pull to Refresh")
+        tableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh(_:)), for: .valueChanged)
     }
 }
 
@@ -132,7 +138,7 @@ extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
         if section == 0 {
             return knownDevices.count
         } else {// section == 1
-            return deviceManager.foundDevices.count
+            return unknownDevices.count//deviceManager.foundDevices.count
         }
         //return deviceManager.foundDevices.count
     }
@@ -144,14 +150,14 @@ extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
             exit(0)
         }
         var peripheralData: PeripheralData
+        //let peripheralData = deviceManager.foundDevices[indexPath.row]
         if indexPath.section == 0 {
             peripheralData = knownDevices[indexPath.row]
         } else { // indexPath.section == 1
-            peripheralData = deviceManager.foundDevices[indexPath.row]
+            peripheralData = unknownDevices[indexPath.row]//deviceManager.foundDevices[indexPath.row]
         }
-        //let peripheralData = deviceManager.foundDevices[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PeripheralDataTableViewCell
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PeripheralDataTableViewCell
         cell.setTableViewCell(peripheralData: peripheralData)
 
         return cell
@@ -163,20 +169,20 @@ extension BTSettingsViewController: UITableViewDelegate, UITableViewDataSource {
             print("There's something wrong with the deviceManager.foundDevices!")
             exit(0)
         }
+        //let peripheralData = deviceManager.foundDevices[indexPath.row]
         var peripheralData: PeripheralData
         if indexPath.section == 0 {
             peripheralData = knownDevices[indexPath.row]
         } else { // indexPath.section == 1
-            peripheralData = deviceManager.foundDevices[indexPath.row]
+            peripheralData = unknownDevices[indexPath.row]//deviceManager.foundDevices[indexPath.row]
         }
 
-        //let peripheralData = deviceManager.foundDevices[indexPath.row]
-        let alert: UIAlertController = UIAlertController(title: "Connect?", message: "KittyDoc will connect to \(peripheralData.peripheral!.name ?? "Unknown")", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Connect?", message: "KittyDoc will connect to \(peripheralData.peripheral!.name ?? "Unknown")", preferredStyle: .alert)
         let confirm = UIAlertAction(title: "OK", style: .default) { [self] _ in
             deviceManager.manager?.stopScan()
             viewReloadTimer?.invalidate()
             deviceManager.peripheral = peripheralData.peripheral
-            deviceManager.connectPeripheral()//self.deviceManager.connectPeripheral()
+            deviceManager.connectPeripheral()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(confirm)
@@ -192,7 +198,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
     func onDeviceNotFound() {
         DispatchQueue.main.async {
             self.viewReloadTimer?.invalidate()
-            let alert: UIAlertController = UIAlertController(title: "Device Not Found!", message: "Couldn't find any KittyDoc Devices!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Device Not Found!", message: "Couldn't find any KittyDoc Devices!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
             self.present(alert, animated: true, completion: nil)
@@ -205,7 +211,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
 
     func onDeviceDisconnected() {
         DispatchQueue.main.async {
-            let alert: UIAlertController = UIAlertController(title: "Disconnected!", message: "Disonnected from KittyDoc Device!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Disconnected!", message: "Disonnected from KittyDoc Device!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
             self.present(alert, animated: true, completion: nil)
@@ -259,7 +265,6 @@ extension BTSettingsViewController: DeviceManagerDelegate {
             let confirm = UIAlertAction(title: "OK", style: .default) { _ in
                 self.navigationController?.popViewController(animated: true)
                 self.deviceManager.getBattery()
-                //self.deviceManager.startSync()
             }
             alert.addAction(confirm)
             self.present(alert, animated: true, completion: nil)
@@ -299,7 +304,7 @@ extension BTSettingsViewController: DeviceManagerDelegate {
     
     func onSyncCompleted() {
         DispatchQueue.main.async {
-            let alert: UIAlertController = UIAlertController(title: "Sync Completed!", message: "Synchronization Completed!", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Sync Completed!", message: "Synchronization Completed!", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alert.addAction(cancel)
             self.present(alert, animated: true, completion: nil)
