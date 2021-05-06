@@ -476,7 +476,7 @@ extension AddPetViewController {
             weightLB = String(lb)
         }
         
-        var gender:String = "None"
+        var gender = "None"
         if (genderSelect.selectedSegmentIndex == 0) {
             gender = "Male"
         } else if(genderSelect.selectedSegmentIndex == 1) {
@@ -486,10 +486,10 @@ extension AddPetViewController {
         }
 
         // KittyDoc Device 연결하지 않고 펫 등록 및 수정할 경우 처리 21.02.24 -ms
+        // 빈 문자열 대신 안드로이드처럼 NULL을 넣어서 서버에 등록하도록 수정 21.05.06 -ms
         if deviceInput.text == "Plz Connect to Device!" {
-            deviceInput.text = ""//////////
+            deviceInput.text = "NULL"
         }
-        // // // // // // // // // // // // // // // // // // // //
 
         if isEditMode == true {
             let modifyData:ModifyData_Pet = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
