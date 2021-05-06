@@ -14,16 +14,15 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var safeArea: UILayoutGuide!
     
     var dateInput: String = ""
-    var chartSelect: UISegmentedControl!
+    @IBOutlet weak var chartSelect: UISegmentedControl!
     var dateTextField: ConstantUITextField!
     var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
     var pickerView: UIPickerView!
     var barChartView: BarChartView!
-    var infoLabel: UILabel!
-    var timeLabel: UILabel!
-    var infoValueLabel: UILabel!
-    var timeValueLabel: UILabel!
+    @IBOutlet weak var presentTimeBtn: UIButton!
+    @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet weak var valueUnitLabel: UILabel!
     
     var petDatas = [PetData]()
     var highlighted = Highlight()
@@ -31,6 +30,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 
     var optionsIndex = 7//0
     let options = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"]
+    let units = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"] // 추후 수정필요
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     let days = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
     let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -247,17 +247,17 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         if let data = notification.userInfo as? [String: Highlight] {
             if let highlight = data["highlighted"] {
                 //print("highlight: \(highlight.x), value: \(highlight.y)")
-                infoValueLabel.text = String(Int(highlight.y))
+                valueLabel.text = String(Int(highlight.y))
                 switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
                 case .Year:
                     dateFormatter.dateFormat = "yyyy "
-                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) + months[Int(highlight.x)]
+                    presentTimeBtn.titleLabel!.text = dateFormatter.string(from: datePicker.date) + months[Int(highlight.x)]
                 case .Month:
                     dateFormatter.dateFormat = "yyyy MMM "
-                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) + days[Int(highlight.x)]
+                    presentTimeBtn.titleLabel!.text = dateFormatter.string(from: datePicker.date) + days[Int(highlight.x)]
                 case .Day:
                     dateFormatter.dateFormat = "MMM dd "
-                    timeValueLabel.text = dateFormatter.string(from: datePicker.date) +  times[Int(highlight.x)]
+                    presentTimeBtn.titleLabel!.text = dateFormatter.string(from: datePicker.date) +  times[Int(highlight.x)]
                 case .Week:
                     print("Week")
 //                    dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -600,53 +600,52 @@ extension AnalysisViewController {
         initDatePicker()
         initOptionTextField()
         initPickerView()
-        initBarChartView()
         initLabels()
+        initBarChartView()
     }
     
     fileprivate func addSubviews() {
-        view.addSubview(chartSelect)
-        view.addSubview(dateTextField)
-        view.addSubview(optionTextField)
+//        view.addSubview(chartSelect)
+//        view.addSubview(dateTextField)
+//        view.addSubview(optionTextField)
         view.addSubview(barChartView)
-        view.addSubview(timeLabel)
-        view.addSubview(infoLabel)
-        view.addSubview(timeValueLabel)
-        view.addSubview(infoValueLabel)
+//        view.addSubview(timeLabel)
+//        view.addSubview(infoLabel)
+//        view.addSubview(timeValueLabel)
+//        view.addSubview(infoValueLabel)
     }
     
     fileprivate func prepareForAutoLayout() {
-        chartSelect.translatesAutoresizingMaskIntoConstraints = false
-        dateTextField.translatesAutoresizingMaskIntoConstraints = false
-        optionTextField.translatesAutoresizingMaskIntoConstraints = false
+//        chartSelect.translatesAutoresizingMaskIntoConstraints = false
+//        dateTextField.translatesAutoresizingMaskIntoConstraints = false
+//        optionTextField.translatesAutoresizingMaskIntoConstraints = false
         barChartView.translatesAutoresizingMaskIntoConstraints = false
-        timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeValueLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoValueLabel.translatesAutoresizingMaskIntoConstraints = false
+//        presentTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+//        valueLabel.translatesAutoresizingMaskIntoConstraints = false
+//        valueUnitLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     fileprivate func setConstraints() {
-        let chartSelectConstraints = [
-            chartSelect.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            chartSelect.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 10),
-            chartSelect.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
-            chartSelect.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
-            chartSelect.heightAnchor.constraint(equalToConstant: 50)
-        ]
-
-        let dateTextFieldConstraints = [
-            dateTextField.topAnchor.constraint(equalTo: chartSelect.bottomAnchor, constant: 20),
-            dateTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-            dateTextField.rightAnchor.constraint(equalTo: view.centerXAnchor, constant: -10)
-        ]
-
-        let optionTextFieldConstraints = [
-            optionTextField.topAnchor.constraint(equalTo: dateTextField.topAnchor),
-            optionTextField.leftAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
-            optionTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
-        ]
-        
+//        let chartSelectConstraints = [
+//            chartSelect.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            chartSelect.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 10),
+//            chartSelect.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
+//            chartSelect.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10),
+//            chartSelect.heightAnchor.constraint(equalToConstant: 50)
+//        ]
+//
+//        let dateTextFieldConstraints = [
+//            dateTextField.topAnchor.constraint(equalTo: chartSelect.bottomAnchor, constant: 20),
+//            dateTextField.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+//            dateTextField.rightAnchor.constraint(equalTo: view.centerXAnchor, constant: -10)
+//        ]
+//
+//        let optionTextFieldConstraints = [
+//            optionTextField.topAnchor.constraint(equalTo: dateTextField.topAnchor),
+//            optionTextField.leftAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
+//            optionTextField.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20)
+//        ]
+//
         let barChartViewConstraints = [
             barChartView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -10),
             barChartView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
@@ -654,29 +653,25 @@ extension AnalysisViewController {
             barChartView.heightAnchor.constraint(equalTo: barChartView.widthAnchor),
             barChartView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
-        
-        let timeLabelConstraints = [
-            timeLabel.topAnchor.constraint(equalTo: dateTextField.bottomAnchor, constant: 15),
-            timeLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
-        ]
-        
-        let infoLabelConstraints = [
-            infoLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 15),
-            infoLabel.leftAnchor.constraint(equalTo: timeLabel.leftAnchor),
-        ]
-
-        let timeValueLabelConstraints = [
-            timeValueLabel.topAnchor.constraint(equalTo: timeLabel.topAnchor),
-            timeValueLabel.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: 10),
-        ]
-        
-        let infoValueLabelConstraints = [
-            infoValueLabel.topAnchor.constraint(equalTo: infoLabel.topAnchor),
-            infoValueLabel.leftAnchor.constraint(equalTo: infoLabel.rightAnchor, constant: 10),
-        ]
-
-        [chartSelectConstraints, dateTextFieldConstraints, optionTextFieldConstraints, barChartViewConstraints, timeLabelConstraints, infoLabelConstraints, timeValueLabelConstraints, infoValueLabelConstraints]
-            .forEach(NSLayoutConstraint.activate(_:))
+//
+//        let presentTimeLabelConstraints = [
+//            presentTimeLabel.topAnchor.constraint(equalTo: dateTextField.bottomAnchor, constant: 15),
+//            presentTimeLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+//        ]
+//
+//        let valueLabelConstraints = [
+//            valueLabel.topAnchor.constraint(equalTo: presentTimeLabel.bottomAnchor, constant: 15),
+//            valueLabel.leftAnchor.constraint(equalTo: presentTimeLabel.leftAnchor),
+//        ]
+//
+//        let valueUnitLabelConstraints = [
+//            valueUnitLabel.topAnchor.constraint(equalTo: valueLabel.topAnchor),
+//            valueUnitLabel.leftAnchor.constraint(equalTo: value.rightAnchor, constant: 10),
+//        ]
+//
+//        [chartSelectConstraints, dateTextFieldConstraints, optionTextFieldConstraints, barChartViewConstraints, timeLabelConstraints, infoLabelConstraints, timeValueLabelConstraints, infoValueLabelConstraints]
+//            .forEach(NSLayoutConstraint.activate(_:))
+    [barChartViewConstraints].forEach(NSLayoutConstraint.activate(_:))
 
     }
 }
@@ -684,11 +679,11 @@ extension AnalysisViewController {
 extension AnalysisViewController {
     
     func initChartSelect() {
-        chartSelect = UISegmentedControl()
-        chartSelect.insertSegment(withTitle: "Year", at: 0, animated: true)
-        chartSelect.insertSegment(withTitle: "Month", at: 1, animated: true)
-        chartSelect.insertSegment(withTitle: "Day", at: 2, animated: true)
-        chartSelect.insertSegment(withTitle: "Week", at: 3, animated: true)
+       // chartSelect = UISegmentedControl()
+//        chartSelect.insertSegment(withTitle: "Year", at: 0, animated: true)
+//        chartSelect.insertSegment(withTitle: "Month", at: 1, animated: true)
+//        chartSelect.insertSegment(withTitle: "Day", at: 2, animated: true)
+//        chartSelect.insertSegment(withTitle: "Week", at: 3, animated: true)
         chartSelect.selectedSegmentIndex = 2 // Set Day as a Default
         chartSelect.addTarget(self, action: #selector(selectedSegChanged(_:)), for: .valueChanged)
     }
@@ -706,11 +701,11 @@ extension AnalysisViewController {
     func initDatePicker() {
         datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
-        if #available(iOS 13.4, *) {
-            datePicker.preferredDatePickerStyle = .wheels
-        } else {
-            //datePicker.preferredDatePickerStyle = UIDatePickerStyle.compact
-        }
+//        if #available(iOS 13.4, *) {
+//            datePicker.preferredDatePickerStyle = .wheels
+//        } else {
+            datePicker.preferredDatePickerStyle = UIDatePickerStyle.compact
+//        }
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
 
         let toolBar = UIToolbar()
@@ -754,21 +749,17 @@ extension AnalysisViewController {
     }
     
     func initLabels() {
-        timeLabel = UILabel()
-        timeLabel.text = "Date : "
-        timeLabel.font = UIFont.systemFont(ofSize: 20)
-        
-        timeValueLabel = UILabel()
-        timeValueLabel.text = " "
-        timeValueLabel.font = UIFont.systemFont(ofSize: 20)
-        
-        infoLabel = UILabel()
-        infoLabel.text = "Value : "
-        infoLabel.font = UIFont.systemFont(ofSize: 20)
-        
-        infoValueLabel = UILabel()
-        infoValueLabel.text = " "
-        infoValueLabel.font = UIFont.systemFont(ofSize: 20)
+//        presentTimeBtn = UIButton()
+//        presentTimeBtn.text = "1970-01-01"
+//        presentTimeBtn.font = UIFont.systemFont(ofSize: 20)
+//
+//        valueLabel = UILabel()
+//        valueLabel.text = "0"
+//        valueLabel.font = UIFont.systemFont(ofSize: 25)
+//
+//        valueUnitLabel = UILabel()
+//        valueUnitLabel.text = " "
+//        valueUnitLabel.font = UIFont.systemFont(ofSize: 20)
     }
 }
 
