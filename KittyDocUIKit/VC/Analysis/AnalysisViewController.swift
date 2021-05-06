@@ -670,7 +670,7 @@ extension AnalysisViewController {
 //
 //        [chartSelectConstraints, dateTextFieldConstraints, optionTextFieldConstraints, barChartViewConstraints, timeLabelConstraints, infoLabelConstraints, timeValueLabelConstraints, infoValueLabelConstraints]
 //            .forEach(NSLayoutConstraint.activate(_:))
-    [barChartViewConstraints].forEach(NSLayoutConstraint.activate(_:))
+        [barChartViewConstraints].forEach(NSLayoutConstraint.activate(_:))
 
     }
 }
@@ -742,7 +742,7 @@ extension AnalysisViewController {
     }
 
     func initBarChartView() {
-        barChartView = BarChartView()
+        //barChartView = BarChartView()
         barChartView.delegate = self
         barChartView.addTapRecognizer()
     }
