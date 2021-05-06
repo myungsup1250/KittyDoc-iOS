@@ -23,17 +23,22 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var uvRayView: UIView!
     @IBOutlet weak var LuxPolView: UIView!
     @IBOutlet weak var progressView: RingProgressGroupView!
+    @IBOutlet weak var connectionView: UIView!
     
+    
+    @IBOutlet weak var petPickerView: UIPickerView!
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var kcalLabel: UILabel!
     @IBOutlet weak var sunExLabel: UILabel!
     @IBOutlet weak var vitaDLabel: UILabel!
     @IBOutlet weak var uvRayLabel: UILabel!
     @IBOutlet weak var luxPolLabel: UILabel!
+    @IBOutlet weak var waterLabel: UILabel!
+    @IBOutlet weak var waterFinalLabel: UILabel!
     @IBOutlet weak var stepProgressView: UIProgressView!
     
     
-    private let sideMenu = SideMenuNavigationController(rootViewController: UIViewController())
+    private let sideMenu = SideMenuNavigationController(rootViewController: SideMenuViewController())
     let deviceManager = DeviceManager.shared
     var count = 0
     var selectedRow = 0
@@ -59,11 +64,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     var sunExValue: Int = 0
     var uvRayValue: Double = 0
     var luxPolValue: Double = 0
+    var kcalValue: Double = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewAddBackground()
+        
+        petPickerView.delegate = self
+        petPickerView.dataSource = self
+        
+        //petPickerView.transform = CGAffineTransform(rotationAngle: -90 * (.pi/180))
 
         sideMenu.leftSide = true
         SideMenuManager.default.leftMenuNavigationController = sideMenu
@@ -154,8 +165,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             entries.append(ChartDataEntry(x: Double(x),
                                           y: Double(piValues[x])))
         }
-        print("이거다~~")
-        print(entries)
+        
         
         let set = PieChartDataSet(entries: entries)
         set.colors = ChartColorTemplates.colorful()
@@ -178,7 +188,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         sunExView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.6849207594))
         vitaDView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         uvRayView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-        LuxPolView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.6786131195))
+        LuxPolView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.68))
+        connectionView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.7892104395))
     }
     
     //    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
@@ -189,6 +200,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBAction func didTapSideMenuBtn() {
         present(sideMenu, animated: true, completion: nil)
     }
+    
+    
+    @IBAction func waterValueChanged(_ sender: UISlider) {
+        waterLabel.text = "\(Int(round(sender.value)))"
+    }
+    
+    
+    @IBAction func waterSubmitBtnClicked(_ sender: Any) {
+        waterFinalLabel.text = waterLabel.text
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         let today = Date()
@@ -213,7 +235,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         //petData.time = jsonArray[0]["Time"] as! CLong
                         //petData.time /= 1000 // Translate millisec to sec
                         sunExValue = jsonArray[0]["SunVal"] as! Int
-                        //petData.uvVal = jsonArray[0]["UvVal"] as! Double
                         uvRayValue = jsonArray[0]["UvVal"] as! Double
                         vitaDValue = jsonArray[0]["VitDVal"] as! Double
                         exerciseValue = jsonArray[0]["ExerciseVal"] as! Int
@@ -221,25 +242,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         breakValue = jsonArray[0]["RestVal"] as! Int
                         stepValue = jsonArray[0]["StepVal"] as! Int
                         luxPolValue = jsonArray[0]["LuxpolVal"] as! Double
+                        kcalValue = jsonArray[0]["KalVal"] as! Double
                         
-                        //petData.kalVal = jsonArray[0]["KalVal"] as! Double
                         //petData.waterVal = jsonArray[0]["WaterVal"] as! Int
-//                        print("today's data!")
-//                        print(lightValue)
-//                        print(vitaDValue)
-//                        print(exerciseValue)
-//                        print(walkValue)
-//                        print(stepValue)
-//                        print(sunExValue)
-//                        print(breakValue)
                         
-                        piValues.append(exerciseValue)
-                        piValues.append(breakValue)
-                        piValues.append(walkValue)
-                        
-                        print(piValues[0])
-                        print(piValues[1])
-                        print(piValues[2])
+//                        piValues.append(exerciseValue)
+//                        piValues.append(breakValue)
+//                        piValues.append(walkValue)
+//
+//                        print(piValues[0])
+//                        print(piValues[1])
+//                        print(piValues[2])
                     }
                 } catch {
                     print("JSON 파싱 에러")
@@ -270,17 +283,48 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         return PetInfo.shared.petArray.count
     }
     
+//    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+//        return 50
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+//        return 200
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//
+//        let width: CGFloat = 200
+//        let height: CGFloat = 50
+//
+//        let view = UIView()
+//        view.frame = CGRect(x: -50, y: 0, width: width + 50, height: height)
+//
+//        let label = UILabel()
+//        label.textAlignment = .center
+//        label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+//        label.text = PetInfo.shared.petArray[row].PetName
+//        label.font = UIFont.systemFont(ofSize: 25)
+//
+//        view.addSubview(label)
+//        view.transform = CGAffineTransform(rotationAngle: 90 * (.pi/180))
+//
+//        return view
+//    }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return PetInfo.shared.petArray[row].PetName
     }
     
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        //petNameSelectTF.text = PetInfo.shared.petArray[row].PetName //텍스트 필드 이름 변경
         selectedRow = row
         PetChange(index: row) //표시되는 데이터들 변경
     } //펫이 선택되었을 때 호출되는 함수!!!
     
+//    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+//        let view = UIView(frame: CGRect(x: 0, y: 0, width: petPickerView.frame.height, height: petPickerView.frame.width))
+//        view.transform = CGAffineTransform(rotationAngle: 90 * (.pi/180))
+//        return view
+//    }
     
     func PetChange(index: Int) {
         //이 함수는 위의 pickerView(....didSelectRow...) 함수안에 있는 메소드야! (didSelectRow 저 함수는 피커뷰로 펫을 선택했을 때 호출되는 함수이고!) 보이는 데이터들을 변경해주려고 만든 함수임!!
@@ -309,9 +353,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         return picker
     }()
-    
-    
-    
     
     
     
@@ -520,11 +561,42 @@ extension UIView {
 
 extension HomeViewController: ChartViewDelegate {
     
-    
-    
 }
 
 
-class SideMenuViewController: UIViewController {
+class SideMenuViewController: UITableViewController {
     
+    var items = ["1"]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let nib = UINib(nibName: "SideMenuTableViewCell", bundle: nil)
+        let header = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
+        
+        tableView.tableHeaderView = header
+        tableView.register(nib, forCellReuseIdentifier: "SideMenuTableViewCell")
+        tableView.backgroundColor = #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 1)
+        tableView.separatorStyle = .none
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuTableViewCell",                                       for: indexPath) as! SideMenuTableViewCell
+        
+        cell.emailLabel.text = "\(UserInfo.shared.Email)"
+        cell.nameLabel.text = "\(UserInfo.shared.Name)"
+        cell.userimageView.image = UIImage(named: "profileUserImg")
+
+        cell.backgroundColor = #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 1)
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        250
+    }
+
 }

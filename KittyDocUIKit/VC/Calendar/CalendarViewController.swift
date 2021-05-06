@@ -141,7 +141,7 @@ class CalendarViewController: UIViewController {
         
         
         NSLayoutConstraint.activate([
-            calendar.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 15),
+            calendar.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
             calendar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             calendar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             calendar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
@@ -447,7 +447,7 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
         case 0:
             return CGSize(width: cellSize, height: 40)
         default:
-            return CGSize(width: cellSize, height: 80)
+            return CGSize(width: cellSize, height: 70)
         }
     }
     
