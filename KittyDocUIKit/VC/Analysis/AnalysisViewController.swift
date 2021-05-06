@@ -52,9 +52,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         dateFormatter.timeZone = TimeZone.autoupdatingCurrent
 
         initUIViews()
-        //addSubviews()
-        //prepareForAutoLayout()
-        //setConstraints()
+        addSubviews()
+        prepareForAutoLayout()
+        setConstraints()
 
         manageUserInterfaceStyle()
 
@@ -523,7 +523,6 @@ extension AnalysisViewController {
             for i in 0..<weekDays.count {
                 tmpWeekDays.append(weekDays[(segDateWeekDay + i) % weekDays.count])
             }
-            //print("tmpWeekDays: \(tmpWeekDays)")
             setChart(dataName: optionTextField.text!, dataPoints: tmpWeekDays.dropLast(tmpWeekDays.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         }
     }
@@ -562,7 +561,7 @@ extension AnalysisViewController {
         if date != nil {
             datePicker.date = date!
         }
-        //dateFormatter.dateStyle = .long
+        dateFormatter.dateStyle = .medium //.long
         
         switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
         case .Year:
@@ -743,7 +742,8 @@ extension AnalysisViewController {
     }
 
     func initBarChartView() {
-        //barChartView.delegate = self
+        barChartView = BarChartView()
+        barChartView.delegate = self
         barChartView.addTapRecognizer()
     }
     

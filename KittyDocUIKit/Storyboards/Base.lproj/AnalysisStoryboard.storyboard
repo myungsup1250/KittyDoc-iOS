@@ -59,15 +59,10 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zt8-OT-4ab" customClass="BarChartView" customModule="KittyDocUIKit" customModuleProvider="target">
-                                <rect key="frame" x="15" y="380" width="384" height="418"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NwE-yg-0PY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Zt8-OT-4ab" firstAttribute="top" secondItem="gcI-OJ-PGE" secondAttribute="bottom" constant="50" id="1zb-39-kMv"/>
                             <constraint firstItem="Odf-u2-GyX" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" id="2iK-wH-I1t"/>
                             <constraint firstItem="4Qn-5R-T25" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="20" id="2vC-NT-aCJ"/>
                             <constraint firstItem="8dM-rr-uBW" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="BVv-7E-KgY"/>
@@ -75,17 +70,14 @@
                             <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="JcW-Dr-M9w" secondAttribute="trailing" constant="30" id="ESN-D5-Vcp"/>
                             <constraint firstItem="hsT-0I-emG" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="70" id="Eoh-ax-utT"/>
                             <constraint firstItem="6TO-bo-8ca" firstAttribute="top" secondItem="NwE-yg-0PY" secondAttribute="top" constant="66" id="Im4-MF-Shw"/>
-                            <constraint firstItem="Zt8-OT-4ab" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="15" id="JuQ-lI-mAd"/>
                             <constraint firstItem="4Qn-5R-T25" firstAttribute="top" secondItem="NwE-yg-0PY" secondAttribute="top" id="MES-4H-e3I"/>
                             <constraint firstItem="4Qn-5R-T25" firstAttribute="trailing" secondItem="NwE-yg-0PY" secondAttribute="trailing" constant="-20" id="S4C-9b-Xun"/>
                             <constraint firstItem="4Xu-wN-fFB" firstAttribute="top" secondItem="4Qn-5R-T25" secondAttribute="bottom" constant="10" id="SiY-Ub-hlo"/>
-                            <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="Zt8-OT-4ab" secondAttribute="trailing" constant="15" id="SqP-cT-Bzq"/>
                             <constraint firstItem="JcW-Dr-M9w" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="20" id="TbE-od-T2t"/>
                             <constraint firstItem="hsT-0I-emG" firstAttribute="leading" secondItem="gcI-OJ-PGE" secondAttribute="trailing" constant="7" id="Ty7-Kr-RCn"/>
                             <constraint firstItem="8dM-rr-uBW" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="20" id="UpJ-8C-2gn"/>
                             <constraint firstItem="Odf-u2-GyX" firstAttribute="top" secondItem="NwE-yg-0PY" secondAttribute="top" constant="66" id="cKw-an-AnJ"/>
                             <constraint firstItem="gcI-OJ-PGE" firstAttribute="top" secondItem="JcW-Dr-M9w" secondAttribute="bottom" constant="15" id="crb-yH-hsc"/>
-                            <constraint firstItem="NwE-yg-0PY" firstAttribute="bottom" secondItem="Zt8-OT-4ab" secondAttribute="bottom" constant="15" id="qML-7T-c3c"/>
                             <constraint firstItem="4Xu-wN-fFB" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="qOY-ds-q6R"/>
                             <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="6TO-bo-8ca" secondAttribute="trailing" id="txV-tN-U9e"/>
                             <constraint firstItem="gcI-OJ-PGE" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="uVx-cR-faw"/>
