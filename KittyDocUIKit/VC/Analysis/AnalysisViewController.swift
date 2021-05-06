@@ -19,6 +19,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
     var yearMonthPickerView: DatePickerView!
+    var yearPickerView: YearPickerView!
     //var pickerView: UIPickerView!
     var barChartView: BarChartView!
     @IBOutlet weak var chartDateLabel: UILabel!
@@ -553,11 +554,13 @@ extension AnalysisViewController {
 
         switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
         case .Year:
+            
             let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
             toolBar.setItems([today, space, done], animated: true)
             dateTextField.inputAccessoryView = toolBar
-            dateTextField.inputView = yearMonthPickerView
-            yearMonthPickerView.selectToday()
+            dateTextField.inputView = yearPickerView
+            yearPickerView.selectToday()
+            print("selectedSegChanged(Year)")
         case .Month:
             let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
             toolBar.setItems([today, space, done], animated: true)
@@ -603,8 +606,9 @@ extension AnalysisViewController {
     @objc func setToday(_ picker: UIDatePicker) {
         switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
         case .Year:
-            yearMonthPickerView.selectToday()
+            yearPickerView.selectToday()
             manageDateFormatter(date: Date())
+            print("setToday(Year)")
         case .Month:
             yearMonthPickerView.selectToday()
             manageDateFormatter(date: Date())
@@ -786,7 +790,7 @@ extension AnalysisViewController {
     
     func initPickerViews() {
         initDatePicker()
-        initOptionTFPickerView()
+        //initOptionTFPickerView()
         initYearPickerView()
         initYearMonthPickerView()
     }
@@ -807,21 +811,11 @@ extension AnalysisViewController {
     }
 
     func initYearPickerView() {
-        
+        yearPickerView = YearPickerView()
     }
     
     func initYearMonthPickerView() {
         yearMonthPickerView = DatePickerView()
-        
-//        let toolBar = UIToolbar()
-//        toolBar.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 35)
-//        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-//        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
-//
-//        toolBar.setItems([flexSpace, doneBtn], animated: true)
-//        dateTextField.inputAccessoryView = toolBar
-//        dateTextField.inputView = yearMonthPickerView
-//        yearMonthPickerView.selectToday()
     }
 
     func initBarChartView() {
