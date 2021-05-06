@@ -742,7 +742,7 @@ extension AnalysisViewController {
     }
 
     func initBarChartView() {
-        //barChartView = BarChartView()
+        barChartView = BarChartView()
         barChartView.delegate = self
         barChartView.addTapRecognizer()
     }
