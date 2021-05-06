@@ -25,7 +25,7 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4Xu-wN-fFB">
                                 <rect key="frame" x="30" y="198" width="354" height="32"/>
                                 <segments>
-                                    <segment title="First"/>
+                                    <segment title="Year"/>
                                     <segment title="Month"/>
                                     <segment title="Day"/>
                                 </segments>
@@ -59,12 +59,20 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tg4-dH-Zda" customClass="BarChartView" customModule="KittyDocUIKit" customModuleProvider="target">
+                                <rect key="frame" x="10" y="409" width="394" height="394"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Tg4-dH-Zda" secondAttribute="height" id="3Yn-Vy-xA4"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="NwE-yg-0PY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Odf-u2-GyX" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" id="2iK-wH-I1t"/>
                             <constraint firstItem="4Qn-5R-T25" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="20" id="2vC-NT-aCJ"/>
+                            <constraint firstItem="Tg4-dH-Zda" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="10" id="4Bf-0z-TrM"/>
                             <constraint firstItem="8dM-rr-uBW" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="BVv-7E-KgY"/>
                             <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="4Xu-wN-fFB" secondAttribute="trailing" constant="30" id="Dx4-M8-7hI"/>
                             <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="JcW-Dr-M9w" secondAttribute="trailing" constant="30" id="ESN-D5-Vcp"/>
@@ -76,8 +84,10 @@
                             <constraint firstItem="JcW-Dr-M9w" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="20" id="TbE-od-T2t"/>
                             <constraint firstItem="hsT-0I-emG" firstAttribute="leading" secondItem="gcI-OJ-PGE" secondAttribute="trailing" constant="7" id="Ty7-Kr-RCn"/>
                             <constraint firstItem="8dM-rr-uBW" firstAttribute="top" secondItem="4Xu-wN-fFB" secondAttribute="bottom" constant="20" id="UpJ-8C-2gn"/>
+                            <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="Tg4-dH-Zda" secondAttribute="trailing" constant="10" id="ZbT-v4-dRF"/>
                             <constraint firstItem="Odf-u2-GyX" firstAttribute="top" secondItem="NwE-yg-0PY" secondAttribute="top" constant="66" id="cKw-an-AnJ"/>
                             <constraint firstItem="gcI-OJ-PGE" firstAttribute="top" secondItem="JcW-Dr-M9w" secondAttribute="bottom" constant="15" id="crb-yH-hsc"/>
+                            <constraint firstItem="NwE-yg-0PY" firstAttribute="bottom" secondItem="Tg4-dH-Zda" secondAttribute="bottom" constant="10" id="hKB-W6-EVc"/>
                             <constraint firstItem="4Xu-wN-fFB" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="qOY-ds-q6R"/>
                             <constraint firstItem="NwE-yg-0PY" firstAttribute="trailing" secondItem="6TO-bo-8ca" secondAttribute="trailing" id="txV-tN-U9e"/>
                             <constraint firstItem="gcI-OJ-PGE" firstAttribute="leading" secondItem="NwE-yg-0PY" secondAttribute="leading" constant="30" id="uVx-cR-faw"/>
@@ -86,6 +96,7 @@
                     <navigationItem key="navigationItem" id="Y9J-66-U3g"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="barChartView" destination="Tg4-dH-Zda" id="R4O-mC-Spw"/>
                         <outlet property="chartSelect" destination="4Xu-wN-fFB" id="dxV-V2-8Hj"/>
                         <outlet property="presentTimeBtn" destination="JcW-Dr-M9w" id="D8Q-cT-Hu9"/>
                         <outlet property="valueLabel" destination="gcI-OJ-PGE" id="Yrt-zl-ZQI"/>
