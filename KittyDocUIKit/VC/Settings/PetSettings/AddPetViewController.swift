@@ -492,8 +492,8 @@ extension AddPetViewController {
         }
 
         if isEditMode == true {
-            let modifyData:ModifyData_Pet = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
-            let server:KittyDocServer = KittyDocServer()
+            let modifyData = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
+            let server = KittyDocServer()
             let modifyResponse:ServerResponse = server.petModify(data: modifyData)
             if(modifyResponse.getCode() as! Int == ServerResponse.PET_MODIFY_SUCCESS){
                 
