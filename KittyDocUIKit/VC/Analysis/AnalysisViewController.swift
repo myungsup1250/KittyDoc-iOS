@@ -52,9 +52,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         dateFormatter.timeZone = TimeZone.autoupdatingCurrent
 
         initUIViews()
-        addSubviews()
-        prepareForAutoLayout()
-        setConstraints()
+        //addSubviews()
+        //prepareForAutoLayout()
+        //setConstraints()
 
         manageUserInterfaceStyle()
 
@@ -743,8 +743,7 @@ extension AnalysisViewController {
     }
 
     func initBarChartView() {
-        barChartView = BarChartView()
-        barChartView.delegate = self
+        //barChartView.delegate = self
         barChartView.addTapRecognizer()
     }
     
