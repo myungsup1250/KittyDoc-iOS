@@ -26,6 +26,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var connectionView: UIView!
     @IBOutlet weak var waterView: UIView!
     @IBOutlet weak var waterFinalView: UIView!
+    @IBOutlet weak var batteryView: UIProgressView!
     
     @IBOutlet weak var petPickerView: UIPickerView!
     @IBOutlet weak var stepLabel: UILabel!
@@ -36,9 +37,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var luxPolLabel: UILabel!
     @IBOutlet weak var waterLabel: UILabel!
     @IBOutlet weak var waterFinalLabel: UILabel!
+    @IBOutlet weak var batteryLabel: UILabel!
     @IBOutlet weak var stepProgressView: UIProgressView!
     @IBOutlet weak var waterSlide: UISlider!
     @IBOutlet weak var connectionLabel: UILabel!
+    
     
     
     let width: CGFloat = 100
@@ -79,7 +82,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
         piChart.delegate = self
-        self.title = "Hello, " + "JENNY" + "👋"
+        self.title = "Home"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         deviceManager.delegate = self
         deviceManager.secondDelegate = self
@@ -99,50 +102,52 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
 
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
-        let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
-        let server:KittyDocServer = KittyDocServer()
-        let findResponse:ServerResponse = server.petFind(data: findData)
         
-        if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS) {
-            let jsonString:String = findResponse.getMessage() as! String
-            if let arrData = jsonString.data(using: .utf8) {
-                do {
-                    if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
-                        PetInfo.shared.petArray.removeAll()
-                        for i in 0..<jsonArray.count {
-                            let petInfo:PetInfo = PetInfo()
-                            petInfo.PetID = jsonArray[i]["PetID"] as! Int
-                            petInfo.PetName = jsonArray[i]["PetName"] as! String
-                            petInfo.OwnerID = jsonArray[i]["OwnerID"] as! Int
-                            //petkg과 petlb를 서버에서 string으로 다루고 있는 오류가 있어서, 추후에 그부분이 수정되면
-                            //이곳도 수정필요!
-                            petInfo.PetKG = jsonArray[i]["PetKG"] as! Double
-                            petInfo.PetLB = jsonArray[i]["PetLB"] as! Double
-                            petInfo.PetSex = jsonArray[i]["PetSex"] as! String
-                            petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
-                            petInfo.Device = jsonArray[i]["Device"] as! String
-                            print("[ PetName :", petInfo.PetName, "petID :", petInfo.PetID, "]")
-//                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
-//                                return original.PetName == petInfo.PetName
-//                            }) {
-                            PetInfo.shared.petArray.append(petInfo)
-//                            }
-                            
-                
+            let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
+            let server:KittyDocServer = KittyDocServer()
+            let findResponse:ServerResponse = server.petFind(data: findData)
+            
+            if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS) {
+                let jsonString:String = findResponse.getMessage() as! String
+                if let arrData = jsonString.data(using: .utf8) {
+                    do {
+                        if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
+                            PetInfo.shared.petArray.removeAll()
+                            for i in 0..<jsonArray.count {
+                                let petInfo:PetInfo = PetInfo()
+                                petInfo.PetID = jsonArray[i]["PetID"] as! Int
+                                petInfo.PetName = jsonArray[i]["PetName"] as! String
+                                petInfo.OwnerID = jsonArray[i]["OwnerID"] as! Int
+                                //petkg과 petlb를 서버에서 string으로 다루고 있는 오류가 있어서, 추후에 그부분이 수정되면
+                                //이곳도 수정필요!
+                                petInfo.PetKG = jsonArray[i]["PetKG"] as! Double
+                                petInfo.PetLB = jsonArray[i]["PetLB"] as! Double
+                                petInfo.PetSex = jsonArray[i]["PetSex"] as! String
+                                petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
+                                petInfo.Device = jsonArray[i]["Device"] as! String
+                                print("[ PetName :", petInfo.PetName, "petID :", petInfo.PetID, "]")
+    //                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
+    //                                return original.PetName == petInfo.PetName
+    //                            }) {
+                                PetInfo.shared.petArray.append(petInfo)
+    //                            }
+                                
+                    
+                            }
                         }
+                    } catch {
+                        print("JSON 파싱 에러")
                     }
-                } catch {
-                    print("JSON 파싱 에러")
                 }
+            } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
+                //alertWithMessage(message: findResponse.getMessage())
+                print("Error (findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE)")
             }
-        } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
-            //alertWithMessage(message: findResponse.getMessage())
-            print("Error (findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE)")
-        }
-        ////json parsing
-        if !PetInfo.shared.petArray.isEmpty {
-           // petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
-        }
+            ////json parsing
+            if !PetInfo.shared.petArray.isEmpty {
+               // petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+            }
+        
         
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
@@ -203,6 +208,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         connectionView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.7892104395))
         waterView.addColor(color: .white)
         waterFinalView.addColor(color: .white)
+       
     }
     
     func setPetPickerView() {
@@ -214,19 +220,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         // 회전 - 전체 틀을 horizontal로 돌리기 위함
         rotationAngle = -90 * (.pi/180)
         petPickerView.transform = CGAffineTransform(rotationAngle: rotationAngle)
-//
-//        레이어
-//        petPickerView.layer.borderColor = #colorLiteral(red: 0.4300610423, green: 0.5195892453, blue: 1, alpha: 1)
-//        petPickerView.layer.borderWidth = 1.0
-//        petPickerView.layer.cornerRadius = 20
-//
         
     }
     
-    //    override func viewDidDisappear(_ animated: Bool) {// View가 사라질 때. ViewWillDisappear은 View가 안 보일 때.
-    //        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
-    //        print("HomeViewController.viewDidDisappear()")
-    //    }
     
     @IBAction func didTapSideMenuBtn() {
         present(sideMenu, animated: true, completion: nil)
@@ -330,7 +326,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true) // 화면 터치 시 키보드 내려가는 코드! -ms
+        self.view.endEditing(true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -377,7 +373,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     
-    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row
         PetChange(index: row) //표시되는 데이터들 변경
@@ -387,7 +382,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     func PetChange(index: Int) {
         getData(index: selectedRow)
         setData()
+        // MARK: - 펫 변경할 때 기기 상태바 변경하기
+//        deviceManager.removePeripheral()
+//        deviceManager.connectPeripheral(uuid: PetInfo.shared.petArray[index].Device, name: "WhoseCat")
     }
+    
     
     lazy var pickerView: UIPickerView = {
         let picker = UIPickerView()
@@ -420,11 +419,11 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         waterRing.style = .ontop
         waterRing.outerRingColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         waterRing.innerRingColor = .systemBlue
-        //waterRing.value = CGFloat(waterValue)
         waterRing.minValue = 0
         waterRing.maxValue = 300
         return waterRing
     }()
+
 
 
 extension HomeViewController: DeviceManagerDelegate {
@@ -539,18 +538,19 @@ extension HomeViewController: DeviceManagerSecondDelegate {
     }
     
     func onReadBattery(percent: Int) {
-        print("[+]onReadBattery")
-        print("batteryLevel : \(percent)")
-        print("[-]onReadBattery")
+        DispatchQueue.main.async {
+            print("[+]onReadBattery")
+            print("batteryLevel : \(percent)")
+            let percentDivide: Double = Double(percent) / 100
+            self.batteryView.progress = Float(percentDivide)
+            self.batteryLabel.text = "\(percent) %"
+            print("[-]onReadBattery")
+        }
     }
     
     func onSyncCompleted() {
         DispatchQueue.main.async {
             self.connectionLabel.text = "동기화 완료"
-            let alert: UIAlertController = UIAlertController(title: "Sync Completed!", message: "Synchronization Completed!", preferredStyle: .alert)
-            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alert.addAction(cancel)
-            self.present(alert, animated: true, completion: nil)
         }
     }
 }
@@ -610,6 +610,10 @@ extension UIView {
         self.layer.shadowOpacity = 0.3
         self.layer.shadowOffset = .init(width: self.layer.borderWidth, height: 10)
         self.layer.shadowRadius = 5
+    }
+    
+    func batteryRadius() {
+        self.layer.cornerRadius = 3
     }
 }
 
