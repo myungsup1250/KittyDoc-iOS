@@ -81,6 +81,8 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             DispatchQueue.main.async {
                 let alert: UIAlertController = UIAlertController(title: "ERROR in Date!", message: "There is no data for future!", preferredStyle: .alert)
                 let confirm = UIAlertAction(title: "Confirm", style: .default) { _ in
+                    self.yearPickerView.selectToday()
+                    self.yearMonthPickerView.selectToday()
                     self.manageDateFormatter(date: Date())
                     self.dateTextField.becomeFirstResponder()
                 }
