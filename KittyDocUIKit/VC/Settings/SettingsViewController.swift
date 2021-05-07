@@ -93,15 +93,15 @@ class SettingsViewController: UIViewController {
 
         Sections.append(Section(title: "Device Management",
                                 options: [
-                                    .staticCell(model: SettingsOption(title: "기기 관리", icon: UIImage(systemName: "gear")!, iconBackgroundColor: .systemGreen, handler: {
+                                    .staticCell(model: SettingsOption(title: "기기 관리", icon: UIImage(systemName: "gear")!, iconBackgroundColor: #colorLiteral(red: 0.373965323, green: 0.6513406038, blue: 0.8643702865, alpha: 1), handler: {
                                         self.performSegue(withIdentifier: "DeviceManageSegue", sender: self)
                                     })),
-                                    .switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: .systemYellow, handler: {
+                                    .switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: #colorLiteral(red: 0.2078431373, green: 0.5098039216, blue: 0.768627451, alpha: 1), handler: {
                                     }, isOn: true)),
-                                    .staticCell(model: SettingsOption(title: "기기 설정(TEST)", icon: UIImage(systemName: "gear")!, iconBackgroundColor: #colorLiteral(red: 0.2078431373, green: 0.5098039216, blue: 0.768627451, alpha: 1), handler: {
+                                    .staticCell(model: SettingsOption(title: "기기 설정(TEST)", icon: UIImage(systemName: "gear")!, iconBackgroundColor: #colorLiteral(red: 0.1333333333, green: 0.4431372549, blue: 0.6941176471, alpha: 1), handler: {
                                         self.performSegue(withIdentifier: "BTSettingsSegue", sender: self)
                                     })),
-                                    .staticCell(model: SettingsOption(title: "Start Sync(TEST)", icon: UIImage(systemName: "tray.and.arrow.down") ?? .strokedCheckmark, iconBackgroundColor: #colorLiteral(red: 0.1333333333, green: 0.4431372549, blue: 0.6941176471, alpha: 1), handler: {
+                                    .staticCell(model: SettingsOption(title: "Start Sync(TEST)", icon: UIImage(systemName: "tray.and.arrow.down") ?? .strokedCheckmark, iconBackgroundColor: #colorLiteral(red: 0.03921568627, green: 0.2941176471, blue: 0.4705882353, alpha: 1), handler: {
                                         print("Start Sync!")
                                         DeviceManager.shared.startSync()
                                     }))

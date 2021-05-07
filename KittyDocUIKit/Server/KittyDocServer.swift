@@ -21,11 +21,11 @@ class KittyDocServer:ServerApi{
         let serverResponse:ServerResponse = ServerResponse()
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
+            guard let received = data, error == nil else {
                 print(error?.localizedDescription ?? "No data")
                 return
             }
-            let responseJSON = try? JSONSerialization.jsonObject(with:data, options:[])
+            let responseJSON = try? JSONSerialization.jsonObject(with:received, options:[])
             if let responseJSON = responseJSON as? [String: Any] {
                 serverResponse.setCode(_code: responseJSON["code"] as! Int)
                 serverResponse.setMessage(_message: responseJSON["message"] as! String)
