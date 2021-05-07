@@ -4,6 +4,7 @@ PODS:
   - Charts/Core (3.6.0)
   - CircularCarousel (1.0.0)
   - CircularSlider (1.1.2)
+  - MASegmentedControl (0.0.5)
   - MKRingProgressView (2.2.3)
   - Realm (10.7.1):
     - Realm/Headers (= 10.7.1)
@@ -17,6 +18,7 @@ DEPENDENCIES:
   - Charts
   - CircularCarousel
   - CircularSlider
+  - MASegmentedControl
   - MKRingProgressView
   - RealmSwift
   - SideMenu
@@ -27,6 +29,7 @@ SPEC REPOS:
     - Charts
     - CircularCarousel
     - CircularSlider
+    - MASegmentedControl
     - MKRingProgressView
     - Realm
     - RealmSwift
@@ -37,12 +40,13 @@ SPEC CHECKSUMS:
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
   CircularCarousel: 6248f5892c018fc2d115d4d5186be91d46bacbea
   CircularSlider: 448f9f7723b845ccd470dac41981feb192e20c50
+  MASegmentedControl: 9b58f9ba3a562a739b63b29e4ca2b9dc4d9c62cb
   MKRingProgressView: 404b3157e7a533ab8668d29ec20042c35d12ca1d
   Realm: 55bae3a2f42186360b54fd8783e884ae8656ab05
   RealmSwift: 0d9bb38ad2cb953fc61d6827be5611972a75ca31
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   UICircularProgressRing: 19927375b2b21b5fa5fd9582f15ccdef9659da16
 
-PODFILE CHECKSUM: 71e247306298c45949eee82f1e1d6baa986b71e9
+PODFILE CHECKSUM: cd1aa5f1ceaad27a7c8bb4bd6538035a9f7c9c99
 
 COCOAPODS: 1.10.1
