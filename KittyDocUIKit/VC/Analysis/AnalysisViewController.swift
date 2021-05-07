@@ -16,18 +16,14 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var valueUnitLabel: UILabel!
     @IBOutlet weak var calBtn: UIButton!
+    @IBOutlet weak var dataPickerView: UIPickerView!
+    var timeSegmentControl: MASegmentedControl!
     //var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
     var yearMonthPickerView: DatePickerView!
     var yearPickerView: YearPickerView!
     //var pickerView: UIPickerView!
-    @IBOutlet weak var dataPickerView: UIPickerView!
     var barChartView: BarChartView!
-    @IBOutlet weak var chartDateLabel: UILabel!
-    @IBOutlet weak var valueLabel: UILabel!
-    @IBOutlet weak var valueUnitLabel: UILabel!
-    var timeSegmentControl: MASegmentedControl!
-   
     var highlighted = Highlight()
 
     var userInterfaceStyle: UIUserInterfaceStyle!
@@ -39,11 +35,12 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 
     var optionsIndex = 7//0
     let options = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"]
-    let units = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"] // 추후 수정필요
+    let units = [ "Sun", "UV", "Vitmin D", "Exercise", "Walk", "Steps", "LuxPolution", "Rest", "Kal", "Water"] // 추후 맞는 단위로 수정필요
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     let days = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"]
     let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    let times = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
+    let times = ["00시", "01시", "02시", "03시", "04시", "05시", "06시", "07시", "08시", "09시", "10시", "11시", "12시", "13시", "14시", "15시", "16시", "17시", "18시", "19시", "20시", "21시", "22시", "23시"]
+        //["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,23 +59,21 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         addObservers()
 
         refreshChartData()
-        chartOptionChanged(selected: SegSelect(rawValue: 2)!, pickerOption: options[optionsIndex])
+        chartOptionChanged(selected: SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
         // segSelect = 2 : Day
         // Initial Setup : Day && Sun && CurrentDate
     }
     
     
     private func refreshChartData() {
-        chartDateLabel.text = ""
-        valueUnitLabel.text = units[optionsIndex]
         valueLabel.text = "0"
+        valueUnitLabel.text = units[optionsIndex]
+        chartDateLabel.text = ""
         petDatas.removeAll()
         petDatas = requestServerData()//센서 데이터 수신 코드
-      
     }
     
     fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
-        print("\nrequestServerData()")
         var dataArray = [PetData]()
         let hourInSec: TimeInterval = 3600
         let dayInSec: TimeInterval = 86400 // 24Hours in seconds
@@ -108,7 +103,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         let segDateYear = currentCal.component(.year,  from: segDate)
         let segDateMonth = currentCal.component(.month,  from: segDate)
         let segDateDay = currentCal.component(.day,  from: segDate)
-        let segSelect = SegSelect(rawValue: chartSelect.selectedSegmentIndex)!
+        let segSelect = SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)!//chartSelect.selectedSegmentIndex)!
         let timeIntervalSince1970 = today.timeIntervalSince1970
         let timeIntervalFromMidnight = TimeInterval(Int(timeIntervalSince1970 + hourInSec * 9) % Int(dayInSec))
         //print("segDate(\(unixtimeToString(unixtime: segDate.timeIntervalSince1970))) and today(\(unixtimeToString(unixtime: today.timeIntervalSince1970)))")
@@ -218,6 +213,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             }
         } else if(analysisResponse.getCode() as! Int == ServerResponse.ANALYSIS_FAILURE) {
             print(analysisResponse.getMessage() as! String)
+            print("ServerResponse.ANALYSIS_FAILURE!!!")
         }
 
         print("dataArray.count : \(dataArray.count)")
@@ -258,7 +254,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             if let highlight = data["highlighted"] {
                 //print("highlight: \(highlight.x), value: \(highlight.y)")
                 valueLabel.text = String(Int(highlight.y))
-                valueUnitLabel.text = options[optionsIndex]
+                valueUnitLabel.text = units[optionsIndex]
                 switch SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)! {
                 case .Year:
                     dateFormatter.dateFormat = "yyyy "
@@ -301,10 +297,6 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 }
 
 extension AnalysisViewController {
-    func chartSettings() {
-        
-    }
-    
     func setChart(dataName: String, dataPoints: [String], values: [Double], goal: Double, max: Double) {
         // 데이터 생성
         var dataEntries = [BarChartDataEntry]()
@@ -421,16 +413,13 @@ extension AnalysisViewController {
         barChartView.leftAxis.addLimitLine(ll)
     }
 
-
     func chartOptionChanged(selected segSelect: SegSelect, pickerOption: String) {
         print("chartOptionChanged(selected: \(segSelect), pickerOption: \(pickerOption))")
-        //dateFormatter.dateFormat = "yyyy-MM-dd"
 
         var values = [Double]()
         var valueGoal: Double = 0
-        let optSelect = OptSelect(rawValue: optionsIndex)!
         print("You selected \(options[optionsIndex])", terminator: " ")
-        switch optSelect {
+        switch OptSelect(rawValue: optionsIndex)! {
         case .Sun:
             valueGoal = ChartUtility.SunGoal
             for petData in petDatas {
@@ -888,6 +877,8 @@ extension AnalysisViewController {
     func initTimeSegmentControl() {
         timeSegmentControl = MASegmentedControl(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 
+        timeSegmentControl.selectedSegmentIndex = 2
+
         timeSegmentControl.itemsWithText = true
         timeSegmentControl.fillEqually = true
         timeSegmentControl.roundedControl = true
@@ -972,8 +963,8 @@ extension AnalysisViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
 
     func initButtons() {
-//        //calBtn = UIButton()
-//        calBtn.addTarget(self, action: #selector(calBtnTouched(_:)), for: .touchDown)
+        //calBtn = UIButton()
+        calBtn.addTarget(self, action: #selector(calBtnTouched(_:)), for: .touchDown)
     }
 
 }
