@@ -91,9 +91,12 @@ class SettingsViewController: UIViewController {
         })
         ]))
 
-        Sections.append(Section(title: "Device Connection",
+        Sections.append(Section(title: "Device Management",
                                 options: [
-                                    .switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: #colorLiteral(red: 0.3098039216, green: 0.5803921569, blue: 0.831372549, alpha: 1), handler: {
+                                    .staticCell(model: SettingsOption(title: "기기 관리", icon: UIImage(systemName: "gear")!, iconBackgroundColor: .systemGreen, handler: {
+                                        self.performSegue(withIdentifier: "DeviceManageSegue", sender: self)
+                                    })),
+                                    .switchCell(model: SettingsSwitchOption(title: "기기 착용 유무(TEST)", icon: UIImage(systemName: "house")!, iconBackgroundColor: .systemYellow, handler: {
                                     }, isOn: true)),
                                     .staticCell(model: SettingsOption(title: "기기 설정(TEST)", icon: UIImage(systemName: "gear")!, iconBackgroundColor: #colorLiteral(red: 0.2078431373, green: 0.5098039216, blue: 0.768627451, alpha: 1), handler: {
                                         self.performSegue(withIdentifier: "BTSettingsSegue", sender: self)
