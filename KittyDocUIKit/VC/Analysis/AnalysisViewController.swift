@@ -9,25 +9,24 @@ import UIKit
 import Charts
 
 class AnalysisViewController: UIViewController, ChartViewDelegate {
-    var userInterfaceStyle: UIUserInterfaceStyle!
-    var deviceManager = DeviceManager.shared
-    var safeArea: UILayoutGuide!
-    
-    var dateInput: String = ""
     @IBOutlet weak var chartSelect: UISegmentedControl!
     @IBOutlet weak var dateTextField: ConstantUITextField!
+    @IBOutlet weak var chartDateLabel: UILabel!
+    @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet weak var valueUnitLabel: UILabel!
     var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
     var yearMonthPickerView: DatePickerView!
     var yearPickerView: YearPickerView!
     //var pickerView: UIPickerView!
     var barChartView: BarChartView!
-    @IBOutlet weak var chartDateLabel: UILabel!
-    @IBOutlet weak var valueLabel: UILabel!
-    @IBOutlet weak var valueUnitLabel: UILabel!
-    
-    var petDatas = [PetData]()
     var highlighted = Highlight()
+
+    var userInterfaceStyle: UIUserInterfaceStyle!
+    var deviceManager = DeviceManager.shared
+    var safeArea: UILayoutGuide!
+    var dateInput: String = ""
+    var petDatas = [PetData]()
     var dateFormatter: DateFormatter!
 
     var optionsIndex = 7//0
@@ -43,22 +42,16 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         
         print("AnalysisViewController.viewDidLoad()")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(describeHighlightedData(_:)), name: .highlightedData, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(custumDatePickerChanged(_:)), name: .custumDatePickerChanged, object: nil)
-
-        safeArea = view.safeAreaLayoutGuide// view.layoutMarginsGuide
+        safeArea = view.safeAreaLayoutGuide
         userInterfaceStyle = self.traitCollection.userInterfaceStyle
-        
         dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.autoupdatingCurrent
 
         initUIViews()
+        addObserbers()
         addSubviews()
         prepareForAutoLayout()
         setConstraints()
-
         manageUserInterfaceStyle()
 
         refreshChartData()
@@ -68,9 +61,9 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     }
     
     private func refreshChartData() {
-        chartDateLabel.text = ""
-        petDatas.removeAll()
-        petDatas = requestServerData()//센서 데이터 수신 코드
+        chartDateLabel.text = "" // Empty chartDataLabel not to confuse users
+        petDatas.removeAll() // Flush all data in petDatas Array
+        petDatas = requestServerData() // Requests Sensor Data from Server
     }
     
     fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
@@ -656,6 +649,12 @@ extension AnalysisViewController {
 
 extension AnalysisViewController {
         
+    fileprivate func addObserbers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(describeHighlightedData(_:)), name: .highlightedData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(custumDatePickerChanged(_:)), name: .custumDatePickerChanged, object: nil)
+    }
+    
     fileprivate func initUIViews() {
         initChartSelect()
         initDateTextField()
