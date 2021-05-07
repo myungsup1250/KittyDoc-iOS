@@ -7,6 +7,7 @@
 
 import UIKit
 import Charts
+import MASegmentedControl
 
 class AnalysisViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var chartSelect: UISegmentedControl!
@@ -20,7 +21,13 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     var yearMonthPickerView: DatePickerView!
     var yearPickerView: YearPickerView!
     //var pickerView: UIPickerView!
+    @IBOutlet weak var dataPickerView: UIPickerView!
     var barChartView: BarChartView!
+    @IBOutlet weak var chartDateLabel: UILabel!
+    @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet weak var valueUnitLabel: UILabel!
+    var timeSegmentControl: MASegmentedControl!
+   
     var highlighted = Highlight()
 
     var userInterfaceStyle: UIUserInterfaceStyle!
@@ -41,7 +48,6 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("AnalysisViewController.viewDidLoad()")
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         safeArea = view.safeAreaLayoutGuide
         userInterfaceStyle = self.traitCollection.userInterfaceStyle
@@ -61,10 +67,14 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         // Initial Setup : Day && Sun && CurrentDate
     }
     
+    
     private func refreshChartData() {
-        chartDateLabel.text = "" // Empty chartDataLabel not to confuse users
-        petDatas.removeAll() // Flush all data in petDatas Array
-        petDatas = requestServerData() // Requests Sensor Data from Server
+        chartDateLabel.text = ""
+        valueUnitLabel.text = units[optionsIndex]
+        valueLabel.text = "0"
+        petDatas.removeAll()
+        petDatas = requestServerData()//센서 데이터 수신 코드
+      
     }
     
     fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
@@ -249,7 +259,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
                 //print("highlight: \(highlight.x), value: \(highlight.y)")
                 valueLabel.text = String(Int(highlight.y))
                 valueUnitLabel.text = options[optionsIndex]
-                switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
+                switch SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)! {
                 case .Year:
                     dateFormatter.dateFormat = "yyyy "
                     chartDateLabel.text = dateFormatter.string(from: datePicker.date) + months[Int(highlight.x)]
@@ -282,6 +292,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true) // 화면 터치 시 키보드 내려가도록
     }
+    
 
 //    override func viewDidLayoutSubviews() {
 //        super.viewDidLayoutSubviews()
@@ -301,9 +312,9 @@ extension AnalysisViewController {
         
         for i in 0..<values.count {
             if values[i] < goal {
-                colorSet.append(.lightGray)
+                colorSet.append(#colorLiteral(red: 0.8470588235, green: 0.8901960784, blue: 0.9058823529, alpha: 1))
             } else {
-                colorSet.append(.cyan)//.lightblue
+                colorSet.append(#colorLiteral(red: 0.3098039216, green: 0.5803921569, blue: 0.831372549, alpha: 1))//.lightblue
             }
             dataEntries.append(BarChartDataEntry(x: Double(i), y: values[i]))
         }
@@ -543,7 +554,7 @@ extension AnalysisViewController {
         self.dateTextField.becomeFirstResponder()
     }
 
-    @objc func selectedSegChanged(_ segment: UISegmentedControl) {
+    @objc func selectedSegChanged(_ segment: MASegmentedControl) {
         print("selectedSegChanged()")
         
         // 날짜 세그먼트가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
@@ -552,7 +563,7 @@ extension AnalysisViewController {
         let today = UIBarButtonItem(title: "Today", style: .plain, target: self, action: #selector(setToday))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
+        switch SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)! {
         case .Year:
             
             let done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneBtnOnPickerView(_:)))
@@ -596,7 +607,7 @@ extension AnalysisViewController {
         
         // 날짜가 바뀌었으므로 서버에서 데이터 다시 받아와야 함.
         refreshChartData()
-        chartOptionChanged(selected: SegSelect(rawValue: chartSelect.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
+        chartOptionChanged(selected: SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
     }
 
     @objc func dateChanged(_ picker: UIDatePicker) {
@@ -604,7 +615,7 @@ extension AnalysisViewController {
     }
 
     @objc func setToday(_ picker: UIDatePicker) {
-        switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
+        switch SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)! {
         case .Year:
             yearPickerView.selectToday()
             manageDateFormatter(date: Date())
@@ -625,7 +636,7 @@ extension AnalysisViewController {
         }
         dateFormatter.dateStyle = .medium //.long
         
-        switch SegSelect(rawValue: chartSelect.selectedSegmentIndex)! {
+        switch SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)! {
         case .Year:
             print("Year!")
             dateFormatter.dateFormat = "yyyy"
@@ -668,13 +679,14 @@ extension AnalysisViewController {
     }
     
     fileprivate func initUIViews() {
-        initChartSelect()
+        //initChartSelect()
         initDateTextField()
         initOptionTextField()
         initPickerViews()
         //initLabels()
         initButtons()
         initBarChartView()
+        initTimeSegmentControl()
     }
     
     fileprivate func addSubviews() {
@@ -682,6 +694,7 @@ extension AnalysisViewController {
 //        view.addSubview(dateTextField)
 //        view.addSubview(optionTextField)
         view.addSubview(barChartView)
+        view.addSubview(timeSegmentControl)
 //        view.addSubview(timeLabel)
 //        view.addSubview(infoLabel)
 //        view.addSubview(timeValueLabel)
@@ -693,6 +706,7 @@ extension AnalysisViewController {
 //        dateTextField.translatesAutoresizingMaskIntoConstraints = false
 //        optionTextField.translatesAutoresizingMaskIntoConstraints = false
         barChartView.translatesAutoresizingMaskIntoConstraints = false
+        timeSegmentControl.translatesAutoresizingMaskIntoConstraints = false
 //        presentTimeLabel.translatesAutoresizingMaskIntoConstraints = false
 //        valueLabel.translatesAutoresizingMaskIntoConstraints = false
 //        valueUnitLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -726,7 +740,16 @@ extension AnalysisViewController {
             barChartView.heightAnchor.constraint(equalTo: barChartView.widthAnchor),
             barChartView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ]
-//
+        
+        
+        let timeSegmentControlConstraints = [
+            timeSegmentControl.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 70),
+            timeSegmentControl.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30),
+            timeSegmentControl.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30),
+            timeSegmentControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timeSegmentControl.heightAnchor.constraint(equalToConstant: 50)
+        ]
+
 //        let presentTimeLabelConstraints = [
 //            presentTimeLabel.topAnchor.constraint(equalTo: dateTextField.bottomAnchor, constant: 15),
 //            presentTimeLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
@@ -745,7 +768,7 @@ extension AnalysisViewController {
 //        [chartSelectConstraints, dateTextFieldConstraints, optionTextFieldConstraints, barChartViewConstraints, timeLabelConstraints, infoLabelConstraints, timeValueLabelConstraints, infoValueLabelConstraints]
 //            .forEach(NSLayoutConstraint.activate(_:))
         [barChartViewConstraints].forEach(NSLayoutConstraint.activate(_:))
-
+        [timeSegmentControlConstraints].forEach(NSLayoutConstraint.activate(_:))
     }
 }
 
@@ -805,6 +828,7 @@ extension AnalysisViewController {
         //initOptionTFPickerView()
         initYearPickerView()
         initYearMonthPickerView()
+        initDataPickerView()
     }
     
     func initOptionTFPickerView() {
@@ -829,6 +853,18 @@ extension AnalysisViewController {
     func initYearMonthPickerView() {
         yearMonthPickerView = DatePickerView()
     }
+    
+    func initDataPickerView() {
+        var rotationAngle: CGFloat!
+        
+        dataPickerView.delegate = self
+        dataPickerView.dataSource = self
+        
+        // 회전 - 전체 틀을 horizontal로 돌리기 위함
+        rotationAngle = -90 * (.pi/180)
+        dataPickerView.transform = CGAffineTransform(rotationAngle: rotationAngle)
+        
+    }
 
     func initBarChartView() {
         barChartView = BarChartView()
@@ -849,7 +885,92 @@ extension AnalysisViewController {
 //        valueUnitLabel.text = " "
 //        valueUnitLabel.font = UIFont.systemFont(ofSize: 20)
     }
+    func initTimeSegmentControl() {
+        timeSegmentControl = MASegmentedControl(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+
+        timeSegmentControl.itemsWithText = true
+        timeSegmentControl.fillEqually = true
+        timeSegmentControl.roundedControl = true
+        timeSegmentControl.setSegmentedWith(items: ["Year", "Month", "Day"])
+        
+        timeSegmentControl.padding = 2
+        timeSegmentControl.textColor = .black
+        timeSegmentControl.selectedTextColor = .white
+        timeSegmentControl.thumbViewColor = #colorLiteral(red: 0.3098039216, green: 0.5803921569, blue: 0.831372549, alpha: 1)
+        timeSegmentControl.titlesFont = UIFont.systemFont(ofSize: 25, weight: .medium)
+        
+        timeSegmentControl.addTarget(self, action: #selector(selectedSegChanged(_:)), for: .valueChanged)
+
+    }
+}
+
+extension AnalysisViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return options.count
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 100
+    }
+
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return 100
+    }
+
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let width = 100
+        let height = 100
+        
+        dataPickerView.subviews.forEach {
+            $0.backgroundColor = .clear
+        }
+        
+        let view = UIView()
+        view.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        view.transform = CGAffineTransform(rotationAngle: 90 * (.pi/180))
+
+        let label = UILabel()
+        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        label.text = options[row]
+        label.font = UIFont.systemFont(ofSize: 25)
+        view.addSubview(label)
+        
+
+
+        return view
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        optionsIndex = row // Manage selected row globally - 21.03.12 by ms
+        //optionTextField.text = options[row]
+        print("Change chart data for \(options[row]) graph!")
+        refreshChartData()
+        chartOptionChanged(selected: SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)!, pickerOption: options[optionsIndex])
+    }
+    
+    
+    @IBAction func preDataBtnClicked(_ sender: UIButton) {
+        if optionsIndex > 0 {
+            dataPickerView.selectRow(optionsIndex - 1, inComponent: 0, animated: true)
+            optionsIndex = optionsIndex - 1
+        }
+    }
+    
+    @IBAction func nextDataBtnClicked(_ sender: UIButton) {
+        if optionsIndex < options.count {
+            dataPickerView.selectRow(optionsIndex + 1, inComponent: 0, animated: true)
+            optionsIndex = optionsIndex + 1
+        }
+    }
+
     func initButtons() {
 //        //calBtn = UIButton()
 //        calBtn.addTarget(self, action: #selector(calBtnTouched(_:)), for: .touchDown)
