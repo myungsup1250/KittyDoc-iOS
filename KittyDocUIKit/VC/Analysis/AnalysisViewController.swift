@@ -10,14 +10,13 @@ import Charts
 import MASegmentedControl
 
 class AnalysisViewController: UIViewController, ChartViewDelegate {
-    var userInterfaceStyle: UIUserInterfaceStyle!
-    var deviceManager = DeviceManager.shared
-    var safeArea: UILayoutGuide!
-    
-    var dateInput: String = ""
     @IBOutlet weak var chartSelect: UISegmentedControl!
     @IBOutlet weak var dateTextField: ConstantUITextField!
-    var optionTextField: ConstantUITextField!
+    @IBOutlet weak var chartDateLabel: UILabel!
+    @IBOutlet weak var valueLabel: UILabel!
+    @IBOutlet weak var valueUnitLabel: UILabel!
+    @IBOutlet weak var calBtn: UIButton!
+    //var optionTextField: ConstantUITextField!
     var datePicker: UIDatePicker!
     var yearMonthPickerView: DatePickerView!
     var yearPickerView: YearPickerView!
@@ -28,9 +27,14 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var valueUnitLabel: UILabel!
     var timeSegmentControl: MASegmentedControl!
-    
-    var petDatas = [PetData]()
+   
     var highlighted = Highlight()
+
+    var userInterfaceStyle: UIUserInterfaceStyle!
+    var deviceManager = DeviceManager.shared
+    var safeArea: UILayoutGuide!
+    var dateInput: String = ""
+    var petDatas = [PetData]()
     var dateFormatter: DateFormatter!
 
     var optionsIndex = 7//0
@@ -45,14 +49,8 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         super.viewDidLoad()
         
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(describeHighlightedData(_:)), name: .highlightedData, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(custumDatePickerChanged(_:)), name: .custumDatePickerChanged, object: nil)
-
-        safeArea = view.safeAreaLayoutGuide// view.layoutMarginsGuide
+        safeArea = view.safeAreaLayoutGuide
         userInterfaceStyle = self.traitCollection.userInterfaceStyle
-        
         dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.autoupdatingCurrent
 
@@ -60,8 +58,8 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         addSubviews()
         prepareForAutoLayout()
         setConstraints()
-
         manageUserInterfaceStyle()
+        addObservers()
 
         refreshChartData()
         chartOptionChanged(selected: SegSelect(rawValue: 2)!, pickerOption: options[optionsIndex])
@@ -76,6 +74,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         valueLabel.text = "0"
         petDatas.removeAll()
         petDatas = requestServerData()//센서 데이터 수신 코드
+      
     }
     
     fileprivate func requestServerData() -> [PetData] {//(forDays: UInt, forHours: UInt) -> [PetData] {
@@ -85,14 +84,16 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         let dayInSec: TimeInterval = 86400 // 24Hours in seconds
 
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        let currentCal = Calendar.current
         let today = Date()
-        // Multiple Castings to get exact day without extra seconds
-        let segDate = dateFormatter.date(from: dateFormatter.string(from: datePicker.date))!
-        guard Calendar.current.compare(segDate, to: today, toGranularity: .day) != .orderedDescending else {
+        let segDate = dateFormatter.date(from: dateFormatter.string(from: datePicker.date))!// Multiple Castings to get exact day without extra seconds
+        guard currentCal.compare(segDate, to: today, toGranularity: .day) != .orderedDescending else {
             print("segDate(\(unixtimeToString(unixtime: segDate.timeIntervalSince1970))) and today(\(unixtimeToString(unixtime: today.timeIntervalSince1970))) is not orderedDescending, [There will be no data!]")
             DispatchQueue.main.async {
-                let alert: UIAlertController = UIAlertController(title: "ERROR in Date!", message: "There is no data for future!", preferredStyle: .alert)
+                let alert = UIAlertController(title: "ERROR in Date!", message: "There is no data for future!", preferredStyle: .alert)
                 let confirm = UIAlertAction(title: "Confirm", style: .default) { _ in
+                    self.yearPickerView.selectToday()
+                    self.yearMonthPickerView.selectToday()
                     self.manageDateFormatter(date: Date())
                     self.dateTextField.becomeFirstResponder()
                 }
@@ -104,10 +105,10 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
 
         var endTime: TimeInterval = 0
         var startTime: TimeInterval = 0
-        let segDateYear = Calendar.current.component(.year,  from: segDate)
-        let segDateMonth = Calendar.current.component(.month,  from: segDate)
-        let segDateDay = Calendar.current.component(.day,  from: segDate)
-        let segSelect = SegSelect(rawValue: timeSegmentControl.selectedSegmentIndex)!
+        let segDateYear = currentCal.component(.year,  from: segDate)
+        let segDateMonth = currentCal.component(.month,  from: segDate)
+        let segDateDay = currentCal.component(.day,  from: segDate)
+        let segSelect = SegSelect(rawValue: chartSelect.selectedSegmentIndex)!
         let timeIntervalSince1970 = today.timeIntervalSince1970
         let timeIntervalFromMidnight = TimeInterval(Int(timeIntervalSince1970 + hourInSec * 9) % Int(dayInSec))
         //print("segDate(\(unixtimeToString(unixtime: segDate.timeIntervalSince1970))) and today(\(unixtimeToString(unixtime: today.timeIntervalSince1970)))")
@@ -140,7 +141,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
             startTime = endTime - (dayInSec * Double(daysOfThisMonth) - 1) * 1000
         case .Day:
             print("[ Day Data! ]")
-            let comparisonResult = Calendar.current.compare(segDate, to: today, toGranularity: .day)
+            let comparisonResult = currentCal.compare(segDate, to: today, toGranularity: .day)
             if comparisonResult == .orderedSame {
                 print("Same Day!")
 
@@ -548,7 +549,11 @@ extension AnalysisViewController {
             setChart(dataName: options[optionsIndex], dataPoints: tmpWeekDays.dropLast(tmpWeekDays.count - values.count), values: values, goal: valueGoal, max: valueGoal * 4 / 3)
         }
     }
-    
+
+    @objc func calBtnTouched(_ button: UIButton) {
+        self.dateTextField.becomeFirstResponder()
+    }
+
     @objc func selectedSegChanged(_ segment: MASegmentedControl) {
         print("selectedSegChanged()")
         
@@ -628,7 +633,6 @@ extension AnalysisViewController {
     func manageDateFormatter(date: Date?) { // date가 nil일 경우 picker.date 사용// // // // // // // // // //
         if date != nil {
             datePicker.date = date!
-            // YearPicker, MonthYearPicker도 세팅?
         }
         dateFormatter.dateStyle = .medium //.long
         
@@ -662,12 +666,25 @@ extension AnalysisViewController {
 
 extension AnalysisViewController {
         
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(describeHighlightedData(_:)), name: .highlightedData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(custumDatePickerChanged(_:)), name: .custumDatePickerChanged, object: nil)
+    }
+    
+    fileprivate func removeObservers() { // Not used Yet.
+        NotificationCenter.default.removeObserver(self, name: .receiveSyncDataDone, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .highlightedData, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .custumDatePickerChanged, object: nil)
+    }
+    
     fileprivate func initUIViews() {
         //initChartSelect()
         initDateTextField()
         initOptionTextField()
         initPickerViews()
         //initLabels()
+        initButtons()
         initBarChartView()
         initTimeSegmentControl()
     }
@@ -868,7 +885,6 @@ extension AnalysisViewController {
 //        valueUnitLabel.text = " "
 //        valueUnitLabel.font = UIFont.systemFont(ofSize: 20)
     }
-    
     func initTimeSegmentControl() {
         timeSegmentControl = MASegmentedControl(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 
@@ -954,8 +970,31 @@ extension AnalysisViewController: UIPickerViewDelegate, UIPickerViewDataSource {
             optionsIndex = optionsIndex + 1
         }
     }
-    
-    
-    
+
+    func initButtons() {
+//        //calBtn = UIButton()
+//        calBtn.addTarget(self, action: #selector(calBtnTouched(_:)), for: .touchDown)
+    }
+
 }
+
+//extension AnalysisViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        1
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        return options.count
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        return options[row]
+//    }
+//
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        optionsIndex = row // Manage selected row globally - 21.03.12 by ms
+//        optionTextField.text = options[row]
+//        print("Change chart data for \(options[row]) graph!")
+//    }
+//}
 
