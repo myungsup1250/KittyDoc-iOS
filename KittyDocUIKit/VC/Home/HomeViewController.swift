@@ -529,7 +529,6 @@ extension HomeViewController: DeviceManagerDelegate {
             self.deviceManager.startSync()
         }
         //print("[-]HomeViewController.onServiceFound")
-        
     }
     
     func onDfuTargFound(peripheral: CBPeripheral) {
