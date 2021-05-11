@@ -173,14 +173,15 @@ extension DeviceManager: CBCentralManagerDelegate {
             if let savedDeviceUUID = self.savedDeviceUUIDString() {
                 print("deviceManager.savedDeviceUUIDString() != nil")
                 var peripherals = [CBPeripheral]()
-                let uuid: CBUUID? = CBUUID(string: savedDeviceUUID)
-                //let uuidTest: UUID? = UUID(uuidString: self.savedDeviceUUIDString() ?? "")
+//                let uuid: CBUUID? = CBUUID(string: savedDeviceUUID)
+                let uuid: UUID? = UUID(uuidString: savedDeviceUUID)
                 // 안드로이드에서 등록한 MAC Address 형식이면 nil 이 된다
-                
+                // 잘못된 문자열이 들어와도 nil이 된다
+
                 if uuid != nil {
-                    peripherals = central.retrievePeripherals(withIdentifiers: [uuid!.UUIDValue!])
-                    //peripherals = central.retrievePeripherals(withIdentifiers: [uuidTest!])
-                    //print("peripherals : \(peripherals)")
+                    //peripherals = central.retrievePeripherals(withIdentifiers: [uuid!.UUIDValue!])
+                    peripherals = central.retrievePeripherals(withIdentifiers: [uuid!])
+                    print("peripherals : \(peripherals)")
                 }
                 
                 if peripherals.count > 0 {

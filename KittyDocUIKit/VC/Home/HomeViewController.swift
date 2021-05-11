@@ -71,9 +71,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        viewAddBackground()
+        print("HomeViewController.viewDidLoad()")
+        self.title = "Home"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
+        deviceManager.delegate = self
+        deviceManager.secondDelegate = self
         
+        view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        viewAddBackground()
         setPetPickerView()
         
         //petPickerView.transform = CGAffineTransform(rotationAngle: -90 * (.pi/180))
@@ -82,78 +88,83 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
         piChart.delegate = self
-        self.title = "Home"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        deviceManager.delegate = self
-        deviceManager.secondDelegate = self
-        print("HomeViewController.viewDidLoad()")
-        
-        if let uuid = deviceManager.savedDeviceUUIDString() { // 저장된 기기가 있을 경우 연결 시도
-            deviceManager.connectPeripheral(uuid: uuid, name: "kittydoc")
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
-        
+                
         // These are optional and only serve to improve accessibility
         progressView.ring1.accessibilityLabel = NSLocalizedString("Move", comment: "Move")
         progressView.ring2.accessibilityLabel = NSLocalizedString("Exercise", comment: "Exercise")
         progressView.ring3.accessibilityLabel = NSLocalizedString("Stand", comment: "Stand")
         
-        
-
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
+        let findData: FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
+        let server: KittyDocServer = KittyDocServer()
+        let findResponse: ServerResponse = server.petFind(data: findData)
         
-            let findData:FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
-            let server:KittyDocServer = KittyDocServer()
-            let findResponse:ServerResponse = server.petFind(data: findData)
-            
-            if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS) {
-                let jsonString:String = findResponse.getMessage() as! String
-                if let arrData = jsonString.data(using: .utf8) {
-                    do {
-                        if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
-                            PetInfo.shared.petArray.removeAll()
-                            for i in 0..<jsonArray.count {
-                                let petInfo:PetInfo = PetInfo()
-                                petInfo.PetID = jsonArray[i]["PetID"] as! Int
-                                petInfo.PetName = jsonArray[i]["PetName"] as! String
-                                petInfo.OwnerID = jsonArray[i]["OwnerID"] as! Int
-                                //petkg과 petlb를 서버에서 string으로 다루고 있는 오류가 있어서, 추후에 그부분이 수정되면
-                                //이곳도 수정필요!
-                                petInfo.PetKG = jsonArray[i]["PetKG"] as! Double
-                                petInfo.PetLB = jsonArray[i]["PetLB"] as! Double
-                                petInfo.PetSex = jsonArray[i]["PetSex"] as! String
-                                petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
-                                petInfo.Device = jsonArray[i]["Device"] as! String
-                                print("[ PetName :", petInfo.PetName, "petID :", petInfo.PetID, "]")
-    //                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
-    //                                return original.PetName == petInfo.PetName
-    //                            }) {
-                                PetInfo.shared.petArray.append(petInfo)
-    //                            }
-                                
-                    
-                            }
+        if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS) {
+            let jsonString: String = findResponse.getMessage() as! String
+            if let arrData = jsonString.data(using: .utf8) {
+                do {
+                    if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
+                        PetInfo.shared.petArray.removeAll()
+                        for i in 0..<jsonArray.count {
+                            let petInfo:PetInfo = PetInfo()
+                            petInfo.PetID = jsonArray[i]["PetID"] as! Int
+                            petInfo.PetName = jsonArray[i]["PetName"] as! String
+                            petInfo.OwnerID = jsonArray[i]["OwnerID"] as! Int
+                            //petkg과 petlb를 서버에서 string으로 다루고 있는 오류가 있어서, 추후에 그부분이 수정되면
+                            //이곳도 수정필요!
+                            petInfo.PetKG = jsonArray[i]["PetKG"] as! Double
+                            petInfo.PetLB = jsonArray[i]["PetLB"] as! Double
+                            petInfo.PetSex = jsonArray[i]["PetSex"] as! String
+                            petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
+                            petInfo.Device = jsonArray[i]["Device"] as! String
+                            print("[ PetName :", petInfo.PetName, "petID :", petInfo.PetID, "]")
+                            //                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
+                            //                                return original.PetName == petInfo.PetName
+                            //                            }) {
+                            PetInfo.shared.petArray.append(petInfo)
+                            //                            }
                         }
-                    } catch {
-                        print("JSON 파싱 에러")
                     }
+                } catch {
+                    print("JSON 파싱 에러")
                 }
-            } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
-                //alertWithMessage(message: findResponse.getMessage())
-                print("Error (findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE)")
             }
-            ////json parsing
-            if !PetInfo.shared.petArray.isEmpty {
-               // petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+        } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
+            //alertWithMessage(message: findResponse.getMessage())
+            print("Error (findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE)")
+        }
+        ////json parsing
+        
+        //PetChange(index: 0)// 안해도 index 0으로 시작!
+        if !PetInfo.shared.petArray.isEmpty {
+            // petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+            let deviceString = PetInfo.shared.petArray[0].Device
+            let uuid: UUID? = UUID(uuidString: deviceString)
+            // MARK: 연결할 기기 정보가 유효한 경우 연결을 시도
+            if uuid != nil {
+                print("uuid!.uuidString : \(uuid!.uuidString)")
+                deviceManager.removePeripheral()
+                deviceManager.connectPeripheral(uuid: uuid!.uuidString, name: "WhoseCat")
+            } else {
+                print("uuid is nil [ \(deviceString) ]")
             }
-        
-        
-        view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        
-       
-        
-        PetChange(index: 0)
+        }
+//        if let uuid = deviceManager.savedDeviceUUIDString() { // 저장된 기기가 있을 경우 연결 시도
+//            deviceManager.connectPeripheral(uuid: uuid, name: "whosecat")
+//        }
+
+        // 선택했던 Pet Index를 저장하려면 추가
+//        var dict: Dictionary = Dictionary<String, Any>()
+//        dict["SelectedPetIndex"] = petChangeIndex
+//        UserDefaults.standard.setValue(dict, forKey: DeviceManager.KEY_DICTIONARY)
+        // 선택했던 Pet Index로 복원하려면 추가
+//        let dict = UserDefaults.standard.dictionary(forKey: DeviceManager.KEY_DICTIONARY)
+//        guard dict != nil else {
+//            print("\(DeviceManager.KEY_DICTIONARY) does not exist!")
+//            return nil
+//        }
+//        let uuid: String? = dict![DeviceManager.KEY_DEVICE] as? String
+
         //setPiChartsData()
         //piChartView.addSubview(progress)
 
@@ -375,16 +386,38 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row
-        PetChange(index: row) //표시되는 데이터들 변경
+        PetChange(index: row) // 표시되는 데이터들 변경
+        let deviceString = PetInfo.shared.petArray[selectedRow].Device
+        let uuid: UUID? = UUID(uuidString: deviceString)
+        // MARK: 연결할 기기 정보가 유효한 경우 연결을 시도할 지 사용자에게 묻는다
+        DispatchQueue.main.async { [self] in
+            //self.connectionLabel.text = ""
+            print("pickerView(didSelectRow: \(selectedRow)")
+            if uuid != nil {
+                print("uuid!.UUIDValue! : \(uuid!.uuidString)")
+                let alert = UIAlertController(title: "Pet changed to \(PetInfo.shared.petArray[selectedRow].PetName)", message: "Do you want to connect to \(PetInfo.shared.petArray[selectedRow].PetName)'s Device?", preferredStyle: .alert)
+                let confirm = UIAlertAction(title: "Confirm", style: .default) { (alert: UIAlertAction!) in
+                    print("Disconnect from current device And connect to New One")
+                    deviceManager.removePeripheral()
+                    deviceManager.connectPeripheral(uuid: uuid!.uuidString, name: "WhoseCat")
+                }
+                let cancel = UIAlertAction(title: "Dismiss", style: .destructive) { (alert: UIAlertAction!) in
+                    print("Dismiss Alert")
+                }
+                alert.addAction(confirm)
+                alert.addAction(cancel)
+                
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                print("uuid is nil (\(deviceString))")
+            }
+        }
     }
-    
     
     func PetChange(index: Int) {
         getData(index: selectedRow)
         setData()
         // MARK: - 펫 변경할 때 기기 상태바 변경하기
-//        deviceManager.removePeripheral()
-//        deviceManager.connectPeripheral(uuid: PetInfo.shared.petArray[index].Device, name: "WhoseCat")
     }
     
     
@@ -408,11 +441,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         return picker
     }()
-    
-    
-        
-    }
-    
+
     var waterRing: UICircularProgressRing = {
         let waterRing = UICircularProgressRing()
         waterRing.frame = CGRect(x: 200, y: 500, width: 100, height: 100)
@@ -423,22 +452,20 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         waterRing.maxValue = 300
         return waterRing
     }()
-
-
+}
 
 extension HomeViewController: DeviceManagerDelegate {
     func onDeviceNotFound() {
         DispatchQueue.main.async {
             print("Couldn't find any KittyDoc Devices!")
             self.connectionLabel.text = "기기를 찾을 수 없습니다"
-            
         }
     }
     
     func onDeviceConnected(peripheral: CBPeripheral) {
         DispatchQueue.main.async {
-            print("Successfully Connected to KittyDoc Device!")
-            self.connectionLabel.text = "기기에 성공적으로 연결되었습니다"
+            print("onDeviceConnected(\(peripheral))")
+            self.connectionLabel.text = "기기에 연결 중..."
         }
     }
     
@@ -497,6 +524,7 @@ extension HomeViewController: DeviceManagerDelegate {
         //print("[+]HomeViewController.onServiceFound")
         DispatchQueue.main.async {
             print("\n<<< Found all required Service! >>>\n")
+            self.connectionLabel.text = "기기에 연결되었습니다"
             self.deviceManager.getBattery()
             self.deviceManager.startSync()
         }
@@ -556,7 +584,6 @@ extension HomeViewController: DeviceManagerSecondDelegate {
 }
 
 extension HomeViewController { // @objc funcs
-    
     // receiveSyncDataDone() will be called when Receiving SyncData Done!
     @objc func receiveSyncDataDone() {
         print("\n<<< HomeViewController.receiveSyncDataDone() >>>")
@@ -586,7 +613,6 @@ extension HomeViewController { // @objc funcs
             performSegue(withIdentifier: "AddWater", sender: self)
         }
     }
-    
 }
 
 
