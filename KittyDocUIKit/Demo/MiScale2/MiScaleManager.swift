@@ -14,7 +14,8 @@ protocol MiScaleManagerDelegate {//: NSObject {
     func onDeviceConnected(peripheral: CBPeripheral) // 기기 연결됨
     func onDeviceDisconnected()
     
-    func onWeightReceived(weight: Double) // When weight data Received
+    func onMeasureWeightFinished(weight: Double) // When measuring weight finished
+    func onMeasuringWeight(weight: Double) // When measuring weight
 
     func onBluetoothNotAccessible() // BLE Off or No Permission... etc.
     func onDevicesFound(peripherals: [PeripheralData])
@@ -138,7 +139,6 @@ class MiScaleManager: NSObject {
     }
 
     func savedDeviceUUIDString() -> String? {
-//        return nil
         let dict: Dictionary? = UserDefaults.standard.dictionary(forKey: MiScaleManager.KEY_DICTIONARY)
         guard (dict != nil) else {
             print("\(MiScaleManager.KEY_DICTIONARY) does not exist!")
@@ -339,15 +339,24 @@ extension MiScaleManager: CBCentralManagerDelegate {
         //parsedAdvData[0] 02, 82: 측정 중 / 22: 측정 완료
         print("\nparsedAdvData.count: \(parsedAdvData.count)")
         print("data: [", terminator: " ")
-//        for i in 0..<3 {
-//            print("\(String(format: "%02X", parsedAdvData[i]))", terminator: " ")
+//        for data in parsedAdvData {
+//            print("\(String(format: "%02X", data))", terminator: " ")
 //        }
-        for data in parsedAdvData {
-            print("\(String(format: "%02X", data))", terminator: " ")
-        }
-        print("], Weight :", terminator: " ")
+//        print("],", terminator: " ")
         let weight = ((Double(parsedAdvData[1]) + Double(parsedAdvData[2]) * 256.0)) * 0.005
-        print("\(weight)")
+        print("Weight: \(weight)")
+        
+        if parsedAdvData[0] == 0x22 {
+            guard self.delegate?.onMeasureWeightFinished(weight: weight) != nil else {
+                print("self.delegate?.onWeightReceived() == nil!(didDiscover)")
+                return
+            }
+        } else { // 0x02, 0x82?
+            guard self.delegate?.onMeasuringWeight(weight: weight) != nil else {
+                print("self.delegate?.onWeightReceived() == nil!(didDiscover)")
+                return
+            }
+        }
 
         //Keys : "kCBAdvDataRxSecondaryPHY", "kCBAdvDataServiceUUIDs", "kCBAdvDataLocalName", "kCBAdvDataRxPrimaryPHY", "kCBAdvDataIsConnectable", "kCBAdvDataTimestamp", "kCBAdvDataServiceData", "kCBAdvDataManufacturerData"
         //["kCBAdvDataRxPrimaryPHY": 0, "kCBAdvDataServiceData": {181D = {length = 10, bytes = 0x823c00b207020d0a0014};}, "kCBAdvDataIsConnectable": 1, "kCBAdvDataRxSecondaryPHY": 0, "kCBAdvDataTimestamp": 642100287.671932, "kCBAdvDataServiceUUIDs": <__NSArrayM 0x282e0d8f0>( 181D ) , "kCBAdvDataLocalName": MI SCALE2, "kCBAdvDataManufacturerData": <57017087 9e2850bc>], RSSI : -61
@@ -357,7 +366,6 @@ extension MiScaleManager: CBCentralManagerDelegate {
         for i in 0..<self.foundDevices.count {
             if (self.foundDevices[i].peripheral!.isEqual(peripheral) && rssi < 0) {
                 found = true
-                // rssi 업데이트. 가끔 127이라는 엉뚱한 값이 나와서 음수인 경우만 처리? => overflow
                 self.foundDevices[i].rssi = self.foundDevices[i].rssi < rssi ? rssi : self.foundDevices[i].rssi
                 break
             }
@@ -447,8 +455,8 @@ extension MiScaleManager: CBPeripheralDelegate {
             print("There is no Service at all!(didDiscoverServices)")
             return
         }
-        //print(peripheral.state) // 1 service exist
-        print("Discovered <\(services.count)> Services") // 1 service exist
+        //print(peripheral.state) // 3 service exist
+        print("Discovered <\(services.count)> Services") // 3 service exist
         //peripheral.canSendWriteWithoutResponse == true
         guard peripheral == self.peripheral else {
             print("peripheral != self.peripheral!(didDiscoverServices)")
@@ -463,14 +471,6 @@ extension MiScaleManager: CBPeripheralDelegate {
             // Now kick off discovery of characteristics
             self.peripheral!.discoverCharacteristics(nil, for: service)
         }
-//        if isSyncServiceFound {
-//            //@@@
-//            // Found KittyDoc
-//            guard self.delegate?.onDeviceConnected(peripheral: peripheral) != nil else {
-//                print("self.delegate?.onDeviceConnected(:) == nil!(didDiscoverServices)")
-//                return
-//            }
-//        }
         print("[-] centralManager(didDiscoverServices)")
     }
     
