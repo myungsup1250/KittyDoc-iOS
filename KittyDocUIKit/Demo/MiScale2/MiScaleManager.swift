@@ -15,6 +15,9 @@ protocol MiScaleManagerDelegate {//: NSObject {
     func onDeviceDisconnected()
     
 //    @optional
+    
+    func onWeightReceived() // When weight data Received
+
     func onBluetoothNotAccessible() // BLE Off or No Permission... etc.
     func onDevicesFound(peripherals: [PeripheralData])
     func onSyncCompleted()
@@ -41,7 +44,6 @@ class MiScaleManager: NSObject {
     public static let COMMAND_BATTERY = String("battery")
 
     var delegate: MiScaleManagerDelegate?
-    var commandQueue: [String] = [String]()// 연결 후 실행할 명령 큐
     var foundDevices: [PeripheralData] = [PeripheralData]()
 
     var peripheral: CBPeripheral?

@@ -14,15 +14,15 @@ class MiScaleUUID: NSObject {
     public static let BodyScaleCharUUID = CBUUID(string: "0x2A9D")
     public static let GENERIC_ACCESS_UUID = CBUUID(string: "0x1800")
     
-    public static let DEVICE_NAME_UUID = CBUUID(string: "0x2a00") // READ WRITE handle=3
-    public static let APPEARANCE_UUID = CBUUID(string: "0x2a01") // READ handle=5
-    public static let Peripheral_Privacy_Flag = CBUUID(string: "0x2a02") // READ WRITE handle=7
-    public static let Peripheral_Preferred_Connection_Parameters = CBUUID(string: "0x2a04") // READ handle=9
-    public static let Reconnection_UUID = CBUUID(string: "0x2a03") // READ WRITE NO RESPONSE WRITE handle=11
+    public static let DEVICE_NAME_UUID = CBUUID(string: "0x2A00") // READ WRITE handle=3
+    public static let APPEARANCE_UUID = CBUUID(string: "0x2A01") // READ handle=5
+    public static let Peripheral_Privacy_Flag = CBUUID(string: "0x2A02") // READ WRITE handle=7
+    public static let Peripheral_Preferred_Connection_Parameters = CBUUID(string: "0x2A04") // READ handle=9
+    public static let Reconnection_UUID = CBUUID(string: "0x2A03") // READ WRITE NO RESPONSE WRITE handle=11
     
     public static let GENERIC_ATTRIBUTE_UUID = CBUUID(string: "0x1801")
     
-    public static let Service_Changed_UUID = CBUUID(string: "0x2a05") // READ INDICATE handle=14
+    public static let Service_Changed_UUID = CBUUID(string: "0x2A05") // READ INDICATE handle=14
     
     public static let DEVICE_INFO_UUID = CBUUID(string: "0x180A")
     
