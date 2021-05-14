@@ -13,6 +13,5 @@ pod 'RealmSwift'
 pod 'SideMenu'
 pod 'MKRingProgressView'
 pod 'CircularCarousel'
-pod 'MASegmentedControl'
 
 end

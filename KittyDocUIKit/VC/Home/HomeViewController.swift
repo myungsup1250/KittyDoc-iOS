@@ -46,7 +46,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     let width: CGFloat = 100
     let height: CGFloat = 100
-    private let sideMenu = SideMenuNavigationController(rootViewController: SideMenuViewController())
+
+    private var sideMenu: SideMenuNavigationController?
+    private let scaleController = ScaleViewController()
+    
     let deviceManager = DeviceManager.shared
     var count = 0
     var selectedRow = 0
@@ -82,11 +85,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         viewAddBackground()
         setPetPickerView()
         
-        //petPickerView.transform = CGAffineTransform(rotationAngle: -90 * (.pi/180))
 
-        sideMenu.leftSide = true
+        let menu = SideMenuViewController()
+        menu.delegate = self
+
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        sideMenu?.leftSide = true
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
+        
+        addChildController()
+        
         piChart.delegate = self
                 
         // These are optional and only serve to improve accessibility
@@ -172,6 +181,16 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         stepProgressView.progress = 0.3
     }
     
+    private func addChildController() {
+        addChild(scaleController)
+        view.addSubview(scaleController.view)
+        scaleController.view.frame = view.bounds
+        
+        scaleController.didMove(toParent: self)
+        
+        scaleController.view.isHidden = true
+    }
+    
     func setPiChartsData() {
         var entries = [ChartDataEntry]()
         
@@ -236,7 +255,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     
     @IBAction func didTapSideMenuBtn() {
-        present(sideMenu, animated: true, completion: nil)
+        present(sideMenu!, animated: true, completion: nil)
     }
     
     
@@ -649,11 +668,17 @@ extension HomeViewController: ChartViewDelegate {
     
 }
 
+protocol MenuControllerDelegate {
+    func didSelectMenuItem(name: String)
+}
+
 
 class SideMenuViewController: UITableViewController {
     
-    var items = ["몸무게 측정", "급수량 측정", "급식량 측정", "CCTV 관리"]
-    var images = ["scalemass", "drop", "torus", "camera.metering.center.weighted"]
+    public var delegate: MenuControllerDelegate?
+    
+    var items = ["홈", "체중 측정", "급수량 측정", "급식량 측정", "CCTV 관리"]
+    var images = ["house", "scalemass", "drop", "torus", "camera.metering.center.weighted"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -676,7 +701,8 @@ class SideMenuViewController: UITableViewController {
         tableView.separatorStyle = .none
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
         return items.count
     }
     
@@ -694,5 +720,32 @@ class SideMenuViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         60
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let seletedItem = items[indexPath.row]
+        delegate?.didSelectMenuItem(name: seletedItem)
 
+    }
+
+}
+
+extension HomeViewController: MenuControllerDelegate {
+    func didSelectMenuItem(name: String) {
+        sideMenu?.dismiss(animated: true, completion: { [weak self] in
+            
+            self?.title = name
+            
+            
+            if name == "체중 측정" {
+                self?.scaleController.view.isHidden = false
+            } else if name == "홈" {
+                self?.scaleController.view.isHidden = true
+            }
+            
+        })
+        
+    }
+    
+    
 }

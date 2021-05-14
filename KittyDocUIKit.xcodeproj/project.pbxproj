@@ -23,6 +23,7 @@
 		708A280E25E6437C004DCBC2 /* AddScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */; };
 		70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70904F2525C7F473004B8C92 /* PetTableViewCell.swift */; };
 		7093CA4925F9DEA000DF6423 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7093CA4825F9DEA000DF6423 /* LocalAuthentication.framework */; };
+		709CCF1A264DAFB500A1C445 /* ScaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF19264DAFB500A1C445 /* ScaleViewController.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
@@ -50,6 +51,10 @@
 		E00AE25625B45101001484AC /* LogInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00AE25525B45101001484AC /* LogInView.swift */; };
 		E022B47F26450EBE006D68A7 /* PetDeviceManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E022B47E26450EBE006D68A7 /* PetDeviceManageViewController.swift */; };
 		E022B48126451EB8006D68A7 /* PetDeviceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E022B48026451EB8006D68A7 /* PetDeviceTableViewCell.swift */; };
+		E033B03B264E383000F7F9C9 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = E033B034264E383000F7F9C9 /* LICENSE */; };
+		E033B03C264E383000F7F9C9 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E033B035264E383000F7F9C9 /* README.md */; };
+		E033B03D264E383000F7F9C9 /* MASegmentedControl+actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E033B038264E383000F7F9C9 /* MASegmentedControl+actions.swift */; };
+		E033B03E264E383000F7F9C9 /* MASegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E033B039264E383000F7F9C9 /* MASegmentedControl.swift */; };
 		E0561BE82644113200AA5396 /* UIDatePickerViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0561BE72644113200AA5396 /* UIDatePickerViewExtensions.swift */; };
 		E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C2F25B58919007680E2 /* InitStoryboard.swift */; };
 		E05A7C3325B58CBF007680E2 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */; };
@@ -113,6 +118,7 @@
 		708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleViewController.swift; sourceTree = "<group>"; };
 		70904F2525C7F473004B8C92 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		7093CA4825F9DEA000DF6423 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		709CCF19264DAFB500A1C445 /* ScaleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleViewController.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSettingsViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +155,11 @@
 		E00AE25525B45101001484AC /* LogInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInView.swift; sourceTree = "<group>"; };
 		E022B47E26450EBE006D68A7 /* PetDeviceManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetDeviceManageViewController.swift; sourceTree = "<group>"; };
 		E022B48026451EB8006D68A7 /* PetDeviceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetDeviceTableViewCell.swift; sourceTree = "<group>"; };
+		E033B034264E383000F7F9C9 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E033B035264E383000F7F9C9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E033B038264E383000F7F9C9 /* MASegmentedControl+actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MASegmentedControl+actions.swift"; sourceTree = "<group>"; };
+		E033B039264E383000F7F9C9 /* MASegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MASegmentedControl.swift; sourceTree = "<group>"; };
+		E033B03A264E383000F7F9C9 /* MASegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASegmentedControl.h; sourceTree = "<group>"; };
 		E0561BE72644113200AA5396 /* UIDatePickerViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDatePickerViewExtensions.swift; sourceTree = "<group>"; };
 		E05A7C2F25B58919007680E2 /* InitStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitStoryboard.swift; sourceTree = "<group>"; };
 		E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
@@ -269,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
+				709CCF19264DAFB500A1C445 /* ScaleViewController.swift */,
 				70613BD82640290000CAC7B0 /* SideMenuTableViewCell.swift */,
 				70613BD92640290000CAC7B0 /* SideMenuTableViewCell.xib */,
 				7080A3A32636E0DA00EC2A30 /* RingProgressGroupView.swift */,
@@ -406,6 +418,42 @@
 			path = DeviceSettings;
 			sourceTree = "<group>";
 		};
+		E033B032264E380700F7F9C9 /* External Library */ = {
+			isa = PBXGroup;
+			children = (
+				E033B033264E383000F7F9C9 /* MASegmentedControl */,
+			);
+			path = "External Library";
+			sourceTree = "<group>";
+		};
+		E033B033264E383000F7F9C9 /* MASegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				E033B034264E383000F7F9C9 /* LICENSE */,
+				E033B035264E383000F7F9C9 /* README.md */,
+				E033B036264E383000F7F9C9 /* MASegmentedControl */,
+			);
+			path = MASegmentedControl;
+			sourceTree = "<group>";
+		};
+		E033B036264E383000F7F9C9 /* MASegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				E033B037264E383000F7F9C9 /* Class */,
+				E033B03A264E383000F7F9C9 /* MASegmentedControl.h */,
+			);
+			path = MASegmentedControl;
+			sourceTree = "<group>";
+		};
+		E033B037264E383000F7F9C9 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				E033B038264E383000F7F9C9 /* MASegmentedControl+actions.swift */,
+				E033B039264E383000F7F9C9 /* MASegmentedControl.swift */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
 		E05A7C9B25B9387B007680E2 /* KittyDocDevice */ = {
 			isa = PBXGroup;
 			children = (
@@ -455,6 +503,7 @@
 		E08313E325B0ABE200266994 /* KittyDocUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				E033B032264E380700F7F9C9 /* External Library */,
 				E0CFECC0264CEB2600384BB4 /* Demo */,
 				E08E168625E6437900A474DA /* MVVM-Test */,
 				E091CEF925CED73B00A3DE73 /* Global */,
@@ -658,10 +707,12 @@
 				E08313F125B0ABE300266994 /* Assets.xcassets in Resources */,
 				E00AE1FF25B2C789001484AC /* AnalysisStoryboard.storyboard in Resources */,
 				E08313EC25B0ABE200266994 /* Main.storyboard in Resources */,
+				E033B03B264E383000F7F9C9 /* LICENSE in Resources */,
 				E00AE20325B2C794001484AC /* HomeStoryboard.storyboard in Resources */,
 				E00AE1EF25B2C6CE001484AC /* Localizable.strings in Resources */,
 				70613BDB2640290000CAC7B0 /* SideMenuTableViewCell.xib in Resources */,
 				E00AE1F325B2C70A001484AC /* SettingsStoryboard.storyboard in Resources */,
+				E033B03C264E383000F7F9C9 /* README.md in Resources */,
 				E00AE20725B2C798001484AC /* CalendarStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -716,6 +767,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0561BE82644113200AA5396 /* UIDatePickerViewExtensions.swift in Sources */,
+				E033B03E264E383000F7F9C9 /* MASegmentedControl.swift in Sources */,
 				E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */,
 				E0BDC30A25C8717200D2524B /* PeripheralData.swift in Sources */,
 				113CCDD225BA5AA100BF70E5 /* KittyDocServer.swift in Sources */,
@@ -776,12 +828,14 @@
 				E0CFECC4264CEB6800384BB4 /* MiScaleUUID.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
 				E06CEAF825E40C0000D966BB /* ServerData.swift in Sources */,
+				E033B03D264E383000F7F9C9 /* MASegmentedControl+actions.swift in Sources */,
 				7080A3A42636E0DA00EC2A30 /* RingProgressGroupView.swift in Sources */,
 				113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */,
 				70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */,
 				E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */,
 				E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */,
 				113CCDD125BA5AA100BF70E5 /* ServerApi.swift in Sources */,
+				709CCF1A264DAFB500A1C445 /* ScaleViewController.swift in Sources */,
 				E022B47F26450EBE006D68A7 /* PetDeviceManageViewController.swift in Sources */,
 				E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */,
 				E06CEAFE25E40C0000D966BB /* SignUpData.swift in Sources */,
@@ -1024,6 +1078,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.JMSmart.KittyDocUIKit2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
