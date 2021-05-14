@@ -96,6 +96,8 @@
 		E0BDC31725C8723D00D2524B /* DispatchQueueExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */; };
 		E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */; };
 		E0BE1E94263FBE56008EC181 /* BarChartViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */; };
+		E0CFECC4264CEB6800384BB4 /* MiScaleUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFECC2264CEB6800384BB4 /* MiScaleUUID.swift */; };
+		E0CFECC5264CEB6800384BB4 /* MiScaleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFECC3264CEB6800384BB4 /* MiScaleManager.swift */; };
 		E0F226E925FB3574009F336F /* ChartUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F226E825FB3574009F336F /* ChartUtility.swift */; };
 /* End PBXBuildFile section */
 
@@ -205,6 +207,8 @@
 		E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtension.swift; sourceTree = "<group>"; };
 		E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDataTableViewCell.swift; sourceTree = "<group>"; };
 		E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewExtension.swift; sourceTree = "<group>"; };
+		E0CFECC2264CEB6800384BB4 /* MiScaleUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiScaleUUID.swift; sourceTree = "<group>"; };
+		E0CFECC3264CEB6800384BB4 /* MiScaleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiScaleManager.swift; sourceTree = "<group>"; };
 		E0F226E825FB3574009F336F /* ChartUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartUtility.swift; sourceTree = "<group>"; };
 		F19B8EAB738B157DAF03887F /* Pods_KittyDocUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KittyDocUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -500,6 +504,7 @@
 			isa = PBXGroup;
 			children = (
 				E033B032264E380700F7F9C9 /* External Library */,
+				E0CFECC0264CEB2600384BB4 /* Demo */,
 				E08E168625E6437900A474DA /* MVVM-Test */,
 				E091CEF925CED73B00A3DE73 /* Global */,
 				113CCDC825BA5AA100BF70E5 /* Server */,
@@ -617,6 +622,23 @@
 				E05A7CA025B9387B007680E2 /* PeripheralUUID.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		E0CFECC0264CEB2600384BB4 /* Demo */ = {
+			isa = PBXGroup;
+			children = (
+				E0CFECC1264CEB2E00384BB4 /* MiScale2 */,
+			);
+			path = Demo;
+			sourceTree = "<group>";
+		};
+		E0CFECC1264CEB2E00384BB4 /* MiScale2 */ = {
+			isa = PBXGroup;
+			children = (
+				E0CFECC3264CEB6800384BB4 /* MiScaleManager.swift */,
+				E0CFECC2264CEB6800384BB4 /* MiScaleUUID.swift */,
+			);
+			path = MiScale2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -803,6 +825,7 @@
 				E0BDC31325C871D400D2524B /* SyncHelper.swift in Sources */,
 				70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */,
 				708A280725E642DD004DCBC2 /* daySchedule.swift in Sources */,
+				E0CFECC4264CEB6800384BB4 /* MiScaleUUID.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
 				E06CEAF825E40C0000D966BB /* ServerData.swift in Sources */,
 				E033B03D264E383000F7F9C9 /* MASegmentedControl+actions.swift in Sources */,
@@ -818,6 +841,7 @@
 				E06CEAFE25E40C0000D966BB /* SignUpData.swift in Sources */,
 				E06CEB0025E40C0000D966BB /* SensorData.swift in Sources */,
 				E05A7C3625B58DED007680E2 /* LogInViewController(MVVM).swift in Sources */,
+				E0CFECC5264CEB6800384BB4 /* MiScaleManager.swift in Sources */,
 				707940AC25D2E5AA0073315D /* WaterViewController.swift in Sources */,
 				E06CEAFD25E40C0000D966BB /* FindData_Pet.swift in Sources */,
 				E00AE1E525B2C538001484AC /* SettingsViewController.swift in Sources */,
