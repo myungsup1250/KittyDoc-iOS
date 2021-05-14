@@ -7,7 +7,7 @@
 
 import UIKit
 import Charts
-import MASegmentedControl
+//import MASegmentedControl // 라이브러리 자체를 프로젝트 내부로 복사하여 해결.
 
 class AnalysisViewController: UIViewController, ChartViewDelegate {
     @IBOutlet weak var chartSelect: UISegmentedControl!
