@@ -26,7 +26,7 @@ class ScaleViewController: UIViewController {
 //extension ScaleViewController: MiScaleManagerDelegate {
 //    func onDeviceNotFound() {
 //        DispatchQueue.main.async {
-//            print("Couldn't find any KittyDoc Devices!")
+//            print("Couldn't find any Mi Scale Devices!")
 //            self.connectionLabel.text = "기기를 찾을 수 없습니다"
 //        }
 //    }
@@ -40,11 +40,7 @@ class ScaleViewController: UIViewController {
 //
 //    func onDeviceDisconnected() {
 //        DispatchQueue.main.async {
-//            self.connectionLabel.text = "기기 연결이 해제되었습니다"
-//            let alert: UIAlertController = UIAlertController(title: "Disconnected!", message: "Disonnected from KittyDoc Device!", preferredStyle: .alert)
-//            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//            alert.addAction(cancel)
-//            self.present(alert, animated: true, completion: nil)
+//            print("onDeviceDisconnected()")
 //        }
 //    }
 //
@@ -74,7 +70,7 @@ class ScaleViewController: UIViewController {
 //    func onDevicesFound(peripherals: [PeripheralData]) {// peripherals 사용?
 //        print("[+]onDevicesFound()")
 //        DispatchQueue.main.async {
-//            print("\n<<< Found some KittyDoc Devices! >>>\n")
+//            print("\n<<< Found some MiScale Devices! >>>\n")
 //            self.connectionLabel.text = "기기를 찾았습니다"
 //        }
 //        print("[-]onDevicesFound()")
@@ -83,32 +79,23 @@ class ScaleViewController: UIViewController {
 //    func onConnectionFailed() {
 //        print("[+]onConnectionFailed()")
 //        DispatchQueue.main.async {
-//            print("\n<<< Failed to Connect to KittyDoc Device! >>>\n")
+//            print("\n<<< Failed to Connect to MiScale Device! >>>\n")
 //            self.connectionLabel.text = "연결이 해제되었습니다"
 //        }
 //        print("[-]onConnectionFailed()")
 //    }
 //
 //    func onServiceFound() {
-//        //print("[+]HomeViewController.onServiceFound")
+//        //print("[+]onServiceFound")
 //        DispatchQueue.main.async {
 //            print("\n<<< Found all required Service! >>>\n")
 //            self.connectionLabel.text = "기기에 연결되었습니다"
 //            self.deviceManager.getBattery()
 //            self.deviceManager.startSync()
 //        }
-//        //print("[-]HomeViewController.onServiceFound")
+//        //print("[-]onServiceFound")
 //    }
 //
-//    func onDfuTargFound(peripheral: CBPeripheral) {
-//        DispatchQueue.main.async {
-//            self.connectionLabel.text = "초기화가 필요합니다"
-//            let alert: UIAlertController = UIAlertController(title: "Found DFU Device!", message: "There is a DFU Device!", preferredStyle: .alert)
-//            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//            alert.addAction(cancel)
-//            self.present(alert, animated: true, completion: nil)
-//        }
-//    }
 //}
 //
 //extension HomeViewController: DeviceManagerSecondDelegate {
