@@ -23,6 +23,7 @@
 		708A280E25E6437C004DCBC2 /* AddScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */; };
 		70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70904F2525C7F473004B8C92 /* PetTableViewCell.swift */; };
 		7093CA4925F9DEA000DF6423 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7093CA4825F9DEA000DF6423 /* LocalAuthentication.framework */; };
+		709CCF1A264DAFB500A1C445 /* ScaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF19264DAFB500A1C445 /* ScaleViewController.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
@@ -111,6 +112,7 @@
 		708A280D25E6437C004DCBC2 /* AddScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleViewController.swift; sourceTree = "<group>"; };
 		70904F2525C7F473004B8C92 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		7093CA4825F9DEA000DF6423 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		709CCF19264DAFB500A1C445 /* ScaleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleViewController.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSettingsViewController.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
+				709CCF19264DAFB500A1C445 /* ScaleViewController.swift */,
 				70613BD82640290000CAC7B0 /* SideMenuTableViewCell.swift */,
 				70613BD92640290000CAC7B0 /* SideMenuTableViewCell.xib */,
 				7080A3A32636E0DA00EC2A30 /* RingProgressGroupView.swift */,
@@ -759,6 +762,7 @@
 				E08313EF25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld in Sources */,
 				E00AE23F25B3140D001484AC /* UserInfo.swift in Sources */,
 				113CCDD125BA5AA100BF70E5 /* ServerApi.swift in Sources */,
+				709CCF1A264DAFB500A1C445 /* ScaleViewController.swift in Sources */,
 				E022B47F26450EBE006D68A7 /* PetDeviceManageViewController.swift in Sources */,
 				E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */,
 				E06CEAFE25E40C0000D966BB /* SignUpData.swift in Sources */,

@@ -595,6 +595,36 @@
             </objects>
             <point key="canvasLocation" x="566.66666666666674" y="-455.35714285714283"/>
         </scene>
+        <!--Scale View Controller-->
+        <scene sceneID="aSa-Ut-4dx">
+            <objects>
+                <viewController storyboardIdentifier="ScaleViewController" id="bTp-xy-YcW" customClass="ScaleViewController" customModule="KittyDocUIKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="N9n-w4-g5U">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0XT-rN-5Fx">
+                                <rect key="frame" x="159" y="424.5" width="96" height="47"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="39"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="wrV-ST-6E3"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="0XT-rN-5Fx" firstAttribute="centerY" secondItem="N9n-w4-g5U" secondAttribute="centerY" id="GiM-ic-muo"/>
+                            <constraint firstItem="0XT-rN-5Fx" firstAttribute="centerX" secondItem="N9n-w4-g5U" secondAttribute="centerX" id="doZ-L0-TUX"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scaleValueLabel" destination="0XT-rN-5Fx" id="dQR-AN-j3D"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qxX-po-QOq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1591" y="-43"/>
+        </scene>
         <!--Water View Controller-->
         <scene sceneID="eLP-RG-xDE">
             <objects>
