@@ -48,7 +48,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     let height: CGFloat = 100
 
     private var sideMenu: SideMenuNavigationController?
-    private let scaleController = ScaleViewController()
+    private var scaleController : ScaleViewController? = nil
+    
+    var delegate : ScaleViewControllerDelegate?
     
     let deviceManager = DeviceManager.shared
     var count = 0
@@ -85,10 +87,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         viewAddBackground()
         setPetPickerView()
         
-
+        
+        scaleController = self.storyboard?.instantiateViewController(identifier: "ScaleViewController") as? ScaleViewController
+        
+        
+        
         let menu = SideMenuViewController()
         menu.delegate = self
 
+        
         sideMenu = SideMenuNavigationController(rootViewController: menu)
         sideMenu?.leftSide = true
         SideMenuManager.default.leftMenuNavigationController = sideMenu
@@ -182,13 +189,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     private func addChildController() {
-        addChild(scaleController)
-        view.addSubview(scaleController.view)
-        scaleController.view.frame = view.bounds
         
-        scaleController.didMove(toParent: self)
+        guard let vc = scaleController else { return }
         
-        scaleController.view.isHidden = true
+        addChild(vc)
+        view.addSubview(vc.view)
+        vc.view.frame = view.bounds
+        vc.didMove(toParent: self)
+        vc.view.isHidden = true
+        
     }
     
     func setPiChartsData() {
@@ -219,14 +228,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         progressView.ring1.progress = (Double((breakValue)) / ChartUtility.RestGoal)
         progressView.ring2.progress = (Double((walkValue)) / ChartUtility.StepGoal)
         progressView.ring3.progress = (Double((exerciseValue)) / ChartUtility.ExerciseGoal)
-        
-        print("%%%%%%%%")
-        print(breakValue)
-        print(walkValue)
-        print(exerciseValue)
-        print((Double((breakValue))) / ChartUtility.RestGoal)
-        print((Double((walkValue))) / ChartUtility.StepGoal)
-        print((Double((exerciseValue))) / ChartUtility.ExerciseGoal)
     }
     
     func viewAddBackground() {
@@ -731,16 +732,23 @@ class SideMenuViewController: UITableViewController {
 }
 
 extension HomeViewController: MenuControllerDelegate {
+    
     func didSelectMenuItem(name: String) {
         sideMenu?.dismiss(animated: true, completion: { [weak self] in
-            
+
             self?.title = name
             
+            guard let vc = self?.scaleController else {
+                return
+            }
             
             if name == "체중 측정" {
-                self?.scaleController.view.isHidden = false
+                vc.view.isHidden = false
+                NotificationCenter.default.post(name: NSNotification.Name("petName"), object: "\(PetInfo.shared.petArray[self!.selectedRow].PetName)")
+                //self?.delegate?.setPetName(name: PetInfo.shared.petArray[self!.selectedRow].PetName)
+                
             } else if name == "홈" {
-                self?.scaleController.view.isHidden = true
+                vc.view.isHidden = true
             }
             
         })
