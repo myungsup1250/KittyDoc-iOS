@@ -14,19 +14,13 @@ protocol MiScaleManagerDelegate {//: NSObject {
     func onDeviceConnected(peripheral: CBPeripheral) // 기기 연결됨
     func onDeviceDisconnected()
     
-//    @optional
-    
-    func onWeightReceived() // When weight data Received
+    func onWeightReceived(weight: Double) // When weight data Received
 
     func onBluetoothNotAccessible() // BLE Off or No Permission... etc.
     func onDevicesFound(peripherals: [PeripheralData])
-    func onSyncCompleted()
     func onConnectionFailed()
     func onServiceFound()// 장비에 필요한 서비스/캐랙터리스틱을 모두 찾음. 그냥 연결만하면 서비스 접근시 크래시
-    func onSysCmdResponse(data: Data)
     func onSyncProgress(progress: Int)
-    func onReadBattery(percent: Int)
-    func onDfuTargFound(peripheral: CBPeripheral)
 }
 
 class MiScaleManager: NSObject {
