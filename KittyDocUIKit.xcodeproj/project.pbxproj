@@ -26,6 +26,7 @@
 		709CCF1A264DAFB500A1C445 /* ScaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF19264DAFB500A1C445 /* ScaleViewController.swift */; };
 		709CCF33264E68D400A1C445 /* CustomSideMenuNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF32264E68D400A1C445 /* CustomSideMenuNavigation.swift */; };
 		709CCF69264F044700A1C445 /* ScaleViewContollerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF68264F044700A1C445 /* ScaleViewContollerDelegate.swift */; };
+		709CCF7F264F178D00A1C445 /* DailyReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
@@ -123,6 +124,7 @@
 		709CCF19264DAFB500A1C445 /* ScaleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleViewController.swift; sourceTree = "<group>"; };
 		709CCF32264E68D400A1C445 /* CustomSideMenuNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomSideMenuNavigation.swift; path = /Users/jenlee/Desktop/Development/IOS/JOL/KittyDocUIKit/KittyDocUIKit/VC/Home/CustomSideMenuNavigation.swift; sourceTree = "<absolute>"; };
 		709CCF68264F044700A1C445 /* ScaleViewContollerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleViewContollerDelegate.swift; sourceTree = "<group>"; };
+		709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyReportViewController.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSettingsViewController.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				709CCF68264F044700A1C445 /* ScaleViewContollerDelegate.swift */,
 				709CCF32264E68D400A1C445 /* CustomSideMenuNavigation.swift */,
 				709CCF19264DAFB500A1C445 /* ScaleViewController.swift */,
+				709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */,
 				70613BD82640290000CAC7B0 /* SideMenuTableViewCell.swift */,
 				70613BD92640290000CAC7B0 /* SideMenuTableViewCell.xib */,
 				7080A3A32636E0DA00EC2A30 /* RingProgressGroupView.swift */,
@@ -808,6 +811,7 @@
 				70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */,
 				E05A7C4025B5A51A007680E2 /* MainTabBarViewController.swift in Sources */,
 				7043EBD425F529BD008A67A4 /* DetailViewController.swift in Sources */,
+				709CCF7F264F178D00A1C445 /* DailyReportViewController.swift in Sources */,
 				70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */,
 				E0BDC31225C871D400D2524B /* KittyDocUtillity.swift in Sources */,
 				E08313E925B0ABE200266994 /* LogInViewController.swift in Sources */,

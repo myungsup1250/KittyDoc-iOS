@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/jenlee/Desktop/Development/IOS/JOL/KittyDocUIKit/KittyDocUIKit/VC/Home/CustomSideMenuNavigation.swift">
+   </FileRef>
+   <FileRef
       location = "group:KittyDocUIKit.xcodeproj">
    </FileRef>
    <FileRef
