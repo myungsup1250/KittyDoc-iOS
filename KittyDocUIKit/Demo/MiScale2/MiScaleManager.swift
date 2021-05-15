@@ -21,7 +21,6 @@ protocol MiScaleManagerDelegate {//: NSObject {
     func onDevicesFound(peripherals: [PeripheralData])
     func onConnectionFailed()
     func onServiceFound()// 장비에 필요한 서비스/캐랙터리스틱을 모두 찾음. 그냥 연결만하면 서비스 접근시 크래시
-    func onSyncProgress(progress: Int)
 }
 
 class MiScaleManager: NSObject {

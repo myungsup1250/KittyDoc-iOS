@@ -67,24 +67,28 @@ class ScaleViewController: UIViewController, ScaleViewControllerDelegate {
 }
 
 extension ScaleViewController: MiScaleManagerDelegate {
-    func onSyncProgress(progress: Int) {
-
-    }
-    
     func onMeasureWeightFinished(weight: Double) {
-        scaleValueLabel.text = "\(weight)"
-        connectionLabel.text = "3. 체중 측정 완료!"
-        descriptionImageView.image = UIImage(named: "checkmark")
-        retryButton.isHidden = false
-        submitButton.isHidden = false
+        DispatchQueue.main.async {
+            print("onMeasureWeightFinished(weight: \(weight)")
+          
+            scaleValueLabel.text = "\(weight)"
+            connectionLabel.text = "3. 체중 측정 완료!"
+            descriptionImageView.image = UIImage(named: "checkmark")
+            retryButton.isHidden = false
+            submitButton.isHidden = false
+        }
     }
     
     func onMeasuringWeight(weight: Double) {
-        scaleValueLabel.text = "\(weight)"
-        connectionLabel.text = "2. 체중 측정 중 ..."
-        descriptionImageView.image = UIImage(named: "timer")
+        DispatchQueue.main.async {
+            print("onMeasuringWeight(weight: \(weight)")
+
+            scaleValueLabel.text = "\(weight)"
+            connectionLabel.text = "2. 체중 측정 중 ..."
+            descriptionImageView.image = UIImage(named: "timer")
+        }
     }
-    
+        
     func onDeviceNotFound() {
         DispatchQueue.main.async {
             print("Couldn't find any Mi Scale Devices!")
@@ -151,50 +155,7 @@ extension ScaleViewController: MiScaleManagerDelegate {
         DispatchQueue.main.async {
             print("\n<<< Found all required Service! >>>\n")
             self.connectionLabel.text = "기기에 연결되었습니다"
-//            self.deviceManager.getBattery()
-//            self.deviceManager.startSync()
         }
-        //print("[-]onServiceFound")
     }
-
+    
 }
-//
-//extension HomeViewController: DeviceManagerSecondDelegate {
-//    func onSysCmdResponse(data: Data) {
-//        print("[+]onSysCmdResponse")
-//        //        print("Data : \(data)")
-//        //        print("data(count : \(data.count)) => ", terminator: "")
-//        //        for i in 0..<data.count {
-//        //            print("\(data[i]) ", terminator: "")
-//        //        }
-//        //        print("")
-//        if count == 0 {
-//            count += 1
-//            deviceManager.setUUID(uuid: CBUUID(data: data.advanced(by: 1)))
-//        }
-//        print("[-]onSysCmdResponse")
-//    }
-//
-//    func onSyncProgress(progress: Int) {
-//        print("[+]onSyncProgress")
-//        print("Progress Percent : \(progress)")
-//        print("[-]onSyncProgress")
-//    }
-//
-//    func onReadBattery(percent: Int) {
-//        DispatchQueue.main.async {
-//            print("[+]onReadBattery")
-//            print("batteryLevel : \(percent)")
-//            let percentDivide: Double = Double(percent) / 100
-//            self.batteryView.progress = Float(percentDivide)
-//            self.batteryLabel.text = "\(percent) %"
-//            print("[-]onReadBattery")
-//        }
-//    }
-//
-//    func onSyncCompleted() {
-//        DispatchQueue.main.async {
-//            self.connectionLabel.text = "동기화 완료"
-//        }
-//    }
-//}
