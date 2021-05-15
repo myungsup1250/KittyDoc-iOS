@@ -22,55 +22,110 @@ class AddScheduleViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        typeSegment.selectedSegmentIndex = 0
+        typeMASegment.selectedSegmentIndex = 0
     }
     
     private func addSubViews() {
+        view.addSubview(dateLabel)
         view.addSubview(titleLabel)
-        view.addSubview(typeSegment)
-        view.addSubview(textInput)
-        view.addSubview(doneBtn)
+        view.addSubview(typeMASegment)
+        view.addSubview(textBackgroundView)
+        textBackgroundView.addSubview(textInput)
+        textBackgroundView.addSubview(doneBtn)
+        textBackgroundView.addSubview(cancelBtn)
     }
     
     private func addConstraints() {
         
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
+            titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20)
+        
         ])
         
         NSLayoutConstraint.activate([
-            typeSegment.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 50),
-            typeSegment.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            typeSegment.heightAnchor.constraint(equalToConstant: 60)
+            dateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
+            dateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
         NSLayoutConstraint.activate([
-            textInput.topAnchor.constraint(equalTo: typeSegment.bottomAnchor, constant: 50),
-            textInput.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            typeMASegment.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 50),
+            typeMASegment.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            typeMASegment.heightAnchor.constraint(equalToConstant: 60),
+            typeMASegment.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            typeMASegment.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
         ])
         
         NSLayoutConstraint.activate([
-            doneBtn.topAnchor.constraint(equalTo: textInput.bottomAnchor, constant: 50),
-            doneBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            textBackgroundView.topAnchor.constraint(equalTo: typeMASegment.bottomAnchor, constant: 50),
+            textBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
+            textBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
+            textBackgroundView.heightAnchor.constraint(equalToConstant: 300),
+            
+        ])
+        
+        NSLayoutConstraint.activate([
+            textInput.centerXAnchor.constraint(equalTo: textBackgroundView.centerXAnchor),
+            textInput.centerYAnchor.constraint(equalTo: textBackgroundView.centerYAnchor)
+        ])
+  
+        NSLayoutConstraint.activate([
+            doneBtn.bottomAnchor.constraint(equalTo: textBackgroundView.bottomAnchor, constant: -20),
+            doneBtn.centerXAnchor.constraint(equalTo: textBackgroundView.centerXAnchor, constant: 50),
+            doneBtn.widthAnchor.constraint(equalToConstant: 80)
+        ])
+        
+        NSLayoutConstraint.activate([
+            cancelBtn.bottomAnchor.constraint(equalTo: textBackgroundView.bottomAnchor, constant: -20),
+            cancelBtn.centerXAnchor.constraint(equalTo: textBackgroundView.centerXAnchor, constant: -50),
+            cancelBtn.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
     
-    private let titleLabel: UILabel = {
+    private let dateLabel: UILabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 25, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let typeSegment: UISegmentedControl = {
-       let segment = UISegmentedControl()
-        segment.translatesAutoresizingMaskIntoConstraints = false
-        segment.insertSegment(withTitle: "병원", at: 0, animated: true)
-        segment.insertSegment(withTitle: "사료구매", at: 1, animated: true)
-        segment.insertSegment(withTitle: "예방접종", at: 2, animated: true)
-        segment.insertSegment(withTitle: "구충제", at: 3, animated: true)
-        return segment
+    private let titleLabel: UILabel = {
+       let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 35, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "일정 추가"
+        return label
     }()
+    
+    private let typeMASegment: MASegmentedControl = {
+        
+        
+        let timeSegmentControl = MASegmentedControl(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        timeSegmentControl.translatesAutoresizingMaskIntoConstraints = false
+        timeSegmentControl.selectedSegmentIndex = 0
+
+        timeSegmentControl.itemsWithText = true
+        timeSegmentControl.fillEqually = true
+        timeSegmentControl.roundedControl = true
+        timeSegmentControl.setSegmentedWith(items: ["병원", "사료구매", "예방접종", "구충제"])
+        
+        timeSegmentControl.padding = 2
+        timeSegmentControl.textColor = .black
+        timeSegmentControl.selectedTextColor = .white
+        timeSegmentControl.thumbViewColor = #colorLiteral(red: 0.3098039216, green: 0.5803921569, blue: 0.831372549, alpha: 1)
+        timeSegmentControl.titlesFont = UIFont.systemFont(ofSize: 18, weight: .medium)
+    
+        return timeSegmentControl
+    }()
+    
+    private let textBackgroundView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .red
+        view.addColor(color: #colorLiteral(red: 0.7803921569, green: 0.8039215686, blue: 0.8039215686, alpha: 0.6223973154))
+        return view
+    }()
+    
     
     private let textInput: UITextField = {
        let text = UITextField()
@@ -83,10 +138,24 @@ class AddScheduleViewController: UIViewController {
        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("완료", for: .normal)
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = #colorLiteral(red: 0.3098039216, green: 0.5803921569, blue: 0.831372549, alpha: 1)
+        button.layer.cornerRadius = 20
         button.addTarget(self, action: #selector(didTapDoneBtn), for: .touchUpInside)
         return button
     }()
+    
+    
+    private let cancelBtn: UIButton = {
+       let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("취소", for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.3098039216, green: 0.5803921569, blue: 0.831372549, alpha: 1)
+        button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(didTapCancelBtn), for: .touchUpInside)
+        return button
+    }()
+    
+    
     
     
     func titleTextSetting() {
@@ -98,7 +167,7 @@ class AddScheduleViewController: UIViewController {
         let printDateFormatter = DateFormatter()
         printDateFormatter.dateFormat = "yyyy년 MM월 dd일"
     
-        titleLabel.text = printDateFormatter.string(from: date!)
+        dateLabel.text = printDateFormatter.string(from: date!)
     }
     
     func getDocumentsDirectory() -> URL {
@@ -135,7 +204,7 @@ class AddScheduleViewController: UIViewController {
             return
         }
         
-        switch typeSegment.selectedSegmentIndex {
+        switch typeMASegment.selectedSegmentIndex {
         case 0:
             tempDaySchedule?.caretype = .hospital
         case 1:
@@ -147,7 +216,7 @@ class AddScheduleViewController: UIViewController {
         default:
             tempDaySchedule?.caretype = .none
         }
-        
+
         addScheduleRealm()
         
         guard let preVC = self.navigationController?.viewControllers[0] as? CalendarViewController else {
@@ -156,6 +225,10 @@ class AddScheduleViewController: UIViewController {
         preVC.daysArr.append(tempDaySchedule!)
         self.navigationController?.popViewController(animated: true)
         
+    }
+    
+    @objc func didTapCancelBtn() {
+        self.navigationController?.popViewController(animated: true)
     }
     
 
