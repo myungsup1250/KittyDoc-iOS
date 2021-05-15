@@ -228,6 +228,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         progressView.ring1.progress = (Double((breakValue)) / ChartUtility.RestGoal)
         progressView.ring2.progress = (Double((walkValue)) / ChartUtility.StepGoal)
         progressView.ring3.progress = (Double((exerciseValue)) / ChartUtility.ExerciseGoal)
+        
+        stepProgressView.progress = Float((Double(stepValue) / 1500))
     }
     
     func viewAddBackground() {
@@ -431,6 +433,17 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             } else {
                 print("uuid is nil (\(deviceString))")
             }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "dailyreportSegue" {
+            
+            guard let vc = segue.destination as? DailyReportViewController  else { return }
+            vc.sunValue = self.sunExValue
+            vc.moveValue = self.exerciseValue
+            vc.vitaValue = Int(self.vitaDValue)
+            
         }
     }
     
@@ -757,3 +770,4 @@ extension HomeViewController: MenuControllerDelegate {
     
     
 }
+
