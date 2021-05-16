@@ -31,7 +31,7 @@ class CalendarViewController: UIViewController {
     
     private let TitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20)
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -259,15 +259,15 @@ class CalendarViewController: UIViewController {
     func showTypeSchedule(type: Int, index: Int, cell: CalendarCollectionViewCell) {
         switch type {
         case 0:
-            showSchedule(type: .none, index: index, cell: cell, color: .systemYellow)
+            showSchedule(type: .none, index: index, cell: cell, color: #colorLiteral(red: 0.4901960784, green: 0.6549019608, blue: 0.8470588235, alpha: 0.7001913715))
         case 1:
-            showSchedule(type: .hospital, index: index, cell: cell, color: .orange)
+            showSchedule(type: .hospital, index: index, cell: cell, color: #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1))
         case 2:
-            showSchedule(type: .bob, index: index, cell: cell, color: .magenta)
+            showSchedule(type: .bob, index: index, cell: cell, color: #colorLiteral(red: 0.7411764706, green: 0.5529411765, blue: 0.7490196078, alpha: 0.5986960708))
         case 3:
-            showSchedule(type: .med, index: index, cell: cell, color: .systemPink)
+            showSchedule(type: .med, index: index, cell: cell, color: #colorLiteral(red: 0.9607843137, green: 0.5921568627, blue: 0.6156862745, alpha: 1))
         default:
-            showSchedule(type: .pill, index: index, cell: cell, color: .green)
+            showSchedule(type: .pill, index: index, cell: cell, color: #colorLiteral(red: 1, green: 0.8823529412, blue: 0.5215686275, alpha: 1))
         }
     }
     
@@ -304,19 +304,19 @@ class CalendarViewController: UIViewController {
                         }
                         
                     }
-                    else if type == dayData.caretype {
-                        
-                        if cell.scheduleLabel.text != "" {
-                            cell.scheduleLabel.backgroundColor = color
-                        }
-                        if cell.secondScheduleLabel.text != "" {
-                            cell.secondScheduleLabel.backgroundColor = color
-                        }
-                        if cell.thirdScheduleLabel.text != "" {
-                            cell.thirdScheduleLabel.backgroundColor = color
-                        }
-                        //dayData 현재가 몇번째인지 고민해보고 다시짜기
-                    }
+//                    else if type == dayData.caretype {
+//
+//                        if cell.scheduleLabel.text != "" {
+//                            cell.scheduleLabel.backgroundColor = color
+//                        }
+//                        if cell.secondScheduleLabel.text != "" {
+//                            cell.secondScheduleLabel.backgroundColor = color
+//                        }
+//                        if cell.thirdScheduleLabel.text != "" {
+//                            cell.thirdScheduleLabel.backgroundColor = color
+//                        }
+//                        //dayData 현재가 몇번째인지 고민해보고 다시짜기
+//                    }
                         
                        
                     }
@@ -397,6 +397,8 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
         cell.secondScheduleLabel.text = ""
         cell.thirdScheduleLabel.text = ""
         
+        cell.scheduleLabel.layer.cornerRadius = 3
+        cell.scheduleLabel.clipsToBounds = true
         
         switch indexPath.section {
         case 0:
@@ -411,7 +413,9 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "DetailSegue", sender: indexPath.row)
+        //sender 가 text 여야함
+        let cell = self.calendar.cellForItem(at: indexPath) as! CalendarCollectionViewCell
+        self.performSegue(withIdentifier: "DetailSegue", sender: Int(cell.dayLabel.text!))
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

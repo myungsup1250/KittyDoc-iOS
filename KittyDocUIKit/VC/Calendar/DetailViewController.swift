@@ -61,7 +61,8 @@ class DetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             doneBtn.bottomAnchor.constraint(equalTo: screenView.bottomAnchor, constant: -20),
-            doneBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            doneBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            doneBtn.widthAnchor.constraint(equalToConstant: 50)
         ])
         
         NSLayoutConstraint.activate([
@@ -78,7 +79,7 @@ class DetailViewController: UIViewController {
     let screenView: UIView = {
         let myView = UIView()
         myView.translatesAutoresizingMaskIntoConstraints = false
-        myView.backgroundColor = .white
+        myView.addColor(color: .white)
         return myView
     }()
     
@@ -95,6 +96,7 @@ class DetailViewController: UIViewController {
        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("확인", for: .normal)
+        button.layer.cornerRadius = 10
         button.backgroundColor = .systemBlue
         button.addTarget(self, action: #selector(closeModal), for: .touchUpInside)
         return button
