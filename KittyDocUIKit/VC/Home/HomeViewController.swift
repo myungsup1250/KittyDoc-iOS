@@ -47,7 +47,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     let height: CGFloat = 100
 
     private var sideMenu: SideMenuNavigationController?
+    
     private var scaleController : ScaleViewController? = nil
+    private var rtspController : RTSPStreamViewController? = nil
     
     var delegate : ScaleViewControllerDelegate?
     
@@ -88,6 +90,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         
         scaleController = self.storyboard?.instantiateViewController(identifier: "ScaleViewController") as? ScaleViewController
+        
+        rtspController = self.storyboard?.instantiateViewController(identifier: "RTSPStreamViewController") as?
+            RTSPStreamViewController
         
         
         
@@ -197,6 +202,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         vc.view.frame = view.bounds
         vc.didMove(toParent: self)
         vc.view.isHidden = true
+        
+        guard let rtspvc = rtspController else { return }
+        
+        addChild(rtspvc)
+        view.addSubview(rtspvc.view)
+        rtspvc.view.frame = view.bounds
+        rtspvc.didMove(toParent: self)
+        rtspvc.view.isHidden = true
+        
         
     }
     
@@ -763,6 +777,13 @@ extension HomeViewController: MenuControllerDelegate {
                 //self?.delegate?.setPetName(name: PetInfo.shared.petArray[self!.selectedRow].PetName)
                 
             } else if name == "홈" {
+                vc.view.isHidden = true
+                
+            } else if name == "CCTV" {
+                
+                guard let vc = self?.rtspController else {
+                    return
+                }
                 vc.view.isHidden = true
             }
             
