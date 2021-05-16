@@ -119,5 +119,32 @@ extension PetDeviceManageViewController: UITableViewDelegate, UITableViewDataSou
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //print("선택된 행은 \(indexPath.row)번째 행 입니다.")
+    }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = deleteAction(at: indexPath)
+        let edit = editAction(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [delete, edit])
+    }
+
+    func deleteAction(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Reset Device") { (action, view, completion) in
+            print("Resets WhoseCat Device (DFU Mode)")
+        }
+        action.image = UIImage(systemName: "trash")
+        action.backgroundColor = .systemRed
+        return action
+    }
+    
+    func editAction(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .destructive, title: "Edit Device") { (action, view, completion) in
+            print("Changes Pet's Device")
+        }
+        
+        action.image = UIImage(systemName: "square.and.pencil")
+        action.backgroundColor = .systemBlue
+        return action
+    }
 }
