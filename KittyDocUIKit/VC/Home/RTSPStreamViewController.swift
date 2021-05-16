@@ -55,7 +55,7 @@ class RTSPStreamViewController: UIViewController {
 
         title = url.host
 
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        //navigationController?.setNavigationBarHidden(true, animated: false)
 
         videoView.loadVideo(from: url)
     

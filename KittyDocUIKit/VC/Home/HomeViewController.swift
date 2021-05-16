@@ -50,6 +50,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     private var scaleController : ScaleViewController? = nil
     private var rtspController : RTSPStreamViewController? = nil
+
+    
     
     var delegate : ScaleViewControllerDelegate?
     
@@ -88,12 +90,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         viewAddBackground()
         setPetPickerView()
         
-        
         scaleController = self.storyboard?.instantiateViewController(identifier: "ScaleViewController") as? ScaleViewController
         
         rtspController = self.storyboard?.instantiateViewController(identifier: "RTSPStreamViewController") as?
             RTSPStreamViewController
-        
         
         
         let menu = SideMenuViewController()
@@ -196,19 +196,21 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     private func addChildController() {
         
         guard let vc = scaleController else { return }
-        
-        addChild(vc)
-        view.addSubview(vc.view)
-        vc.view.frame = view.bounds
-        vc.didMove(toParent: self)
-        vc.view.isHidden = true
-        
         guard let rtspvc = rtspController else { return }
         
+        addChild(vc)
         addChild(rtspvc)
+                
+        view.addSubview(vc.view)
         view.addSubview(rtspvc.view)
+        
+        vc.view.frame = view.bounds
         rtspvc.view.frame = view.bounds
+        
+        vc.didMove(toParent: self)
         rtspvc.didMove(toParent: self)
+        
+        vc.view.isHidden = true
         rtspvc.view.isHidden = true
         
         
@@ -766,25 +768,30 @@ extension HomeViewController: MenuControllerDelegate {
         sideMenu?.dismiss(animated: true, completion: { [weak self] in
 
             self?.title = name
+        
             
-            guard let vc = self?.scaleController else {
-                return
-            }
+            guard let scale = self?.scaleController else { return }
+            guard let rtsp = self?.rtspController else { return }
+            
+            scale.view.isHidden = true
+            rtsp.view.isHidden = true
+
+            
+            print("ddddddddd")
             
             if name == "체중 측정" {
-                vc.view.isHidden = false
+                scale.view.isHidden = false
                 NotificationCenter.default.post(name: NSNotification.Name("petName"), object: "\(PetInfo.shared.petArray[self!.selectedRow].PetName)")
                 //self?.delegate?.setPetName(name: PetInfo.shared.petArray[self!.selectedRow].PetName)
+                rtsp.view.isHidden = true
                 
             } else if name == "홈" {
-                vc.view.isHidden = true
+                scale.view.isHidden = true
+                rtsp.view.isHidden = true
                 
             } else if name == "CCTV" {
-                
-                guard let vc = self?.rtspController else {
-                    return
-                }
-                vc.view.isHidden = true
+                rtsp.view.isHidden = false
+                scale.view.isHidden = true
             }
             
         })
