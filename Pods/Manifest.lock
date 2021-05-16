@@ -5,6 +5,7 @@ PODS:
   - CircularCarousel (1.0.0)
   - CircularSlider (1.1.2)
   - MKRingProgressView (2.2.3)
+  - MobileVLCKit (3.3.16.3)
   - Realm (10.7.1):
     - Realm/Headers (= 10.7.1)
   - Realm/Headers (10.7.1)
@@ -18,6 +19,7 @@ DEPENDENCIES:
   - CircularCarousel
   - CircularSlider
   - MKRingProgressView
+  - MobileVLCKit
   - RealmSwift
   - SideMenu
   - UICircularProgressRing
@@ -28,6 +30,7 @@ SPEC REPOS:
     - CircularCarousel
     - CircularSlider
     - MKRingProgressView
+    - MobileVLCKit
     - Realm
     - RealmSwift
     - SideMenu
@@ -38,11 +41,12 @@ SPEC CHECKSUMS:
   CircularCarousel: 6248f5892c018fc2d115d4d5186be91d46bacbea
   CircularSlider: 448f9f7723b845ccd470dac41981feb192e20c50
   MKRingProgressView: 404b3157e7a533ab8668d29ec20042c35d12ca1d
+  MobileVLCKit: 2b408a9c5cc327353afab418fafbc942780b248a
   Realm: 55bae3a2f42186360b54fd8783e884ae8656ab05
   RealmSwift: 0d9bb38ad2cb953fc61d6827be5611972a75ca31
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
   UICircularProgressRing: 19927375b2b21b5fa5fd9582f15ccdef9659da16
 
-PODFILE CHECKSUM: 71e247306298c45949eee82f1e1d6baa986b71e9
+PODFILE CHECKSUM: 11195631ef2d0b3baa25e0a4da6a5d3a4da3ac89
 
 COCOAPODS: 1.10.1
