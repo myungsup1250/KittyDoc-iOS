@@ -24,7 +24,6 @@
 		70904F2625C7F473004B8C92 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70904F2525C7F473004B8C92 /* PetTableViewCell.swift */; };
 		7093CA4925F9DEA000DF6423 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7093CA4825F9DEA000DF6423 /* LocalAuthentication.framework */; };
 		709CCF1A264DAFB500A1C445 /* ScaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF19264DAFB500A1C445 /* ScaleViewController.swift */; };
-		709CCF33264E68D400A1C445 /* CustomSideMenuNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF32264E68D400A1C445 /* CustomSideMenuNavigation.swift */; };
 		709CCF69264F044700A1C445 /* ScaleViewContollerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF68264F044700A1C445 /* ScaleViewContollerDelegate.swift */; };
 		709CCF7F264F178D00A1C445 /* DailyReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
@@ -122,7 +121,6 @@
 		70904F2525C7F473004B8C92 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		7093CA4825F9DEA000DF6423 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		709CCF19264DAFB500A1C445 /* ScaleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleViewController.swift; sourceTree = "<group>"; };
-		709CCF32264E68D400A1C445 /* CustomSideMenuNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomSideMenuNavigation.swift; path = /Users/jenlee/Desktop/Development/IOS/JOL/KittyDocUIKit/KittyDocUIKit/VC/Home/CustomSideMenuNavigation.swift; sourceTree = "<absolute>"; };
 		709CCF68264F044700A1C445 /* ScaleViewContollerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleViewContollerDelegate.swift; sourceTree = "<group>"; };
 		709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyReportViewController.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
@@ -287,7 +285,6 @@
 			children = (
 				E00AE1E125B2C52F001484AC /* HomeViewController.swift */,
 				709CCF68264F044700A1C445 /* ScaleViewContollerDelegate.swift */,
-				709CCF32264E68D400A1C445 /* CustomSideMenuNavigation.swift */,
 				709CCF19264DAFB500A1C445 /* ScaleViewController.swift */,
 				709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */,
 				70613BD82640290000CAC7B0 /* SideMenuTableViewCell.swift */,
@@ -839,7 +836,6 @@
 				E0CFECC4264CEB6800384BB4 /* MiScaleUUID.swift in Sources */,
 				E00AE23B25B3104E001484AC /* UserInfoViewModel.swift in Sources */,
 				E06CEAF825E40C0000D966BB /* ServerData.swift in Sources */,
-				709CCF33264E68D400A1C445 /* CustomSideMenuNavigation.swift in Sources */,
 				E033B03D264E383000F7F9C9 /* MASegmentedControl+actions.swift in Sources */,
 				7080A3A42636E0DA00EC2A30 /* RingProgressGroupView.swift in Sources */,
 				113CCDEB25C42F5700BF70E5 /* PetInfo.swift in Sources */,
