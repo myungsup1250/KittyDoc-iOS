@@ -109,6 +109,8 @@ class DeviceManager: NSObject {
     public var syncDataCount: Int// WhoseCat 기기로부터 받은 WhoseCat_Ext_Interface_Data_Type 데이터 수
     public var totalSyncBytes: Int// 동기화할 전체 바이트수
     public var totalSyncBytesLeft: Int// 앞으로 동기화할 남은 바이트수
+    
+    public var currentPetId: Int
 
     private override init() {
         //print("DeviceManager.init()")
@@ -139,6 +141,8 @@ class DeviceManager: NSObject {
         syncDataCount = 0
         totalSyncBytes = 0
         totalSyncBytesLeft = 0
+        
+        currentPetId = 0
     }
 }
 
@@ -561,14 +565,15 @@ extension DeviceManager: CBPeripheralDelegate {
                     print("┌-------------------------------------------------------------------------------------------------------------┐")
                     print("|  s_tick  |      s_time       |  e_tick  |      s_time       |steps|  t_lux  |avg_lux|avg_k|vct_x|vct_y|vct_z|")
                     for i in 0...5 {
-                        let sensorData = SensorData(_object: kittydoc_data.d[i], _petID: 38, _petLB: PetInfo.shared.petArray.first!.PetLB)
+                        let petId = PetInfo.shared.petArray[currentPetId].PetID
+                        let sensorData = SensorData(_object: kittydoc_data.d[i], _petID: petId, _petLB: PetInfo.shared.petArray.first!.PetLB)
                         let server = KittyDocServer()
                         let sensorResponse = server.sensorSend(data: sensorData)
                         if (sensorResponse.getCode() as! Int == ServerResponse.SENSOR_SUCCESS) {
-                            print(sensorResponse.getMessage())
+                            //print(sensorResponse.getMessage()) //성공할 경우 안보도록 수정.
                         } else {
-                            print(sensorResponse.getMessage())
-                        }// 어쨌든 센서 전송 결과는 봐야한다?
+                            print(sensorResponse.getMessage())// 실패할 경우 서버 응답 보도록 수정.
+                        }
 
                         let s_time = unixtimeToString(unixtime: TimeInterval(kittydoc_data.d[i].s_tick))
                         let e_time = unixtimeToString(unixtime: TimeInterval(kittydoc_data.d[i].e_tick))

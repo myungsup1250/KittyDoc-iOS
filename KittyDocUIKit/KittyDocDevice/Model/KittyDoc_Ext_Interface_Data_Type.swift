@@ -24,7 +24,7 @@ public class KittyDoc_Ext_Interface_Data_Type {
     }
     
     init(data: Data) {
-        //print("d.count : \(d.count)")
+        //print("data.count : \(data.count)")
         for i in 0..<6 {
 //            print("\tAttempt \(i)")
             let temp: Data = data.subdata(in: Range(24*(i)...24*(i+1)-1))
