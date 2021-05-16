@@ -104,7 +104,12 @@ class SettingsViewController: UIViewController {
                                     .staticCell(model: SettingsOption(title: "Start Sync(TEST)", icon: UIImage(systemName: "tray.and.arrow.down") ?? .strokedCheckmark, iconBackgroundColor: #colorLiteral(red: 0.03921568627, green: 0.2941176471, blue: 0.4705882353, alpha: 1), handler: {
                                         print("Start Sync!")
                                         DeviceManager.shared.startSync()
+                                    })),
+                                    .staticCell(model: SettingsOption(title: "CCTV(TEST)", icon: UIImage(systemName: "camera") ?? .strokedCheckmark, iconBackgroundColor: #colorLiteral(red: 0.03921568627, green: 0.2941176471, blue: 0.4705882353, alpha: 1), handler: {
+                                        guard let vc = self.storyboard?.instantiateViewController(identifier: "RTSPStreamViewController") as? RTSPStreamViewController else { return }
+                                        self.navigationController?.pushViewController(vc, animated: true)
                                     }))
+                                
                                 ]))
         
         Sections.append(Section(title: "Account", options: [
