@@ -160,7 +160,7 @@ class AnalysisViewController: UIViewController, ChartViewDelegate {
         print("requestServerData(From : \(unixtimeToString(unixtime: startTime / 1000))), Til : \(unixtimeToString(unixtime: endTime / 1000)))")
         //print("startTime RAW : \(startTime), endTime RAW : \(endTime)")
 
-        let petID = 41// // // // // // // // // //
+        let petID = deviceManager.currentPetId // 홈화면에서 선택한 펫의 정보를 저장하도록 함.
         let analysisData = AnalysisData(_petID: petID, _startMilliSec: Int(startTime), _endMilliSec: Int(endTime))
         let server = KittyDocServer()
         var analysisResponse: ServerResponse!
