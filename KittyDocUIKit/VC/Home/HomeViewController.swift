@@ -43,7 +43,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var connectionLabel: UILabel!
     
     
-    
     let width: CGFloat = 100
     let height: CGFloat = 100
 
@@ -154,6 +153,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         //PetChange(index: 0)// 안해도 index 0으로 시작!
         if !PetInfo.shared.petArray.isEmpty {
             // petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
+            deviceManager.currentPetId = 0
             let deviceString = PetInfo.shared.petArray[0].Device
             let uuid: UUID? = UUID(uuidString: deviceString)
             // MARK: 연결할 기기 정보가 유효한 경우 연결을 시도
@@ -408,7 +408,8 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row
-        PetChange(index: row) // 표시되는 데이터들 변경
+        PetChange(index: selectedRow) // 표시되는 데이터들 변경
+        deviceManager.currentPetId = selectedRow
         let deviceString = PetInfo.shared.petArray[selectedRow].Device
         let uuid: UUID? = UUID(uuidString: deviceString)
         // MARK: 연결할 기기 정보가 유효한 경우 연결을 시도할 지 사용자에게 묻는다
@@ -448,6 +449,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     func PetChange(index: Int) {
+        deviceManager.currentPetId = selectedRow
         getData(index: selectedRow)
         setData()
         // MARK: - 펫 변경할 때 기기 상태바 변경하기
