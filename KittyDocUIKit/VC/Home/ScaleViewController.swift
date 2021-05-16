@@ -68,7 +68,7 @@ class ScaleViewController: UIViewController, ScaleViewControllerDelegate {
 
 extension ScaleViewController: MiScaleManagerDelegate {
     func onMeasureWeightFinished(weight: Double) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             print("onMeasureWeightFinished(weight: \(weight)")
           
             scaleValueLabel.text = "\(weight)"
@@ -80,7 +80,7 @@ extension ScaleViewController: MiScaleManagerDelegate {
     }
     
     func onMeasuringWeight(weight: Double) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             print("onMeasuringWeight(weight: \(weight)")
 
             scaleValueLabel.text = "\(weight)"

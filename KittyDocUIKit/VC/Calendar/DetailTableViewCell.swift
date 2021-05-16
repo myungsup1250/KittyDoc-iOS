@@ -55,6 +55,7 @@ class DetailTableViewCell: UITableViewCell {
         deleteBtn.translatesAutoresizingMaskIntoConstraints = false
         deleteBtn.backgroundColor = .systemBlue
         deleteBtn.setTitle("삭제", for: .normal)
+        deleteBtn.layer.cornerRadius = 10
     //    deleteBtn.addTarget(self, action: #selector(didTapDeleteBtn), for: .touchUpInside)
     }
     
