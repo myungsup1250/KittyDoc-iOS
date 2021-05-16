@@ -58,6 +58,7 @@
 		E033B040264E52D600F7F9C9 /* RTSPStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E033B03F264E52D600F7F9C9 /* RTSPStreamViewController.swift */; };
 		E033B043264E690400F7F9C9 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E033B042264E690400F7F9C9 /* VideoView.swift */; };
 		E033B045264E691800F7F9C9 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E033B044264E691800F7F9C9 /* Validator.swift */; };
+		E03A1B2F2650F06E0002EDF8 /* Evaluatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03A1B2E2650F06E0002EDF8 /* Evaluatable.swift */; };
 		E0561BE82644113200AA5396 /* UIDatePickerViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0561BE72644113200AA5396 /* UIDatePickerViewExtensions.swift */; };
 		E05A7C3025B58919007680E2 /* InitStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C2F25B58919007680E2 /* InitStoryboard.swift */; };
 		E05A7C3325B58CBF007680E2 /* LogInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */; };
@@ -166,6 +167,7 @@
 		E033B03F264E52D600F7F9C9 /* RTSPStreamViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RTSPStreamViewController.swift; sourceTree = "<group>"; };
 		E033B042264E690400F7F9C9 /* VideoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		E033B044264E691800F7F9C9 /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
+		E03A1B2E2650F06E0002EDF8 /* Evaluatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Evaluatable.swift; sourceTree = "<group>"; };
 		E0561BE72644113200AA5396 /* UIDatePickerViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDatePickerViewExtensions.swift; sourceTree = "<group>"; };
 		E05A7C2F25B58919007680E2 /* InitStoryboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitStoryboard.swift; sourceTree = "<group>"; };
 		E05A7C3225B58CBF007680E2 /* LogInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewModel.swift; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 			isa = PBXGroup;
 			children = (
 				E033B044264E691800F7F9C9 /* Validator.swift */,
+				E03A1B2E2650F06E0002EDF8 /* Evaluatable.swift */,
 				E033B042264E690400F7F9C9 /* VideoView.swift */,
 			);
 			path = CCTV;
@@ -813,6 +816,7 @@
 				E05A7CA725B9387B007680E2 /* KittyDoc_Ext_Interface_Data_Type.swift in Sources */,
 				E05A7CA525B9387B007680E2 /* KittyDoc_10_Min_Data_Type.swift in Sources */,
 				70613BDA2640290000CAC7B0 /* SideMenuTableViewCell.swift in Sources */,
+				E03A1B2F2650F06E0002EDF8 /* Evaluatable.swift in Sources */,
 				E05A7C4625B5AB4F007680E2 /* TextFieldExtention.swift in Sources */,
 				70793FD525C8EDC00073315D /* UserInfoSettingViewController.swift in Sources */,
 				E05A7CAA25B9387B007680E2 /* ControlByte.swift in Sources */,
