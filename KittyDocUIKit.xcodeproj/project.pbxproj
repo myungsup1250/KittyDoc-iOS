@@ -138,6 +138,7 @@
 		B0A9D81425F66630006EE580 /* ModifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData.swift; sourceTree = "<group>"; };
 		B0A9D81725F67CCC006EE580 /* PetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetData.swift; sourceTree = "<group>"; };
 		B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisData_Year.swift; sourceTree = "<group>"; };
+		E0024B032654042400CD62D1 /* Cat Species.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cat Species.xlsx"; sourceTree = "<group>"; };
 		E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
 		E00AE1E125B2C52F001484AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E00AE1E425B2C538001484AC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -543,6 +544,7 @@
 				E08313E425B0ABE200266994 /* AppDelegate.swift */,
 				E08313E625B0ABE200266994 /* SceneDelegate.swift */,
 				E08313F025B0ABE300266994 /* Assets.xcassets */,
+				E0024B032654042400CD62D1 /* Cat Species.xlsx */,
 				E08313F225B0ABE300266994 /* LaunchScreen.storyboard */,
 				E08313F525B0ABE300266994 /* Info.plist */,
 				E08313ED25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld */,
@@ -1088,7 +1090,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.jmsmart.WhoseCat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1113,7 +1115,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.jmsmart.WhoseCat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
