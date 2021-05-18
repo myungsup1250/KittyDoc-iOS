@@ -38,7 +38,7 @@ class ScaleViewController: UIViewController, ScaleViewControllerDelegate {
     func receiveBroadcast() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(nameChanged),
-                                               name: NSNotification.Name("petName"),
+                                               name: .petName,
                                                object: nil)
     }
     

@@ -11,4 +11,5 @@ extension Notification.Name {
     static let receiveSyncDataDone = Notification.Name("receiveSyncDataDone")
     static let highlightedData = Notification.Name("highlightedData")
     static let custumDatePickerChanged = Notification.Name("custumDatePickerChanged")
+    static let petName = Notification.Name("petName")
 }
