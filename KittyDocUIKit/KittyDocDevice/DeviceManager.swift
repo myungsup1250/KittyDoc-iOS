@@ -240,7 +240,7 @@ extension DeviceManager: CBCentralManagerDelegate {
                                 return
                             }
                         } else {
-                            print("Found some KittyDoc Devices!")
+                            print("Found some WhoseCat Devices!")
                             print("foundDevices : \(self.foundDevices)")
                         }
                     }
@@ -284,11 +284,15 @@ extension DeviceManager: CBCentralManagerDelegate {
 
         if (!isKnownDevice && rssi < 0) {// not found and rssi < 0
             // Add new devices into self.foundDevices
-            var peripheralData = PeripheralData()
-            peripheralData.peripheral = peripheral
-            peripheralData.rssi = rssi
-            self.foundDevices.append(peripheralData)
-            print("Adding \(peripheralData.peripheral?.name ?? "Unknown") to foundDevices")
+            if peripheral.name?.lowercased() == "whosecat" {// PuppyDoc, SleepDoc 등은 추가하지 않도록 함.
+                var peripheralData = PeripheralData()
+                peripheralData.peripheral = peripheral
+                peripheralData.rssi = rssi
+                self.foundDevices.append(peripheralData)
+                print("Adding \(peripheralData.peripheral?.name ?? "Unknown") to foundDevices")
+            } else {
+                print("Not adding \(peripheral.name ?? "Unknown") device to foundDevices")
+            }
         }
 //        self.foundDevices.sort { (obj1: PeripheralData, obj2: PeripheralData) -> Bool in
 //            return obj1.rssi > obj2.rssi // 신호 강한 것이 앞으로...
