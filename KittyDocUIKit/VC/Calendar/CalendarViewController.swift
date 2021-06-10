@@ -293,17 +293,23 @@ class CalendarViewController: UIViewController {
 //                            cell.thirdScheduleLabel.backgroundColor = color
 //                        }
                         
-                        if cell.scheduleLabel.text != "" {
-                            cell.scheduleLabel.backgroundColor = color
-                        }
-                        if cell.secondScheduleLabel.text != "" {
-                            cell.secondScheduleLabel.backgroundColor = color
-                        }
-                        if cell.thirdScheduleLabel.text != "" {
-                            cell.thirdScheduleLabel.backgroundColor = color
-                        }
-                        
+                        cell.scheduleLabel.backgroundColor = color
                     }
+                    
+                    else if type == dayData.caretype {
+                        cell.scheduleLabel.backgroundColor = color
+                    }
+//                        if cell.scheduleLabel.text != "" {
+//                            cell.scheduleLabel.backgroundColor = color
+//                        }
+//                        if cell.secondScheduleLabel.text != "" {
+//                            cell.secondScheduleLabel.backgroundColor = color
+//                        }
+//                        if cell.thirdScheduleLabel.text != "" {
+//                            cell.thirdScheduleLabel.backgroundColor = color
+//                        }
+                        
+                    
 //                    else if type == dayData.caretype {
 //
 //                        if cell.scheduleLabel.text != "" {

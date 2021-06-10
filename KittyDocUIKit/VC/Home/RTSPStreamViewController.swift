@@ -24,7 +24,8 @@ class RTSPStreamViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("RTSPStreamViewController.viewDidLoad()")
+
         safeArea = view.layoutMarginsGuide
 
         videoView = VideoView()

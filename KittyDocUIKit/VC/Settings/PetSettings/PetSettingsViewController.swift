@@ -81,13 +81,32 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //MARK: 배열 넘기고가~!!~
-        //RE: 펫 등록 화면 실행될때 이 함수는 되게 여러번 호출이 되어서 한번 호출되는 viewDidLoad에서 진행할게!
         let row = PetInfo.shared.petArray[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: PetTableViewCell.identifier, for: indexPath) as! PetTableViewCell
         
+        //cell.imageView?.image = retrieveImage(forKey: row.PetName)
+        print("\(row.PetName) 이미지 가져옴")
+        
+        print("이게 이미지 데이터")
+        print(UserDefaults.standard.data(forKey: row.PetName))
+        
+        
+        if let imageData = UserDefaults.standard.data(forKey: row.PetName)
+        {
+            print("이미지 데이터 까지는 받아오는데 성공")
+            if let imageFromData = UIImage(data: imageData)
+            {
+                cell.imageView?.image = imageFromData
+                print("이미지 설정 성공!!!")
+            }
+        }
+        
+        //cell.imageView?.image = UIImage(systemName: "person")
+
+        
+
         cell.petNameLabel.text = row.PetName
-        cell.petDetailLabel.text = "\(row.PetSex)   \(row.PetKG)kg    \(row.PetBirth) 생일"
+        cell.petDetailLabel.text = "\(row.PetSex)   \(row.PetKG)kg    \(row.PetBirth) 생"
         
         return cell
     }
@@ -97,7 +116,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print("선택된 행은 \(indexPath.row)번째 행 입니다.")
+        
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -153,4 +172,21 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
         alert.addAction(UIAlertAction(title: "확인", style: .cancel))
         self.present(alert, animated: false)
     }
+    
+    func retrieveImage(forKey key: String) -> UIImage {
+
+        if let imageData = UserDefaults.standard.data(forKey: "\(key)")
+        {
+            if let imageFromData = UIImage(data: imageData)
+            {
+                return imageFromData
+            }
+        }
+        
+        return UIImage(systemName: "person")!
+        
+    }
+    
+    
+    
 }

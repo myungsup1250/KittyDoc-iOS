@@ -8,6 +8,16 @@
 import UIKit
 
 extension UIColor {
+    
+    convenience init(hex: UInt, alpha: CGFloat = 1.0) {
+        self.init(
+            red: CGFloat((hex & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((hex & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(hex & 0x0000FF) / 255.0,
+            alpha: CGFloat(alpha)
+        )
+    }
+    
     static let background = UIColor.white
     static let valid = UIColor.systemBlue
     static let nonValid = UIColor.systemGray
@@ -42,4 +52,16 @@ extension UIColor {
 
     static var oceanblue: UIColor {
         return UIColor(red: 81/255, green: 110/255, blue: 190/255, alpha: 1.0)
-    }}
+    }
+    
+    static var yellow1: UIColor { UIColor(hex: 0xfcf9e8) }
+    static var yellow2: UIColor { UIColor(hex: 0xf5e6ab) }
+    static var yellow3: UIColor { UIColor(hex: 0xf2d675) }
+    static var yellow4: UIColor { UIColor(hex: 0xf0c33c) }
+    static var yellow5: UIColor { UIColor(hex: 0xdba617) }
+    static var yellow_bright: UIColor { UIColor(hex: 0xf6d55c) }
+    
+    
+    
+    
+}

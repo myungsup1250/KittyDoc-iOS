@@ -336,7 +336,9 @@ extension AddPetViewController: UIImagePickerControllerDelegate, UINavigationCon
         picker.dismiss(animated: false) { () in
             let img = info[UIImagePickerController.InfoKey.editedImage] as? UIImage
             self.image.image = img
+            
         }
+    
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -490,6 +492,23 @@ extension AddPetViewController {
         if deviceInput.text == "Plz Connect to Device!" {
             deviceInput.text = "NULL"
         }//
+        
+        if let pngRepresentation = image.image?.jpegData(compressionQuality: 1) {
+            if self.isEditMode {
+                let test = "ddddd"
+                UserDefaults.standard.set(test, forKey: "\(self.editName)")
+                print("dddddddddadurl")
+                print("\(self.editName) 한테 유저디폴트 세팅")
+                
+                
+            } else {
+                UserDefaults.standard.set(pngRepresentation, forKey: self.nameInput.text!)
+                print("dddddddddadurl")
+                print(UserDefaults.standard.data(forKey: self.nameInput.text!))
+                print("\(self.nameInput.text!) 한테 유저디폴트 세팅")
+            }
+
+        }
 
         if isEditMode == true {
             let modifyData = ModifyData_Pet(_ownerId: UserInfo.shared.UserID, _petId: PetInfo.shared.petArray[editingPetID!].PetID, _petName: nameInput.text!, _petKG: weightKG, _petLB: weightLB, _petSex: gender, _petBirth: birthDataField.text!, _device: deviceInput.text!)
