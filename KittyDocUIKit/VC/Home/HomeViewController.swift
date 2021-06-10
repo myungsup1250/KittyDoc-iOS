@@ -752,7 +752,7 @@ extension HomeViewController: MenuControllerDelegate {
                 scale.view.isHidden = false
                 rtsp.view.isHidden = true
                 if !PetInfo.shared.petArray.isEmpty {
-                    NotificationCenter.default.post(name: .petName, object: "\(PetInfo.shared.petArray[self!.selectedRow].PetName)")
+                    NotificationCenter.default.post(name: .petName, object: self!.selectedRow)
                 }
                 //self?.delegate?.setPetName(name: PetInfo.shared.petArray[self!.selectedRow].PetName)
             } else if name == "홈" {
