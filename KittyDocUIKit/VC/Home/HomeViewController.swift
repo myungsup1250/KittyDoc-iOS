@@ -28,6 +28,15 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var waterFinalView: UIView!
     @IBOutlet weak var batteryView: UIProgressView!
     
+    @IBOutlet weak var hideView: UIView!
+    @IBOutlet weak var hideRect1: UIView!
+    @IBOutlet weak var hideRect2: UIView!
+    @IBOutlet weak var hideRect3: UIView!
+    @IBOutlet weak var hideLabel1: UILabel!
+    @IBOutlet weak var hideLabel2: UILabel!
+    @IBOutlet weak var hideLabel3: UILabel!
+    
+    
     @IBOutlet weak var petPickerView: UIPickerView!
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var kcalLabel: UILabel!
@@ -41,13 +50,16 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var stepProgressView: UIProgressView!
     @IBOutlet weak var waterSlide: UISlider!
     @IBOutlet weak var connectionLabel: UILabel!
-    
+    @IBOutlet weak var addLabel: UILabel!
+    @IBOutlet weak var addButton: UIButton!
+        
     let width: CGFloat = 100
     let height: CGFloat = 100
 
     private var sideMenu: SideMenuNavigationController?
     private var scaleController : ScaleViewController? = nil
     private var rtspController : RTSPStreamViewController? = nil
+    private var emptyController: EmptyViewController? = nil
 
     var delegate : ScaleViewControllerDelegate?
 
@@ -95,8 +107,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
         
         scaleController = self.storyboard?.instantiateViewController(identifier: "ScaleViewController") as? ScaleViewController
-        rtspController = self.storyboard?.instantiateViewController(identifier: "RTSPStreamViewController") as?
-            RTSPStreamViewController
+        
+        rtspController = self.storyboard?.instantiateViewController(identifier: "RTSPStreamViewController") as? RTSPStreamViewController
+        
+        emptyController = self.storyboard?.instantiateViewController(identifier: "EmptyViewController") as? EmptyViewController
 
         addChildController()
                 
@@ -191,26 +205,59 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
         stepProgressView.setProgress(2, animated: true)
         stepProgressView.progress = 0.3
+        
+        hide()
+    }
+    
+    private func hide() {
+        if ( PetInfo.shared.petArray.count == 0) {
+            hideView.isHidden = true
+            petPickerView.isHidden = true
+            progressView.isHidden = true
+            walkView.isHidden = true
+            sunExView.isHidden = true
+            vitaDView.isHidden = true
+            uvRayView.isHidden = true
+            LuxPolView.isHidden = true
+            waterView.isHidden = true
+            waterFinalLabel.isHidden = true
+            hideRect1.isHidden = true
+            hideRect2.isHidden = true
+            hideRect3.isHidden = true
+            hideLabel1.isHidden = true
+            hideLabel2.isHidden = true
+            hideLabel3.isHidden = true
+        } else {
+            addLabel.isHidden = true
+            addButton.isHidden = true
+        }
     }
     
     private func addChildController() {
         guard let vc = scaleController else { return }
         guard let rtspvc = rtspController else { return }
+        guard let empty = emptyController else { return }
         
         addChild(vc)
         addChild(rtspvc)
+        addChild(empty)
                 
         view.addSubview(vc.view)
         view.addSubview(rtspvc.view)
+        view.addSubview(empty.view)
         
         vc.view.frame = view.bounds
         rtspvc.view.frame = view.bounds
+        empty.view.frame = view.bounds
         
         vc.didMove(toParent: self)
         rtspvc.didMove(toParent: self)
+        empty.didMove(toParent: self)
         
         vc.view.isHidden = true
         rtspvc.view.isHidden = true
+        empty.view.isHidden = true
+        
     }
     
     func setPiChartsData() {
@@ -245,12 +292,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     func viewAddBackground() {
-        walkView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-        sunExView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.6849207594))
-        vitaDView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-        uvRayView.addColor(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
-        LuxPolView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.68))
-        connectionView.addColor(color: #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 0.7892104395))
+        walkView.addColor(color: .white)
+        sunExView.addColor(color: .yellow1)
+        vitaDView.addColor(color: .white)
+        uvRayView.addColor(color: .white)
+        LuxPolView.addColor(color: .yellow1)
+        connectionView.addColor(color: .yellow2)
         waterView.addColor(color: .white)
         waterFinalView.addColor(color: .white)
     }
@@ -686,7 +733,7 @@ class SideMenuViewController: UITableViewController {
     
     public var delegate: MenuControllerDelegate?
     
-    var items = ["홈", "체중 측정", "급수량 측정", "급식량 측정", "CCTV 관리"]
+    var items = ["홈", "체중 측정", "급수량 측정", "급식량 측정", "CCTV"]
     var images = ["house", "scalemass", "drop", "torus", "camera.metering.center.weighted"]
     
     override func viewDidLoad() {
@@ -746,11 +793,17 @@ extension HomeViewController: MenuControllerDelegate {
             
             guard let scale = self?.scaleController else { return }
             guard let rtsp = self?.rtspController else { return }
+            guard let empty = self?.emptyController else { return }
+            
             scale.view.isHidden = true
             rtsp.view.isHidden = true
+            empty.view.isHidden = true
+            
             if name == "체중 측정" {
                 scale.view.isHidden = false
                 rtsp.view.isHidden = true
+                empty.view.isHidden = true
+                
                 if !PetInfo.shared.petArray.isEmpty {
                     NotificationCenter.default.post(name: .petName, object: self!.selectedRow)
                 }
@@ -758,9 +811,18 @@ extension HomeViewController: MenuControllerDelegate {
             } else if name == "홈" {
                 scale.view.isHidden = true
                 rtsp.view.isHidden = true
+                empty.view.isHidden = true
+              
             } else if name == "CCTV" {
                 rtsp.view.isHidden = false
                 scale.view.isHidden = true
+                empty.view.isHidden = true
+                
+            } else {
+                
+                rtsp.view.isHidden = true
+                scale.view.isHidden = true
+                empty.view.isHidden = false
             }
         })
     }

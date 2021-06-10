@@ -23,7 +23,7 @@ class RTSPStreamViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("RTSPStreamViewController.viewDidLoad()")
         self.title = "WhoseCat TV"//url.host
         safeArea = view.layoutMarginsGuide
         

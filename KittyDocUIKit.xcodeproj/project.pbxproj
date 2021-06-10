@@ -28,6 +28,7 @@
 		709CCF7F264F178D00A1C445 /* DailyReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */; };
 		70AC641325B429B0000E59D6 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */; };
 		70AC641625B42B5F000E59D6 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */; };
+		70B30FFA2671F45B002E6442 /* EmptyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B30FF92671F45B002E6442 /* EmptyViewController.swift */; };
 		70D80EA225B9185600EE2666 /* BTSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */; };
 		70D80EA525B919F300EE2666 /* PetSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */; };
 		70D80F3925BE942600EE2666 /* onOffButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70D80F3825BE942600EE2666 /* onOffButton.swift */; };
@@ -130,6 +131,7 @@
 		709CCF7E264F178D00A1C445 /* DailyReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyReportViewController.swift; sourceTree = "<group>"; };
 		70AC641225B429B0000E59D6 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		70AC641525B42B5F000E59D6 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		70B30FF92671F45B002E6442 /* EmptyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewController.swift; sourceTree = "<group>"; };
 		70D80EA125B9185600EE2666 /* BTSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTSettingsViewController.swift; sourceTree = "<group>"; };
 		70D80EA425B919F300EE2666 /* PetSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetSettingsViewController.swift; sourceTree = "<group>"; };
 		70D80F3825BE942600EE2666 /* onOffButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onOffButton.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				7080A3A32636E0DA00EC2A30 /* RingProgressGroupView.swift */,
 				707940AB25D2E5AA0073315D /* WaterViewController.swift */,
 				E033B03F264E52D600F7F9C9 /* RTSPStreamViewController.swift */,
+				70B30FF92671F45B002E6442 /* EmptyViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -816,6 +819,7 @@
 				7043EBD725F52A0F008A67A4 /* DetailTableViewCell.swift in Sources */,
 				E0BDC31425C871D400D2524B /* CBUUIDExtension.swift in Sources */,
 				E05A7CA825B9387B007680E2 /* SyncCmd.swift in Sources */,
+				70B30FFA2671F45B002E6442 /* EmptyViewController.swift in Sources */,
 				E05A7CA625B9387B007680E2 /* DeviceManager.swift in Sources */,
 				708A280E25E6437C004DCBC2 /* AddScheduleViewController.swift in Sources */,
 				B0A9D81825F67CCC006EE580 /* PetData.swift in Sources */,

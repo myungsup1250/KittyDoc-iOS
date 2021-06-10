@@ -14,7 +14,7 @@
 		<key>CircularCarousel.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>12</integer>
 		</dict>
 		<key>CircularSlider.xcscheme</key>
 		<dict>
@@ -38,7 +38,7 @@
 		<key>MobileVLCKit.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>13</integer>
 		</dict>
 		<key>Pods-KittyDocUIKit.xcscheme</key>
 		<dict>
