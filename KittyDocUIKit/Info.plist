@@ -22,8 +22,10 @@
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>This app uses BLE to operate</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app uses BLE to operate</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string></string>
+	<string>This app uses Face ID to authenticate yourself</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

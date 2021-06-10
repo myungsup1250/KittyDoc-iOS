@@ -103,6 +103,7 @@
 		E0BDC31725C8723D00D2524B /* DispatchQueueExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */; };
 		E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */; };
 		E0BE1E94263FBE56008EC181 /* BarChartViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */; };
+		E0BFB7552671F1A6003890EC /* ModifyData_Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BFB7542671F1A6003890EC /* ModifyData_Weight.swift */; };
 		E0CFECC4264CEB6800384BB4 /* MiScaleUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFECC2264CEB6800384BB4 /* MiScaleUUID.swift */; };
 		E0CFECC5264CEB6800384BB4 /* MiScaleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFECC3264CEB6800384BB4 /* MiScaleManager.swift */; };
 		E0F226E925FB3574009F336F /* ChartUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F226E825FB3574009F336F /* ChartUtility.swift */; };
@@ -140,6 +141,7 @@
 		B0A9D81425F66630006EE580 /* ModifyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData.swift; sourceTree = "<group>"; };
 		B0A9D81725F67CCC006EE580 /* PetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetData.swift; sourceTree = "<group>"; };
 		B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisData_Year.swift; sourceTree = "<group>"; };
+		E0024B032654042400CD62D1 /* Cat Species.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cat Species.xlsx"; sourceTree = "<group>"; };
 		E0035D7226037A3E007D7B14 /* SetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
 		E00AE1E125B2C52F001484AC /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E00AE1E425B2C538001484AC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 		E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtension.swift; sourceTree = "<group>"; };
 		E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDataTableViewCell.swift; sourceTree = "<group>"; };
 		E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewExtension.swift; sourceTree = "<group>"; };
+		E0BFB7542671F1A6003890EC /* ModifyData_Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData_Weight.swift; sourceTree = "<group>"; };
 		E0CFECC2264CEB6800384BB4 /* MiScaleUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiScaleUUID.swift; sourceTree = "<group>"; };
 		E0CFECC3264CEB6800384BB4 /* MiScaleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiScaleManager.swift; sourceTree = "<group>"; };
 		E0F226E825FB3574009F336F /* ChartUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartUtility.swift; sourceTree = "<group>"; };
@@ -276,6 +279,7 @@
 				B0A9D81425F66630006EE580 /* ModifyData.swift */,
 				B0A9D81725F67CCC006EE580 /* PetData.swift */,
 				B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */,
+				E0BFB7542671F1A6003890EC /* ModifyData_Weight.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -546,6 +550,7 @@
 				E08313E425B0ABE200266994 /* AppDelegate.swift */,
 				E08313E625B0ABE200266994 /* SceneDelegate.swift */,
 				E08313F025B0ABE300266994 /* Assets.xcassets */,
+				E0024B032654042400CD62D1 /* Cat Species.xlsx */,
 				E08313F225B0ABE300266994 /* LaunchScreen.storyboard */,
 				E08313F525B0ABE300266994 /* Info.plist */,
 				E08313ED25B0ABE200266994 /* KittyDocUIKit.xcdatamodeld */,
@@ -810,6 +815,7 @@
 				E05A7C4C25B5AC31007680E2 /* UIColorExtension.swift in Sources */,
 				E06CEB0125E40C0000D966BB /* DeleteData_Pet.swift in Sources */,
 				E033B040264E52D600F7F9C9 /* RTSPStreamViewController.swift in Sources */,
+				E0BFB7552671F1A6003890EC /* ModifyData_Weight.swift in Sources */,
 				7043EBD725F52A0F008A67A4 /* DetailTableViewCell.swift in Sources */,
 				E0BDC31425C871D400D2524B /* CBUUIDExtension.swift in Sources */,
 				E05A7CA825B9387B007680E2 /* SyncCmd.swift in Sources */,
@@ -1092,7 +1098,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.jmsmart.WhoseCat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1117,7 +1123,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = kr.co.jmsmart.WhoseCat;
 				PRODUCT_NAME = "$(TARGET_NAME)";

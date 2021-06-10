@@ -11,11 +11,11 @@ import CoreBluetooth
 import UICircularProgressRing
 import SideMenu
 
+protocol MenuControllerDelegate {
+    func didSelectMenuItem(name: String)
+}
 
-
-class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    
+class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, ChartViewDelegate {
     @IBOutlet weak var piChartView: UIView!
     @IBOutlet weak var walkView: UIView!
     @IBOutlet weak var sunExView: UIView!
@@ -50,30 +50,24 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     @IBOutlet weak var stepProgressView: UIProgressView!
     @IBOutlet weak var waterSlide: UISlider!
     @IBOutlet weak var connectionLabel: UILabel!
-    
     @IBOutlet weak var addLabel: UILabel!
     @IBOutlet weak var addButton: UIButton!
-    
-    
+        
     let width: CGFloat = 100
     let height: CGFloat = 100
 
     private var sideMenu: SideMenuNavigationController?
-    
     private var scaleController : ScaleViewController? = nil
     private var rtspController : RTSPStreamViewController? = nil
     private var emptyController: EmptyViewController? = nil
 
-    
-    
     var delegate : ScaleViewControllerDelegate?
-    
+
     let deviceManager = DeviceManager.shared
     var count = 0
     var selectedRow = 0
     var piChart = PieChartView()
-    var piValues: [Int] = []
-
+    var piValues = [Int]()
     
     let MINUTE_IN_SEC:Int = 60
     let HOUR_IN_SEC:Int = 60 * 60
@@ -96,32 +90,29 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         self.title = "Home"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         NotificationCenter.default.addObserver(self, selector: #selector(receiveSyncDataDone), name: .receiveSyncDataDone, object: nil)
-        deviceManager.delegate = self
-        deviceManager.secondDelegate = self
-        
+
         view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         viewAddBackground()
         setPetPickerView()
         
-        scaleController = self.storyboard?.instantiateViewController(identifier: "ScaleViewController") as? ScaleViewController
-        
-        rtspController = self.storyboard?.instantiateViewController(identifier: "RTSPStreamViewController") as? RTSPStreamViewController
-        
-        emptyController = self.storyboard?.instantiateViewController(identifier: "EmptyViewController") as? EmptyViewController
-        
-        
         let menu = SideMenuViewController()
         menu.delegate = self
-
+        piChart.delegate = self
+        deviceManager.delegate = self
+        deviceManager.secondDelegate = self
         
         sideMenu = SideMenuNavigationController(rootViewController: menu)
         sideMenu?.leftSide = true
         SideMenuManager.default.leftMenuNavigationController = sideMenu
         SideMenuManager.default.addPanGestureToPresent(toView: self.view)
         
-        addChildController()
+        scaleController = self.storyboard?.instantiateViewController(identifier: "ScaleViewController") as? ScaleViewController
         
-        piChart.delegate = self
+        rtspController = self.storyboard?.instantiateViewController(identifier: "RTSPStreamViewController") as? RTSPStreamViewController
+        
+        emptyController = self.storyboard?.instantiateViewController(identifier: "EmptyViewController") as? EmptyViewController
+
+        addChildController()
                 
         // These are optional and only serve to improve accessibility
         progressView.ring1.accessibilityLabel = NSLocalizedString("Move", comment: "Move")
@@ -129,10 +120,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         progressView.ring3.accessibilityLabel = NSLocalizedString("Stand", comment: "Stand")
         
         //홈에서 먼저 정보를 가져와야 배열이 생기기 때문에 일단은 복붙해두었음... 이건 고민해봅시당
-        let findData: FindData_Pet = FindData_Pet(_ownerId: UserInfo.shared.UserID)
-        let server: KittyDocServer = KittyDocServer()
+        let findData = FindData_Pet(_ownerId: UserInfo.shared.UserID)
+        let server = KittyDocServer()
         let findResponse: ServerResponse = server.petFind(data: findData)
-        
         if(findResponse.getCode() as! Int == ServerResponse.FIND_SUCCESS) {
             let jsonString: String = findResponse.getMessage() as! String
             if let arrData = jsonString.data(using: .utf8) {
@@ -152,11 +142,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                             petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
                             petInfo.Device = jsonArray[i]["Device"] as! String
                             print("[ PetName :", petInfo.PetName, "petID :", petInfo.PetID, "]")
-                            //                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
-                            //                                return original.PetName == petInfo.PetName
-                            //                            }) {
                             PetInfo.shared.petArray.append(petInfo)
-                            //                            }
                         }
                     }
                 } catch {
@@ -166,11 +152,25 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
             //alertWithMessage(message: findResponse.getMessage())
             print("Error (findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE)")
+            PetInfo.shared.petArray.removeAll() // 다른 계정의 펫정보가 남아있는 경우를 방지하기 위해 배열을 비운다.
         }
         ////json parsing
         
         //PetChange(index: 0)// 안해도 index 0으로 시작!
-        if !PetInfo.shared.petArray.isEmpty {
+        if PetInfo.shared.petArray.isEmpty {
+            let petInfo:PetInfo = PetInfo()
+            petInfo.PetID = -1
+            petInfo.PetName = ""
+            petInfo.OwnerID = -1
+            //petkg과 petlb를 서버에서 string으로 다루고 있는 오류가 있어서, 추후에 그부분이 수정되면
+            //이곳도 수정필요!
+            petInfo.PetKG = Double(-1)
+            petInfo.PetLB = Double(-1)
+            petInfo.PetSex = "None"
+            petInfo.PetBirth = "19700101"
+            petInfo.Device = "NULL"
+            print("Temporary PetInfo Object (PetArray is Empty!)")
+        } else {
             // petNameSelectTF.text = PetInfo.shared.petArray[0].PetName
             deviceManager.currentPetId = 0
             let deviceString = PetInfo.shared.petArray[0].Device
@@ -234,7 +234,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     }
     
     private func addChildController() {
-        
         guard let vc = scaleController else { return }
         guard let rtspvc = rtspController else { return }
         guard let empty = emptyController else { return }
@@ -269,7 +268,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                                           y: Double(piValues[x])))
         }
         
-        
         let set = PieChartDataSet(entries: entries)
         set.colors = ChartColorTemplates.colorful()
         
@@ -302,7 +300,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         connectionView.addColor(color: .yellow2)
         waterView.addColor(color: .white)
         waterFinalView.addColor(color: .white)
-       
     }
     
     func setPetPickerView() {
@@ -314,9 +311,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         // 회전 - 전체 틀을 horizontal로 돌리기 위함
         rotationAngle = -90 * (.pi/180)
         petPickerView.transform = CGAffineTransform(rotationAngle: rotationAngle)
-        
     }
-    
     
     @IBAction func didTapSideMenuBtn() {
         present(sideMenu!, animated: true, completion: nil)
@@ -332,10 +327,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         waterLabel.text = "0"
     }
     
-    
     @IBAction func waterSubmitBtnClicked(_ sender: Any) {
-        let waterData:WaterData = WaterData(_petID: PetInfo.shared.petArray[selectedRow].PetID, _tick: Int(Date().timeIntervalSince1970) * 1000, _waterVal: Int(waterLabel.text!)!)
-        let server:KittyDocServer = KittyDocServer()
+        let waterData = WaterData(_petID: PetInfo.shared.petArray[selectedRow].PetID, _tick: Int(Date().timeIntervalSince1970) * 1000, _waterVal: Int(waterLabel.text!)!)
+        let server = KittyDocServer()
         let waterResponse:ServerResponse = server.waterSend(data: waterData)
         
         //가능하다면 실패 시에 잘못 입력한 뷰로 focus를 주는 기능이 들어가는게 좋을듯. --- O
@@ -375,7 +369,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         let thisDayStartSec = Int(timeIntervalSince1970) - (HOUR_IN_SEC * hour) - (MINUTE_IN_SEC * minute) - second
         let thisDayEndSec = Int(timeIntervalSince1970) + (HOUR_IN_SEC * (23-hour)) + (MINUTE_IN_SEC * (59 - minute)) + (60-second) - 1
         
-        
         let analysisData:AnalysisData = AnalysisData(_petID: PetInfo.shared.petArray[index].PetID, _startMilliSec: (thisDayStartSec * 1000), _endMilliSec: (thisDayEndSec * 1000))
         let server:KittyDocServer = KittyDocServer()
         let analysisResponse:ServerResponse = server.sensorRequestDay(data: analysisData)
@@ -385,7 +378,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
             if let arrData = jsonString.data(using: .utf8) {
                 do {
                     if let jsonArray = try JSONSerialization.jsonObject(with: arrData, options: .allowFragments) as? [AnyObject] {
-                        
                         //let petData = PetData()
                         //petData.time = jsonArray[0]["Time"] as! CLong
                         //petData.time /= 1000 // Translate millisec to sec
@@ -399,7 +391,6 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
                         luxPolValue = jsonArray[0]["LuxpolVal"] as! Double
                         kcalValue = jsonArray[0]["KalVal"] as! Double
                         waterFinalValue = jsonArray[0]["WaterVal"] as! Int
-                        
                     }
                 } catch {
                     print("JSON 파싱 에러")
@@ -411,11 +402,12 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         
         }
     }
-    
 
     override func viewWillAppear(_ animated: Bool) {
         setPiChartsData()
-        getData(index: selectedRow)
+        if !PetInfo.shared.petArray.isEmpty {// PetArray가 비어있지 않을 경우에만 서버에 요청
+            getData(index: selectedRow)
+        }
         setData()
     }
     
@@ -446,6 +438,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
 
+        //pickerView.backgroundColor = .clear
         pickerView.subviews.forEach {
             $0.backgroundColor = .clear
         }
@@ -460,12 +453,9 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         label.text = PetInfo.shared.petArray[row].PetName
         label.font = UIFont.systemFont(ofSize: 25)
         view.addSubview(label)
-        
-
 
         return view
     }
-    
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedRow = row
@@ -500,12 +490,10 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "dailyreportSegue" {
-            
             guard let vc = segue.destination as? DailyReportViewController  else { return }
             vc.sunValue = self.sunExValue
             vc.moveValue = self.exerciseValue
             vc.vitaValue = Int(self.vitaDValue)
-            
         }
     }
     
@@ -576,7 +564,7 @@ extension HomeViewController: DeviceManagerDelegate {
     }
     
     func onBluetoothNotAccessible() {
-        print("[+]onBluetoothNotAccessible()")
+        //print("[+]onBluetoothNotAccessible()")
         DispatchQueue.main.async {
             self.connectionLabel.text = "블루투스 에러 : 설정을 확인하세요"
             let alert = UIAlertController(title: "Error on Bluetooth!", message: "Please check your settings!", preferredStyle: .alert)
@@ -595,25 +583,25 @@ extension HomeViewController: DeviceManagerDelegate {
             
             self.present(alert, animated: true, completion: nil)
         }
-        print("[-]onBluetoothNotAccessible()")
+        //print("[-]onBluetoothNotAccessible()")
     }
     
     func onDevicesFound(peripherals: [PeripheralData]) {// peripherals 사용?
-        print("[+]onDevicesFound()")
+        //print("[+]onDevicesFound()")
         DispatchQueue.main.async {
             print("\n<<< Found some KittyDoc Devices! >>>\n")
             self.connectionLabel.text = "기기를 찾았습니다"
         }
-        print("[-]onDevicesFound()")
+        //print("[-]onDevicesFound()")
     }
     
     func onConnectionFailed() {
-        print("[+]onConnectionFailed()")
+        //print("[+]onConnectionFailed()")
         DispatchQueue.main.async {
             print("\n<<< Failed to Connect to KittyDoc Device! >>>\n")
             self.connectionLabel.text = "연결이 해제되었습니다"
         }
-        print("[-]onConnectionFailed()")
+        //print("[-]onConnectionFailed()")
     }
     
     func onServiceFound() {
@@ -640,34 +628,37 @@ extension HomeViewController: DeviceManagerDelegate {
 
 extension HomeViewController: DeviceManagerSecondDelegate {
     func onSysCmdResponse(data: Data) {
-        print("[+]onSysCmdResponse")
-        //        print("Data : \(data)")
-        //        print("data(count : \(data.count)) => ", terminator: "")
-        //        for i in 0..<data.count {
-        //            print("\(data[i]) ", terminator: "")
-        //        }
-        //        print("")
+//        print("[+]onSysCmdResponse")
+//        print("Data : \(data)")
+//        print("data(count : \(data.count)) => ", terminator: "")
+//        for i in 0..<data.count {
+//            print("\(data[i]) ", terminator: "")
+//        }
+//        print("")
         if count == 0 {
             count += 1
             deviceManager.setUUID(uuid: CBUUID(data: data.advanced(by: 1)))
         }
-        print("[-]onSysCmdResponse")
+//        print("[-]onSysCmdResponse")
     }
     
     func onSyncProgress(progress: Int) {
-        print("[+]onSyncProgress")
-        print("Progress Percent : \(progress)")
-        print("[-]onSyncProgress")
+        DispatchQueue.main.async {
+            //print("[+]onSyncProgress")
+            print("Progress Percent : \(progress)")
+            self.connectionLabel.text = "동기화 중... (\(progress)%)"
+            //print("[-]onSyncProgress")
+        }
     }
     
     func onReadBattery(percent: Int) {
         DispatchQueue.main.async {
-            print("[+]onReadBattery")
+            //print("[+]onReadBattery")
             print("batteryLevel : \(percent)")
             let percentDivide: Double = Double(percent) / 100
             self.batteryView.progress = Float(percentDivide)
             self.batteryLabel.text = "\(percent) %"
-            print("[-]onReadBattery")
+            //print("[-]onReadBattery")
         }
     }
     
@@ -738,18 +729,6 @@ extension UIView {
     }
 }
 
-
-
-
-extension HomeViewController: ChartViewDelegate {
-    
-}
-
-protocol MenuControllerDelegate {
-    func didSelectMenuItem(name: String)
-}
-
-
 class SideMenuViewController: UITableViewController {
     
     public var delegate: MenuControllerDelegate?
@@ -778,8 +757,7 @@ class SideMenuViewController: UITableViewController {
         tableView.separatorStyle = .none
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
@@ -789,7 +767,6 @@ class SideMenuViewController: UITableViewController {
         cell.nameLabel.text = items[indexPath.row]
         cell.userimageView.image = UIImage(systemName: images[indexPath.row])
         cell.userimageView.tintColor = #colorLiteral(red: 0.3336932659, green: 0.535705924, blue: 0.6768123507, alpha: 1)
-
         cell.backgroundColor = #colorLiteral(red: 0.7725490196, green: 0.8509803922, blue: 0.9294117647, alpha: 1)
         return cell
     }
@@ -802,7 +779,6 @@ class SideMenuViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         let seletedItem = items[indexPath.row]
         delegate?.didSelectMenuItem(name: seletedItem)
-
     }
 
 }
@@ -811,9 +787,9 @@ extension HomeViewController: MenuControllerDelegate {
     
     func didSelectMenuItem(name: String) {
         sideMenu?.dismiss(animated: true, completion: { [weak self] in
+            print("didSelectMenuItem(name: \(name))")
 
             self?.title = name
-        
             
             guard let scale = self?.scaleController else { return }
             guard let rtsp = self?.rtspController else { return }
@@ -822,20 +798,21 @@ extension HomeViewController: MenuControllerDelegate {
             scale.view.isHidden = true
             rtsp.view.isHidden = true
             empty.view.isHidden = true
-
             
             if name == "체중 측정" {
                 scale.view.isHidden = false
-                NotificationCenter.default.post(name: NSNotification.Name("petName"), object: "\(PetInfo.shared.petArray[self!.selectedRow].PetName)")
-                //self?.delegate?.setPetName(name: PetInfo.shared.petArray[self!.selectedRow].PetName)
                 rtsp.view.isHidden = true
                 empty.view.isHidden = true
                 
+                if !PetInfo.shared.petArray.isEmpty {
+                    NotificationCenter.default.post(name: .petName, object: self!.selectedRow)
+                }
+                //self?.delegate?.setPetName(name: PetInfo.shared.petArray[self!.selectedRow].PetName)
             } else if name == "홈" {
                 scale.view.isHidden = true
                 rtsp.view.isHidden = true
                 empty.view.isHidden = true
-                
+              
             } else if name == "CCTV" {
                 rtsp.view.isHidden = false
                 scale.view.isHidden = true
@@ -847,11 +824,6 @@ extension HomeViewController: MenuControllerDelegate {
                 scale.view.isHidden = true
                 empty.view.isHidden = false
             }
-            
         })
-        
     }
-    
-    
 }
-
