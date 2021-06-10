@@ -11,7 +11,11 @@ import CoreBluetooth
 import UICircularProgressRing
 import SideMenu
 
-class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+protocol MenuControllerDelegate {
+    func didSelectMenuItem(name: String)
+}
+
+class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, ChartViewDelegate {
     @IBOutlet weak var piChartView: UIView!
     @IBOutlet weak var walkView: UIView!
     @IBOutlet weak var sunExView: UIView!
@@ -46,7 +50,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
     private var rtspController : RTSPStreamViewController? = nil
 
     var delegate : ScaleViewControllerDelegate?
-    
+
     let deviceManager = DeviceManager.shared
     var count = 0
     var selectedRow = 0
@@ -134,6 +138,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
         } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
             //alertWithMessage(message: findResponse.getMessage())
             print("Error (findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE)")
+            PetInfo.shared.petArray.removeAll() // 다른 계정의 펫정보가 남아있는 경우를 방지하기 위해 배열을 비운다.
         }
         ////json parsing
         
@@ -386,6 +391,7 @@ class HomeViewController: UIViewController, UITextFieldDelegate, UIPickerViewDel
 
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
 
+        //pickerView.backgroundColor = .clear
         pickerView.subviews.forEach {
             $0.backgroundColor = .clear
         }
@@ -511,7 +517,7 @@ extension HomeViewController: DeviceManagerDelegate {
     }
     
     func onBluetoothNotAccessible() {
-        print("[+]onBluetoothNotAccessible()")
+        //print("[+]onBluetoothNotAccessible()")
         DispatchQueue.main.async {
             self.connectionLabel.text = "블루투스 에러 : 설정을 확인하세요"
             let alert = UIAlertController(title: "Error on Bluetooth!", message: "Please check your settings!", preferredStyle: .alert)
@@ -530,25 +536,25 @@ extension HomeViewController: DeviceManagerDelegate {
             
             self.present(alert, animated: true, completion: nil)
         }
-        print("[-]onBluetoothNotAccessible()")
+        //print("[-]onBluetoothNotAccessible()")
     }
     
     func onDevicesFound(peripherals: [PeripheralData]) {// peripherals 사용?
-        print("[+]onDevicesFound()")
+        //print("[+]onDevicesFound()")
         DispatchQueue.main.async {
             print("\n<<< Found some KittyDoc Devices! >>>\n")
             self.connectionLabel.text = "기기를 찾았습니다"
         }
-        print("[-]onDevicesFound()")
+        //print("[-]onDevicesFound()")
     }
     
     func onConnectionFailed() {
-        print("[+]onConnectionFailed()")
+        //print("[+]onConnectionFailed()")
         DispatchQueue.main.async {
             print("\n<<< Failed to Connect to KittyDoc Device! >>>\n")
             self.connectionLabel.text = "연결이 해제되었습니다"
         }
-        print("[-]onConnectionFailed()")
+        //print("[-]onConnectionFailed()")
     }
     
     func onServiceFound() {
@@ -575,7 +581,7 @@ extension HomeViewController: DeviceManagerDelegate {
 
 extension HomeViewController: DeviceManagerSecondDelegate {
     func onSysCmdResponse(data: Data) {
-        print("[+]onSysCmdResponse")
+//        print("[+]onSysCmdResponse")
 //        print("Data : \(data)")
 //        print("data(count : \(data.count)) => ", terminator: "")
 //        for i in 0..<data.count {
@@ -586,23 +592,26 @@ extension HomeViewController: DeviceManagerSecondDelegate {
             count += 1
             deviceManager.setUUID(uuid: CBUUID(data: data.advanced(by: 1)))
         }
-        print("[-]onSysCmdResponse")
+//        print("[-]onSysCmdResponse")
     }
     
     func onSyncProgress(progress: Int) {
-        print("[+]onSyncProgress")
-        print("Progress Percent : \(progress)")
-        print("[-]onSyncProgress")
+        DispatchQueue.main.async {
+            //print("[+]onSyncProgress")
+            print("Progress Percent : \(progress)")
+            self.connectionLabel.text = "동기화 중... (\(progress)%)"
+            //print("[-]onSyncProgress")
+        }
     }
     
     func onReadBattery(percent: Int) {
         DispatchQueue.main.async {
-            print("[+]onReadBattery")
+            //print("[+]onReadBattery")
             print("batteryLevel : \(percent)")
             let percentDivide: Double = Double(percent) / 100
             self.batteryView.progress = Float(percentDivide)
             self.batteryLabel.text = "\(percent) %"
-            print("[-]onReadBattery")
+            //print("[-]onReadBattery")
         }
     }
     
@@ -672,18 +681,6 @@ extension UIView {
         self.layer.cornerRadius = 3
     }
 }
-
-
-
-
-extension HomeViewController: ChartViewDelegate {
-    
-}
-
-protocol MenuControllerDelegate {
-    func didSelectMenuItem(name: String)
-}
-
 
 class SideMenuViewController: UITableViewController {
     

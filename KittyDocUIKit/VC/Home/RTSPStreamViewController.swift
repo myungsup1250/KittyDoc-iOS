@@ -8,7 +8,7 @@
 import UIKit
 
 class RTSPStreamViewController: UIViewController {
-    let CCTV_URL = URL(string: "rtsp://192.168.10.13:9000/")//"rtsp://10.20.12.35:9000/"
+    let CCTV_URL = URL(string: "rtsp://192.168.10.2:9000/")//"rtsp://10.20.12.35:9000/"
     var safeArea: UILayoutGuide!
     var videoView: VideoView!
     var videoStreamURL: URL? {
