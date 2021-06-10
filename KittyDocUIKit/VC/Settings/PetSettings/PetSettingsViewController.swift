@@ -44,11 +44,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                             petInfo.PetBirth = jsonArray[i]["PetBirth"] as! String
                             petInfo.Device = jsonArray[i]["Device"] as! String
                             
-//                            if !PetInfo.shared.petArray.contains(where: { (original: PetInfo) -> Bool in
-//                                return original.PetName == petInfo.PetName
-//                            }) {
                             PetInfo.shared.petArray.append(petInfo)
-//                            }
                         }
                     }
                 } catch {
@@ -56,6 +52,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
         } else if(findResponse.getCode() as! Int == ServerResponse.FIND_FAILURE) {
+            PetInfo.shared.petArray.removeAll() // 다른 계정의 펫정보가 남아있는 경우를 방지하기 위해 배열을 비운다.
             alertWithMessage(message: findResponse.getMessage())
         }
         self.tableView.reloadData()
@@ -117,7 +114,7 @@ class PetSettingsViewController: UIViewController, UITableViewDelegate, UITableV
                 PetInfo.shared.petArray.remove(at: indexPath.row) //배열에서 지우고
                 self.tableView.deleteRows(at: [indexPath], with: .automatic) //UI에서 지움!
                 completion(true)
-            }else{
+            } else {
                 print(deleteResponse.getMessage())
             }
         }

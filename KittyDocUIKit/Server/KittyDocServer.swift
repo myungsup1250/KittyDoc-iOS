@@ -103,5 +103,10 @@ class KittyDocServer:ServerApi{
         let url = URL(string:(baseUrl + port + "/user/edit"))!
         return doRequestTask(url: url, data: data)
     }
+    
+    func weightModify(data: ModifyData_Weight) -> ServerResponse {
+        let url = URL(string:(baseUrl + port + "/modify/weight"))!
+        return doRequestTask(url: url, data: data)
+    }
     init(){}
 }

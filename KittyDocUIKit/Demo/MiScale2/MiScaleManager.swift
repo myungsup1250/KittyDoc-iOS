@@ -176,7 +176,7 @@ class MiScaleManager: NSObject {
         self.manager = CBCentralManager(delegate: self, queue: nil)//DispatchQueue.main
     }
 
-    func scanPeripheral() { // KittyDoc 서비스를 가진 장비를 스캔
+    func scanPeripheral() { // MiScale 서비스를 가진 장비를 스캔
         print("[+]scanPeripheral()")
         // 기존 장비 지우기
         self.removePeripheral()
@@ -272,7 +272,7 @@ extension MiScaleManager: CBCentralManagerDelegate {
                                 return
                             }
                         } else {
-                            print("Found some KittyDoc Devices!")
+                            print("Found some MiScale Devices!")
                         }
                     }
                 }

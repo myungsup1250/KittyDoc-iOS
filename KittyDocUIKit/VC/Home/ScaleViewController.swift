@@ -21,24 +21,50 @@ class ScaleViewController: UIViewController, ScaleViewControllerDelegate {
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var descriptionImageView: UIImageView!
     
+    var isMeasuring: Bool!
     let miScaleManager = MiScaleManager.shared
     //let homeVC = HomeViewController()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        isMeasuring = false
+
         miScaleManager.delegate = self
         //homeVC.delegate = self
         receiveBroadcast()
         addColor()
         
+        retryButton.addTarget(self, action: #selector(initMiScaleManager), for: .touchDown)
+        submitButton.addTarget(self, action: #selector(submitMeasuredData), for: .touchDown)
+
     }
     
+    @objc func initMiScaleManager() {
+        isMeasuring = true
+        miScaleManager.disconnect()
+        miScaleManager.manager?.stopScan()
+        miScaleManager.scanPeripheral()
+    }
+
+    @objc func submitMeasuredData() {
+        if !isMeasuring {
+            // 몸무게 측정 값 제출
+//            let modifyData = ModifyData_Weight(_petId: , _petKG: , _petLB: )
+//            let server = KittyDocServer()
+//            let modifyResponse:ServerResponse = server.weightModify(data: modifyData)
+//            if(modifyResponse.getCode() as! Int == ServerResponse.PET_MODIFY_SUCCESS){
+//                print(modifyResponse.getMessage())
+//            } else {
+//                print(modifyResponse.getMessage())
+//            }            
+        }
+    }
+
     func receiveBroadcast() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(nameChanged),
-                                               name: NSNotification.Name("petName"),
+                                               name: .petName,
                                                object: nil)
     }
     
@@ -62,7 +88,6 @@ class ScaleViewController: UIViewController, ScaleViewControllerDelegate {
     func setPetName(name: String) {
         nameLabel.text = name
     }
-    
 
 }
 
@@ -70,12 +95,16 @@ extension ScaleViewController: MiScaleManagerDelegate {
     func onMeasureWeightFinished(weight: Double) {
         DispatchQueue.main.async { [self] in
             print("onMeasureWeightFinished(weight: \(weight)")
-          
-            scaleValueLabel.text = "\(weight)"
-            connectionLabel.text = "3. 체중 측정 완료!"
-            descriptionImageView.image = UIImage(named: "checkmark")
-            retryButton.isHidden = false
-            submitButton.isHidden = false
+
+            if isMeasuring {                
+                scaleValueLabel.text = "\(weight)"
+                connectionLabel.text = "3. 체중 측정 완료!"
+                miScaleManager.disconnect() //.removePeripheral() // removePeripheral()
+                descriptionImageView.image = UIImage(named: "checkmark")
+                retryButton.isHidden = false
+                submitButton.isHidden = false
+                isMeasuring = false
+            }
         }
     }
     
@@ -83,16 +112,18 @@ extension ScaleViewController: MiScaleManagerDelegate {
         DispatchQueue.main.async { [self] in
             print("onMeasuringWeight(weight: \(weight)")
 
-            scaleValueLabel.text = "\(weight)"
-            connectionLabel.text = "2. 체중 측정 중 ..."
-            descriptionImageView.image = UIImage(named: "timer")
+            if isMeasuring {
+                scaleValueLabel.text = "\(weight)"
+                connectionLabel.text = "2. 체중 측정 중 ..."
+                descriptionImageView.image = UIImage(named: "timer")
+            }
         }
     }
         
     func onDeviceNotFound() {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             print("Couldn't find any Mi Scale Devices!")
-            self.connectionLabel.text = "기기를 찾을 수 없습니다"
+            connectionLabel.text = "기기를 찾을 수 없습니다"
         }
     }
 

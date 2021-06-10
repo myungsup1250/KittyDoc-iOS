@@ -102,6 +102,7 @@
 		E0BDC31725C8723D00D2524B /* DispatchQueueExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */; };
 		E0BDC31A25C8729E00D2524B /* PeripheralDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */; };
 		E0BE1E94263FBE56008EC181 /* BarChartViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */; };
+		E0BFB7552671F1A6003890EC /* ModifyData_Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0BFB7542671F1A6003890EC /* ModifyData_Weight.swift */; };
 		E0CFECC4264CEB6800384BB4 /* MiScaleUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFECC2264CEB6800384BB4 /* MiScaleUUID.swift */; };
 		E0CFECC5264CEB6800384BB4 /* MiScaleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFECC3264CEB6800384BB4 /* MiScaleManager.swift */; };
 		E0F226E925FB3574009F336F /* ChartUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F226E825FB3574009F336F /* ChartUtility.swift */; };
@@ -220,6 +221,7 @@
 		E0BDC31625C8723D00D2524B /* DispatchQueueExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtension.swift; sourceTree = "<group>"; };
 		E0BDC31925C8729E00D2524B /* PeripheralDataTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeripheralDataTableViewCell.swift; sourceTree = "<group>"; };
 		E0BE1E93263FBE56008EC181 /* BarChartViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewExtension.swift; sourceTree = "<group>"; };
+		E0BFB7542671F1A6003890EC /* ModifyData_Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyData_Weight.swift; sourceTree = "<group>"; };
 		E0CFECC2264CEB6800384BB4 /* MiScaleUUID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiScaleUUID.swift; sourceTree = "<group>"; };
 		E0CFECC3264CEB6800384BB4 /* MiScaleManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiScaleManager.swift; sourceTree = "<group>"; };
 		E0F226E825FB3574009F336F /* ChartUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartUtility.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				B0A9D81425F66630006EE580 /* ModifyData.swift */,
 				B0A9D81725F67CCC006EE580 /* PetData.swift */,
 				B0A9D82226037A71006EE580 /* AnalysisData_Year.swift */,
+				E0BFB7542671F1A6003890EC /* ModifyData_Weight.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -809,6 +812,7 @@
 				E05A7C4C25B5AC31007680E2 /* UIColorExtension.swift in Sources */,
 				E06CEB0125E40C0000D966BB /* DeleteData_Pet.swift in Sources */,
 				E033B040264E52D600F7F9C9 /* RTSPStreamViewController.swift in Sources */,
+				E0BFB7552671F1A6003890EC /* ModifyData_Weight.swift in Sources */,
 				7043EBD725F52A0F008A67A4 /* DetailTableViewCell.swift in Sources */,
 				E0BDC31425C871D400D2524B /* CBUUIDExtension.swift in Sources */,
 				E05A7CA825B9387B007680E2 /* SyncCmd.swift in Sources */,
