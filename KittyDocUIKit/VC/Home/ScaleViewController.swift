@@ -69,8 +69,8 @@ class ScaleViewController: UIViewController, ScaleViewControllerDelegate {
     }
     
     @objc func nameChanged(notification: NSNotification) {
-        if let name = notification.object as? String {
-            nameLabel.text = "\(name) 의 몸무게 측정"
+        if let index = notification.object as? Int {
+            nameLabel.text = "\(PetInfo.shared.petArray[index].PetName) 의 몸무게 측정"
         }
     }
     
